@@ -1,0 +1,7 @@
+* vie 7abr:
+- Configurar git para trabajar con dropbox, incluye exportación de BD.
+- Crear base de datos con phpmyadmin.
+- Instalar y configurar PHP 5.6
+- Instalado php5.6-mysql, php-xdebug, php5.6-mbstring
+- Inicio server.php, datos.php, add_user.php, header.php, footer.php
+

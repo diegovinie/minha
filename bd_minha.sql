@@ -29,7 +29,7 @@ CREATE TABLE `userdata` (
   `udata_ci` varchar(10) NOT NULL COMMENT 'cedula o rif',
   `udata_number` varchar(8) NOT NULL COMMENT 'numero de apartamento',
   PRIMARY KEY (`udata_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,6 +38,7 @@ CREATE TABLE `userdata` (
 
 LOCK TABLES `userdata` WRITE;
 /*!40000 ALTER TABLE `userdata` DISABLE KEYS */;
+INSERT INTO `userdata` VALUES (2,'nombre','apellido','v999999','01A');
 /*!40000 ALTER TABLE `userdata` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,7 +55,7 @@ CREATE TABLE `users` (
   `user_pwd` varchar(50) NOT NULL,
   `user_type` int(1) NOT NULL COMMENT 'tipo de usuario',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='Tabla de usuarios para el acceso';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='Tabla de usuarios para el acceso';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,6 +66,7 @@ LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES (1,'admin@caracol','1234',1);
 INSERT INTO `users` VALUES (2,'guest@caracol','1234',2);
+INSERT INTO `users` VALUES (5,'un@correo','1234',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -77,4 +79,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-07 14:13:07
+-- Dump completed on 2017-04-08  1:30:52
