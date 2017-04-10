@@ -4,7 +4,8 @@ session_unset();
 session_destroy();
 require 'header.php';
  ?>
-
+ </header>
+<main>
 <h1 align="center">Ingresar</h1>
 <form class="" action="login.php" method="post">
     <table align="center">
@@ -21,7 +22,13 @@ require 'header.php';
         </tr>
     </table>
 </form>
-
+<br/>
+<div class="" align="center">
+    <a href="signup.php">Registrarse</a>
+</div>
+<div class="" align="center">
+    <a href="#">Recuperar Clave</a>
+</div>
 <?php
 require 'footer.php';
 extract($_POST);
@@ -29,18 +36,27 @@ extract($_POST);
 if(isset($user) && isset($pwd)){
     require 'server.php';
     $con = connect();
-    $q = "SELECT user_user, user_pwd, user_type FROM users WHERE user_user = '$user' AND user_pwd = '$pwd'";
+    $q = "SELECT user_user, user_pwd, user_type, user_active, udata_name FROM users, userdata WHERE user_user = '$user' AND user_pwd = '$pwd' AND fk_user = user_id";
     $r = q_exec($q);
     $user_val = [];
 
     if(mysql_num_rows($r) == 1){
-        echo "entra";
         foreach (mysql_fetch_assoc($r) as $key => $value) {
             $user_val[$key] = $value;
+        }
+        if($user_val['user_active'] == 0){
+            ?>
+                <script type="text/javascript">
+                    alert("Aún no está activo. Contacte al administrador nombre@correo.org");
+                    window.location = "login.php";
+                </script>
+            <?php die;
         }
         session_start();
         $_SESSION['user'] = $user;
         $_SESSION['status'] = 'active';
+        $_SESSION['name'] = $user_val['udata_name'];
+        $_SESSION['val'] = $user_val['user_active'];
 
         switch ($user_val['user_type']) {
             case 1:
@@ -57,8 +73,9 @@ if(isset($user) && isset($pwd)){
                 echo "ha ocurrido un error";
                 break;
         }
-    }else{
-        echo "no entra";
+    }else{ ?>
+        <p align="center">Usuario o clave inválidos</p>
+        <?php
     }
 
 }

@@ -5,3 +5,13 @@
 - Instalado php5.6-mysql, php-xdebug, php5.6-mbstring
 - Inicio server.php, datos.php, add_user.php, header.php, footer.php
 
+* sab 8abr:
+- Se comienza a estructurar el menu.
+- Se comienza a añadir CSS.
+- Nuevos archivos: style.css, login.php, main.php, menu.php
+
+* dom 9abr:
+- Se comienzan las validaciones en el cliente.
+- Avances en el módulo de usuarios.
+- Nuevos archivos: forms.js, display_users.php, pending_users.php, signup.php
+

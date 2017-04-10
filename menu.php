@@ -1,30 +1,38 @@
-<table border=1 align="center" width=800px>
-    <tr>
-        <?php
-        if(session_status() == 2){
-            switch ($_SESSION['type']) {
-                case 1: ?>
-                    <td align="center"><a href="#">Registrar Pago</a></td>
-                    <td align="center"><a href="#">Recibos de Condominio</a></td>
-                    <td align="center"><a href="#">Pagos Realizados</a></td>
-                    <td align="center"><a href="#">Administracion</a></td>
-                    <td align="center"><a href="#">Configuración de Usuarios</a></td>
-                    <td align="center"><a href="login.php">Salir</a></td> <?php
-                    break;
-                case 2: ?>
-                    <td align="center"><a href="#">Registrar Pago</a></td>
-                    <td align="center"><a href="#">Recibos de Condominio</a></td>
-                    <td align="center"><a href="#">Pagos Realizados</a></td>
-                    <td align="center"><a href="login.php">Salir</a></td> <?php
-                    break;
-                default:
-                    echo 'ha ocurrido un error.';
-                    break;
-            }
-        }else{
-            exit("Sesión terminada.");
-        }
-
-         ?>
-    </tr>
-</table>
+	<ul class="nav">
+		<li><a href="">Pagos y Recibos</a>
+            <ul>
+                <li><a href="#">Registrar Pago</a></li>
+                <li><a href="#">Pagar con Banco de Venezuela</a></li>
+                <li><a href="">Recibos de Condominio</a></li>
+                <li><a href="#">Historial de Pagos</a></li>
+            </ul>
+        </li>
+		<?php
+		if(session_status() == 2){
+			if($_SESSION['type'] == 1){
+		?>
+		<li><a href="">Administracion</a>
+            <ul>
+                <li><a href="#">Registrar Gasto</a></li>
+                <li><a href="#">Informe Ingresos</a></li>
+                <li><a href="#">Informe de Egresos</a></li>
+				<li><a href="#">Usuarios</a>
+					<ul>
+                        <li><a href="add_user.php">Añadir Usuarios</a></li>
+                        <li><a href="display_users.php">Ver Usuarios</a></li>
+                        <li><a href="pending_users.php">Solicitudes Pendientes</a></li>
+                    </ul>
+				</li>
+            </ul>
+        </li>
+		<?php
+			}
+		}
+		?>
+		<li><a href="#">Blog</a></li>
+		<li><a href="#">Cambio de Clave</a></li>
+        <li><a href="login.php">Salir</a></li>
+	</ul>
+</header>
+<main>
+<br/><br/><br/>

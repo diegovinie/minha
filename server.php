@@ -11,4 +11,11 @@ function q_exec($query){
     return $res;
 }
 
+function q_log_exec($user, $query){
+    $res = mysql_query($query) or die("No puede procesar la consulta: " . mysql_error());
+    $q = mysql_escape_string($query);
+    $log = mysql_query("INSERT INTO db_logs VALUES (NULL, NULL, '$user','$q')") or die("No almacenado en log ". mysql_error());
+    return $res;
+}
+
 ?>
