@@ -10,14 +10,24 @@ function uppercase(self){
 
 function capitalize(self){
     var a = self.value.toLowerCase();
-    var b = a.split(" ");
+    var b = a.trim().split(" ");
+    alert(b);
+    for(i = 0; i < b.length; i++){
+        if(b[i] == ""){
+            b.splice(i, 1);        
+    }
+
+    }
     var c;
     var d = [];
     var i;
     for(i = 0; i < b.length; i++){
+//        b[i] = b[i].trim();
+
         c = b[i].charAt(0);
         d[i] = b[i].replace(c, c.toUpperCase());
     }
+    alert(d);
     self.value = d.join(" ");
 }
 

@@ -2,7 +2,8 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link href="statics/style.css" type="text/css" media="all" rel="stylesheet" />
+        <link href="/minha/statics/style.css" type="text/css" media="all" rel="stylesheet" />
+        <?php  ?>
         <title>Minha Administradora</title>
     </head>
     <body>

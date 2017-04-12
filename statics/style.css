@@ -89,3 +89,6 @@ footer {
     align-self: center;
     border: 1px;
 }
+html {
+    overflow: hidden;
+}

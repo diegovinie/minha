@@ -13,7 +13,7 @@
 		?>
 		<li><a href="">Administracion</a>
             <ul>
-                <li><a href="#">Registrar Gasto</a></li>
+                <li><a href="admin/add_bill.php">Registrar Gasto</a></li>
                 <li><a href="#">Informe Ingresos</a></li>
                 <li><a href="#">Informe de Egresos</a></li>
 				<li><a href="#">Usuarios</a>
@@ -35,4 +35,4 @@
 	</ul>
 </header>
 <main>
-<br/><br/><br/>
+<br/>
