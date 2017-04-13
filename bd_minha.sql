@@ -102,7 +102,7 @@ CREATE TABLE `bills` (
   CONSTRAINT `bills_ibfk_1` FOREIGN KEY (`bil_type_fk`) REFERENCES `usual_providers` (`up_id`),
   CONSTRAINT `bills_ibfk_2` FOREIGN KEY (`bil_lapse_fk`) REFERENCES `lapses` (`lap_id`),
   CONSTRAINT `bills_ibfk_3` FOREIGN KEY (`bil_bk_fk`) REFERENCES `backup_bills` (`bkb_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Facturas de gastos realizados';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Facturas de gastos realizados';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,6 +112,8 @@ CREATE TABLE `bills` (
 LOCK TABLES `bills` WRITE;
 /*!40000 ALTER TABLE `bills` DISABLE KEYS */;
 INSERT INTO `bills` VALUES (2,'2017-04-04','Una descripcion','22000',1,3,1000.00,120.00,1120.00,1,'Una nota','usuario','2017-04-11 16:23:06');
+INSERT INTO `bills` VALUES (3,'2017-04-12','Corporacición Eléctrica Nacional, S.A. (CORPOELEC)','G200100141',2,4,1111.00,133.32,1244.32,1,'','admin@caracol','2017-04-12 15:51:54');
+INSERT INTO `bills` VALUES (4,'2017-04-11','Pedro Perez','V12331313',1,3,12121.21,1454.55,13575.76,2,'El señor se róbo la desmalezadora','admin@caracol','2017-04-12 15:55:08');
 /*!40000 ALTER TABLE `bills` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,7 +130,7 @@ CREATE TABLE `db_logs` (
   `logs_user` varchar(50) NOT NULL,
   `log_query` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`logs_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,6 +161,9 @@ INSERT INTO `db_logs` VALUES (20,'2017-04-09 16:50:14','admin@caracol','DELETE F
 INSERT INTO `db_logs` VALUES (21,'2017-04-09 16:55:26','admin@caracol','UPDATE users SET user_active = 1 WHERE user_user = \'salo@correo\' ');
 INSERT INTO `db_logs` VALUES (22,'2017-04-09 16:55:47','register:$email','INSERT INTO users VALUES (NULL, \'che@ge\', \'1234\', 2, 0, \'register:che@ge\', NULL)');
 INSERT INTO `db_logs` VALUES (23,'2017-04-09 16:56:04','admin@caracol','DELETE FROM users WHERE user_user = \'che@ge\' ');
+INSERT INTO `db_logs` VALUES (24,'2017-04-12 15:51:55','admin@caracol','INSERT INTO bills VALUES (NULL, \'2017-04-12\', \'Corporacición Eléctrica Nacional, S.A. (CORPOELEC)\', \'G200100141\', \'2\', \'4\', \'1111\', \'133.32\', \'1244.32\', \'1\', \'\', \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (25,'2017-04-12 15:55:08','admin@caracol','INSERT INTO bills VALUES (NULL, \'2017-04-11\', \'Pedro Perez\', \'V12331313\', \'1\', \'3\', \'12121.21\', \'1454.55\', \'13575.76\', \'2\', \'El señor se róbo la desmalezadora\', \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (26,'2017-04-13 01:37:06','register:$email','INSERT INTO users VALUES (NULL, \'dennis@berk\', \'1234\', 2, 0, \'register:dennis@berk\', NULL)');
 /*!40000 ALTER TABLE `db_logs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,11 +271,12 @@ CREATE TABLE `userdata` (
   `udata_surname` varchar(50) NOT NULL,
   `udata_ci` varchar(10) NOT NULL COMMENT 'cedula o rif',
   `udata_number` varchar(8) NOT NULL COMMENT 'numero de apartamento',
+  `udata_weight` decimal(8,4) NOT NULL COMMENT 'Porcentaje ponderado',
   `fk_user` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`udata_id`),
   KEY `fk_user` (`fk_user`),
   CONSTRAINT `link_users` FOREIGN KEY (`fk_user`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -279,12 +285,13 @@ CREATE TABLE `userdata` (
 
 LOCK TABLES `userdata` WRITE;
 /*!40000 ALTER TABLE `userdata` DISABLE KEYS */;
-INSERT INTO `userdata` VALUES (1,'Gabriel','Batistuta','e80111234','1A',1);
-INSERT INTO `userdata` VALUES (2,'Stalin','Rivas','v9456345','9H',2);
-INSERT INTO `userdata` VALUES (3,'Carlos','Valderrama','v20445632','6B',3);
-INSERT INTO `userdata` VALUES (4,'Faustino','Asprilla','e82009342','14C',4);
-INSERT INTO `userdata` VALUES (6,'Salomon','Rondon','v14000333','5e',6);
-INSERT INTO `userdata` VALUES (7,'Paolo','Maldini','e83000212','15g',7);
+INSERT INTO `userdata` VALUES (1,'Gabriel','Batistuta','e80111234','1A',4.2222,1);
+INSERT INTO `userdata` VALUES (2,'Stalin','Rivas','v9456345','9H',0.0000,2);
+INSERT INTO `userdata` VALUES (3,'Carlos','Valderrama','v20445632','6B',0.0000,3);
+INSERT INTO `userdata` VALUES (4,'Faustino','Asprilla','e82009342','14C',0.0000,4);
+INSERT INTO `userdata` VALUES (6,'Salomon','Rondon','v14000333','5e',0.0000,6);
+INSERT INTO `userdata` VALUES (7,'Paolo','Maldini','e83000212','15g',0.0000,7);
+INSERT INTO `userdata` VALUES (8,'Dennis Adolfo','Berkham','E80445765','11C',0.8332,8);
 /*!40000 ALTER TABLE `userdata` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,7 +311,7 @@ CREATE TABLE `users` (
   `user_logged_user` varchar(50) DEFAULT NULL,
   `user_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='Tabla de usuarios para el acceso';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='Tabla de usuarios para el acceso';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -319,6 +326,7 @@ INSERT INTO `users` VALUES (3,'guest@caracol','1234',2,1,'admin@caracol','2017-0
 INSERT INTO `users` VALUES (4,'un@correo','1234',2,1,'admin@caracol','2017-04-09 05:24:53');
 INSERT INTO `users` VALUES (6,'salo@correo','1234',2,1,'register:salo@correo','2017-04-09 14:21:53');
 INSERT INTO `users` VALUES (7,'paolo@correo','1234',2,0,'register:paolo@correo','2017-04-09 14:23:10');
+INSERT INTO `users` VALUES (8,'dennis@berk','1234',2,0,'register:dennis@berk','2017-04-13 01:37:06');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -362,4 +370,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-11 20:06:04
+-- Dump completed on 2017-04-12 23:08:36

@@ -1,7 +1,11 @@
         </main>
         <footer>
             <div class="">
-                <h4>Menú</h4>
+                <h4> <a href="#">item 1</a> |
+                    <a href="#">item 2</a> |
+                    <a href="#">item 3</a> |
+                    <a href="#">item 4</a>
+                </h4>
             </div>
             <div class="">
                 <p>Por Diego Viniegra diego.viniegra@gmail.com</p>

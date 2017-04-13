@@ -6,7 +6,25 @@
 @import url('https://fonts.googleapis.com/css?family=Play:700|Ropa+Sans');
 
 body {
-    background-color: #aa4 ;
+/*      background-color: #aa4 ;
+*/
+    background: #e8e9ec;
+    font-family: Arial, Helvetica, Verdana, sans-serif;
+    margin-top: 0;
+    padding: 0;
+    line-height: 80%;
+
+
+}
+a {
+    color: #5cb192;
+    font-weight: normal;
+    text-decoration: none;
+    line-height: 100%;
+}
+
+a:hover {
+    color: #ff6a00;
 }
 
 header {
@@ -16,23 +34,24 @@ header {
 }
 
 ul, ol {
-    list-style:none;
+    list-style: none;
 }
 
 .nav > li {
-    float:left;
+    float: left;
 }
 
 .nav li a {
     background-color:#000;
     color:#fff;
     text-decoration:none;
-    padding:10px 12px;
+    padding:10px 10px;
     display:block;
 }
 
 .nav li a:hover {
-    background-color:#434343;
+    background-color:#323232;
+    color: #ff6a00;
 }
 
 .nav li ul {
@@ -57,24 +76,32 @@ ul, ol {
 main {
     background-color: #ccc;
     width: 700px;
-    height: 400px;
+    height: 450px;
     margin: auto;
 }
 
 .titulo {
     margin: auto;
-    font-family: 'Ropa Sans', sans-serif;
+/*    font-family: 'Ropa Sans', sans-serif;
+*/
     text-align: center;
+    padding: 0;
+
 
 }
 
-.titulo h3 {
-    color: #c00;
+.titulo h1 {
+    color: #5cb192;
+    font-weight: bold;
 }
 
 footer {
     text-align: center;
+}
 
+footer a {
+    color: #000;
+    line-height: 50%;
 }
 
 .warning {
@@ -91,4 +118,59 @@ footer {
 }
 html {
     overflow: hidden;
+}
+
+.button_box {
+    padding: 5px;
+}
+
+.button_hot {
+    display: inline-block;
+      /*
+              background-color: #555;
+
+              */
+  	outline: none;
+  	cursor: pointer;
+  	text-align: center;
+  	text-decoration: none;
+  	font: 14px Arial, Helvetica, sans-serif;
+  	padding:5px 10px 6px;
+  	text-shadow: 0 1px 1px rgba(0,0,0,.3);
+  	-webkit-border-radius: 5px;
+  	-moz-border-radius: 5px;
+  	border-radius: 5px;
+  	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  	box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    font-weight: normal;
+    border:0;
+    line-height:1;
+}
+
+.button_hot:hover {
+    border: 1px;
+    font-weight: bold;
+}
+
+.button_hot:focus {
+    border: 1px;
+    font-weight: bold;
+}
+.principal {
+    color: green;
+}
+
+.secundary {
+    color: red;
+}
+
+.welcome {
+    padding: 3px 10px;
+}
+
+h2 {
+    padding: 10px;
+    padding-bottom: 2px;
+    line-height: 80%;
 }

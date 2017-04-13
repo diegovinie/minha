@@ -3,7 +3,7 @@ session_start();
 require 'header.php';
 require 'menu.php';
 ?>
-<h1>Registro de Usuarios</h1>
+<h2 align="center">Registro de Usuarios</h2>
 <table align="center" border="1">
 
 <?php
@@ -35,8 +35,8 @@ while ($f = mysql_fetch_assoc($r)) {
 
  ?>
 </table>
-<div class="">
-    <button type="button" name="button" onclick="window.location.href='main.php'">Regresar</button>
+<div class="button_box" align="center">
+    <button type="button" name="button" class="button_hot secundary" onclick="window.location.href='main.php'">Regresar</button>
 </div>
 <?php
 require 'footer.php';

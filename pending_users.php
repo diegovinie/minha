@@ -3,8 +3,7 @@ session_start();
 require 'header.php';
 require 'menu.php';
 ?>
-<h1>Usuarios Pendiente por Activación</h1>
-<br/>
+<h2 align="center">Usuarios Pendiente por Activación</h2>
 <form class="" action="pending_users.php" method="post">
     <table align="center" border="1">
     <?php
@@ -36,11 +35,10 @@ require 'menu.php';
 
      ?>
     </table>
-    <br/>
-    <div class="" align="center">
-        <button type="submit" name="pending_user_button" value="none">Enviar</button>
-        <button type="reset">Deshacer</button>
-        <button type="button" onclick="window.location.href='main.php'">Regresar</button>
+    <div class="button_box" align="center">
+        <button type="submit" name="pending_user_button" value="none" class="button_hot principal">Enviar</button>
+        <button type="reset" class="button_hot">Deshacer</button>
+        <button type="button" class="button_hot secundary" onclick="window.location.href='main.php'">Regresar</button>
     </div>
 </form>
 <?php

@@ -6,7 +6,7 @@ require 'header.php';
  ?>
  </header>
 <main>
-<h1 align="center">Ingresar</h1>
+<h2 align="center">Ingresar</h2>
 <form class="" action="login.php" method="post">
     <table align="center">
         <tr>
@@ -18,7 +18,7 @@ require 'header.php';
             <td><input type="password" name="pwd" value=""></td>
         </tr>
         <tr>
-            <td colspan="2" align="center"><button type="submit" name="button">Enviar</button></td>
+            <td colspan="2" align="center"><button type="submit" name="button" class="button_hot principal">Enviar</button></td>
         </tr>
     </table>
 </form>

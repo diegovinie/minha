@@ -13,14 +13,14 @@
 		?>
 		<li><a href="">Administracion</a>
             <ul>
-                <li><a href="admin/add_bill.php">Registrar Gasto</a></li>
+                <li><a href="/minha/admin/add_bill.php">Registrar Gasto</a></li>
                 <li><a href="#">Informe Ingresos</a></li>
                 <li><a href="#">Informe de Egresos</a></li>
 				<li><a href="#">Usuarios</a>
 					<ul>
-                        <li><a href="add_user.php">Añadir Usuarios</a></li>
-                        <li><a href="display_users.php">Ver Usuarios</a></li>
-                        <li><a href="pending_users.php">Solicitudes Pendientes</a></li>
+                        <li><a href="/minha/add_user.php">Añadir Usuarios</a></li>
+                        <li><a href="/minha/display_users.php">Ver Usuarios</a></li>
+                        <li><a href="/minha/pending_users.php">Solicitudes Pendientes</a></li>
                     </ul>
 				</li>
             </ul>
@@ -31,8 +31,11 @@
 		?>
 		<li><a href="#">Blog</a></li>
 		<li><a href="#">Cambio de Clave</a></li>
-        <li><a href="login.php">Salir</a></li>
+        <li><a href="/minha/login.php">Salir</a></li>
 	</ul>
 </header>
 <main>
 <br/>
+<?php
+echo "<div align='right' class='welcome'>Bienvenido, ".$_SESSION['name']."</div>";
+?>

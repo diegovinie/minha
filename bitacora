@@ -15,3 +15,9 @@
 - Avances en el módulo de usuarios.
 - Nuevos archivos: forms.js, display_users.php, pending_users.php, signup.php
 
+* mar 11abr:
+- Se comienza el módulo admin para agregar facturas.
+- Se generan las tablas usual_providers, bills, bkb, lapses, spending_types, payments y banks y las relaciones necesarias.
+- Se prepara el formulario: agregar gasto, con las validaciones en el cliente.
+- 
+

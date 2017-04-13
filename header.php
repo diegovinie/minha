@@ -1,3 +1,6 @@
+<?php
+require 'datos.php';
+ ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,6 +12,6 @@
     <body>
         <header>
             <div class="titulo">
-                <h3>Minha Administradora E.P.</h3>
+                <h1>Minha Administradora E.P.</h1>
                 <p>Hace que las cosas más fácil</p>
             </div>

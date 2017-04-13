@@ -3,36 +3,48 @@ session_start();
 require 'header.php';
 require 'menu.php';
 ?>
-        <h1 align="center">Añadir Usuario</h1>
+    <script src="/minha/js/forms.js" charset="utf-8"></script>
+    <div class="" id='apart' hidden>
+        <?php echo apartToString(); ?>
+    </div>
+        <h2 align="center">Añadir Usuario</h2>
         <form class="" action="add_user.php" method="post">
             <table align="center">
                 <tr>
                     <td>Nombre:</td>
-                    <td><input type="text" name="name" value="nombre" required></td>
+                    <td><input type="text" name="name" value="nombre" onblur="capitalize(this)" required></td>
                 </tr>
                 <tr>
                     <td>Apellido:</td>
-                    <td><input type="text" name="surname" value="apellido" required></td>
+                    <td><input type="text" name="surname" value="apellido" onblur="capitalize(this)" required></td>
                 </tr>
                 <tr>
                     <td>C.I.</td>
-                    <td><input type="text" name="ci" value="v999999" required></td>
+                    <td><input type="text" name="ci" value="v999999" onblur="capitalize(this)" required></td>
                 </tr>
                 <tr>
                     <td>Apartamento:</td>
-                    <td><input type="text" name="number" value="01A" required></td>
+                    <td><input type="text" name="number" value="01A" onblur="check_number(this)" required></td>
                 </tr>
                 <tr>
                     <td>Correo-e:</td>
-                    <td><input type="email" name="email" value="un@correo" required></td>
+                    <td><input type="email" name="email" value="un@correo" onblur="lowercase(this)" required></td>
                 </tr>
                 <tr>
                     <td>Clave:</td>
-                    <td><input type="password" name="pwd" value="1234" required></td>
+                    <td><input type="password" name="pwd" id='pwd' value="1234" required></td>
                 </tr>
                 <tr>
                     <td>Repita clave:</td>
-                    <td><input type="password" name="rpwd" value="1234" required></td>
+                    <td><input type="password" name="rpwd" id='rpwd' value="1234" required onblur="val_pwd()"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <div class="warning" id="pwd_e" style="display:none">
+                        las claves no coinciden
+                        </div>
+                    </td>
+
                 </tr>
                 <tr>
                     <td>Tipo de usuario:</td>
@@ -44,9 +56,9 @@ require 'menu.php';
                         </select>
                 </tr>
             </table>
-            <div class="">
-                <button type="submit" name="button" >Enviar</button>
-                <button type="button" name="button" onclick="window.location.href='main.php'">Regresar</button>
+            <div class="button_box" align="center">
+                <button type="submit" id='submit' name="button" class="button_hot principal" >Enviar</button>
+                <button type="button" name="button" class="button_hot secundary" onclick="window.location.href='main.php'">Regresar</button>
             </div>
         </form>
 <?php

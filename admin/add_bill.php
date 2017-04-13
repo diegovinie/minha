@@ -1,43 +1,19 @@
 <?php
+session_start();
 require '../header.php';
 require '../menu.php';
 require '../server.php';
 connect();
  ?>
- <script type="text/javascript">
-     function fun1(self){
-         var a = self.value;
-         var j = document.getElementById("proveedor").innerHTML;
-         var k = JSON.parse(j);
-         for(var i = 0; i < k.length; i++){
-             if(k[i].up_id == a){
-                 var ename = document.getElementById("name");
-                 ename.value = k[i].up_name;
-                 var erif = document.getElementById("rif");
-                 erif.value = k[i].up_rif;
-             }
-         }
-         if(a != 1){
-             ename.setAttribute('disabled', 'true');
-             erif.setAttribute('disabled', 'true');
-         }else{
-             ename.removeAttribute('disabled');
-             erif.removeAttribute('disabled');
-         }
-     }
+<script src="/minha/js/forms.js" charset="utf-8"></script>
+<script type="text/javascript">
+    window.onload = function(){
+        var a;
+        a = document.getElementById('date');
+        a.options[a.options.length - 1].setAttribute('selected', 'true');
+    }
+</script>
 
-     window.onload = function(){
-         var a = document.getElementById('date');
-         a.options[a.options.length - 1].setAttribute('selected', 'true');
-     }
-
-     function totalizar(){
-         amount = parseFloat(document.getElementById('amount').value);
-         alic = parseFloat(document.getElementById('alic').value);
-         document.getElementById('iva').value = amount * alic;
-         document.getElementById('total').value = amount + (amount * alic);
-     }
- </script>
 <?php
 $qtype = "SELECT up_id, up_alias, up_name, up_rif FROM usual_providers";
 $rtype = q_exec($qtype);
@@ -52,10 +28,11 @@ $qbkb = "SELECT bkb_id, bkb_name FROM backup_bills";
 $rbkb = q_exec($qbkb);
  ?>
 <main>
-<h2 id="titulo">Añadir Gasto</h2>
+    <br>
+<h2 id="titulo" align="center">Añadir Gasto</h2>
 
-<form class="" action="index.html" method="post">
-    <table>
+<form class="" action="add_bill.php" method="post">
+    <table align="center">
         <tr>
             <td>Fecha: </td>
             <td><input type="date" name="date" value=""></td>
@@ -78,15 +55,15 @@ $rbkb = q_exec($qbkb);
         </tr>
         <tr>
             <td>Nombre o Razón Social:</td>
-            <td><input type="text" name="name" id="name" value=""></td>
+            <td><input type="text" name="name" id="name" value="" onblur="capitalize(this)"></td>
         </tr>
         <tr>
             <td>RIF:</td>
-            <td><input type="text" name="rif" id="rif" value=""></td>
+            <td><input type="text" name="rif" id="rif" value="" onblur="capitalize(this)"></td>
         </tr>
         <tr>
             <td>Periodo: </td>
-            <td><select class="" name="" id='date'>
+            <td><select class="" name="lapse" id='date'>
                 <?php
                 while($a = mysql_fetch_array($rlapse)){
                     ?>
@@ -98,10 +75,10 @@ $rbkb = q_exec($qbkb);
         </tr>
         <tr>
             <td>Monto: </td>
-            <td><input type="text" name="amount" value="" id="amount" onchange="totalizar()"></td>
+            <td><input type="text" name="amount" value="" id="amount" onchange="setIvaTotal()"></td>
         </tr>
         <tr>
-                <td>IVA:<select class="" name="" id="alic" onchange="totalizar()">
+                <td>IVA:<select class="" name="" id="alic" onchange="setIvaTotal()">
                 <option value="0.12">12%</option>
                 <option value="0.1">10%</option>
                 <option value="0">Excento</option>
@@ -110,7 +87,7 @@ $rbkb = q_exec($qbkb);
         </tr>
         <tr>
             <td>Total: </td>
-            <td><input type="text" name="total" value="" id="total" onchange="totalizar()"></td>
+            <td><input type="text" name="total" value="" id="total" onchange="setIvaTotal()"></td>
         </tr>
         <tr>
             <td>Tipo de Soporte: </td>
@@ -126,15 +103,42 @@ $rbkb = q_exec($qbkb);
         </tr>
         <tr>
             <td>Observaciones:</td>
-            <td><input type="text" name="notes" value=""></td>
+            <td><input type="text" name="notes" value=''></td>
         </tr>
     </table>
-    <div class="">
-        <button type="submit" name="button" >Enviar</button>
-        <button type="button" name="button" onclick="history.go(-1)">Regresar</button>
+    <div class="button_box" align="center">
+        <button type="submit" name="button" class="button_hot principal">Enviar</button>
+        <button type="button" name="button" class="button_hot secundary" onclick="history.go(-1)">Regresar</button>
     </div>
 </form>
 
  <?php
+
+extract($_POST);
+$session_user = $_SESSION['user'];
+
+if(isset($date) &&
+    isset($type) && isset($amount) &&
+    $_SESSION['type'] == 1) {
+//    print_r($_POST);
+    $amount = numToEng($amount);
+    $iva = numToEng($iva);
+    $total = numToEng($total);
+    if(!isset($notes))
+        $notes = '';
+    $q = "INSERT INTO bills VALUES (NULL, '$date', '$name', '$rif', '$type', '$lapse', '$amount', '$iva', '$total', '$bk', '$notes', '$session_user', NULL)";
+    $r = q_log_exec($session_user, $q);
+    ?>
+    <script type="text/javascript">
+        alert('Registro almacenado con éxito');
+    </script>
+    <?php
+}
+
+function numToEng($num){
+    $num = str_replace(',', '.', $num = str_replace('.', '', $num));
+    return floatval($num);
+}
+
 require '../footer.php';
   ?>
