@@ -16,6 +16,155 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `A17`
+--
+
+DROP TABLE IF EXISTS `A17`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `A17` (
+  `A17_id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `A17_number` varchar(3) NOT NULL,
+  `A17_weight` decimal(8,4) NOT NULL COMMENT 'Porcentaje ponderado',
+  `A17_assigned` tinyint(1) NOT NULL DEFAULT '1',
+  `A17_occupied` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Si esta habitado',
+  `A17_notes` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`A17_id`),
+  UNIQUE KEY `A17_number_2` (`A17_number`),
+  KEY `A17_number` (`A17_number`)
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `A17`
+--
+
+LOCK TABLES `A17` WRITE;
+/*!40000 ALTER TABLE `A17` DISABLE KEYS */;
+INSERT INTO `A17` VALUES (1,'1A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (2,'1B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (3,'1C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (4,'1D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (5,'1E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (6,'1F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (7,'1G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (8,'1H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (9,'2A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (10,'2B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (11,'2C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (12,'2D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (13,'2E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (14,'2F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (15,'2G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (16,'2H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (17,'3A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (18,'3B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (19,'3C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (20,'3D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (21,'3E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (22,'3F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (23,'3G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (24,'3H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (25,'4A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (26,'4B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (27,'4C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (28,'4D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (29,'4E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (30,'4F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (31,'4G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (32,'4H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (33,'5A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (34,'5B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (35,'5C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (36,'5D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (37,'5E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (38,'5F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (39,'5G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (40,'5H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (41,'6A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (42,'6B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (43,'6C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (44,'6D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (45,'6E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (46,'6F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (47,'6G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (48,'6H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (49,'7A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (50,'7B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (51,'7C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (52,'7D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (53,'7E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (54,'7F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (55,'7G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (56,'7H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (57,'8A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (58,'8B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (59,'8C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (60,'8D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (61,'8E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (62,'8F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (63,'8G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (64,'8H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (65,'9A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (66,'9B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (67,'9C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (68,'9D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (69,'9E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (70,'9F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (71,'9G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (72,'9H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (73,'10A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (74,'10B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (75,'10C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (76,'10D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (77,'10E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (78,'10F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (79,'10G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (80,'10H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (81,'11A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (82,'11B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (83,'11C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (84,'11D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (85,'11E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (86,'11F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (87,'11G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (88,'11H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (89,'12A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (90,'12B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (91,'12C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (92,'12D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (93,'12E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (94,'12F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (95,'12G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (96,'12H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (97,'13A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (98,'13B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (99,'13C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (100,'13D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (101,'13E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (102,'13F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (103,'13G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (104,'13H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (105,'14A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (106,'14B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (107,'14C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (108,'14D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (109,'14E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (110,'14F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (111,'14G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (112,'14H',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (113,'15A',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (114,'15B',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (115,'15C',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (116,'15D',1.2498,1,1,NULL);
+INSERT INTO `A17` VALUES (117,'15E',0.8332,1,1,NULL);
+INSERT INTO `A17` VALUES (118,'15F',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (119,'15G',0.4166,1,1,NULL);
+INSERT INTO `A17` VALUES (120,'15H',0.8332,1,1,NULL);
+/*!40000 ALTER TABLE `A17` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `backup_bills`
 --
 
@@ -102,7 +251,7 @@ CREATE TABLE `bills` (
   CONSTRAINT `bills_ibfk_1` FOREIGN KEY (`bil_type_fk`) REFERENCES `usual_providers` (`up_id`),
   CONSTRAINT `bills_ibfk_2` FOREIGN KEY (`bil_lapse_fk`) REFERENCES `lapses` (`lap_id`),
   CONSTRAINT `bills_ibfk_3` FOREIGN KEY (`bil_bk_fk`) REFERENCES `backup_bills` (`bkb_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Facturas de gastos realizados';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Facturas de gastos realizados';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,7 +262,8 @@ LOCK TABLES `bills` WRITE;
 /*!40000 ALTER TABLE `bills` DISABLE KEYS */;
 INSERT INTO `bills` VALUES (2,'2017-04-04','Una descripcion','22000',1,3,1000.00,120.00,1120.00,1,'Una nota','usuario','2017-04-11 16:23:06');
 INSERT INTO `bills` VALUES (3,'2017-04-12','Corporacición Eléctrica Nacional, S.A. (CORPOELEC)','G200100141',2,4,1111.00,133.32,1244.32,1,'','admin@caracol','2017-04-12 15:51:54');
-INSERT INTO `bills` VALUES (4,'2017-04-11','Pedro Perez','V12331313',1,3,12121.21,1454.55,13575.76,2,'El señor se róbo la desmalezadora','admin@caracol','2017-04-12 15:55:08');
+INSERT INTO `bills` VALUES (4,'2017-04-11','Pedro Perez','V12331313',1,4,12121.21,1454.55,13575.76,2,'El señor se róbo la desmalezadora','admin@caracol','2017-04-12 15:55:08');
+INSERT INTO `bills` VALUES (5,'2017-01-01','Hidrológica de la Regio Capital, C.A. (HIDROCAPITAL)','G200121076',3,4,5512.12,661.45,6173.57,1,'ninguna','admin@caracol','2017-04-14 16:45:27');
 /*!40000 ALTER TABLE `bills` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,7 +280,7 @@ CREATE TABLE `db_logs` (
   `logs_user` varchar(50) NOT NULL,
   `log_query` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`logs_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,6 +314,31 @@ INSERT INTO `db_logs` VALUES (23,'2017-04-09 16:56:04','admin@caracol','DELETE F
 INSERT INTO `db_logs` VALUES (24,'2017-04-12 15:51:55','admin@caracol','INSERT INTO bills VALUES (NULL, \'2017-04-12\', \'Corporacición Eléctrica Nacional, S.A. (CORPOELEC)\', \'G200100141\', \'2\', \'4\', \'1111\', \'133.32\', \'1244.32\', \'1\', \'\', \'admin@caracol\', NULL)');
 INSERT INTO `db_logs` VALUES (25,'2017-04-12 15:55:08','admin@caracol','INSERT INTO bills VALUES (NULL, \'2017-04-11\', \'Pedro Perez\', \'V12331313\', \'1\', \'3\', \'12121.21\', \'1454.55\', \'13575.76\', \'2\', \'El señor se róbo la desmalezadora\', \'admin@caracol\', NULL)');
 INSERT INTO `db_logs` VALUES (26,'2017-04-13 01:37:06','register:$email','INSERT INTO users VALUES (NULL, \'dennis@berk\', \'1234\', 2, 0, \'register:dennis@berk\', NULL)');
+INSERT INTO `db_logs` VALUES (27,'2017-04-13 14:51:09','admin@caracol','INSERT INTO users VALUES (NULL, \'oleg@caracol\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (28,'2017-04-13 14:54:20','admin@caracol','INSERT INTO users VALUES (NULL, \'oleg@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (29,'2017-04-13 14:55:30','admin@caracol','INSERT INTO users VALUES (NULL, \'ole@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (30,'2017-04-13 23:56:30','admin@caracol','INSERT INTO users VALUES (NULL, \'u1n@correo\', \'1234\', \'2\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (31,'2017-04-14 00:20:10','admin@caracol','INSERT INTO users VALUES (NULL, \'cheto@correo\', \'1234\', \'2\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (32,'2017-04-14 00:24:58','admin@caracol','INSERT INTO users VALUES (NULL, \'pun@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (33,'2017-04-14 00:26:04','admin@caracol','INSERT INTO users VALUES (NULL, \'pun@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (34,'2017-04-14 00:28:04','admin@caracol','INSERT INTO users VALUES (NULL, \'pun@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (35,'2017-04-14 00:29:05','admin@caracol','INSERT INTO users VALUES (NULL, \'pun@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (36,'2017-04-14 00:29:37','admin@caracol','INSERT INTO users VALUES (NULL, \'pun@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (37,'2017-04-14 00:32:02','admin@caracol','INSERT INTO users VALUES (NULL, \'pun@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (38,'2017-04-14 00:34:00','admin@caracol','INSERT INTO users VALUES (NULL, \'pun@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (39,'2017-04-14 00:37:04','admin@caracol','INSERT INTO users VALUES (NULL, \'pun@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (40,'2017-04-14 00:39:44','admin@caracol','INSERT INTO users VALUES (NULL, \'pun@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (41,'2017-04-14 00:42:23','admin@caracol','INSERT INTO users VALUES (NULL, \'pun@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (42,'2017-04-14 00:44:40','admin@caracol','INSERT INTO users VALUES (NULL, \'pun@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (43,'2017-04-14 00:45:55','admin@caracol','INSERT INTO users VALUES (NULL, \'pun@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (44,'2017-04-14 00:49:53','admin@caracol','INSERT INTO users VALUES (NULL, \'pun@correo\', \'1234\', \'1\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (45,'2017-04-14 00:51:35','admin@caracol','INSERT INTO users VALUES (NULL, \'puen@correo\', \'1234\', \'2\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (46,'2017-04-14 00:55:35','admin@caracol','INSERT INTO users VALUES (NULL, \'diego@caracol\', \'1234\', \'2\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (47,'2017-04-14 01:02:17','register:$email','INSERT INTO users VALUES (NULL, \'meri@mat\', \'1234\', 2, 0, \'register:meri@mat\', NULL)');
+INSERT INTO `db_logs` VALUES (48,'2017-04-14 16:43:15','register:$email','INSERT INTO users VALUES (NULL, \'luz@gmail.com\', \'1234\', 2, 0, \'register:luz@gmail.com\', NULL)');
+INSERT INTO `db_logs` VALUES (49,'2017-04-14 16:43:53','admin@caracol','UPDATE users SET user_active = 1 WHERE user_user = \'luz@gmail_com\' ');
+INSERT INTO `db_logs` VALUES (50,'2017-04-14 16:45:27','admin@caracol','INSERT INTO bills VALUES (NULL, \'2017-01-01\', \'Hidrológica de la Regio Capital, C.A. (HIDROCAPITAL)\', \'G200121076\', \'3\', \'4\', \'5512.12\', \'661.45\', \'6173.57\', \'1\', \'ninguna\', \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (51,'2017-04-14 17:13:08','admin@caracol','INSERT INTO users VALUES (NULL, \'punn@correo\', \'1234\', \'2\', 1, \'admin@caracol\', NULL)');
 /*!40000 ALTER TABLE `db_logs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,6 +407,30 @@ LOCK TABLES `payments` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `prueba`
+--
+
+DROP TABLE IF EXISTS `prueba`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `prueba` (
+  `prue_id` int(4) NOT NULL AUTO_INCREMENT,
+  `prue_nombre` varchar(50) NOT NULL,
+  `prue_var` int(8) NOT NULL,
+  PRIMARY KEY (`prue_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `prueba`
+--
+
+LOCK TABLES `prueba` WRITE;
+/*!40000 ALTER TABLE `prueba` DISABLE KEYS */;
+/*!40000 ALTER TABLE `prueba` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `spendings_types`
 --
 
@@ -243,7 +442,7 @@ CREATE TABLE `spendings_types` (
   `spe_name` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `spe_op` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`spe_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -255,6 +454,9 @@ LOCK TABLES `spendings_types` WRITE;
 INSERT INTO `spendings_types` VALUES (1,'NO FRECUENTE',0);
 INSERT INTO `spendings_types` VALUES (2,'Servicios Básicos',0);
 INSERT INTO `spendings_types` VALUES (3,'Gastos de Personal',0);
+INSERT INTO `spendings_types` VALUES (4,'Servicios Básicos',0);
+INSERT INTO `spendings_types` VALUES (5,'Servicios Ocasionales',0);
+INSERT INTO `spendings_types` VALUES (6,'Trabajador Ocasional',0);
 /*!40000 ALTER TABLE `spendings_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,13 +472,14 @@ CREATE TABLE `userdata` (
   `udata_name` varchar(50) NOT NULL,
   `udata_surname` varchar(50) NOT NULL,
   `udata_ci` varchar(10) NOT NULL COMMENT 'cedula o rif',
-  `udata_number` varchar(8) NOT NULL COMMENT 'numero de apartamento',
-  `udata_weight` decimal(8,4) NOT NULL COMMENT 'Porcentaje ponderado',
-  `fk_user` smallint(5) unsigned NOT NULL,
+  `udata_number_fk` tinyint(3) unsigned NOT NULL COMMENT 'numero de apartamento',
+  `udata_user_fk` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`udata_id`),
-  KEY `fk_user` (`fk_user`),
-  CONSTRAINT `link_users` FOREIGN KEY (`fk_user`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  KEY `fk_user` (`udata_user_fk`),
+  KEY `udata_number_fk` (`udata_number_fk`),
+  CONSTRAINT `link_users` FOREIGN KEY (`udata_user_fk`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `userdata_ibfk_1` FOREIGN KEY (`udata_number_fk`) REFERENCES `A17` (`A17_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,13 +488,19 @@ CREATE TABLE `userdata` (
 
 LOCK TABLES `userdata` WRITE;
 /*!40000 ALTER TABLE `userdata` DISABLE KEYS */;
-INSERT INTO `userdata` VALUES (1,'Gabriel','Batistuta','e80111234','1A',4.2222,1);
-INSERT INTO `userdata` VALUES (2,'Stalin','Rivas','v9456345','9H',0.0000,2);
-INSERT INTO `userdata` VALUES (3,'Carlos','Valderrama','v20445632','6B',0.0000,3);
-INSERT INTO `userdata` VALUES (4,'Faustino','Asprilla','e82009342','14C',0.0000,4);
-INSERT INTO `userdata` VALUES (6,'Salomon','Rondon','v14000333','5e',0.0000,6);
-INSERT INTO `userdata` VALUES (7,'Paolo','Maldini','e83000212','15g',0.0000,7);
-INSERT INTO `userdata` VALUES (8,'Dennis Adolfo','Berkham','E80445765','11C',0.8332,8);
+INSERT INTO `userdata` VALUES (1,'Gabriel','Batistuta','e80111234',1,1);
+INSERT INTO `userdata` VALUES (2,'Stalin','Rivas','v9456345',2,2);
+INSERT INTO `userdata` VALUES (3,'Carlos','Valderrama','v20445632',3,3);
+INSERT INTO `userdata` VALUES (4,'Faustino','Asprilla','e82009342',4,4);
+INSERT INTO `userdata` VALUES (6,'Salomon','Rondon','v14000333',5,6);
+INSERT INTO `userdata` VALUES (7,'Paolo','Maldini','e83000212',5,7);
+INSERT INTO `userdata` VALUES (8,'Dennis Adolfo','Berkham','E80445765',7,8);
+INSERT INTO `userdata` VALUES (10,'Nombre','Apellido','V999999',29,26);
+INSERT INTO `userdata` VALUES (11,'Nombre','Apellido','V999999',3,27);
+INSERT INTO `userdata` VALUES (12,'Diego Jose','Viniegra Villalobos','V14891345',78,28);
+INSERT INTO `userdata` VALUES (13,'Meridian','Matova','E88282822',78,29);
+INSERT INTO `userdata` VALUES (14,'Luz Marina','Villalobos Alvarez','E81447878',78,30);
+INSERT INTO `userdata` VALUES (15,'nombre','apellido','v999999',1,31);
 /*!40000 ALTER TABLE `userdata` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -311,7 +520,7 @@ CREATE TABLE `users` (
   `user_logged_user` varchar(50) DEFAULT NULL,
   `user_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='Tabla de usuarios para el acceso';
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COMMENT='Tabla de usuarios para el acceso';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -327,6 +536,16 @@ INSERT INTO `users` VALUES (4,'un@correo','1234',2,1,'admin@caracol','2017-04-09
 INSERT INTO `users` VALUES (6,'salo@correo','1234',2,1,'register:salo@correo','2017-04-09 14:21:53');
 INSERT INTO `users` VALUES (7,'paolo@correo','1234',2,0,'register:paolo@correo','2017-04-09 14:23:10');
 INSERT INTO `users` VALUES (8,'dennis@berk','1234',2,0,'register:dennis@berk','2017-04-13 01:37:06');
+INSERT INTO `users` VALUES (9,'oleg@caracol','1234',1,1,'admin@caracol','2017-04-13 14:51:09');
+INSERT INTO `users` VALUES (10,'oleg@correo','1234',1,1,'admin@caracol','2017-04-13 14:54:20');
+INSERT INTO `users` VALUES (11,'ole@correo','1234',1,1,'admin@caracol','2017-04-13 14:55:30');
+INSERT INTO `users` VALUES (12,'u1n@correo','1234',2,1,'admin@caracol','2017-04-13 23:56:30');
+INSERT INTO `users` VALUES (26,'pun@correo','1234',1,1,'admin@caracol','2017-04-14 00:49:53');
+INSERT INTO `users` VALUES (27,'puen@correo','1234',2,1,'admin@caracol','2017-04-14 00:51:35');
+INSERT INTO `users` VALUES (28,'diego@caracol','1234',2,1,'admin@caracol','2017-04-14 00:55:35');
+INSERT INTO `users` VALUES (29,'meri@mat','1234',2,0,'register:meri@mat','2017-04-14 01:02:16');
+INSERT INTO `users` VALUES (30,'luz@gmail.com','1234',2,0,'register:luz@gmail.com','2017-04-14 16:43:15');
+INSERT INTO `users` VALUES (31,'punn@correo','1234',2,1,'admin@caracol','2017-04-14 17:13:08');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -347,7 +566,7 @@ CREATE TABLE `usual_providers` (
   PRIMARY KEY (`up_id`),
   KEY `up_group_fk` (`up_group_fk`),
   CONSTRAINT `usual_providers_ibfk_1` FOREIGN KEY (`up_group_fk`) REFERENCES `spendings_types` (`spe_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Proveedores Frecuentes';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Proveedores Frecuentes';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -356,8 +575,10 @@ CREATE TABLE `usual_providers` (
 
 LOCK TABLES `usual_providers` WRITE;
 /*!40000 ALTER TABLE `usual_providers` DISABLE KEYS */;
-INSERT INTO `usual_providers` VALUES (1,'Proveedor Extra Ordinario','0','EXTRAORDINARIO',1,'');
-INSERT INTO `usual_providers` VALUES (2,'Corporacición Eléctrica Nacional, S.A. (CORPOELEC)','G200100141','ELECTRICIDAD',1,'');
+INSERT INTO `usual_providers` VALUES (1,'Proveedor','','EXTRAORDINARIO',5,'');
+INSERT INTO `usual_providers` VALUES (2,'Corporacición Eléctrica Nacional, S.A. (CORPOELEC)','G200100141','ELECTRICIDAD',2,'');
+INSERT INTO `usual_providers` VALUES (3,'Hidrológica de la Regio Capital, C.A. (HIDROCAPITAL)','G200121076','HIDROCAPITAL',2,NULL);
+INSERT INTO `usual_providers` VALUES (4,'José Alfredo Tamayo','V20112432','Jardinero',3,'Trabaja martes y jueves');
 /*!40000 ALTER TABLE `usual_providers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -370,4 +591,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-12 23:08:36
+-- Dump completed on 2017-04-14 13:36:18

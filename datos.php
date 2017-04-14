@@ -5,6 +5,8 @@ define('DB_PWD', 'altura');
 define('DB_NAME', 'bd_minha');
 define('FRAC', 0.4166);
 
+define('ROOTDIR', dirname(__FILE__).'/');
+
 function apartToString(){
     $i = 0;
     $k = 1;

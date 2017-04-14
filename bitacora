@@ -19,5 +19,18 @@
 - Se comienza el módulo admin para agregar facturas.
 - Se generan las tablas usual_providers, bills, bkb, lapses, spending_types, payments y banks y las relaciones necesarias.
 - Se prepara el formulario: agregar gasto, con las validaciones en el cliente.
-- 
+
+* mie 12abr:
+- Se avanzan en las validaciones
+- Se comienza a utilizar constantes.
+- Se modifica la tabla userdata para agregar el porcentaje ponderado
+- Se cambian la secuencias de los require.
+- Cambios mayores de apariencia con CSS.
+
+*vie 14abr:
+- Cambio de dirección de desarrollo, se cambia la estructura de userdata.
+- reorganización de los archivos.
+- Se inicia el motor generador de recibos, los resultados se guardan en archivos json.
+- Se comienza a trabajar en el módulo de recuperación de recibos.
+
 

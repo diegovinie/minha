@@ -65,14 +65,6 @@ require 'header.php';
      isset($ci) &&        isset($number) &&
      isset($email) &&     isset($pwd)){
 
-     $c = $number[strlen($number) - 1];
-     $array = [ "A" => 3, "B" => 2, "C" => 2, "D" => 3, "E" => 2, "F" => 1, "G" => 1, "H" => 2];
-     foreach ($array as $key => $value) {
-         if($key == $c)
-            $d = $value;
-     }
-     $weight = FRAC * $d;
-
      require 'server.php';
      $con = connect();
      $q = "SELECT user_id FROM users WHERE user_user = '$email'";
@@ -80,10 +72,13 @@ require 'header.php';
      if(mysql_num_rows($r) == 0){
          $q1 = "INSERT INTO users VALUES (NULL, '$email', '$pwd', 2, 0, 'register:$email', NULL)";
          $r1 = q_log_exec('register:$email', $q1);
-         $q2 = "SELECT user_id FROM users WHERE user_user = '$email'";
-         $r2 = q_exec($q);
-         $r2s = mysql_fetch_array($r2)[0];
-         $q3 = "INSERT INTO userdata VALUES (NULL, '$name', '$surname', '$ci', '$number', '$weight', $r2s)";
+
+         $q2 = "SELECT A17_id, user_id FROM users, A17 WHERE user_user = '$email' AND A17_number = '$number'";
+         $r2 = q_exec($q2);
+         foreach (mysql_fetch_array($r2) as $key => $value) {
+             $list[$key] = $value;
+         }
+         $q3 = "INSERT INTO userdata VALUES (NULL, '$name', '$surname', '$ci','$list[0]', '$list[1]')";
          $r3 = q_exec($q3);
 
          ?> <script type="text/javascript">

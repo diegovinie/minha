@@ -36,7 +36,7 @@ extract($_POST);
 if(isset($user) && isset($pwd)){
     require 'server.php';
     $con = connect();
-    $q = "SELECT user_user, user_pwd, user_type, user_active, udata_name FROM users, userdata WHERE user_user = '$user' AND user_pwd = '$pwd' AND fk_user = user_id";
+    $q = "SELECT user_user, user_pwd, user_type, user_active, udata_name FROM users, userdata WHERE user_user = '$user' AND user_pwd = '$pwd' AND udata_user_fk = user_id";
     $r = q_exec($q);
     $user_val = [];
 

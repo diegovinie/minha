@@ -3,7 +3,7 @@
             <ul>
                 <li><a href="#">Registrar Pago</a></li>
                 <li><a href="#">Pagar con Banco de Venezuela</a></li>
-                <li><a href="">Recibos de Condominio</a></li>
+                <li><a href="/minha/user/display_invoice.php">Recibos de Condominio</a></li>
                 <li><a href="#">Historial de Pagos</a></li>
             </ul>
         </li>
@@ -18,9 +18,9 @@
                 <li><a href="#">Informe de Egresos</a></li>
 				<li><a href="#">Usuarios</a>
 					<ul>
-                        <li><a href="/minha/add_user.php">Añadir Usuarios</a></li>
-                        <li><a href="/minha/display_users.php">Ver Usuarios</a></li>
-                        <li><a href="/minha/pending_users.php">Solicitudes Pendientes</a></li>
+                        <li><a href="/minha/admin/add_user.php">Añadir Usuarios</a></li>
+                        <li><a href="/minha/admin/display_users.php">Ver Usuarios</a></li>
+                        <li><a href="/minha/admin/pending_users.php">Solicitudes Pendientes</a></li>
                     </ul>
 				</li>
             </ul>
