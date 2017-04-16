@@ -1,4 +1,5 @@
 <?php
+//Formulario con verificación de campos JS
 require 'header.php';
  ?>
 </header>
@@ -66,19 +67,22 @@ require 'header.php';
      isset($email) &&     isset($pwd)){
 
      require 'server.php';
-     $con = connect();
+     connect();
+     //Verificar si el usuario existe
      $q = "SELECT user_id FROM users WHERE user_user = '$email'";
      $r = q_exec($q);
      if(mysql_num_rows($r) == 0){
+         //Registra en users usuario y clave como inactivo
          $q1 = "INSERT INTO users VALUES (NULL, '$email', '$pwd', 2, 0, 'register:$email', NULL)";
          $r1 = q_log_exec('register:$email', $q1);
-
+         //Se obtienen los datos para las claves foráneas
          $q2 = "SELECT A17_id, user_id FROM users, A17 WHERE user_user = '$email' AND A17_number = '$number'";
          $r2 = q_exec($q2);
          foreach (mysql_fetch_array($r2) as $key => $value) {
-             $list[$key] = $value;
+             $fk[$key] = $value;
          }
-         $q3 = "INSERT INTO userdata VALUES (NULL, '$name', '$surname', '$ci','$list[0]', '$list[1]')";
+         //Se Insertan los datos del usuario
+         $q3 = "INSERT INTO userdata VALUES (NULL, '$name', '$surname', '$ci','$fk[0]', '$fk[1]')";
          $r3 = q_exec($q3);
 
          ?> <script type="text/javascript">

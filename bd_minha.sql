@@ -251,7 +251,7 @@ CREATE TABLE `bills` (
   CONSTRAINT `bills_ibfk_1` FOREIGN KEY (`bil_type_fk`) REFERENCES `usual_providers` (`up_id`),
   CONSTRAINT `bills_ibfk_2` FOREIGN KEY (`bil_lapse_fk`) REFERENCES `lapses` (`lap_id`),
   CONSTRAINT `bills_ibfk_3` FOREIGN KEY (`bil_bk_fk`) REFERENCES `backup_bills` (`bkb_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Facturas de gastos realizados';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Facturas de gastos realizados';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -261,9 +261,14 @@ CREATE TABLE `bills` (
 LOCK TABLES `bills` WRITE;
 /*!40000 ALTER TABLE `bills` DISABLE KEYS */;
 INSERT INTO `bills` VALUES (2,'2017-04-04','Una descripcion','22000',1,3,1000.00,120.00,1120.00,1,'Una nota','usuario','2017-04-11 16:23:06');
-INSERT INTO `bills` VALUES (3,'2017-04-12','Corporacición Eléctrica Nacional, S.A. (CORPOELEC)','G200100141',2,4,1111.00,133.32,1244.32,1,'','admin@caracol','2017-04-12 15:51:54');
+INSERT INTO `bills` VALUES (3,'2017-04-12','Corporacición Eléctrica Nacional, S.A. (CORPOELEC)','G200100141',2,3,1111.00,133.32,1244.32,1,'','admin@caracol','2017-04-12 15:51:54');
 INSERT INTO `bills` VALUES (4,'2017-04-11','Pedro Perez','V12331313',1,4,12121.21,1454.55,13575.76,2,'El señor se róbo la desmalezadora','admin@caracol','2017-04-12 15:55:08');
-INSERT INTO `bills` VALUES (5,'2017-01-01','Hidrológica de la Regio Capital, C.A. (HIDROCAPITAL)','G200121076',3,4,5512.12,661.45,6173.57,1,'ninguna','admin@caracol','2017-04-14 16:45:27');
+INSERT INTO `bills` VALUES (5,'2017-01-01','Hidrológica de la Regio Capital, C.A. (HIDROCAPITAL)','G200121076',3,3,5512.12,661.45,6173.57,1,'ninguna','admin@caracol','2017-04-14 16:45:27');
+INSERT INTO `bills` VALUES (6,'2017-04-16','María Laura Mora Torta','V13900343',6,4,85000.00,0.00,85000.00,2,'            ','admin@caracol','2017-04-16 17:47:36');
+INSERT INTO `bills` VALUES (7,'2017-04-15','Proyectos Técnicos, S.A.','J311429506',5,4,15490.70,1858.88,17349.58,1,'            ','admin@caracol','2017-04-16 17:48:12');
+INSERT INTO `bills` VALUES (8,'2017-04-13','varios Proveedores','J000000000',7,4,23000.00,2760.00,25760.00,1,'20 bolsas de basura\r\n2 lts de detergente','admin@caracol','2017-04-16 17:49:29');
+INSERT INTO `bills` VALUES (9,'2017-04-13','Hidrológica de la Regio Capital, C.A. (HIDROCAPITAL)','G200121076',3,4,8500.00,1020.00,9520.00,1,'            ','admin@caracol','2017-04-16 17:54:38');
+INSERT INTO `bills` VALUES (10,'2017-04-16','Corporacición Eléctrica Nacional, S.A. (CORPOELEC)','G200100141',2,4,60000.44,7200.05,67200.49,1,'            ','admin@caracol','2017-04-16 17:56:01');
 /*!40000 ALTER TABLE `bills` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -280,7 +285,7 @@ CREATE TABLE `db_logs` (
   `logs_user` varchar(50) NOT NULL,
   `log_query` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`logs_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -339,8 +344,30 @@ INSERT INTO `db_logs` VALUES (48,'2017-04-14 16:43:15','register:$email','INSERT
 INSERT INTO `db_logs` VALUES (49,'2017-04-14 16:43:53','admin@caracol','UPDATE users SET user_active = 1 WHERE user_user = \'luz@gmail_com\' ');
 INSERT INTO `db_logs` VALUES (50,'2017-04-14 16:45:27','admin@caracol','INSERT INTO bills VALUES (NULL, \'2017-01-01\', \'Hidrológica de la Regio Capital, C.A. (HIDROCAPITAL)\', \'G200121076\', \'3\', \'4\', \'5512.12\', \'661.45\', \'6173.57\', \'1\', \'ninguna\', \'admin@caracol\', NULL)');
 INSERT INTO `db_logs` VALUES (51,'2017-04-14 17:13:08','admin@caracol','INSERT INTO users VALUES (NULL, \'punn@correo\', \'1234\', \'2\', 1, \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (52,'2017-04-16 17:47:36','admin@caracol','INSERT INTO bills VALUES (NULL, \'2017-04-16\', \'María Laura Mora Torta\', \'V13900343\', \'6\', \'4\', \'85\', \'0\', \'85\', \'2\', \'            \', \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (53,'2017-04-16 17:48:12','admin@caracol','INSERT INTO bills VALUES (NULL, \'2017-04-15\', \'Proyectos Técnicos, S.A.\', \'J311429506\', \'5\', \'4\', \'15490.7\', \'1858.88\', \'17349.58\', \'1\', \'            \', \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (54,'2017-04-16 17:49:29','admin@caracol','INSERT INTO bills VALUES (NULL, \'2017-04-13\', \'varios Proveedores\', \'J000000000\', \'7\', \'4\', \'23000\', \'2760\', \'25760\', \'1\', \'20 bolsas de basura\r\n2 lts de detergente\', \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (55,'2017-04-16 17:54:38','admin@caracol','INSERT INTO bills VALUES (NULL, \'2017-04-13\', \'Hidrológica de la Regio Capital, C.A. (HIDROCAPITAL)\', \'G200121076\', \'3\', \'4\', \'8500\', \'1020\', \'9520\', \'1\', \'            \', \'admin@caracol\', NULL)');
+INSERT INTO `db_logs` VALUES (56,'2017-04-16 17:56:01','admin@caracol','INSERT INTO bills VALUES (NULL, \'2017-04-16\', \'Corporacición Eléctrica Nacional, S.A. (CORPOELEC)\', \'G200100141\', \'2\', \'4\', \'60000.44\', \'7200.05\', \'67200.49\', \'1\', \'            \', \'admin@caracol\', NULL)');
 /*!40000 ALTER TABLE `db_logs` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `display_users`
+--
+
+DROP TABLE IF EXISTS `display_users`;
+/*!50001 DROP VIEW IF EXISTS `display_users`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `display_users` AS SELECT 
+ 1 AS `Nombre`,
+ 1 AS `Apellido`,
+ 1 AS `C.I.`,
+ 1 AS `Apartamento`,
+ 1 AS `Correo`,
+ 1 AS `Tipo de Usuario`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `lapses`
@@ -404,30 +431,6 @@ CREATE TABLE `payments` (
 LOCK TABLES `payments` WRITE;
 /*!40000 ALTER TABLE `payments` DISABLE KEYS */;
 /*!40000 ALTER TABLE `payments` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `prueba`
---
-
-DROP TABLE IF EXISTS `prueba`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `prueba` (
-  `prue_id` int(4) NOT NULL AUTO_INCREMENT,
-  `prue_nombre` varchar(50) NOT NULL,
-  `prue_var` int(8) NOT NULL,
-  PRIMARY KEY (`prue_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `prueba`
---
-
-LOCK TABLES `prueba` WRITE;
-/*!40000 ALTER TABLE `prueba` DISABLE KEYS */;
-/*!40000 ALTER TABLE `prueba` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -566,7 +569,7 @@ CREATE TABLE `usual_providers` (
   PRIMARY KEY (`up_id`),
   KEY `up_group_fk` (`up_group_fk`),
   CONSTRAINT `usual_providers_ibfk_1` FOREIGN KEY (`up_group_fk`) REFERENCES `spendings_types` (`spe_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Proveedores Frecuentes';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Proveedores Frecuentes';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -579,8 +582,29 @@ INSERT INTO `usual_providers` VALUES (1,'Proveedor','','EXTRAORDINARIO',5,'');
 INSERT INTO `usual_providers` VALUES (2,'Corporacición Eléctrica Nacional, S.A. (CORPOELEC)','G200100141','ELECTRICIDAD',2,'');
 INSERT INTO `usual_providers` VALUES (3,'Hidrológica de la Regio Capital, C.A. (HIDROCAPITAL)','G200121076','HIDROCAPITAL',2,NULL);
 INSERT INTO `usual_providers` VALUES (4,'José Alfredo Tamayo','V20112432','Jardinero',3,'Trabaja martes y jueves');
+INSERT INTO `usual_providers` VALUES (5,'Proyectos Técnicos, S.A.','J311429506','MANT. ASCENSORES',1,NULL);
+INSERT INTO `usual_providers` VALUES (6,'María Laura Mora Torta','V13900343','LIMPIEZA EDIFICIO',1,NULL);
+INSERT INTO `usual_providers` VALUES (7,'varios Proveedores','J000000000','INSUMOS MANT.',1,NULL);
 /*!40000 ALTER TABLE `usual_providers` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Final view structure for view `display_users`
+--
+
+/*!50001 DROP VIEW IF EXISTS `display_users`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `display_users` AS select `userdata`.`udata_name` AS `Nombre`,`userdata`.`udata_surname` AS `Apellido`,`userdata`.`udata_ci` AS `C.I.`,`A17`.`A17_number` AS `Apartamento`,`users`.`user_user` AS `Correo`,`users`.`user_type` AS `Tipo de Usuario` from ((`users` join `userdata`) join `A17`) where ((`userdata`.`udata_user_fk` = `users`.`user_id`) and (`userdata`.`udata_number_fk` = `A17`.`A17_id`) and (`users`.`user_active` = 1)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -591,4 +615,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-14 13:36:18
+-- Dump completed on 2017-04-16 15:50:39

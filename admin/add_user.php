@@ -1,4 +1,5 @@
 <?php
+//Formulario con verificación de campos JS
 session_start();
 require '../header.php';
 require '../menu.php';
@@ -64,25 +65,27 @@ require '../menu.php';
 <?php
 extract($_POST);
 $session_user = $_SESSION['user'];
-
+//Se verifica que el formulario haya sido enviado
 if( isset($name) &&      isset($surname) &&
     isset($ci) &&        isset($number) &&
     isset($email) &&     isset($pwd)    &&
     $_SESSION['type'] == 1){
     require '../server.php';
-    $con = connect();
+    connect();
+    //Se verifica que no exista ya el usuario
     $q = "SELECT user_id FROM users WHERE user_user = '$email'";
     $r = q_exec($q);
-
     if(mysql_num_rows($r) == 0){
+        //Se agregan los datos de acceso ya activando al usuario
         $q1 = "INSERT INTO users VALUES (NULL, '$email', '$pwd', '$type', 1, '$session_user', NULL)";
         $r1 = q_log_exec($session_user, $q1);
+        //Se seleccionan las claves foráneas para el usuario
         $q2 = "SELECT A17_id, user_id FROM users, A17 WHERE user_user = '$email' AND A17_number = '$number'";
         $r2 = q_exec($q2);
         foreach (mysql_fetch_array($r2) as $key => $value) {
-            $list[$key] = $value;
+            $fk[$key] = $value;
         }
-        $q3 = "INSERT INTO userdata VALUES (NULL, '$name', '$surname', '$ci','$list[0]', '$list[1]')";
+        $q3 = "INSERT INTO userdata VALUES (NULL, '$name', '$surname', '$ci','$fk[0]', '$fk[1]')";
         $r3 = q_exec($q3);
 
         ?> <script type="text/javascript">

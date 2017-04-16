@@ -1,0 +1,101 @@
+* {
+    box-sizing: border-box;
+}
+.datos {
+    position: relative;
+    font-size: 11px;
+    top: 50px;
+}
+img {
+    position: absolute;
+    top: 2px;
+}
+
+#numero {
+    position: absolute;
+    top: 38px;
+    left: 320px;
+}
+#edificio {
+    position: absolute;
+    top: 100px;
+    left: 82px;
+
+}
+#nombre {
+    position: absolute;
+    top: 115px;
+    left: 100px;
+}
+
+#ci {
+    position: absolute;
+    top: 128px;
+    left: 50px;
+}
+
+#monto {
+    position: absolute;
+    top: 128px;
+    left: 338px;
+
+}
+
+#mes {
+    position: absolute;
+    top: 104px;
+    left: 330px;
+
+}
+#apartamento {
+    position: absolute;
+    top: 128px;
+    left: 170px;
+
+}
+
+#tabla {
+
+    position: absolute;
+    top: 183px;
+    left: 14px;
+    width: 390px;
+
+    line-height: 135%;
+
+}
+
+#tabla #porc {
+    text-align: right;
+        width: 82px;
+    margin-right: 0px;
+
+}
+
+#tabla #tot {
+    text-align: right;
+    width: 82px;
+    margin-right: 10px;
+}
+
+.bottom {
+    font-size: 12px;
+    text-align: right;
+    position: absolute;
+    top: 735px;
+}
+
+.bottom #estemes {
+    position: inherit;
+    left: 54px;
+}
+
+.bottom #deuda {
+    position: inherit;
+    left: 194px;
+}
+
+.bottom #total {
+    position: inherit;
+    left: 330px;
+}

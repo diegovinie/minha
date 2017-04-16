@@ -33,9 +33,8 @@
 		<li><a href="#">Cambio de Clave</a></li>
         <li><a href="/minha/login.php">Salir</a></li>
 	</ul>
+	<?php
+	echo "<div align='right' class='welcome'>Bienvenido, ".$_SESSION['name']."</div>";
+	?>
 </header>
 <main>
-<br/>
-<?php
-echo "<div align='right' class='welcome'>Bienvenido, ".$_SESSION['name']."</div>";
-?>

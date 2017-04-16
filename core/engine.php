@@ -1,60 +1,49 @@
 <?php
+//Se construyen los recibos
 require '../datos.php';
 require '../server.php';
 
 connect();
+//Periodo de ejemplo: abril
 $periodo = 4;
-$q = "SELECT * FROM lapses WHERE lap_id = '$periodo'";
-$rr = q_exec($q);
-
-$q1 = "SELECT bil_total, bil_notes, up_alias FROM bills, usual_providers WHERE bil_lapse_fk = 4 AND up_id = bil_type_fk";
-$r1 = q_exec($q1);
-
-$q2 = "SELECT A17_number, A17_weight FROM A17";
-$r2 = q_exec($q2);
-
-/*
-$i = 0;
-while($un1 = mysql_fetch_array($r1)){
-    foreach ($un1 as $key => $value) {
-        $list1[$i][$key] = $value;
-    }
-    $i++;
-}
-$i = 0;
-while($un2 = mysql_fetch_array($r2)){
-    foreach ($un2 as $key => $value) {
-        $list2[$i][$key] = $value;
-    }
-    $i++;
-}
-*/
-
-$lap = ArrayToJson($rr);
-$month = $lap[0]['lap_month'];
-$year = $lap[0]['lap_year'];
-$a = ArrayToJson($r1);
-$b = ArrayToJson($r2);
-
-$c = sizeof($b);
-
 $fac_number = 1000001;
 $user = 'Diego';
 
-$head = ['fecha' => '222-22-22', 'Usuario' => $user, 'Periodo' => $lap[0]['lap_name'], 'numero' => $fac_number];
+$q = "SELECT * FROM lapses WHERE lap_id = '$periodo'";
+$rlapse = q_exec($q);
+//Selecciona los gastos hechos en el periodo dado
+//modificado 4 por '$periodo'
+$q1 = "SELECT bil_total, bil_notes, up_alias FROM bills, usual_providers WHERE bil_lapse_fk = '$periodo' AND up_id = bil_type_fk";
+$r1 = q_exec($q1);
+//Selecciona los apartamentos y sus pesos ponderados
+$q2 = "SELECT A17_number, A17_weight FROM A17";
+$r2 = q_exec($q2);
 
-foreach ($b as $index => $array) {
-    foreach ($a as $index2 => $array2) {
-        $content[$array['A17_number']][$array2['up_alias']]['nombre'] = $array2['up_alias'];
-        $content[$array['A17_number']][$array2['up_alias']]['total'] = $array2['bil_total'];
-        $content[$array['A17_number']][$array2['up_alias']]['porcentaje'] = round($array2['bil_total'] * $array['A17_weight'] /100, 2);
+//Se extraen los datos de los resultados de las consultas
+$lap_ar = query_to_array($rlapse);
+$month = $lap_ar[0]['lap_month'];
+$year = $lap_ar[0]['lap_year'];
+$bills_ar = query_to_array($r1);
+$apts_ar = query_to_array($r2);
+
+//No se usa
+$cc = sizeof($apts_ar);
+
+//Se genera la cabecera
+$head = ['fecha' => '222-22-22', 'Usuario' => $user, 'Periodo' => $lap_ar[0]['lap_name'], 'numero' => $fac_number];
+//Se genera el contenido
+foreach ($apts_ar as $index => $apt_val) {
+    foreach ($bills_ar as $index2 => $bil_val) {
+        $content[$apt_val['A17_number']][$bil_val['up_alias']]['nombre'] = $bil_val['up_alias'];
+        $content[$apt_val['A17_number']][$bil_val['up_alias']]['porcentaje'] = round($bil_val['bil_total'] * $apt_val['A17_weight'] /100, 2);
+        $content[$apt_val['A17_number']][$bil_val['up_alias']]['total'] = $bil_val['bil_total'];
     }
 }
-
-$tabla = [$head, $content];
-
-$type_json = json_encode($tabla) or die(json_last_error_msg());
-
+//Se construye el array
+$table = [$head, $content];
+//Se pasa de array a json
+$type_json = json_encode($table) or die(json_last_error_msg());
+//Se crea el archivo y se guarda
 $file = fopen(ROOTDIR.'files/fact-'.$year.'-'.$month.'.json', 'w');
 fwrite($file, $type_json);
 fclose($file);

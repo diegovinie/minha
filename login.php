@@ -33,17 +33,19 @@ require 'header.php';
 require 'footer.php';
 extract($_POST);
 
+//Verifica si el formulario fue enviado
 if(isset($user) && isset($pwd)){
     require 'server.php';
-    $con = connect();
+    connect();
     $q = "SELECT user_user, user_pwd, user_type, user_active, udata_name FROM users, userdata WHERE user_user = '$user' AND user_pwd = '$pwd' AND udata_user_fk = user_id";
     $r = q_exec($q);
     $user_val = [];
-
+    //Verifica si el usuario existe en la base de datos
     if(mysql_num_rows($r) == 1){
         foreach (mysql_fetch_assoc($r) as $key => $value) {
             $user_val[$key] = $value;
         }
+        //Verifica si el usuario está activado
         if($user_val['user_active'] == 0){
             ?>
                 <script type="text/javascript">
@@ -52,12 +54,14 @@ if(isset($user) && isset($pwd)){
                 </script>
             <?php die;
         }
+        //Se establecen los parámetros de sesión
         session_start();
         $_SESSION['user'] = $user;
         $_SESSION['status'] = 'active';
         $_SESSION['name'] = $user_val['udata_name'];
         $_SESSION['val'] = $user_val['user_active'];
 
+        //Se define que tipo de usuario es
         switch ($user_val['user_type']) {
             case 1:
                 $_SESSION['type'] = 1;

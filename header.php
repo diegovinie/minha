@@ -13,5 +13,5 @@ require 'datos.php';
         <header>
             <div class="titulo">
                 <h1>Minha Administradora E.P.</h1>
-                <p>Hace que las cosas más fácil</p>
+                <h4>Hace que las cosas más fácil</h4>
             </div>
