@@ -26,7 +26,7 @@ require '../menu.php';
     ?></tr><?php
     while ($row = mysql_fetch_assoc($r)) {
         //Los botones para selecionar los usuarios a aceptar(1) o borrar(2)
-        ?><tr>
+        ?><tr class="row">
             <td align="center"><input type="radio" name="<?php echo $row['Correo']; ?>" value="1"></td>
             <td align="center"><input type="radio" name="<?php echo $row['Correo']; ?>" value="2"></td>
             <?php

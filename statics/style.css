@@ -9,8 +9,8 @@
 Verde: #5cb192;
 Naranja : #ff6a00;
 */
-@import url('https://fonts.googleapis.com/css?family=Play:700|Ropa+Sans');
-
+/*@import url('https://fonts.googleapis.com/css?family=Play:700|Ropa+Sans');
+*/
 
 body {
     background: #e8e9ec;
@@ -225,6 +225,14 @@ h2 {
     color: #5cb192;
     background-color: #000;
     font-weight: bold;
+}
+
+.dynTable .row {
+    cursor: pointer;
+}
+
+.dynTable .row:hover{
+    background: #ccccff;
 }
 
 .dynTable td {

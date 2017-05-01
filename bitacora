@@ -42,4 +42,12 @@
 - Se creó el archivo invoice.php donde se genera el recibo.
 - Se ajustaron los campos al recibo.
 
-
+* lun 1may:
+- se creo add_payment.php
+- se creó pending_payments.php
+- trigger, funciones sql
+- se crea bills.php con manipulación del DOM con javascript
+- ventana modal js css
+- balance.php con manipulación del DOM y llamadas ajax con promesas
+- trabajo asincrónico en bills.php
+- Se modificó engine.php para que trabaje por etapas recibiendo llamados asincrónicos

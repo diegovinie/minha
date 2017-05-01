@@ -26,7 +26,7 @@ for ($i = 0; $i < mysql_num_fields($r); $i++) {
 ?></tr><?php
 //Se construye el encabezado de la tabla
 while ($row = mysql_fetch_assoc($r)) {
-    ?><tr>
+    ?><tr class="row">
         <td align="center"><input type="checkbox" name="" value=""></td>
         <?php
     foreach ($row as $key => $value) {

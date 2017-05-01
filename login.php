@@ -37,7 +37,7 @@ extract($_POST);
 if(isset($user) && isset($pwd)){
     require 'server.php';
     connect();
-    $q = "SELECT user_user, user_pwd, user_type, user_active, udata_name FROM users, userdata WHERE user_user = '$user' AND user_pwd = '$pwd' AND udata_user_fk = user_id";
+    $q = "SELECT user_id, user_user, user_pwd, user_type, user_active, udata_name, udata_number_fk FROM users, userdata WHERE user_user = '$user' AND user_pwd = '$pwd' AND udata_user_fk = user_id";
     $r = q_exec($q);
     $user_val = [];
     //Verifica si el usuario existe en la base de datos
@@ -56,10 +56,12 @@ if(isset($user) && isset($pwd)){
         }
         //Se establecen los parámetros de sesión
         session_start();
+        $_SESSION['user_id'] = $user_val['user_id'];
         $_SESSION['user'] = $user;
         $_SESSION['status'] = 'active';
         $_SESSION['name'] = $user_val['udata_name'];
         $_SESSION['val'] = $user_val['user_active'];
+        $_SESSION['number_id'] = $user_val['udata_number_fk'];
 
         //Se define que tipo de usuario es
         switch ($user_val['user_type']) {

@@ -116,7 +116,7 @@ $rbkb = q_exec($qbkb);
     </table>
     <div class="button_box" align="center">
         <button type="submit" name="button" class="button_hot principal">Enviar</button>
-        <button type="button" name="button" class="button_hot secundary" onclick="history.go(-1)">Regresar</button>
+         <button type="button" name="back" class="button_hot secundary" onclick="history.go(-1)">Regresar</button>
     </div>
 </form>
 

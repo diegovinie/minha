@@ -11,6 +11,7 @@ function connect(){
 
 //Ejecuta una consulta
 function q_exec($query){
+//        $q = mysql_escape_string($query);
     $res = mysql_query($query) or die("No puede procesar la consulta: " . mysql_error());
     return $res;
 }
@@ -34,4 +35,13 @@ function query_to_array($qresult){
     return $raw;
 }
 
+function query_to_assoc($qresult){
+    $raw = array();
+    $i = 0;
+    while($row = mysql_fetch_assoc($qresult)){
+        $raw[$i] = $row;
+        $i++;
+    }
+    return $raw;
+}
 ?>

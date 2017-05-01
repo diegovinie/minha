@@ -1,8 +1,14 @@
 <?php
 require '../datos.php';
 
-$a = 0.22;
-$b = 'fff';
-echo gettype($b);
+echo ROOTDIR.'files/tmp/charges1000001.json';
+$file = fopen(ROOTDIR.'files/tmp/charges1000001.json', 'r+');
+gettype($file);
+echo '1';
+echo $f = fread($file, filesize($file));
+echo '2';
+print_r($f);
+echo "3";
+die;
 
  ?>
