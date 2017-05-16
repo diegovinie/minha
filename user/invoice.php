@@ -3,7 +3,7 @@
 //Construye tabla dinámica a partir de datos json
 session_start();
 require '../datos.php';
-require '../server.php';
+require ROOTDIR.'server.php';
 connect();
 ?>
 <!DOCTYPE html>
@@ -11,7 +11,7 @@ connect();
     <head>
         <meta charset="utf-8">
         <title>Minha Administradora</title>
-        <link href="../statics/style.css" type="text/css" media="all" rel="stylesheet" />
+        <link href="../css/style.css" type="text/css" media="all" rel="stylesheet" />
 
 
     </head>
@@ -45,9 +45,9 @@ if(isset($button)){
    echo "<br>";
    ?>
    <div id="imprimir">
-    <link rel="stylesheet" href="../statics/invoice.css">
+    <link rel="stylesheet" href="../css/invoice.css">
     <div class="datos">
-        <img src="../statics/recibo.png" alt="">
+        <img src="../static/recibo.png" alt="">
         <span id="numero">F0000101</span>
         <span id="edificio">AVELLANA MORADA</span>
         <span id="nombre"><?php echo $udata[0]['udata_name'].' '.$udata[0]['udata_surname']; ?></span>

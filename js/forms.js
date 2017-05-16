@@ -84,28 +84,55 @@ function numToSpa(amount, decimals) {
 
 //Buscar el tipo de proveedor y devolver su nombre y rif
 //no retorna resultado, sino que modifica el DOM
-function fun1(self){
+function select_prov(self){
     var a = self.value;
     //Tomo el json incrustado en el html y lo analizo
     var j = document.getElementById("proveedor").innerHTML;
     var k = JSON.parse(j);
-    //Reviso todo el json hasta encontrar donde se igualan los datos del
-    //parámetro, luego paso nombre y rif al DOM
-    for(var i = 0; i < k.length; i++){
-        if(k[i].up_id == a){
-            var ename = document.getElementById("name");
-            ename.value = k[i].up_name;
-            var erif = document.getElementById("rif");
-            erif.value = k[i].up_rif;
+    var ename = document.getElementById("name");
+    var erif = document.getElementById("rif");
+    var etype = document.getElementById("spe_type");
+    var op = 0;
+    if (a != 0){
+        //Reviso todo el json hasta encontrar donde se igualan los datos del
+        //parámetro, luego paso nombre y rif al DOM
+        for(var i = 0; i < k.length; i++){
+            if(k[i].up_id == a){
+                ename.value = k[i].up_name;
+                erif.value = k[i].up_rif;
+                etype.value = k[i].spe_name;
+                var op = k[i].up_op;
+            }
         }
+    }else{
+        ename.value = '';
+        erif.value =  '';
+        etype.value =  '';
     }
     //Si paso nombre y rif almacenados hago que los campos sean inmodificables
-    if(a != 1){
+    if(a != 0){
         ename.setAttribute('readonly', 'true');
         erif.setAttribute('readonly', 'true');
+
+        if(op != 2){
+            etype.setAttribute('readonly', 'true');
+        }else{
+            etype.removeAttribute('readonly');
+        }
     }else{
         ename.removeAttribute('readonly');
         erif.removeAttribute('readonly');
+        etype.removeAttribute('readonly');
+    }
+}
+
+function check_type(self){
+    self.value = self.value.toUpperCase();
+    var a = self.value;
+    var list = ['PERSONAL', 'MATERIALES', 'SERVICIOS', 'BIENES', 'LEGAL'];
+    if(list.indexOf(a) == -1){
+        ventana('Error de selección', 'debe elegir entre: ' + list);
+        self.value = '';
     }
 }
 

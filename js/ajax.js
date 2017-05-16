@@ -15,6 +15,18 @@ function objetoAjax(){
 	return xmlhttp;
 }
 
+function getAjax(h, id, second, third){
+    var ajax = objetoAjax();
+    ajax.open("GET", h + id);
+    ajax.onreadystatechange = function(){
+        if(ajax.readyState == 4){
+            ajax.status == 200? second(id, ajax.responseText, third)
+            : console.log('problemas de conexión: ' + id);
+        }
+    }
+    ajax.send(null)
+}
+
 function AjaxPromete(datos){
     return new Promise(function(resolve, error){
         var ajax = objetoAjax();
@@ -36,4 +48,28 @@ function addButtonUsers(self){
         AjaxPromete("/minha/core/query.php?fun=show_users&number=" + self).then(function(res){return showUl(res)}).then(function(res2){ventana('Usuarios Registrados', res2)})})
     button.innerHTML = 'Usuarios';
     document.getElementById('ovCont').appendChild(button);
+}
+
+function notification(response, msg, id, callback){
+    var cont = document.getElementById(id);
+    var alert = document.createElement('div');
+    response? alert.setAttribute('class', 'alert alert-success') : alert.setAttribute('class', 'alert alert-danger');
+    alert.innerHTML = msg;
+    cont.appendChild(alert);
+    setTimeout(function(){
+        alert.remove();
+        callback? callback() : false ;
+    }, 5000);
+
+}
+
+function activateOnCheck(self, id, id2){
+        var input = $('#'+id);
+        self.checked ? input.removeAttr('disabled') :
+        input.attr('disabled', true);
+        if(id2){
+          var input2 = $('#'+id2);
+          self.checked ? input2.removeAttr('disabled') :
+          input2.attr('disabled', true);
+        }
 }

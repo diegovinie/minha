@@ -1,10 +1,13 @@
 <?php
-require '../datos.php';
-require ROOTDIR.'/server.php';
+require_once '../datos.php';
+require_once ROOTDIR.'/server.php';
+require_once ROOTDIR.'/core/tables.php';
 connect();
 extract($_GET);
 
 print_r($fun($number));
+
+
 
 function show_apt($number){
     $q = "SELECT A17_number AS `Apto`, A17_balance AS `Deuda`, A17_assigned AS `Asignado?`, A17_occupied, sum(ifzero(pay_check)) AS `Pagos por chequear`, sum(iftwo(pay_check)) AS `Pagos devueltos` FROM A17, payments WHERE A17_id = '$number' AND pay_fk_number = '$number'";

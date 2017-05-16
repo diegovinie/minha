@@ -1,63 +1,91 @@
 <?php
 //Formulario con verificación de campos JS
+require 'datos.php';
 require 'header.php';
  ?>
 </header>
 <main>
-<script src="/minha/js/forms.js" charset="utf-8"></script>
 
 <div id="apart" hidden>
     <?php echo apartToString(); ?>
 </div>
- <h1 align="center">Registrarse</h1>
- <form class="" action="signup.php" method="post">
-     <table align="center">
-         <tr>
-             <td>Nombre:</td>
-             <td><input type="text" name="name" value="nombre" required onblur="capitalize(this);"></td>
-         </tr>
-         <tr>
-             <td>Apellido:</td>
-             <td><input type="text" name="surname" value="apellido" required onblur="capitalize(this);"></td>
-         </tr>
-         <tr>
-             <td>C.I.</td>
-             <td><input type="text" name="ci" value="v999999" required onblur="capitalize(this);"></td>
-         </tr>
-         <tr>
-             <td>Apartamento:</td>
-             <td><input type="text" name="number" value="01A" required onblur="check_number(this)"></td>
-         </tr>
-         <tr>
-             <td>Correo-e:</td>
-             <td><input type="email" name="email" value="un@correo" required onblur="lowercase(this);"></td>
-         </tr>
-         <tr>
-             <td>Clave:</td>
-             <td><input type="password" name="pwd" id="pwd" value="1234" required></td>
-         </tr>
-         <tr>
-             <td>Repita clave:</td>
-             <td><input type="password" name="rpwd" id="rpwd" value="1234" required onblur="val_pwd()"></td>
-         </tr>
-         <tr>
-             <td colspan="2" align="center">
-                 <div class="warning" id="pwd_e" style="display:none">
-                 las claves no coinciden
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+
+        </div>
+        <div class="col-lg-6">
+             <h1 align="center">Registrarse</h1>
+             <div class="panel panel-default">
+                 <div class="panel-heading">
+                     MMMMMM
                  </div>
-             </td>
+                 <div class="panel-body">
+                     <div class="row">
 
-         </tr>
-         <tr>
-             <td><input type="text" name="type" value="2" hidden></td>
-         </tr>
-     </table>
-     <div class="buttons1" align="center">
-         <button type="submit" name="button" id="submit" class="button_hot principal">Enviar</button>
-         <button type="button" name="button" onclick="window.location.href='login.php'" class="button_hot secundary">Regresar</button>
+                         <div class="col-lg-12">
+                             <form class="" role="form" action="signup.php" method="post">
+                                 <div class="form-group">
+                                     <table align="center">
+                                         <tr>
+                                             <td>Nombre:</td>
+                                             <td><input class="form-control" type="text" name="name" value="nombre" required onblur="capitalize(this);"></td>
+                                         </tr>
+                                         <tr>
+                                             <td>Apellido:</td>
+                                             <td><input class="form-control" type="text" name="surname" value="apellido" required onblur="capitalize(this);"></td>
+                                         </tr>
+                                         <tr>
+                                             <td>C.I.</td>
+                                             <td><input class="form-control" type="text" name="ci" value="v999999" required onblur="capitalize(this);"></td>
+                                         </tr>
+                                         <tr>
+                                             <td>Apartamento:</td>
+                                             <td><input class="form-control" type="text" name="number" value="01A" required onblur="check_number(this)"></td>
+                                         </tr>
+                                         <tr>
+                                             <td>Correo-e:</td>
+                                             <td><input class="form-control" type="email" name="email" value="un@correo" required onblur="lowercase(this);"></td>
+                                         </tr>
+                                         <tr>
+                                             <td>Clave:</td>
+                                             <td><input class="form-control" type="password" name="pwd" id="pwd" value="1234" required></td>
+                                         </tr>
+                                         <tr>
+                                             <td>Repita clave:</td>
+                                             <td><input class="form-control" type="password" name="rpwd" id="rpwd" value="1234" required onblur="val_pwd()"></td>
+                                         </tr>
+                                         <tr>
+                                             <td colspan="2" align="center">
+                                                 <div class="warning" id="pwd_e" style="display:none">
+                                                 las claves no coinciden
+                                                 </div>
+                                             </td>
+
+                                         </tr>
+                                         <tr>
+                                             <td><input type="text" name="type" value="2" hidden></td>
+                                         </tr>
+                                     </table>
+                                 </div>
+
+                                 <div class="buttons1" align="center">
+                                     <button type="submit" name="button" id="submit" class="button_hot principal">Enviar</button>
+                                     <button type="button" name="button" onclick="window.location.href='login.php'" class="button_hot secundary">Regresar</button>
+                                 </div>
+
+                             </form>
+                         </div>
+                     </div>
+
+
+
+                 </div>
+             </div>
+
+         </div>
      </div>
-
- </form>
+ </div>
 
  <?php
  extract($_POST);
@@ -96,5 +124,5 @@ require 'header.php';
      }
 
  }
- require 'footer.php';
+// require 'footer.php';
   ?>

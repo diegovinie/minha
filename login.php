@@ -1,36 +1,53 @@
 <?php
+require 'datos.php';
 session_start();
 session_unset();
 session_destroy();
 require 'header.php';
  ?>
  </header>
+
 <main>
-<h2 align="center">Ingresar</h2>
-<form class="" action="login.php" method="post">
-    <table align="center">
-        <tr>
-            <td>Usuario: </td>
-            <td><input type="text" name="user" value=""></td>
-        </tr>
-        <tr>
-            <td>Clave: </td>
-            <td><input type="password" name="pwd" value=""></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center"><button type="submit" name="button" class="button_hot principal">Enviar</button></td>
-        </tr>
-    </table>
-</form>
-<br/>
-<div class="" align="center">
-    <a href="signup.php">Registrarse</a>
-</div>
-<div class="" align="center">
-    <a href="#">Recuperar Clave</a>
-</div>
+ <div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ingresar</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="" role="form" action="login.php" method="post">
+                        <fieldset>
+
+
+                        <div class="form-group">
+                            <input class=form-control placeholder="E-mail" type="text" name="user" value="">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="clave" type="password" name="pwd" value="">
+
+                        </div>
+                        <div class="checkbox">
+                            <label for="">
+                                <input type="checkbox" name="remember" value="remember">Recordarme
+                            </label>
+                        </div>
+                        <button type="submit" name="button" class="btn btn-lg btn-success btn-block">Enviar</button>
+                        </fieldset>
+<!--button_hot principal-->
+                    </form>
+                </div>
+            </div>
+            <div class="panel">
+                <a href="signup.php">Registrarse</a>
+                <a href="#">Recuperar Clave</a>
+            </div>
+        </div>
+    </div>
+ </div>
+
 <?php
-require 'footer.php';
+//require 'footer.php';
 extract($_POST);
 
 //Verifica si el formulario fue enviado

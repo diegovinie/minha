@@ -1,98 +1,51 @@
 <?php
+require '../datos.php';
 session_start();
-require '../header.php';
-require '../menu.php';
-require '../server.php';
-connect();
-$q1 = "SELECT bil_id, bil_date, bil_desc, bil_rif, up_alias, lap_name, bil_amount, bil_iva, bil_total, bkb_name, bil_notes FROM bills, usual_providers, lapses, backup_bills WHERE up_id = bil_type_fk AND lap_id = bil_lapse_fk AND bkb_id = bil_bk_fk ORDER BY bil_id DESC";
-$r1 = q_exec($q1);
-//$r1_ar = query_to_array($r1);
-$q2 = "SELECT bil_id, bil_date AS 'fecha', up_alias, bil_total FROM bills, usual_providers WHERE up_id = bil_type_fk ORDER BY bil_id DESC";
-$r2 = q_exec($q2);
-
-//print_r($r1_ar);
-$col = ['bil_id', 'bil_date', 'up_alias', 'bil_amount'];
-
+require ROOTDIR.'header.php';
+require ROOTDIR.'menu.php';
  ?>
- <link rel="stylesheet" href="/minha/statics/modal.css">
- <script src="/minha/js/ajax.js" charset="utf-8"></script>
- <script src="/minha/js/modal.js" charset="utf-8"></script>
- <script src="/minha/js/unpacking_ajax.js" charset="utf-8"></script>
- <script src="/minha/js/buttons.js" charset="utf-8"></script>
- <script src="/minha/js/engine.js" charset="utf-8"></script>
-<script type="text/javascript">
-    window.onload = function(){
-        var see = ['bil_id', 'bil_date', 'up_alias', 'bil_amount'];
-        for(v in see){
-            var c = document.getElementsByClassName(see[v]);
-            for(i = 0; i < c.length; i++)
-                c.item(i).style.display = 'table-cell';
-        }
-    }
+ <script src="<?php echo PROJECT_HOST;?>js/bills.js" charset="utf-8"></script>
 
-    function info(a){
-        var lista = {
-        id :    a.getElementsByClassName('bil_id').item(0).innerHTML,
-        date :  a.getElementsByClassName('bil_date').item(0).innerHTML,
-        desc :  a.getElementsByClassName('bil_desc').item(0).innerHTML,
-        rif :   a.getElementsByClassName('bil_rif').item(0).innerHTML,
-        alias : a.getElementsByClassName('up_alias').item(0).innerHTML,
-        lapse : a.getElementsByClassName('lap_name').item(0).innerHTML
-        }
-        var b = "<ul align='left'>";
-        for (i in lista) {
-            b += "<li>" +i + ": " + lista[i] + "</li>\n";
-        }
-        b += "</ul>"
-        ventana("Información del Gasto", b);
-    }
-</script>
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Gastos</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default"  style="margin-bottom:80px;">
+                <div class="panel-heading">
+                    Gastos Realizados
+                </div>
+                <div class="panel-body" id="gastos">
+                    <!-- async data -->
+                </div>
+                <div class="panel-footer col-lg-12" style="text-align:right;">
+                    <button type="button" name="agregar_proveedor" class="btn btn-primary btn-lg">Agregar Gasto</button>
+                </div>
 
- <h2>Gastos</h2>
+            </div>
+            <div class="col-lg-12">
 
- <h3>Últimos gastos registrados</h3>
-
-<table class="dynTable" align="center">
-    <tr class="dynTableHeader">
-        <?php
-       for ($i = 0; $i < mysql_num_fields($r1); $i++) {
-           ?><td align="center" class=<?php echo mysql_field_name($r1, $i) ?> style="display:none"><?php echo mysql_field_name($r1, $i)?></td>
-           <?php
-       } ?>
-    </tr>
-        <?php
-            while($row = mysql_fetch_assoc($r1)){
-                ?><tr id=<?php echo $row['bil_id'] ?> class="row" onmouseover="this.style.color='gray'" onmouseout="this.style.color='black'" onclick="info(this)">
-                    <?php
-                foreach ($row as $key => $value) {
-                    ?><td class=<?php echo $key ?> style="display:none"><?php echo $value ; ?> </td>
-                    <?php
-                }
-                ?></tr>
-                <?php
-            }
-         ?>
-
-</table>
-
- <h3>Recibos generados</h3>
- <select class="" name="">
-
-
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default" style="margin-bottom:80px;">
+                <div class="panel-heading">
+                    Proveedores Registrados
+                </div>
+                <div class="panel-body" id="proveedores">
+                    <!-- async data -->
+                </div>
+                <div class="panel-footer col-lg-12" style="text-align:right;">
+                    <button type="button" name="agregar_proveedor" class="btn btn-primary btn-lg">Agregar Proveedor</button>
+                </div>
+            </div>
+        </div>
+    </div>
  <?php
- $files = array_diff(scandir(ROOTDIR.'/files'), array('..', '.'));
-
- print_r($files);
-
- foreach ($files as $key => $value) {
-     ?> <option value=""><?php echo $value ?></option> <?php
- }
-  ?>
- </select>
-<div class="">
-    <button type="submit" name="generar" onclick="makeWindow()">Generar Recibos</button>
-</div>
-
- <?php
-require '../footer.php';
+require ROOTDIR.'footer.php';
   ?>

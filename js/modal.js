@@ -33,3 +33,8 @@ function ventana(titulo, texto) {
     ov.appendChild(ovCont)
     return true
 }
+
+function hideModal(id){
+    var cont = document.getElementById(id);
+    cont.setAttribute('hidden', true);
+}

@@ -1,50 +1,53 @@
 <?php
+require '../datos.php';
 //Formulario con tabla dinámica
 //Estructuras de control para crear consultas
 session_start();
-require '../header.php';
-require '../menu.php';
+require ROOTDIR.'header.php';
+require ROOTDIR.'menu.php';
 ?>
-<h2 align="center">Usuarios Pendiente por Activación</h2>
-<form class="" action="pending_users.php" method="post">
-    <table class="dynTable" align="center">
-    <?php
-    require '../server.php';
-    connect();
-    //Se seleccionan los datos para construir la tabla de usuarios pendientes
-    $q = "SELECT udata_name AS 'Nombre',
-    		udata_surname AS 'Apellido',
-            udata_ci AS 'C.I.',
-            A17_number AS 'Apartamento',
-    		user_user AS 'Correo'
-        FROM users, userdata, A17 WHERE udata_user_fk = user_id AND udata_number_fk = A17_id AND user_active = 0";
-    $r = q_exec($q);
-    ?><tr class="dynTableHeader"> <td>Aceptar</td><td>rechazar</td> <?php
-    for ($i = 0; $i < mysql_num_fields($r); $i++) {
-        ?><td align="center"><?php echo mysql_field_name($r, $i) ?></td><?php
-    }
-    ?></tr><?php
-    while ($row = mysql_fetch_assoc($r)) {
-        //Los botones para selecionar los usuarios a aceptar(1) o borrar(2)
-        ?><tr class="row">
-            <td align="center"><input type="radio" name="<?php echo $row['Correo']; ?>" value="1"></td>
-            <td align="center"><input type="radio" name="<?php echo $row['Correo']; ?>" value="2"></td>
-            <?php
-            //se construyen las filas
-        foreach ($row as $key => $value) {
-            ?><td align="center"><?php echo $tr[$key] = $value; ?></td><?php
+<div id="page-wrapper">
+    <h2 align="center">Usuarios Pendiente por Activación</h2>
+    <form class="" action="pending_users.php" method="post">
+        <table width="100%" class="table table-striped table-bordered table-hover">
+        <?php
+        require ROOTDIR.'server.php';
+        connect();
+        //Se seleccionan los datos para construir la tabla de usuarios pendientes
+        $q = "SELECT udata_name AS 'Nombre',
+        		udata_surname AS 'Apellido',
+                udata_ci AS 'C.I.',
+                A17_number AS 'Apartamento',
+        		user_user AS 'Correo'
+            FROM users, userdata, A17 WHERE udata_user_fk = user_id AND udata_number_fk = A17_id AND user_active = 0";
+        $r = q_exec($q);
+        ?><tr class="dynTableHeader"> <td>Aceptar</td><td>rechazar</td> <?php
+        for ($i = 0; $i < mysql_num_fields($r); $i++) {
+            ?><td align="center"><?php echo mysql_field_name($r, $i) ?></td><?php
         }
         ?></tr><?php
-    }
+        while ($row = mysql_fetch_assoc($r)) {
+            //Los botones para selecionar los usuarios a aceptar(1) o borrar(2)
+            ?><tr>
+                <td align="center"><input type="radio" name="<?php echo $row['Correo']; ?>" value="1"></td>
+                <td align="center"><input type="radio" name="<?php echo $row['Correo']; ?>" value="2"></td>
+                <?php
+                //se construyen las filas
+            foreach ($row as $key => $value) {
+                ?><td align="center"><?php echo $tr[$key] = $value; ?></td><?php
+            }
+            ?></tr><?php
+        }
 
-     ?>
-    </table>
-    <div class="button_box" align="center">
-        <button type="submit" name="pending_user_button" value="none" class="button_hot principal">Enviar</button>
-        <button type="reset" class="button_hot">Deshacer</button>
-        <button type="button" class="button_hot secundary" onclick="history.go(-1)">Regresar</button>
-    </div>
-</form>
+         ?>
+        </table>
+        <div class="button_box" align="center">
+            <button type="submit" name="pending_user_button" value="none" class="button_hot principal">Enviar</button>
+            <button type="reset" class="button_hot">Deshacer</button>
+            <button type="button" class="button_hot secundary" onclick="history.go(-1)">Regresar</button>
+        </div>
+    </form>
+</div>
 <?php
 $session_user = $_SESSION['user'];
 //Se verifica si el formulario fue enviado
@@ -97,5 +100,5 @@ if(isset($_POST["pending_user_button"])){
     </script>
     <?php
 }
-require '../footer.php';
+require ROOTDIR.'footer.php';
  ?>

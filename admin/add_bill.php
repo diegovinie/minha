@@ -1,26 +1,26 @@
 <?php
 //Formulario con campos dinámicos
 //Verificación de campos con JS
-
+require '../datos.php';
 session_start();
-require '../header.php';
-require '../menu.php';
-require '../server.php';
+require ROOTDIR.'header.php';
+require ROOTDIR.'menu.php';
+require ROOTDIR.'server.php';
 connect();
+
  ?>
-<script src="/minha/js/forms.js" charset="utf-8"></script>
 <script type="text/javascript">
     window.onload = function(){
         var date;
         date = document.getElementById('date');
-        date.options[a.options.length - 1].setAttribute('selected', 'true');
+        date.options[date.options.length - 1].setAttribute('selected', 'true');
     }
 </script>
 
 <?php
 //Selecciona la lista de proveedores de la base de datos y la pega en el html
 //como un json
-$qprov = "SELECT up_id, up_alias, up_name, up_rif FROM usual_providers";
+$qprov = "SELECT up_id, up_alias, up_name, up_rif, spe_name, up_op FROM usual_providers, spendings_types WHERE spe_id = up_fk_type";
 $rprov = q_exec($qprov);
 $prov_ar = query_to_array($rprov);
 $prov_json = json_encode($prov_ar) or die(json_last_error_msg());
@@ -32,9 +32,6 @@ $rprov = q_exec($qprov);
 $qlapse = "SELECT lap_id, lap_name FROM lapses";
 $rlapse = q_exec($qlapse);
 
-//Selecciona el tipo de soporte para pegarlo en el html
-$qbkb = "SELECT bkb_id, bkb_name FROM backup_bills";
-$rbkb = q_exec($qbkb);
  ?>
 <h2 id="titulo" align="center">Añadir Gasto</h2>
 
@@ -45,9 +42,9 @@ $rbkb = q_exec($qbkb);
             <td><input type="date" name="date" value=""></td>
         </tr>
         <tr>
-            <td>Tipo de Gasto:</td>
-            <td><select class="" name="type" onchange="fun1(this)">
-                <option value="" default>Seleccione</option>
+            <td>Proveedor:</td>
+            <td><select class="" name="prov" onchange="select_prov(this)">
+                <option value="0" default>Otro</option>
                 <?php
                 while($a = mysql_fetch_array($rprov)){
                     ?>
@@ -69,6 +66,10 @@ $rbkb = q_exec($qbkb);
             <td><input type="text" name="rif" id="rif" value="" onblur="capitalize(this)"></td>
         </tr>
         <tr>
+        <tr>
+            <td>Tipo de Gasto:</td>
+            <td><input type="text" name="spe_type" id="spe_type" value="" onblur="check_type(this)"></td>
+        </tr>
             <td>Periodo: </td>
             <td><select class="" name="lapse" id='date'>
                 <?php
@@ -99,13 +100,10 @@ $rbkb = q_exec($qbkb);
         <tr>
             <td>Tipo de Soporte: </td>
             <td><select class="" name="bk">
-                <?php
-                while($a = mysql_fetch_array($rbkb)){
-                    ?>
-                    <option value=<?php echo $a[0]; ?>><?php echo $a[1]; ?></option>
-                    <?php
-                }
-                 ?>
+                <option value="COMPROBANTE">Comprobante</option>
+                <option value="FACTURA">Factura</option>
+                <option value="RECIBO">Recibo</option>
+                <option value="N/D" selected>Ninguno</option>
             </select></td>
         </tr>
         <tr>
@@ -142,5 +140,5 @@ if(isset($date) &&
     </script>
     <?php
 }
-require '../footer.php';
+require ROOTDIR.'footer.php';
   ?>
