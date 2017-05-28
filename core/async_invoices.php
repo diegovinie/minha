@@ -8,11 +8,11 @@ extract($_GET);
 switch ($arg) {
     case 'agregar_gastos':
         $q = "SELECT bil_id AS 'id', bil_date AS 'Fecha', bil_class AS 'Clase',
-        bil_method AS 'Tipo de Pago', formatEsp(bil_total) AS 'Monto' FROM bills ORDER BY bil_id DESC";
+        bil_desc AS 'Desc', bil_total AS 'Monto' FROM bills ORDER BY bil_id DESC";
         break;
     case 'fondos':
         $q = "SELECT fun_id AS 'id', fun_name AS 'Nombre', fun_balance AS 'Saldo', fun_type FROM funds WHERE fun_rel = 'A17' ";
-        $q2 = "SELECT fun_type, formatEsp(CONVERT(fun_default, SIGNED)) AS 'fun_default' FROM funds WHERE fun_rel = 'A17'";
+        $q2 = "SELECT fun_type, CONVERT(fun_default, SIGNED) AS 'fun_monto' FROM funds WHERE fun_rel = 'A17'";
         break;
 
     default:
@@ -66,7 +66,7 @@ function show_funds($q, $q2, $arg){
                         <?php
                         foreach ($row as $key => $value) {
                             ?>
-                            <td><?php echo $value; ?></td>
+                            <td data-type="<?php echo $key; ?>" data-value="<?php echo $value; ?>"><?php echo $value; ?></td>
                         <?php
                         }
                          ?>
@@ -84,7 +84,7 @@ function show_funds($q, $q2, $arg){
                             <input type="text" name="name_<?php echo $row['id']; ?>" value="<?php echo $row['Nombre']; ?>" id="name_<?php echo $row['id']; ?>" hidden disabled>
 
                         <label for="def_<?php echo $row['id']; ?>">Monto: </label>
-                        <input class="form-control" type="text" name="def_<?php echo $row['id']; ?>"  id="def_<?php echo $row['id']; ?>" value="<?php echo $r2_asc[$i]['fun_default']; ?>" disabled>
+                        <input class="form-control" type="text" name="def_<?php echo $row['id']; ?>"  id="def_<?php echo $row['id']; ?>" value="<?php echo number_format($r2_asc[$i]['fun_monto'], 2, ',', '.'); ?>" disabled>
                         <span><?php if($r2_asc[$i]['fun_type'] == 1) {echo '%';}else{echo 'Bs';}?></span>
                     </div>
                 </div>

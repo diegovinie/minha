@@ -15,12 +15,12 @@ function objetoAjax(){
 	return xmlhttp;
 }
 
-function getAjax(h, id, second, third){
+function getAjax(h, id, third, fourth){
     var ajax = objetoAjax();
     ajax.open("GET", h + id);
     ajax.onreadystatechange = function(){
         if(ajax.readyState == 4){
-            ajax.status == 200? second(id, ajax.responseText, third)
+            ajax.status == 200? third(id, ajax.responseText, fourth? fourth: false)
             : console.log('problemas de conexión: ' + id);
         }
     }
@@ -44,8 +44,9 @@ function AjaxPromete(datos){
 function addButtonUsers(self){
     var button = document.createElement('button');
     button.setAttribute('type', 'button');
+	button.setAttribute('class', 'btn btn-success btn-sm');
     button.addEventListener('click', function(){
-        AjaxPromete("/minha/core/query.php?fun=show_users&number=" + self).then(function(res){return showUl(res)}).then(function(res2){ventana('Usuarios Registrados', res2)})})
+        AjaxPromete("../core/query.php?fun=show_users&number=" + self).then(function(res){return showUl(res)}).then(function(res2){ventana('Usuarios Registrados', res2)})})
     button.innerHTML = 'Usuarios';
     document.getElementById('ovCont').appendChild(button);
 }

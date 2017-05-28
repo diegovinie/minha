@@ -11,7 +11,7 @@ require ROOTDIR.'menu.php';
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-6">
-                <h3>Añadir Usuario</h3>
+                <h2 class="page-header">Agregar Usuarios</h2>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Añadir Usuario
@@ -20,44 +20,58 @@ require ROOTDIR.'menu.php';
                         <form class="" action="add_user.php" method="post">
                             <div class="form-group">
                                 <label for="">Nombre:</label>
-                                <input class="form-control" type="text" name="name" value="nombre" onblur="capitalize(this)" required>
+                                <input class="form-control" type="text" name="name" placeholder="Nombre" value="" onblur="check_names(this)" required>
+                                <div class="">
+
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Apellido:</label>
-                                <input class="form-control" type="text" name="surname" value="apellido" onblur="capitalize(this)" required>
+                                <input class="form-control" type="text" name="surname" value="" onblur="check_names(this)" placeholder="Apellido" required>
+                                <div class="">
+
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-8">
                                     <div class="form-group">
                                         <label for="">Cédula de Identidad:</label>
-                                        <input class="form-control" type="text" name="ci" value="v999999" onblur="capitalize(this)" required>
-                                        <span class="help-block">Formato: V00000000</span>
+                                        <input class="form-control" type="text" placeholder="V12345678" name="ci" value="" onblur="check_ci(this)" required>
+                                        <div class="">
+
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label for="">Apartamento:</label>
-                                        <input class="form-control" type="text" name="number" value="1A" onblur="check_number(this)" required>
+                                        <input class="form-control" type="text" name="number" value="" onblur="check_number(this)" required>
+                                        <div class="">
+
+                                        </div>
                                     </div>
                                 </div>
-
-
-
                             </div>
-
                             <div class="form-group">
                                 <label for="">Correo-e:</label>
-                                <input class="form-control" type="email" name="email" value="pun@correo" onblur="lowercase(this)" required>
+                                <input class="form-control" type="email" name="email" placeholder="correo@electron.ico" value="" onblur="check_user(this, false)" required>
+                                <div class="">
+
+                                </div>
+                                <span class="help-block">Este será el nombre de usuario</span>
                             </div>
                             <div class="form-group">
                                 <label>Clave:</label>
-                                <input class="form-control" type="password" name="pwd" id='pwd' value="1234" required>
+                                <input class="form-control" placeholder="Al menos 6 caracteres" type="password" name="pwd" id='pwd' value="" onblur="check_pwd(this)" required>
+                                <div class="">
+
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Repita clave:</label>
-                                <input class="form-control" type="password" name="rpwd" id='rpwd' value="1234" required onblur="val_pwd()">
-                                <div class="warning" id="pwd_e" style="display:none">
-                                las claves no coinciden
+                                <input class="form-control" type="password" name="rpwd"  placeholder="Al menos 6 caracteres" id='rpwd' value="" required onblur="check_pwdretry(this)">
+                                <div class="">
+
                                 </div>
                             </div>
                             <div class="form-group">
@@ -69,8 +83,8 @@ require ROOTDIR.'menu.php';
                                 </select>
                             </div>
                             <div class="button_box" align="center">
-                                <button type="submit" id='submit' name="button" class="btn btn-default" >Enviar</button>
-                                <button type="button" name="button" class="btn btn-default" onclick="window.location.href='main.php'">Regresar</button>
+                                <button type="submit" id='submit' name="button" class="btn btn-success" >Enviar</button>
+                                <button type="button" name="button" class="btn btn-danger" onclick="window.location.href='main.php'">Regresar</button>
                             </div>
                         </form>
                     </div>
@@ -89,6 +103,8 @@ require ROOTDIR.'menu.php';
 
 
 <?php
+require ROOTDIR.'footer.php';
+
 extract($_POST);
 $session_user = $_SESSION['user'];
 //Se verifica que el formulario haya sido enviado
@@ -123,5 +139,5 @@ if( isset($name) &&      isset($surname) &&
         </script> <?php
     }
 }
-require ROOTDIR.'footer.php';
+
  ?>

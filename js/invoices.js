@@ -1,15 +1,18 @@
 window.onload = function(){
-   var host = "/minha/core/async_invoices.php?fun=show_funds&arg=";
+   var host = "../core/async_invoices.php?fun=show_funds&arg=";
    var id = "fondos";
    getDataAjax(host, id, function(res){
        var container = document.getElementById("accordion");
        var divRes = document.createElement('div');
        divRes.innerHTML = res;
+       $(divRes).find('td').each(function(n, td){
+           dataParser(td);
+       })
        while(divRes.firstChild) {
            container.appendChild(divRes.firstChild);
        }
    });
-   var host2 = "/minha/core/async_invoices.php?fun=show_bills&arg=";
+   var host2 = "../core/async_invoices.php?fun=show_bills&arg=";
    var id2 = "agregar_gastos";
    getDataAjax(host2, id2, function(res2){
        var container = document.getElementById(id2);

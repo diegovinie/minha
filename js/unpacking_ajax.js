@@ -9,9 +9,9 @@ function showUl(json){
         var j = "";
         for (var col in data[i]) {
             if (data[i].hasOwnProperty(col)) {
-                j += '<li id=' + escape(col) +' value=' + data[i][col] + '>' + col + " es: " + data[i][col] + " </li>\n";
+                j += '<li class="list-group-item" id=' + escape(col) +' value=' + data[i][col] + '>' + col + ": " + data[i][col] + " </li>\n";
             }
-            var user = "<ul>" + j + "</ul>"
+            var user = "<ul 'class=list-group'>" + j + "</ul>"
         }
         list += user;
     }

@@ -1,30 +1,40 @@
+
 function seeInvoice(self){
-    var cont = document.getElementById('example');
-    cont.removeAttribute('hidden');
+    var lapse = self.dataset.lapse;
+    open('../core/pdf_invoice.php?lapse='+lapse);
 }
 
 function saveInvoices(id){
    var cont = document.getElementById(id);
-   var name = 'FAC-' + cont.dataset.value;
-   console.log(name);
-   var data = cont.innerHTML;
-
-   var invoices = JSON.parse(cont.innerHTML);
-   console.log(invoices);
+   var name = cont.dataset.value;
    $.ajax({
-       type: "POST",
-       url: "/minha/core/test.php",
-       dataType: "text",
-       data: {name, data},
+       type: "GET",
+       url: HOSTNAME + 'core/engine.php?fun=save_fact&number=' + name,
+       dataType: 'text',
        success: function (msg) {
            if (msg) {
-               notification(true, msg, 'result', function(){
-           //        window.history(-1);
-                   console.log('echa pa atras');
-               })
+              notification(true, msg, 'result', function(){
+                  window.location.href = HOSTNAME + 'main.php';
+              })
            } else {
                notification(false, "Ocurrió un error guardando", 'result');
            }
        },
    });
+}
+
+function discard(id){
+    var cont = document.getElementById(id);
+    var name = cont.dataset.value;
+    $.ajax({
+        type: "GET",
+        url: HOSTNAME + 'core/engine.php?fun=discard&number=' + name,
+        dataType: "text",
+        success: function(msg){
+            notification(false, msg, 'result', function(){
+                window.location.href = HOSTNAME + 'main.php';
+                console.log('echa pa atras');
+            })
+        }
+    })
 }

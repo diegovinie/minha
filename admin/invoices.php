@@ -3,6 +3,23 @@ require '../datos.php';
 session_start();
 require ROOTDIR.'header.php';
 require ROOTDIR.'menu.php';
+include ROOTDIR.'server.php';
+connect();
+$q = "SELECT lap_id, lap_name FROM lapses ORDER BY lap_id DESC";
+$r = q_exec($q);
+$lapses = query_to_assoc($r);
+
+$dir = ROOTDIR.'files';
+$gestor_dir = opendir($dir);
+while(false !== ($nombre_fichero = readdir($gestor_dir))){
+    if($nombre_fichero != '.' && $nombre_fichero != '..'){
+        $a = substr($nombre_fichero, 0, strrpos($nombre_fichero, "."));
+        $b = substr($a, 4, strlen($a));
+        $month = substr($b, -2, strlen($b));
+        $year = substr($b, 0, 4);
+        $ficheros[$month.'/'.$year] = $b;
+    }
+}
  ?>
 <script src="<?php echo PROJECT_HOST;?>js/invoices.js" charset="utf-8"></script>
 
@@ -12,51 +29,54 @@ require ROOTDIR.'menu.php';
             <h2 class="page-header">Recibos</h2>
         </div>
     </div>
-    <div class="row">
+    <!--<div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3>Ver Recibos</h3>
+                    <h3>Ver y Comparar Recibos</h3>
                 </div>
                 <div class="panel-body">
                     <div class="col-md-6">
                         <div class="col-md-6" style="margin-bottom:10px;">
-                            <label for="">Año:</label>
+                            <label for="">Elegir:</label>
                             <select class="form-control" name="">
-                                <option value="">Primera</option>
-                                <option value="">Segunda</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6" style="margin-bottom:10px;">
-                            <label for="">Mes:</label>
-                            <select class="form-control" name="">
-                                <option value="">Primera</option>
-                                <option value="">Segunda</option>
+                                <?php
+                                foreach ($ficheros as $key => $value) {
+                                    ?>
+                                <option value="<?php echo $value; ?>"><?php echo $key; ?></option>
+                                <?php
+                                }
+                                 ?>
                             </select>
                         </div>
                         <button type="button" name="button" class="btn btn-primary btn-block" >Mostrar</button>
+                        <div class="" id="header">
+
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="col-md-6" style="margin-bottom:10px;">
-                            <label for="">Año:</label>
+                            <label for="">Elegir:</label>
                             <select class="form-control" name="">
-                                <option value="">Primera</option>
-                                <option value="">Segunda</option>
+                                <?php
+                                foreach ($ficheros as $key => $value) {
+                                    ?>
+                                <option value="<?php echo $value; ?>"><?php echo $key; ?></option>
+                                <?php
+                                }
+                                 ?>
                             </select>
                         </div>
-                        <div class="col-md-6" style="margin-bottom:10px;">
-                            <label for="">Mes:</label>
-                            <select class="form-control" name="">
-                                <option value="">Primera</option>
-                                <option value="">Segunda</option>
-                            </select>
+
+                        <button type="button" name="button" class="btn btn-primary btn-block" onclick="displayInvoice(this)" >Mostrar</button>
+                        <div class="" id="summary">
+
                         </div>
-                        <button type="button" name="button" class="btn btn-primary btn-block" >Mostrar</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="row">
         <div class="col-md-12">
             <form class="" action="<?php echo PROJECT_HOST;?>admin/make_invoices.php" method="get">
@@ -69,7 +89,16 @@ require ROOTDIR.'menu.php';
                         <div class="panel-group" id="accordion">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h4 class="panel-title">Periodo: <span><input type="text" name="lapse" value="3" hidden>Marzo</span></h4>
+                                    <h4 class="panel-title">Periodo:</h4>
+                                    <select class="form-control" name="lapse">
+                                        <?php
+                                        foreach ($lapses as $key => $value) {
+                                            ?>
+                                            <option value="<?php echo $value['lap_id']; ?>"><?php echo $value['lap_name']; ?></option>
+                                            <?php
+                                        }
+                                          ?>
+                                    </select>
                                 </div>
                             </div>
                             <div class="panel panel-primary">

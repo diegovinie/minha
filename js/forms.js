@@ -1,11 +1,12 @@
-function uppercase(self){
+function uppercase(self, callback){
     var y;
     self.value = self.value.toUpperCase();
+    callback? callback : false;
 }
 
 //Recibe una cadena de varias palabras y devuelve la primera letra
 //en mayúscula. No retorna resultado, sino actua sobre el parámetro
-function capitalize(self){
+function capitalize(self, callback){
     //Crea un array con elementos que fueron separados por espacio
     var a = self.value.toLowerCase();
     var b = a.trim().split(" ");
@@ -23,6 +24,7 @@ function capitalize(self){
         d[i] = b[i].replace(c, c.toUpperCase());
     }
     self.value = d.join(" ");
+    if (callback) { callback(); }
 }
 
 function lowercase(self){
@@ -30,10 +32,15 @@ function lowercase(self){
 }
 
 //Validar la clave. No retorna resultado, sino que actúa sobre el DOM
-function val_pwd(){
-    var pass1 = document.getElementById("pwd").value;
-    var pass2 = document.getElementById("rpwd").value;
-    document.getElementById("pwd_e").style.display = (pass1 == pass2) ? 'none' : 'block';
+function check_pwd(input){
+    input.value.length < 6 ? errorLine(input, 'demasiado corto') : false;
+}
+
+function check_pwdretry(input){
+    var pass1 = document.getElementById("pwd").value,
+        pass2 = input.value;
+    pass1 != pass2 ?
+        errorLine(input, 'las claves no coinciden') : false;
 }
 
 
@@ -57,6 +64,21 @@ var formatNumber = {
  }
 }
 
+function checkNumEsp(input){
+    var num = input.value = input.value.replace(/[^0-9\,]/g, '');
+    var sep = num.split(',');
+    if(sep.length == 1){
+        input.value = num + ',00';
+    }else if(sep.length == 2){
+        if(sep[1].length == 1){
+            input.value = num + '0';
+        }else{
+            input.value = sep[0] +',' +sep[1].substring(0,2);
+        }
+    }else{
+        errorLine(input, 'error en número');
+    }
+}
 //Retornar un número con formato español y una cantidad de decimales
 function numToSpa(amount, decimals) {
     // por si pasan un numero en vez de un string
@@ -153,7 +175,10 @@ function setIvaTotal(){
 
 //Mostrar u ocultar el botón de enviar. Parámetro booleano
 function show_submit(self){
-    document.getElementById('submit').style.display = self == 'true'? 'inline' : 'none';
+    var button = document.getElementById('submit');
+    self == true? button.removeAttribute('disabled')
+                : button.setAttribute('disabled', 'true');
+    //document.getElementById('submit').style.display = self == 'true'? 'inline' : 'none';
 }
 
 //Revisar si el apartamento está en la lista incrustada en el html
@@ -163,9 +188,68 @@ function check_number(self){
     var a = document.getElementById('apart').innerHTML;
     //Busca si el apartamento está indexado en la lista, si no es (-1)
     if(a.indexOf(self.value) == -1){
-        alert('No existe');
-        show_submit('false');
-    }else{
-        show_submit('true');
+        errorLine(self, 'No existe');
     }
 }
+
+function errorLine(input, msg){
+    var e = document.createElement('div');
+    e.innerHTML = msg;
+    $(e).css('color', 'red');
+    input.nextElementSibling.appendChild(e);
+    setTimeout(function(){
+        e.remove();
+        input.value = '';
+    }, 1500);
+}
+
+function check_names(input){
+    capitalize(input, function(){
+        inn = input;
+        if (input.value.length > 30)
+            { errorLine(input, 'muy largo')}
+        else if (input.value.split(' ').length > 2)
+            {errorLine(input, 'máximo dos')}
+    })
+}
+
+function check_user(input, cond){
+    var msg = cond? 'usuario no existe' : 'usuario ya registrado';
+    var user = input.value = input.value.toLowerCase();
+        h = HOSTNAME + 'core/query.php?fun=checkmail&number=';
+    getAjax(h, user, function(x, t){
+        if(t == !cond){ errorLine(input, msg)};
+    })
+}
+
+function check_ci(input){
+    var ci = input.value = input.value.toUpperCase().replace(/\./g, '').replace(/-/g, '').replace(/ /, '');
+    var n = ci.slice(1),
+        x = ci.slice(0, 1);
+    if(ci.indexOf('-') != -1 ||ci.indexOf('-') != -1 ||
+        n.length <= 5 || n.length > 8 || !parseFloat(n) ||
+        ['V', 'E'].indexOf(x) == -1 ){
+        errorLine(input, 'Error en C.I.');
+    }
+}
+
+function check_date(input){
+    var date = input.value.split('-');
+    console.log(date);
+    if( !(date.length == 3) ||
+    !(0 < date[2] <= 31) ||
+    !(0 < date[1] <= 1) ||
+    !(1990 <date[0] <= 2040)){
+        errorLine(input, "error en fecha");
+
+    }
+}
+
+$.ajax({
+    url:'hostname',
+    type:'get',
+    dataType:'text',
+    success: function(response){
+        HOSTNAME = response;
+    }
+});

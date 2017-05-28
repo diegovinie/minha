@@ -9,6 +9,15 @@ print_r($fun($number));
 
 
 
+
+function balance($number){
+    $q = "SELECT A17_number, A17_balance FROM A17 WHERE A17_id = $number";
+    $r = q_exec($q);
+    $r_a = query_to_assoc($r);
+    $r_j = json_encode($r_a);
+    return $r_j;
+}
+
 function show_apt($number){
     $q = "SELECT A17_number AS `Apto`, A17_balance AS `Deuda`, A17_assigned AS `Asignado?`, A17_occupied, sum(ifzero(pay_check)) AS `Pagos por chequear`, sum(iftwo(pay_check)) AS `Pagos devueltos` FROM A17, payments WHERE A17_id = '$number' AND pay_fk_number = '$number'";
     $r = q_exec($q);
@@ -32,4 +41,11 @@ function sel_lapse($vacio){
     $r_ar = query_to_assoc($r);
     $r_j = json_encode($r_ar);
     return $r_j;
+}
+
+function checkmail($number){
+    $q = "SELECT user_id FROM users WHERE user_user = '$number'";
+    $r = q_exec($q);
+    $r_a = query_to_array($r);
+    return sizeof($r_a);
 }

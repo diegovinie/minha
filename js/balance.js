@@ -8,28 +8,52 @@ window.onload = function(){
     for(var i = vis; i < rows.length; i++ ){
         rows.item(i).style.display = 'none';
     }
-    var host = "/minha/core/async_balance.php?fun=aQuery&arg=";
-    var lista_id = ["balance_apartamentos", "cuentas"];
-        lista_id.forEach(function(id){
+    var host = "../core/async_balance.php?fun=aQuery&arg=";
+    var lista_id = ["balance_apartamentos", "cuentas", "fondos"];
+    lista_id.forEach(function(id){
         getDataAjax(host, id, function(res){
             setTable(id, res, function(){
                 tablePager(id, function(){
                     $('#'+id).find('tbody').children().each(function(){
-                        $(this).attr('onclick', 'showApt(this)')
+                        $(this).attr('onclick', 'showApt(this)');
                     })
                 })
             })
         })
     })
+    var lista2 = ["corriente", "total_fondos"];
+    lista2.forEach(function(id){
+        getDataAjax(host, id, function(res){
+            $('#'+id).html(res);
+            document.getElementById(id).dataset.value = res;
+            setTimeout(function(){
+                dataParser(document.getElementById(id));
+            }, 500)
+
+        })
+    })
+
+    setTimeout(function(){
+        var dis = document.getElementById('disponibilidad'),
+            corr = document.getElementById('corriente').dataset.value,
+            funds = document.getElementById('total_fondos').dataset.value;
+        sum = parseFloat(corr) + parseFloat(funds);
+        dis.dataset.value = sum;
+        dis.innerHTML = sum;
+        dataParser(dis);
+    }, 2000)
+
 }
 
 function showApt(self){
-        var url = "/minha/core/query.php";
-        var arg = "?fun=show_apt&number=";
-        var td = self.children.namedItem('Apartamento')
-        var n = td.getAttribute('value')
-        AjaxPromete("/minha/core/query.php?fun=show_apt&number=" + n)
-            .then(function(res2){return showUl(res2)})
-            .then(function(res3){ventana('Información Apartamento', res3)})
-            .then(function(res4){addButtonUsers(n)})
+    var n = self.children.namedItem('id').dataset.value;
+    var id = "apartamento";
+    AjaxPromete("../core/async_balance.php?fun=aQueryTbody&arg=" + id +"&id=" + n)
+        .then(function(res2){ventana('Información:', res2) })
+        .then(function(){ trasTable(id) })
+        .then(function(res4){addButtonUsers(n)})
+        .then(function(res5){
+            $('#t_' +id +' tbody td').each(
+            function(pos, td){dataParser(td); })
+        })
 }

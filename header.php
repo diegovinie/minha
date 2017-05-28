@@ -10,6 +10,8 @@ require_once 'datos.php';
         <meta name="description" content="">
         <meta name="author" content="">
 
+        <link rel="icon" type="image/png" href="<?php echo PROJECT_HOST;?>static/favicon.png" />
+
         <link rel="stylesheet" href="<?php echo PROJECT_HOST;?>css/modal.css">
 
         <!-- Bootstrap Core CSS -->
@@ -35,7 +37,7 @@ require_once 'datos.php';
         <![endif]-->
         <script src="<?php echo PROJECT_HOST.TEMPLATE;?>vendor/jquery/jquery.min.js"></script>
 
-        <title>Minha Administradora</title>
+        <title><?php echo NAME; ?></title>
     </head>
     <body>
         <div id="wrapper">

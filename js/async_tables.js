@@ -2,7 +2,9 @@ function tablePager(id, callback){
     var cantidad = 10;
     var page = 1;
     var num = 0;
-    var rows = $('#t_' + id).find('tbody').children();
+    var t = $('#t_' + id)? $('#t_' + id) : $('#' + id);
+    //var rows = $('#t_' + id).find('tbody').children();
+    var rows = t.find('tbody').children();
     rows.each(function(x){
         num = Math.trunc(x++/10) + 1;
         $(this).attr('pag', num)
@@ -63,7 +65,8 @@ function tablePager(id, callback){
         checkButtons()
     }
     callback? tableSetPage(0, callback(id)) : tableSetPage(0);
-    buttonsPrevNext(id)
+    buttonsPrevNext(id);
+    tdChecker(id);
 }
 
 function setTable(id, content, callback){
@@ -100,6 +103,11 @@ function trasTable(id){
     z.each(function(r, v){
         v.style.display = 'block';
     })
+    var suma = 0;
+    $('#t_'+id + ' tr').each(function(x){
+        suma += parseFloat($(this).css('width'))
+    })
+    $('#ovCont')? $('#ovCont').css('width', suma + 70) : false;
 }
 
 function markSuccess(self){
@@ -110,4 +118,78 @@ function markSuccess(self){
 function resetAlerts(self){
     panel = $(self).parent().parent();
     panel.find('tr').removeAttr('class');
+}
+
+function tdChecker(id){
+    var group = ($('#t_'+id +' td')?
+    $('#t_'+id +' td') : $('#'+id));
+    group.each(function(x, td){
+        dataParser(td);
+    })
+}
+
+function dataParser(tag){
+    var money = ['monto', 'iva', 'total', 'deuda', 'balance', 'saldo', 'cuota'];
+    var date = ['fecha', 'date'];
+    var rif = ['rif','/ci', 'c.i'];
+    money.forEach(function(x){
+        var needle = new RegExp(x, 'i');
+        if (needle.test(tag.dataset.type)){
+            tag.innerHTML = parseFloat(tag.dataset.value)
+                .toLocaleString(undefined, { minimumFractionDigits: 2 });
+            tag.style.textAlign = 'right';
+        }
+    });
+    date.forEach(function(x){
+        var needle = new RegExp(x, 'i');
+        if(needle.test(tag.dataset.type)){
+            var date = new Date(tag.dataset.value);
+            tag.innerHTML = date.toLocaleString('es-ES',
+            {year: 'numeric', month: 'numeric', day: 'numeric'});
+        }
+    });
+    rif.forEach(function(x){
+        var needle = new RegExp(x, 'i');
+        if(needle.test(tag.dataset.type)){
+            var v = tag.dataset.value;
+            tag.innerHTML = v.slice(0,1) + '-'
+            + v.slice(1,8)
+            + (v.length == 10? '-' + v.slice(9) : '');
+            tag.style.textAlign = 'left';
+
+        }
+    })
+}
+
+function addRadioToTable(tr, id){
+    var trh = tr.parentElement.previousElementSibling.children[0],
+        tdy = document.createElement('td'),
+        tdn = document.createElement('td'),
+        inputy = document.createElement('input'),
+        inputn = document.createElement('input'),
+        name;
+    if($(trh).attr('id') != 'done'){
+        var thy = document.createElement('th'),
+            thn = document.createElement('th');
+        $(trh).attr('id', 'done');
+        thy.innerHTML = 'Aceptar';
+        thn.innerHTML = 'Rechazar';
+        trh.insertBefore(thn, trh.children[0]);
+        trh.insertBefore(thy, trh.children[0]);
+    }
+    $(tr).children().each(function(n, td){
+        td.dataset.type == id? name = td.dataset.value : false;
+    })
+    $(inputy).attr({'type': 'radio',
+                    'name': name,
+                    'value': 1,
+                    'onclick':  "radioYes(this)"});
+    $(inputn).attr({'type': 'radio',
+                    'name': name,
+                    'value': 2,
+                    'onclick': "radioNo(this)"});
+    tdy.appendChild(inputy);
+    tdn.appendChild(inputn);
+    tr.insertBefore(tdn, tr.children[0]);
+    tr.insertBefore(tdy, tr.children[0]);
 }

@@ -1,12 +1,30 @@
 window.onload = function(){
-    var host = "/minha/core/async_payments.php?fun=aQuery&arg=";
-    var aQueryTablaPrin = "/minha/core/async_payments.php?fun=aQueryTablaPrin&arg=";
-    getAjax(host, 'mes_actual', setTablaMes)
-    getAjax(host, 'mes_anterior', setTablaMes)
-    getAjax(host, 'ultimos_tres', setTablaMes)
+    var host = "../core/async_payments.php?fun=aQuery&arg=";
+    var aQueryTablaPrin = "../core/async_payments.php?fun=aQueryTablaPrin&arg=";
+    getAjax(host, 'mes_actual', setTablaMes, tdChecker)
+    getAjax(host, 'mes_anterior', setTablaMes, tdChecker)
+    getAjax(host, 'ultimos_tres', setTablaMes, tdChecker)
     getAjax(host, 'pagos_rechazados', setTablaMes,  tablePager)
     getAjax(host, 'pagos_aprobados', setTablaMes,  tablePager)
     getAjax(aQueryTablaPrin, 'pagos_pendientes', setTablaMes, tablePager)
+
+    setTimeout(function(){
+        var id = 'pagos_pendientes';
+        var tag = 'Apartamento';
+        $('#t_'+id+' tbody')? setTag(id, tag) : setTimeout(function(){
+            setTag(id, tag);
+        }, 2000)
+    }, 200)
+}
+function setTag(id, tag){
+    var rows = $('#t_'+id + ' tbody').find('tr');
+    rows.each(function(x,tr){
+        var tds = $(tr).children();
+        $(tds).each(function(j,td){
+            $(td).data('type') == tag?
+                tr.dataset.tag = $(td).data('value') : false;
+        })
+    })
 }
 
 function setTablaMes(id, res, callback){
@@ -19,7 +37,7 @@ function explain(self){
     var row = self.parentElement.parentElement;
     var n = self.getAttribute('name')
     var prev = document.getElementById('note_' + n)
-    ventana('Nota para ' + row.getAttribute('tag'), '');
+    ventana('Nota para ' + row.dataset.tag, '');
 
     var msj = document.createElement('div');
     var text = document.createElement('textarea');

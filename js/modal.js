@@ -9,9 +9,10 @@ function ventana(titulo, texto) {
     }
     var ovCont = document.createElement('div'),
         tit = document.createElement('h3'),
-        cont = document.createElement('span'),
+        cont = document.createElement('div'),
         but = document.createElement('a');
 
+    
     but.addEventListener("click", function(){
         ov.remove()
     } )
@@ -20,6 +21,7 @@ function ventana(titulo, texto) {
     })
 
     ovCont.setAttribute('class', 'overlay-content')
+
     ovCont.setAttribute('id', 'ovCont')
     but.setAttribute('class', 'but')
     but.innerHTML = 'X'

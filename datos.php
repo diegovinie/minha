@@ -4,8 +4,9 @@ $db_host = 'localhost';
 $db_user = 'root';
 $db_pwd = 'altura';
 $db_name = 'bd_minha';
-$name = 'minha';
+$alias = 'minha';
 $template = 'startbootstrap-sb-admin-2-gh-pages';
+$name = 'Minha Administradora';
 
 // Datos para conectarse a la base de datos:
 define('DB_HOST', $db_host);
@@ -14,17 +15,20 @@ define('DB_PWD', $db_pwd);
 define('DB_NAME', $db_name);
 
 // Nombre del proyecto
+define('NAME', $name);
+
+// en caso de estar en subcarpeta
 if(dirname(__FILE__) == $_SERVER['DOCUMENT_ROOT']){
-    define('NAME', '');
+    define('ALIAS', '');
 }else{
-    define('NAME', $name.'/');
+    define('ALIAS', $alias.'/');
 }
 
 // Directorio raíz para la navegación de PHP:
-define('ROOTDIR', $_SERVER['DOCUMENT_ROOT'].'/'.NAME);
+define('ROOTDIR', $_SERVER['DOCUMENT_ROOT'].'/'.ALIAS);
 
 // Directorio raíz referenciada http
-define('PROJECT_HOST', '//'.$_SERVER['HTTP_HOST'].'/'.NAME);
+define('PROJECT_HOST', '//'.$_SERVER['HTTP_HOST'].'/'.ALIAS);
 
 define('TEMPLATE', 'vendor/'.$template.'/');
 
@@ -32,6 +36,11 @@ setlocale(LC_TIME, 'es_VE.UTF-8');
 
 // Constante del MCM de los apartamentos de A17:
 define('FRAC', 0.4166);
+
+$file = fopen('hostname', 'w');
+fwrite($file, PROJECT_HOST);
+fclose($file);
+
 
 //Retorna un array con todos los apartamentos de A17
 function apartToString(){
@@ -58,7 +67,11 @@ function numToEng($num){
     return floatval($num);
 }
 
-function create_lapse($y,$m){
-
+function escape_array($array){
+    $result = [];
+    foreach ($array as $key => $value) {
+        $result[$key] = mysql_escape_string($value);
+    }
+    return $result;
 }
  ?>

@@ -33,112 +33,145 @@ $qlapse = "SELECT lap_id, lap_name FROM lapses";
 $rlapse = q_exec($qlapse);
 
  ?>
-<h2 id="titulo" align="center">Añadir Gasto</h2>
-
-<form class="" action="add_bill.php" method="post">
-    <table align="center">
-        <tr>
-            <td>Fecha: </td>
-            <td><input type="date" name="date" value=""></td>
-        </tr>
-        <tr>
-            <td>Proveedor:</td>
-            <td><select class="" name="prov" onchange="select_prov(this)">
-                <option value="0" default>Otro</option>
-                <?php
-                while($a = mysql_fetch_array($rprov)){
-                    ?>
-                    <option value=<?php echo $a[0]; ?>><?php echo $a[1]; ?></option>
-                    <?php
-                }
-                 ?>
-            </select></td>
-            <td><?php
-
-             ?></td>
-        </tr>
-        <tr>
-            <td>Nombre o Razón Social:</td>
-            <td><input type="text" name="name" id="name" value="" onblur="capitalize(this)"></td>
-        </tr>
-        <tr>
-            <td>RIF:</td>
-            <td><input type="text" name="rif" id="rif" value="" onblur="capitalize(this)"></td>
-        </tr>
-        <tr>
-        <tr>
-            <td>Tipo de Gasto:</td>
-            <td><input type="text" name="spe_type" id="spe_type" value="" onblur="check_type(this)"></td>
-        </tr>
-            <td>Periodo: </td>
-            <td><select class="" name="lapse" id='date'>
-                <?php
-                while($a = mysql_fetch_array($rlapse)){
-                    ?>
-                    <option value=<?php echo $a[0]; ?>><?php echo $a[1]; ?></option>
-                    <?php
-                }
-                 ?>
-            </select></td>
-        </tr>
-        <tr>
-            <td>Monto: </td>
-            <td><input type="text" name="amount" value="" id="amount" onchange="setIvaTotal()"></td>
-        </tr>
-        <tr>
-                <td>IVA:<select class="" name="" id="alic" onchange="setIvaTotal()">
-                <option value="0.12">12%</option>
-                <option value="0.1">10%</option>
-                <option value="0">Excento</option>
-            </select></td>
-            <td><input type="text" name="iva" value="" id="iva"></td>
-        </tr>
-        <tr>
-            <td>Total: </td>
-            <td><input type="text" name="total" value="" id="total" onchange="setIvaTotal()"></td>
-        </tr>
-        <tr>
-            <td>Tipo de Soporte: </td>
-            <td><select class="" name="bk">
-                <option value="COMPROBANTE">Comprobante</option>
-                <option value="FACTURA">Factura</option>
-                <option value="RECIBO">Recibo</option>
-                <option value="N/D" selected>Ninguno</option>
-            </select></td>
-        </tr>
-        <tr>
-            <td>Observaciones:</td>
-            <td><textarea name="notes" rows="10" cols="20">
-            </textarea></td>
-        </tr>
-    </table>
-    <div class="button_box" align="center">
-        <button type="submit" name="button" class="button_hot principal">Enviar</button>
-         <button type="button" name="back" class="button_hot secundary" onclick="history.go(-1)">Regresar</button>
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 id="titulo" class="page-header">Agregar Gasto</h2>
+        </div>
     </div>
-</form>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-info">
+                <div class="panel-body">
+                    <form class="" action="add_bill.php" method="post">
+                        <div class="form-group col-md-8">
+                            <label for="">Proveedor:</label>
+                            <select class="form-control" name="prov" onchange="select_prov(this)">
+                                <option value="0" default>Otro</option>
+                                <?php
+                                while($a = mysql_fetch_array($rprov)){
+                                    ?>
+                                    <option value=<?php echo $a[0]; ?>><?php echo $a[1]; ?></option>
+                                    <?php
+                                }
+                                 ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="">Fecha:</label>
+                            <input placeholder="aaaa-mm-dd" class="form-control" type="date" name="date" value="" onblur="">
+                            <div class="">
+
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-8">
+                            <label for="">Nombre o Razón Social:</label>
+                            <input class="form-control" type="text" name="name" id="name" value="" onblur="capitalize(this)">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="">Forma de Pago:</label>
+                            <select class="form-control" name="method">
+                                <option value="CHEQUE">Cheque</option>
+                                <option value="CAJA CHICA">Caja Chica</option>
+                                <option value="TRANSFERENCIA">Transferencia</option>
+                                <option value="PAGO ELECTRONICO">Pago Electrónico</option>
+                                <option value="TDD" selected>Tarjeta de Débido</option>
+                                <option value="TDC">Tarjeta de Crédito</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="">Descipción:</label>
+                            <input class="form-control" placeholder="40 caracteres máximo" type="text" name="desc" value="">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">RIF:</label>
+                            <input class="form-control" type="text" name="rif" id="rif" value="" onblur="capitalize(this)">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">Tipo de Gasto:</label>
+                            <input class="form-control" type="text" name="class" id="spe_type" value="" onblur="check_type(this)">
+                        </div>
+
+                        <div class="from-group col-md-5">
+                            <label for="">Monto:</label>
+                            <input class="form-control" type="text" name="amount" value="" id="amount" placeholder="use ',' para separar decimales" onchange="setIvaTotal()">
+                        </div>
+                        <div class="form-group col-md-7" style="text-align:center;">
+                            <div class="col-md-12">
+                                <label for="">IVA:</label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <select class="form-control" width="12px" name="" id="alic" onchange="setIvaTotal()">
+                                    <option value="0.12">12%</option>
+                                    <option value="0.1">10%</option>
+                                    <option value="0">Excento</option>
+                                </select>
+                            </div>
+                            <div class="col-md-8">
+                                <input class="form-control" width="12px" type="text" name="iva" value="" id="iva">
+                            </div>
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">Total:</label>
+                            <input class="form-control" type="text" name="total" value="" id="total" onchange="setIvaTotal()">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">Tipo de Soporte:</label>
+                            <select class="form-control" name="log">
+                                <option value="COMPROBANTE">Comprobante</option>
+                                <option value="FACTURA">Factura</option>
+                                <option value="RECIBO">Recibo</option>
+                                <option value="N/D" selected>Ninguno</option>
+                            </select>
+                        </div>
+                        <div class="button_box" align="center">
+                            <button type="submit" name="submit" class="btn btn-success">Enviar</button>
+                             <button type="button" name="back" class="btn btn-warning" onclick="history.go(-1)">Regresar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
  <?php
-extract($_POST);
+require ROOTDIR.'footer.php';
 $session_user = $_SESSION['user'];
 //Verifica si fue enviado el formulario
-if(isset($date) &&
-    isset($type) && isset($amount) &&
+if(isset($_POST['date']) &&
+    isset($_POST['submit']) && isset($_POST['amount']) &&
     $_SESSION['type'] == 1) {
-
+    $ePost = escape_array($_POST);
+    extract($ePost);
     $amount = numToEng($amount);
     $iva = numToEng($iva);
     $total = numToEng($total);
-    //Si no se pasan notas por el formulario se crea una variable vacía
-    if(!isset($notes))
-        $notes = '';
-    $q = "INSERT INTO bills VALUES (NULL, '$date', '$name', '$rif', '$type', '$lapse', '$amount', '$iva', '$total', '$bk', '$notes', '$session_user', NULL)";
+    if($method == 'CAJA CHICA'){
+        $account = 2;
+    }else{
+        $account = 1;
+    }
+
+    $q = "INSERT INTO bills VALUES (NULL, '$date', '$class', '$desc', '$name', '$rif', $account, '$method', '$log', 0, $amount, $iva, $total, '$session_user', NULL)";
     $r = q_log_exec($session_user, $q);
+
+    $q2 = "UPDATE accounts SET acc_balance = acc_balance - $total WHERE acc_id = $account";
+    $r2 = q_exec($q2);
     ?>
     <script type="text/javascript">
-        alert('Registro almacenado con éxito');
+        ventana('Gasto almacenado', '');
+        setTimeout(function(){
+            window.location.href = HOSTNAME + 'main.php';
+        }, 2000);
     </script>
     <?php
 }
-require ROOTDIR.'footer.php';
+
   ?>

@@ -12,14 +12,13 @@ if(isset($_GET['fun'])){
             break;
         case 'gastos':
             $q = "SELECT bil_id AS 'id', bil_date AS 'Fecha', bil_class AS 'Clase',
-            bil_method AS 'Tipo de Pago', formatEsp(bil_total) AS 'Monto' FROM bills ORDER BY bil_id DESC";
+            bil_desc AS 'Desc.', bil_total AS 'Monto' FROM bills WHERE bil_lapse_fk = 0 ORDER BY bil_id DESC";
             break;
         case 'mostrar_gasto':
             $q = "SELECT bil_date AS 'Fecha', `bil_class` AS 'Clase',
             `bil_desc` AS 'Descripción', `bil_name` AS 'Proveedor',
-            `bil_rif` AS 'RIF/CI', `bil_fk_account`, `bil_method` AS 'Método',
-            `bil_log` AS 'Soporte', `bil_lapse_fk` AS 'Periodo',
-            formatEsp(bil_amount) AS 'Monto', formatEsp(bil_iva) AS 'IVA', formatEsp(bil_total) AS 'Total' FROM `bills` WHERE bil_id = $id";
+            `bil_rif` AS 'RIF/CI', CASE bil_fk_account WHEN 1 THEN 'Principal' WHEN 2 THEN 'Caja Chica' END AS 'Cuenta', `bil_method` AS 'Método',
+            `bil_log` AS 'Soporte', bil_amount AS 'Monto', bil_iva AS 'IVA', bil_total AS 'Total' FROM `bills` WHERE bil_id = $id";
             break;
         default:
             die;

@@ -9,20 +9,20 @@ require ROOTDIR.'menu.php';
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Gastos</h1>
+            <h2 class="page-header">Gastos y Proveedores</h2>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default"  style="margin-bottom:80px;">
                 <div class="panel-heading">
-                    Gastos Realizados
+                    <h3 class="panel-title">Gastos Realizados</h3>
                 </div>
                 <div class="panel-body" id="gastos">
                     <!-- async data -->
                 </div>
                 <div class="panel-footer col-lg-12" style="text-align:right;">
-                    <button type="button" name="agregar_proveedor" class="btn btn-primary btn-lg">Agregar Gasto</button>
+                    <button type="button" name="agregar_proveedor" class="btn btn-primary btn-lg" onclick="window.location.href = 'add_bill.php';">Agregar Gasto</button>
                 </div>
 
             </div>
@@ -35,13 +35,13 @@ require ROOTDIR.'menu.php';
         <div class="col-lg-12">
             <div class="panel panel-default" style="margin-bottom:80px;">
                 <div class="panel-heading">
-                    Proveedores Registrados
+                    <h3 class="panel-title">Proveedores Registrados</h3>
                 </div>
                 <div class="panel-body" id="proveedores">
                     <!-- async data -->
                 </div>
                 <div class="panel-footer col-lg-12" style="text-align:right;">
-                    <button type="button" name="agregar_proveedor" class="btn btn-primary btn-lg">Agregar Proveedor</button>
+                    <button type="button" name="agregar_proveedor" class="btn btn-primary btn-lg" disabled>Agregar Proveedor</button>
                 </div>
             </div>
         </div>

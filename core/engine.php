@@ -11,9 +11,11 @@ switch ($_GET['fun']) {
 //        print_r (generate($user, $_GET));
         break;
     case 'save_fact':
+        extract($_GET);
         print_r($fun($number));
         break;
     case 'discard':
+        extract($_GET);
         print_r($fun($number));
         break;
     case 'gen_A17_table':
@@ -47,7 +49,8 @@ function generate($user, $data_ar){
 
     // Selecciona los gastos hechos que se seleccionaron
     $arg_bills = '';
-    $q = "SELECT bil_total, bil_name, up_alias, up_op FROM bills INNER JOIN usual_providers ON bil_name = up_name WHERE ";
+    $q = "SELECT bil_total, bil_class, up_alias, up_op FROM bills INNER JOIN usual_providers ON bil_name = up_name WHERE ";
+    $qu = "UPDATE bills SET bil_lapse_fk = 99 WHERE ";
     foreach ($data_ar as $key => $value) {
         if(is_integer($key) && $value == 1){
             $arg_bills .= "bil_id = $key"." OR ";
@@ -56,11 +59,13 @@ function generate($user, $data_ar){
     // Se limpian los argumentos
     $arg_bills_2 = substr($arg_bills, 0, strripos($arg_bills, "OR"));
     $q1 = $q.$arg_bills_2;
+    $qu1 = $qu.$arg_bills_2;
     $r1 = q_exec($q1);
+    $ru1 = q_exec($qu1);
     $bills_ar = query_to_array($r1); // El Array de los gastos
 
     // Selecciona los apartamentos y sus pesos ponderados
-    $q2 = "SELECT A17_number, A17_weight FROM A17 WHERE A17_assigned = 1";
+    $q2 = "SELECT A17_number, A17_weight, A17_balance FROM A17 WHERE A17_assigned = 1";
     $r2 = q_exec($q2);
     $apts_ar = query_to_array($r2); // El Array de los apartamentos
 
@@ -91,99 +96,121 @@ function generate($user, $data_ar){
 
     //Se genera el contenido
     foreach ($apts_ar as $index => $apt_val) {
-        foreach ($bills_ar as $index2 => $bil_val) {
-            $content[$apt_val['A17_number']][$bil_val['up_alias']]['nombre'] = $bil_val['up_alias'];
-            $content[$apt_val['A17_number']][$bil_val['up_alias']]['porcentaje'] = round($bil_val['bil_total'] * $apt_val['A17_weight'] * $porc /100, 2);
-            $content[$apt_val['A17_number']][$bil_val['up_alias']]['total'] = $bil_val['bil_total'];
+        foreach ($bills_ar as $in => $bil_val) {
+            $content[$apt_val['A17_number']]['Comunes'][$in]['nombre'] = $bil_val['bil_class'] .' - ' .$bil_val['up_alias'] ;
+            $content[$apt_val['A17_number']]['Comunes'][$in]['porcentaje'] = round($bil_val['bil_total'] * $apt_val['A17_weight'] * $porc /100, 2);
+            $content[$apt_val['A17_number']]['Comunes'][$in]['total'] = $bil_val['bil_total'];
             //Generar el campo del total a pagar por apartamento
             $sum = 0;
             $sum_total = 0;
-            foreach($content[$apt_val['A17_number']] as $apt => $v){
-                $sum += $content[$apt_val['A17_number']][$apt]['porcentaje'];
-                $sum_total += $content[$apt_val['A17_number']][$apt]['total'];
+            foreach($content[$apt_val['A17_number']]['Comunes'] as $apt => $v){
+                $sum += $v['porcentaje'];
+                $sum_total += $v['total'];
             }
-            $content2[$apt_val['A17_number']]['charged'] = $sum;
+            $content2[$apt_val['A17_number']]['previo'] = -$apt_val['A17_balance'];
+            $content2[$apt_val['A17_number']]['actual'] = $sum;
+            $content2[$apt_val['A17_number']]['total'] = -$apt_val['A17_balance'] + $sum;
             $lastapt = $content[$apt_val['A17_number']];
         }
         //fondos
-        foreach ($funds as $key => $value) {
+        foreach ($funds as $n => $value) {
             $valor = numToEng($value['def']);
 
             if($value['type'] == 1){
-                $content[$apt_val['A17_number']][$value['name']]['nombre'] = $value['def'].' %';
-                $content[$apt_val['A17_number']][$value['name']]['porcentaje'] = round($sum_total * ($valor /100), 2);
-                $content[$apt_val['A17_number']][$value['name']]['total'] = round($sum_total * ($valor / 100), 2);
+                $content[$apt_val['A17_number']][$value['name']][$value['name']]['nombre'] = $value['def'].' %';
+                $content[$apt_val['A17_number']][$value['name']][$value['name']]['porcentaje'] = round($sum * ($valor /100), 2);
+                $content[$apt_val['A17_number']][$value['name']][$value['name']]['total'] = round($sum_total * ($valor / 100), 2);
             }elseif($value['type'] == 2){
-                $content[$apt_val['A17_number']][$value['name']]['nombre'] = 'Bs. '.$value['def'];
-                $content[$apt_val['A17_number']][$value['name']]['porcentaje'] = round($valor / $actives, 2);
-                $content[$apt_val['A17_number']][$value['name']]['total'] = $valor;
+                $content[$apt_val['A17_number']][$value['name']][$value['name']]['nombre'] = 'Bs. '.$value['def'];
+                $content[$apt_val['A17_number']][$value['name']][$value['name']]['porcentaje'] = round($valor / $actives, 2);
+                $content[$apt_val['A17_number']][$value['name']][$value['name']]['total'] = $valor;
             }
             $lastapt = $content[$apt_val['A17_number']];
         }
-
     }
 
     // Se genera el nuevo sumario
-    foreach ($lastapt as $key => $value) {
-        $summary[$key] = $value['total'];
+    foreach ($lastapt as $categoria => $datos) {
+        foreach ($datos as $num => $valor) {
+            $summary[$categoria][$valor['nombre']] = $valor['total'];
+        }
     }
 
     $tot = 0; // Total de los gastos y fondos
-    foreach ($summary as $key => $value) {
-        $tot += $value;
+    foreach ($summary as $key => $cat) {
+        foreach ($cat as $item => $value2) {
+            $tot += $value2;
+        }
     }
 
     // Se genera la cabecera
     $head = ['fecha' => date('d-m-y'), 'Creador' => $user, 'Periodo' => $lap_ar[0]['lap_name'], 'Gen Num' => $fac_number,'Num Aptos' => $actives, 'MCD' => $porc, 'Monto Total' => $tot, 'Balance a la fecha' => ($balance + $tot)];
 
     //Se construye el array
-    $table = [$head, $summary, $content];
+    $table =    ['head' => $head,
+                'summary' => $summary,
+                'content' => $content,
+                'charges' => $content2];
+    //Graba contenidos temporales de lo que se va a grabar en charges
+    $type_json = json_encode($table) or die(json_last_error_msg());
+    $file = fopen(ROOTDIR.'files/FAC-'.$fac_number.'.json', 'w');
+    fwrite($file, $type_json);
+    fclose($file);
     return $table;
+
     /*
     //Graba contenidos temporales de lo que se va a grabar en charges
     $charges_json = json_encode($content2) or die(json_last_error_msg());
-    $file_cha = fopen(ROOTDIR.'files/tmp/charges'.$fac_number.'.json', 'w');
+    $file_cha = fopen(ROOTDIR.'core/charges' .$fac_number .'.json', 'w');
     fwrite($file_cha, $charges_json);
-    fclose($file_cha);
-
-    //Se pasa de array a json
-    $type_json = json_encode($table) or die(json_last_error_msg());
-    //Se crea el archivo y se guarda
-    //$file = fopen(ROOTDIR.'files/fact-'.$year.'-'.$month.'.json', 'w');
-    $file = fopen(ROOTDIR.'files/fact-'.$fac_number.'.json', 'w');
-    fwrite($file, $type_json);
-    fclose($file);
-    return json_encode([$head, $summary]);
-    */
+    fclose($file_cha); */
 }
 
 function save_fact($fac_number){
+
     //Graba los datos temporales en charges
-    $file = fopen(ROOTDIR.'files/tmp/charges'.$fac_number.'.json', "r");
+    $file = fopen(ROOTDIR.'files/FAC-' .$fac_number. '.json', "r");
     $b = fgets($file);
     $c = json_decode($b);
-    //print_r($c);
 
-    foreach ($c as $apto => $value) {
-        $charg[$apto] = $value->{'charged'};
+    // Agrega a los gastos en cuestión el periodo
+    $lap_name = $c->{'head'}->{'Periodo'};
+    $q = "SELECT lap_id FROM lapses WHERE lap_name = '$lap_name'";
+    $r = q_exec($q);
+    $lapse = query_to_assoc($r)[0]['lap_id'];
+    $q2 = "UPDATE bills SET bil_lapse_fk = '$lapse' WHERE bil_lapse_fk = 99";
+    $r2 = q_exec($q2);
+    // Actualizar la tabla funds
+    // En el primer bucle se debe descartar los gastos comunes
+    // El segundo bucle es porque los datos estan en otro objeto
+    $fundsArray = [];
+    foreach ($c->{'summary'} as $name => $fund) {
+        if($name != 'Comunes'){
+            foreach ($fund as $ind => $monto) {
+                $qe = "UPDATE funds SET fun_balance = fun_balance + $monto WHERE fun_name = '$name'";
+                $re = q_exec($qe);
+            }
+        }
     }
-    //Se insertan los datos en charges y se actualiza A17_balance
+
+    foreach ($c->{'charges'} as $apto => $value) {
+        $charg[$apto] = $value->{'total'};
+    }
+    //Se actualiza A17_balance
     foreach($charg as $apt => $total){
-        //Se separa el select para evitar conflictos con el trigger
-        $qnum = "SELECT A17_id FROM A17 WHERE A17_number = '$apt'";
-        $rnum = mysql_fetch_array(q_exec($qnum));
-        $qcharges = "INSERT INTO charges VALUES (NULL, $rnum[0] , $total, NULL, 'diego')\n";
-    //    $rcharges = q_exec($qcharges);
+        $q = "UPDATE A17 SET A17_balance = A17_balance - $total WHERE A17_number = '$apt'";
+        $r = q_exec($q);
     }
     return "Guardado con éxito";
 }
 
 function discard($fac_number){
+    $q = "UPDATE bills SET bil_lapse_fk = 0 WHERE bil_lapse_fk = 99";
+    $r = q_exec($q);
     //elimina los datos temporales y la factura. json
-    if(file_exists(ROOTDIR.'files/fact-'.$fac_number.'.json') && file_exists(ROOTDIR.'files/tmp/charges'.$fac_number.'.json')) {
-        unlink(ROOTDIR.'files/fact-'.$fac_number.'.json');
-        unlink(ROOTDIR.'files/tmp/charges'.$fac_number.'.json');
-        $resp = "borrado";
+    if(file_exists(ROOTDIR.'files/FAC-' .$fac_number .'.json')) {
+        unlink(ROOTDIR.'files/FAC-' .$fac_number .'.json');
+        $resp = "Borrado con éxito";
     }else{
         $resp = "no se encuentra";
     }
