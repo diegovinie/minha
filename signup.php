@@ -1,14 +1,14 @@
 <?php
-//Formulario con verificación de campos JS
+// Controlador: js/signup.js
+// Modelo: core/async_users.php
+
 require 'datos.php';
 require 'header.php';
  ?>
 </header>
 <main>
 <script src="<?php echo PROJECT_HOST;?>js/modal.js" charset="utf-8"></script>
-<div id="apart" hidden>
-    <?php echo apartToString(); ?>
-</div>
+
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
@@ -24,6 +24,7 @@ require 'header.php';
                  </div>
                  <div class="panel-body">
                      <form class="" role="form" action="signup.php" method="post">
+                         <input type="text" name="fun" value="signup" hidden>
                          <div class="form-group">
                              <label for="">Nombre:</label>
                              <input class="form-control" type="text" name="name" value="" placeholder="Nombre" required onblur="check_names(this);">
@@ -48,18 +49,32 @@ require 'header.php';
                             <span class="help-block">Este será el nombre de usuario</span>
                          </div>
                          <div class="form-group col-md-7">
-                             <label for="">Cédula de Identidad:</label>
-                             <input class="form-control" type="text" name="ci" value="" placeholder="V12345678" required onblur="check_ci(this);">
+                             <label for="">Edificio:</label>
+                             <!--<input class="form-control" type="text" name="ci" value="" placeholder="V12345678" required onblur="check_ci(this);">-->
+                             <select class="form-control" id="edf" name="edf">
+                                 <option value="">Seleccione</option>
+
+                             </select>
                              <div class="">
 
                              </div>
                          </div>
                          <div class="form-group col-md-5">
                              <label for="">Apartamento:</label>
-                             <input class="form-control" type="text" name="number" value="" required onblur="check_number(this, false)">
+                             <select class="form-control" name="apt" id="apt">
+
+                             </select>
+                             <!--<input class="form-control" type="text" name="apt" id="apt" value="" required onblur="check_number(this, false)">-->
                              <div class="">
 
                              </div>
+                         </div>
+                         <div class="form-group col-md-8 col-md-offset-2">
+                             <label for="">Condición</label>
+                             <select class="form-control" name="cond">
+                                 <option value="1">Titular</option>
+                                 <option value="2">Familiar</option>
+                             </select>
                          </div>
                          <div class="form-group">
                              <label for="">Elija una clave:</label>
@@ -79,8 +94,9 @@ require 'header.php';
                              <input type="text" name="type" value="2" hidden>
                          </div>
                          <div class="" align="center">
-                             <button type="submit" name="button" id="submit" class="btn btn-success">Enviar</button>
-                             <button type="button" name="button" onclick="window.location.href='login.php'" class="btn btn-danger">Regresar</button>
+                             <button type="submit" name="bsubmit" id="submit" class="btn btn-success">Enviar</button>
+                             <button type="reset" name="breset" class="btn btn-info">Limpiar</button>
+                             <button type="button" name="breturn" onclick="window.location.href='login.php'" class="btn btn-danger">Regresar</button>
                          </div>
                      </form>
                  </div>
@@ -92,6 +108,8 @@ require 'header.php';
         </main>
         <script src="<?php echo PROJECT_HOST; ?>js/forms.js" charset="utf-8"></script>
         <script src="<?php echo PROJECT_HOST; ?>js/ajax.js" charset="utf-8"></script>
+        <script src="<?php echo PROJECT_HOST.TEMPLATE;?>vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script src="js/signup.js" charset="utf-8"></script>
     </body>
 </html>
 

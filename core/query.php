@@ -11,7 +11,7 @@ print_r($fun($number));
 
 
 function balance($number){
-    $q = "SELECT A17_number, A17_balance FROM A17 WHERE A17_id = $number";
+    $q = "SELECT bui_name, bui_apt, bui_balance FROM buildings WHERE bui_id = $number";
     $r = q_exec($q);
     $r_a = query_to_assoc($r);
     $r_j = json_encode($r_a);

@@ -25,7 +25,7 @@ function iconnect(){
 function q_exec($query){
     //$q = mysql_real_escape_string($query);
 //    $res = mysql_query($query) or die("No puede procesar la consulta: " .  mysql_error());
-    $res = mysql_query($query) or die("No puede procesar la consulta");
+    $res = mysql_query($query) or die("No puede procesar la consulta: " .$query);
     return $res;
 }
 
@@ -59,4 +59,24 @@ function query_to_assoc($qresult){
     }
     return $raw;
 }
+
+function uniqueQuery($r){
+    while ($row = mysql_fetch_array($r)) {
+        return $row[0];
+    }
+}
+
+function toJson($r){
+    $out = '';
+    while ($row = mysql_fetch_assoc($r)) {
+        $out .= '{';
+        foreach ($row as $key => $value) {
+            if($out != '{') { $out .= ','; }
+            $out .= '"' .$key .'": ' .'"' .$value .'"';
+        }
+        $out .= '}';
+    }
+    return $out;
+}
+
 ?>

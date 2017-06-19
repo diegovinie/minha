@@ -1,10 +1,30 @@
 <?php
+// Controlador: js/login.js
+// Modelo: core/authentication.php
+
 require_once 'datos.php';
 session_start();
 session_unset();
 session_destroy();
+
+if(isset($_COOKIE['remember'])){
+    extract($_COOKIE);
+    require 'server.php';
+    $con = connect();
+    $q = "SELECT coo_info FROM cookies WHERE coo_val = '$remember'";
+    $rString = uniqueQuery(q_exec($q));
+if(isset($rString)){
+    session_start();
+    $obj = json_decode($rString);
+    foreach ($obj as $key => $value) {
+        $_SESSION[$key] = $value;
+    }
+    header('Location: main.php');
+    die;
+    }
+}
 require_once 'header.php';
- ?>
+?>
         </header>
             <main>
 
@@ -28,12 +48,12 @@ require_once 'header.php';
                                 <input class="form-control" placeholder="clave" type="password" name="pwd" id="pwd" value="">
 
                             </div>
-                            <!--<div class="checkbox">
+                            <div class="checkbox">
                                 <label for="">
-                                    <input type="checkbox" name="remember" value="remember">Recordarme
+                                    <input type="checkbox" name="remember" value="1">Recordarme
                                 </label>
-                            </div>-->
-                            <button type="submit" name="button" class="btn btn-lg btn-success btn-block">Enviar</button>
+                            </div>
+                            <button type="submit" href="" name="" class="btn btn-lg btn-success btn-block" onclick="sendLogin()">Enviar</button>
                         </fieldset>
                     </form>
                 </div>
@@ -44,7 +64,7 @@ require_once 'header.php';
                         <a href="signup.php">Registrarse</a>
                     </div>
                     <div class="col-md-6">
-                        <!--<a href="#">Recuperar Clave</a>-->
+                        <a href="recovery.php">Recuperar Clave</a>
                     </div>
                 </div>
             </div>
@@ -94,27 +114,10 @@ require_once 'header.php';
 </div>
 </div>
 
+
 <script src="<?php echo PROJECT_HOST; ?>js/forms.js" charset="utf-8"></script>
 <script src="<?php echo PROJECT_HOST; ?>js/ajax.js" charset="utf-8"></script>
-<script type="text/javascript">
-    window.onload = function(){
-
-    }
-    function demoAdmin(){
-        setTimeout(function(){
-            //window.locate.href = "resetdb.php";
-            alert('reset');
-        }, (5*60*1000));
-        window.location.href = "demo.php?arg=1";
-    }
-    function demoUser(){
-        setTimeout(function(){
-            //window.locate.href = "resetdb.php";
-            alert('reset');
-        }, (5*60*1000));
-        window.location.href = "demo.php?arg=2";
-    }
-</script>
+<script src="<?php echo PROJECT_HOST; ?>js/login.js" charset="utf-8"></script>
 <script src="<?php echo PROJECT_HOST.TEMPLATE;?>vendor/bootstrap/js/bootstrap.min.js"></script>
             </main>
         </div>

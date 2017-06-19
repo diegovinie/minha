@@ -32,7 +32,7 @@ extract($_POST);
 //Comprueba que fue enviado el formulario
 if(isset($button)){
    //Solicita los datos del usuario
-   $q1 = "SELECT udata_name, udata_surname, udata_ci, udata_number_fk, A17_number FROM users, userdata, A17 WHERE user_user = '$session_user' AND udata_user_fk = user_id AND A17_id = udata_number_fk";
+   $q1 = "SELECT udata_name, udata_surname, udata_ci, udata_number_fk, bui_apt FROM users, userdata, buildings WHERE user_user = '$session_user' AND udata_user_fk = user_id AND bui_id = udata_number_fk";
    $r1 = q_exec($q1);
    //Solicita índice, mes y año
    $q2 = "SELECT * FROM lapses WHERE lap_id = '$lapse'";
@@ -52,7 +52,7 @@ if(isset($button)){
         <span id="edificio">AVELLANA MORADA</span>
         <span id="nombre"><?php echo $udata[0]['udata_name'].' '.$udata[0]['udata_surname']; ?></span>
         <span id="ci"><?php echo $udata[0]['udata_ci']; ?></span>
-        <span id="apartamento"><?php echo $udata[0]['A17_number'] ?></span>
+        <span id="apartamento"><?php echo $udata[0]['bui_apt'] ?></span>
         <span id="mes"><?php echo $lapdata[0]['lap_name'] ?></span>
 
         <?php

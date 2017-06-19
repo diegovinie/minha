@@ -1,0 +1,63 @@
+<div class="modal" id="payment" role="dialog">
+    <div class="modal-dialog panel panel-default">
+        <div class="modal-header panel-heading">
+            <h3>Agregar Pago <small>Ingrese los datos de su operación</small> </h3>
+
+        </div>
+        <div role="form" class="modal-body panel-body">
+            <form >
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label for="">Edificio:</label><input  class="form-control" type="text" name="edif" id="edif" readonly>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="">Apartamento:</label><input  class="form-control" type="text" name="apt" id="apt" readonly>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label for="">Fecha de operación:</label>
+                        <input class="form-control" placeholder="aaaa-mm-dd" type="date" name="date" required>
+                        <div class="">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Operación:</label>
+                    <select class="form-control" name="type">
+                        <option value="1">Depósito</option>
+                        <option value="2" selected>Transferencia</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="">Número Operación:</label>
+                        <input class="form-control" type="text" name="n_op" value="" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="">Banco:</label>
+                        <select class="form-control" name="bank" id="bank">
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Monto:</label><input class="form-control" placeholder="use ',' para separar decimales" type="text" name="amount" value="" onblur="checkNumEsp(this)" required>
+                    <div class="">
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Obsercaciones:</label>
+                    <textarea class="form-control" name="notes" rows="4" cols="20"></textarea>
+                </div>
+                <div class="button_box" align="center">
+                    <button type="submit" id='btnSubmit' name="btnSubmit" class="btn btn-success btn-lg" >Enviar</button>
+                    <button type="reset" name="btnReset" class="btn btn-info btn-lg">Limpiar</button>
+                    <button type="" name="btnBack" class="btn btn-danger btn-lg" onclick="window.location.reload()">Regresar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

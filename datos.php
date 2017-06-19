@@ -7,12 +7,14 @@ $db_name = 'bd_minha';
 $alias = 'minha';
 $template = 'startbootstrap-sb-admin-2-gh-pages';
 $name = 'Minha Administradora';
+$defpwd = '1234';
 
 // Datos para conectarse a la base de datos:
 define('DB_HOST', $db_host);
 define('DB_USER', $db_user);
 define('DB_PWD', $db_pwd);
 define('DB_NAME', $db_name);
+define('DEF_PWD', $defpwd);
 
 // Nombre del proyecto
 define('NAME', $name);
@@ -41,25 +43,33 @@ $file = fopen('hostname', 'w');
 fwrite($file, PROJECT_HOST);
 fclose($file);
 
-
-//Retorna un array con todos los apartamentos de A17
-function apartToString(){
-    $level = 0;
-    $num = 1;
-    for($level = 1; $level <= 15; $level++){
-        $j = 0;
-        $letters = 'ABCDEFGH';
-        $a = '';
-        $let = '';
-        for($j = 0; $j < strlen($letters); $j++){
-            $let = $letters[$j];
-            $apart[$num] = $level.$let;
-            $num++;
+function genA17(){
+    //Retorna un array con todos los apartamentos de A17
+    function apartToString(){
+        $level = 0;
+        $num = 1;
+        for($level = 1; $level <= 15; $level++){
+            $j = 0;
+            $letters = 'ABCDEFGH';
+            $a = '';
+            $let = '';
+            for($j = 0; $j < strlen($letters); $j++){
+                $let = $letters[$j];
+                $apart[$num] = '"'.$level.$let.'"';
+                $num++;
+            }
         }
+        $array_apart = implode(',', $apart);
+        return '['.$array_apart.']';
     }
-    $array_apart = implode(',', $apart);
-    return $array_apart;
+    $apts = apartToString();
+    $A17 = '{"apts": ' .$apts .'}';
+    $file = fopen('files/A17.json', 'w');
+    fwrite($file, $A17);
+    fclose($file);
+    return $A17;
 }
+
 
 //Recibe un float y lo pasa a notación inglesa, ignora la cantidad de decimales
 function numToEng($num){

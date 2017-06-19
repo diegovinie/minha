@@ -32,10 +32,24 @@ function lowercase(self){
 }
 
 //Validar la clave. No retorna resultado, sino que actúa sobre el DOM
-function check_pwd(input){
-    input.value.length < 6 ? errorLine(input, 'demasiado corto') : false;
+
+//Eventos
+function pressEnter(evt, action){
+    var keyCode = evt ? (evt.which ? evt.which : evt.keyCode) : event.keyCode;
+    if(keyCode == 13){
+        action();
+    }
 }
 
+//Mostrar u ocultar el botón de enviar. Parámetro booleano
+function show_submit(self){
+    var button = document.getElementById('submit');
+    self == true? button.removeAttribute('disabled')
+                : button.setAttribute('disabled', 'true');
+    //document.getElementById('submit').style.display = self == 'true'? 'inline' : 'none';
+}
+
+//Passwords
 function check_pwdretry(input){
     var pass1 = document.getElementById("pwd").value,
         pass2 = input.value;
@@ -43,6 +57,58 @@ function check_pwdretry(input){
         errorLine(input, 'las claves no coinciden') : false;
 }
 
+function newPwd(self){
+    var pwd = self.value;
+    if(pwd.length > 5){
+        $(self).parent().removeClass('has-error');
+    }else{
+        $('#pwdSubmit').attr('disabled', true);
+        $(self).parent().addClass('has-error');
+    }
+}
+
+function checkPwdChange(self){
+    var pwd = $('#pwd').val(),
+        ret = $(self).val();
+    if(pwd === ret){
+        $('#pwdSubmit').removeAttr('disabled');
+        $(self).parent().removeClass('has-error');
+    }else {
+        $('#pwdSubmit').attr('disabled', true);
+        $(self).parent().addClass('has-error');
+    }
+}
+
+function check_pwd(input){
+    if(input.value.length < 6){
+        warningMsg(input, 'demasiado corto');
+        $('#pwdSubmit').attr('disabled', true);
+    }
+}
+
+//Mensajes
+function warningMsg(self, msg, callback){
+    var alert = document.createElement('div');
+    $(alert).addClass('text-warning');
+    $(alert).html(msg);
+    $(self).after(alert);
+    setTimeout(function(){
+        alert.remove();
+        if(callback) {
+    callback;}
+    }, 2000);
+}
+
+function errorLine(input, msg){
+    var e = document.createElement('div');
+    e.innerHTML = msg;
+    $(e).css('color', 'red');
+    input.nextElementSibling.appendChild(e);
+    setTimeout(function(){
+        e.remove();
+        input.value = '';
+    }, 1500);
+}
 
 var formatNumber = {
  separador: ".", // separador para los miles
@@ -148,39 +214,6 @@ function select_prov(self){
     }
 }
 
-function check_type(self){
-    self.value = self.value.toUpperCase();
-    var a = self.value;
-    var list = ['PERSONAL', 'MATERIALES', 'SERVICIOS', 'BIENES', 'LEGAL'];
-    if(list.indexOf(a) == -1){
-        ventana('Error de selección', 'debe elegir entre: ' + list);
-        self.value = '';
-    }
-}
-
-//Tomar el monto, calcular el IVA, el total y pasar los datos al DOM.
-//No devuelve resultado
-function setIvaTotal(){
-    var amount = document.getElementById('amount').value;
-    //Reemplaza las comas decimales por punto antes de pasarlo a float
-    amount = parseFloat(amount.replace(",", "."));
-    var alic = parseFloat(document.getElementById('alic').value);
-    var iva = amount * alic;
-    var total = amount + (amount * alic);
-    //Regresa los números a formato español y los incrusta en el DOM
-    document.getElementById('amount').value = numToSpa(amount, 2);
-    document.getElementById('iva').value = numToSpa(iva, 2);
-    document.getElementById('total').value =  numToSpa(total, 2);
-}
-
-//Mostrar u ocultar el botón de enviar. Parámetro booleano
-function show_submit(self){
-    var button = document.getElementById('submit');
-    self == true? button.removeAttribute('disabled')
-                : button.setAttribute('disabled', 'true');
-    //document.getElementById('submit').style.display = self == 'true'? 'inline' : 'none';
-}
-
 //Revisar si el apartamento está en la lista incrustada en el html
 function check_number(self){
     uppercase(self);
@@ -192,17 +225,7 @@ function check_number(self){
     }
 }
 
-function errorLine(input, msg){
-    var e = document.createElement('div');
-    e.innerHTML = msg;
-    $(e).css('color', 'red');
-    input.nextElementSibling.appendChild(e);
-    setTimeout(function(){
-        e.remove();
-        input.value = '';
-    }, 1500);
-}
-
+//Chequeos de campos
 function check_names(input){
     capitalize(input, function(){
         inn = input;
@@ -243,6 +266,36 @@ function check_date(input){
         errorLine(input, "error en fecha");
 
     }
+}
+
+function check_type(self){
+    self.value = self.value.toUpperCase();
+    var a = self.value;
+    var list = ['PERSONAL', 'MATERIALES', 'SERVICIOS', 'BIENES', 'LEGAL'];
+    if(list.indexOf(a) == -1){
+        ventana('Error de selección', 'debe elegir entre: ' + list);
+        self.value = '';
+    }
+}
+
+//Tomar el monto, calcular el IVA, el total y pasar los datos al DOM.
+//No devuelve resultado
+function setIvaTotal(){
+    var amount = document.getElementById('amount').value;
+    //Reemplaza las comas decimales por punto antes de pasarlo a float
+    amount = parseFloat(amount.replace(",", "."));
+    var alic = parseFloat(document.getElementById('alic').value);
+    var iva = amount * alic;
+    var total = amount + (amount * alic);
+    //Regresa los números a formato español y los incrusta en el DOM
+    document.getElementById('amount').value = numToSpa(amount, 2);
+    document.getElementById('iva').value = numToSpa(iva, 2);
+    document.getElementById('total').value =  numToSpa(total, 2);
+}
+
+function toBs(number){
+    return parseFloat(number)
+        .toLocaleString(undefined, { minimumFractionDigits: 2 });
 }
 
 $.ajax({

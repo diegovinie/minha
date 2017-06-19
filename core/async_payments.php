@@ -26,7 +26,7 @@ if(isset($_GET['fun'])){
                 AS 'Monto' FROM payments INNER JOIN lapses ON MONTH(pay_date) = lap_id WHERE pay_check = 0 GROUP BY lap_name LIMIT 3";
             break;
         case 'pagos_rechazados':
-            $q = "SELECT pay_id AS 'id', pay_date AS 'Fecha', A17_number
+            $q = "SELECT pay_id AS 'id', pay_date AS 'Fecha', bui_apt
                 AS 'Apartamento', pay_amount AS 'Monto',
                     CASE pay_type
                         WHEN 1 THEN 'Transferencia'
@@ -34,13 +34,13 @@ if(isset($_GET['fun'])){
                 ELSE 'otro'
                 END AS 'Forma de Pago',
                 bank_name AS 'Banco', pay_op AS 'Num. Op.', pay_obs AS 'Observaciones' FROM payments
-                INNER JOIN A17 ON pay_fk_number = A17_id
+                INNER JOIN buildings ON pay_fk_number = bui_id
                 INNER JOIN banks ON pay_fk_bank = bank_id
                 WHERE pay_check = 2
                 LIMIT 0, 10";
             break;
         case 'pagos_pendientes':
-            $q = "SELECT pay_id AS 'id', pay_date AS 'Fecha', A17_number
+            $q = "SELECT pay_id AS 'id', pay_date AS 'Fecha', bui_apt
                 AS 'Apartamento', pay_amount AS 'Monto',
                     CASE pay_type
                         WHEN 1 THEN 'Transferencia'
@@ -48,13 +48,13 @@ if(isset($_GET['fun'])){
                 ELSE 'otro'
                 END AS 'Forma de Pago',
                 bank_name AS 'Banco', pay_op AS 'Num. Op.' FROM payments
-                INNER JOIN A17 ON pay_fk_number = A17_id
+                INNER JOIN buildings ON pay_fk_number = bui_id
                 INNER JOIN banks ON pay_fk_bank = bank_id
                 WHERE pay_check = 0
                 ";
             break;
         case 'pagos_aprobados':
-        $q = "SELECT pay_id AS 'id', pay_date AS 'Fecha', A17_number
+        $q = "SELECT pay_id AS 'id', pay_date AS 'Fecha', bui_apt
             AS 'Apartamento', pay_amount AS 'Monto',
                 CASE pay_type
                     WHEN 1 THEN 'Transferencia'
@@ -62,7 +62,7 @@ if(isset($_GET['fun'])){
             ELSE 'otro'
             END AS 'Forma de Pago',
             bank_name AS 'Banco', pay_op AS 'Num. Op.' FROM payments
-            INNER JOIN A17 ON pay_fk_number = A17_id
+            INNER JOIN buildings ON pay_fk_number = bui_id
             INNER JOIN banks ON pay_fk_bank = bank_id
             WHERE pay_check = 1
             LIMIT 0, 10";
@@ -115,7 +115,7 @@ if(isset($_POST['submits'])){
 
         while($row = mysql_fetch_array($r4)){
             // Se actualiza el balance del apartamento
-            $qw = "UPDATE A17 SET A17_balance = A17_balance + $row[1] WHERE A17_id = '$row[0]'";
+            $qw = "UPDATE buildings SET bui_balance = bui_balance + $row[1] WHERE bui_id = '$row[0]'";
             $rw = q_exec($qw);
             // Se actualiza la cuenta principal
             $qw2 = "UPDATE accounts SET acc_balance = acc_balance + $row[1] WHERE acc_id = 1";

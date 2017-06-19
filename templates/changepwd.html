@@ -1,0 +1,34 @@
+<div class="modal" id="chpwd" role="dialog">
+    <div class="modal-dialog modal-sm panel panel-default">
+        <div class="modal-header">
+            <h3 class="panel-header">Cambio de clave</h3>
+        </div>
+        <form>
+            <div class="modal-body" >
+                <div class="form-group">
+                    <label for="">Clave actual:</label>
+                    <input type="password" name="pwd_old" id="pwd_old" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">Nueva clave:</label>
+                    <input type="password" name="pwd" id="pwd" class="form-control" oninput="newPwd(this)" onblur="check_pwd(this)">
+                    <div align="center"></div>
+                </div>
+                <div class="form-group">
+                    <label for="">Repita la clave:</label>
+                    <input type="password" name="pwd_rep" id="pwd_rep" class="form-control" oninput="checkPwdChange(this)">
+                    <div align="center"></div>
+                </div>
+                <div class="form-group" id="resp">
+
+                </div>
+                <div class="form-group" align="center">
+                    <button id="pwdSubmit" type="submit" class="btn btn-success" onclick="changePwd()">Aplicar</button>
+                    <button type="reset" class="btn btn-warning" name="button">Deshacer</button>
+                    <button type="back" data-dismiss="modal" class="btn btn-danger" name="button">Regresar</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>

@@ -1,9 +1,12 @@
 <?php
+// Controlador: js/main.js
+// Modelo: core/async_main.php
+
 require_once 'datos.php';
 if(!isset($_SESSION['name'])){
-	login();
+	checklogin();
 }
-function login(){
+function checklogin(){
 	?>
 	<script type="text/javascript">
 		window.location.href = '<?php echo PROJECT_HOST;?>login.php';
@@ -82,12 +85,12 @@ function login(){
 					<i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
 				</a>
 				<ul class="dropdown-menu dropdown-user">
-					<!--<li><a href="#"><i class="fa fa-user fa-fw"></i> Perfil Usuario</a>
+					<li><a href="<?php echo PROJECT_HOST;?>user/profile.php"><i class="fa fa-user fa-fw"></i> Perfil Usuario</a>
 					</li>
-					<li><a href="#"><i class="fa fa-gear fa-fw"></i> Ajustes</a>
-					</li>
-					<li class="divider"></li>-->
-					<li><a href="<?php echo PROJECT_HOST;?>login.php"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a>
+					<!--<li><a href="#"><i class="fa fa-gear fa-fw"></i> Ajustes</a>
+					</li>-->
+					<li class="divider"></li>
+					<li><a href="<?php echo PROJECT_HOST;?>logout.php"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a>
 					</li>
 				</ul>
 				<!-- /.dropdown-user -->

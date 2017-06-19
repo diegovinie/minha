@@ -1,5 +1,8 @@
 <?php
 //Area de entrada después de la autenticación.
+// Controlador: js/main.js
+// Modelo: core/async_main.php
+
 require_once 'datos.php';
 session_start();
 if(isset($_SESSION['user']) && $_SESSION['status'] == 'active'){
@@ -135,22 +138,10 @@ if(isset($_SESSION['user']) && $_SESSION['status'] == 'active'){
   </div>
       <!-- /.row -->
   </div>
-  <script type="text/javascript">
-    window.onload = function(){
-        $.ajax({
-            type: 'GET',
-            url: 'core/query.php?fun=balance&number=<?php echo $_SESSION['number_id']; ?>',
-            dataType: 'json',
-            success: function(res){
-                console.log('paso');
-                var cont = document.getElementById('balance');
-                cont.innerHTML = 'Apartamento ' +res[0].A17_number +':  ' +'  Bs. ' +res[0].A17_balance;
-            }
-        })
-    }
-  </script>
+<script src="js/main.js" charset="utf-8"></script>
 
-<?php    require 'footer.php';
+<?php
+require 'footer.php';
 }else{
     echo "Área restringida.";
     ?>

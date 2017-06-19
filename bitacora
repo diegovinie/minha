@@ -51,3 +51,11 @@
 - balance.php con manipulación del DOM y llamadas ajax con promesas
 - trabajo asincrónico en bills.php
 - Se modificó engine.php para que trabaje por etapas recibiendo llamados asincrónicos
+
+* lun 19jun:
+- se inició la adaptación a múltiples edificios incluyendo la tabla 'buildings'
+- se agregó profiles.php con varios campos que se manejan relacional y json
+- se incorpora la pregunta de seguridad y la ofuscación de claves con md5
+- se inicia el uso de cookies
+- se optimiza el MVC y se añade el directorio templates
+- se dan los primeros pasos de una mini base de datos json en files/

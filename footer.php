@@ -24,8 +24,8 @@
 
         <!-- Morris Charts JavaScript -->
         <script src="<?php echo PROJECT_HOST.TEMPLATE;?>vendor/raphael/raphael.min.js"></script>
-        <script src="<?php echo PROJECT_HOST.TEMPLATE;?>vendor/morrisjs/morris.min.js"></script>
-        <script src="<?php echo PROJECT_HOST.TEMPLATE;?>data/morris-data.js"></script>
+        <!--<script src="<?php echo PROJECT_HOST.TEMPLATE;?>vendor/morrisjs/morris.min.js"></script>-->
+        <!--<script src="<?php echo PROJECT_HOST.TEMPLATE;?>data/morris-data.js"></script>-->
 
         <!-- Custom Theme JavaScript -->
         <script src="<?php echo PROJECT_HOST.TEMPLATE;?>dist/js/sb-admin-2.js"></script>

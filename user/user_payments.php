@@ -1,53 +1,12 @@
 <?php
+// Modelo: core/async_user_payments.php
+// Controlador: js/user_payments.js
+
 session_start();
 require '../datos.php';
 require ROOTDIR.'header.php';
 require ROOTDIR.'menu.php';
-$user = $_SESSION['user'];
  ?>
-<script type="text/javascript">
-    window.onload = function(){
-		host = "../core/async_user_payments.php?fun=pays&user=<?php echo $user; ?>&arg=";
-		var id1 = "pagos";
-		getDataAjax(host, id1, function(res){
-			setTable(id1, res, function(){
-				tablePager(id1, function(){
-					$('#'+id1).find('tbody').children().each(function(){
-						$(this).attr('onclick', 'showInfo(this)')
-					})
-				})
-			})
-		})
-		var id2 = "pagos_en_revision"
-		getDataAjax(host, id2, function(res){
-			setTable(id2, res, function(){
-				tablePager(id2, function(){
-					$('#'+id2).find('tbody').children().each(function(){
-						$(this).attr('onclick', 'showInfo(this)');
-					})
-				})
-			})
-		})
-        var id3 = "devueltos"
-        getDataAjax(host, id2, function(res){
-            setTable(id2, res, function(){
-                tablePager(id2, function(){
-                    $('#'+id2).find('tbody').children().each(function(){
-                        $(this).attr('onclick', 'showInfo(this)');
-                    })
-                })
-            })
-        })
-    	function radioYes(self){
-    		console.log('yes')
-    	};
-    	function radioNo(self){
-    		console.log('no')
-    	};
-    	function showInfo(self){
-    	};
-    }
-</script>
 
 <div id="page-wrapper">
     <div class="row">
@@ -68,7 +27,7 @@ $user = $_SESSION['user'];
 
                 </div>
                 <div class="panel-footer col-lg-12" style="margin-bottom: 60px;">
-                    <button type="button" name="agregar_proveedor" class="btn btn-primary btn-lg" style="float: right;" onclick="window.location.href = 'add_payment.php'">Registrar Nuevo Pago</button>
+                    <button type="button" name="agregar_proveedor" class="btn btn-primary btn-lg" style="float: right;" onclick="newPayment()">Registrar Nuevo Pago</button>
                 </div>
             </div>
         </div>
@@ -104,8 +63,8 @@ $user = $_SESSION['user'];
         </div>
     </div>
 </div>
+<script src="../js/user_payments.js" charset="utf-8"></script>
 
 <?php
-
 require '../footer.php';
  ?>

@@ -1,4 +1,7 @@
 <?php
+// Controlador: js/balance.js
+// Modelo: core/async_balance.php
+
 require '../datos.php';
 session_start();
 require ROOTDIR.'header.php';
