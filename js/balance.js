@@ -1,13 +1,4 @@
 window.onload = function(){
-    var a = document.getElementsByClassName('A17_id');
-    for(var i = 0; i < a.length; i++){
-        a.item(i).style.display = 'none';
-    }
-    rows = document.getElementById('aptos').querySelectorAll('.trow');
-    vis = 10;
-    for(var i = vis; i < rows.length; i++ ){
-        rows.item(i).style.display = 'none';
-    }
     var host = "../core/async_balance.php?fun=aQuery&arg=";
     var lista_id = ["balance_apartamentos", "cuentas", "fondos"];
     lista_id.forEach(function(id){
@@ -15,34 +6,37 @@ window.onload = function(){
             setTable(id, res, function(){
                 tablePager(id, function(){
                     $('#'+id).find('tbody').children().each(function(){
-                        $(this).attr('onclick', 'showApt(this)');
-                    })
-                })
-            })
-        })
-    })
+                        if(id == 'balance_apartamentos'){
+                            $(this).attr('onclick', 'showApt(this)');
+                        }
+                    });
+                    var foot = $('#'+id).find('tfoot') | 1;
+                    if(foot != false){
+                        $('#'+id).find("[data-type='total']")
+                        .each(function(){
+                            dataParser(this)
+                        });
+                    }
+                });
+            });
+        });
+    });
     var lista2 = ["corriente", "total_fondos"];
     lista2.forEach(function(id){
         getDataAjax(host, id, function(res){
             $('#'+id).html(res);
             document.getElementById(id).dataset.value = res;
-            setTimeout(function(){
-                dataParser(document.getElementById(id));
-            }, 500)
-
-        })
-    })
-
-    setTimeout(function(){
-        var dis = document.getElementById('disponibilidad'),
-            corr = document.getElementById('corriente').dataset.value,
-            funds = document.getElementById('total_fondos').dataset.value;
-        sum = parseFloat(corr) + parseFloat(funds);
-        dis.dataset.value = sum;
-        dis.innerHTML = sum;
-        dataParser(dis);
-    }, 2000)
-
+            dataParser(document.getElementById(id), function(){
+                var dis = document.getElementById('disponibilidad'),
+                    corr = document.getElementById('corriente').dataset.value,
+                    funds = document.getElementById('total_fondos').dataset.value;
+                sum = parseFloat(corr) + parseFloat(funds);
+                dis.dataset.value = sum;
+                dis.innerHTML = sum;
+                dataParser(dis);
+            });
+        });
+    });
 }
 
 function showApt(self){

@@ -1,4 +1,8 @@
 <?php
+// Controlador: js/balance.js
+// Vista: admin/balance.php
+
+session_start();
 require_once '../datos.php';
 require_once ROOTDIR.'/server.php';
 require_once ROOTDIR.'/core/tables.php';
@@ -6,38 +10,38 @@ connect();
 
 if(isset($_GET['fun'])){
     extract($_GET);
+    $bui = $_SESSION['bui'];
     switch ($arg) {
         case 'balance_apartamentos':
-            $q = "SELECT A17_id AS 'id', A17_number AS 'Apartamento',
-            A17_balance AS 'Deuda' FROM A17";
+            $q = "SELECT bui_id AS 'id', bui_apt AS 'Apartamento',
+            bui_balance AS 'Deuda' FROM buildings WHERE bui_name = '$bui'";
             $q_foot = "SELECT '' AS 'a', 'Deuda Total:' AS 'b',
-            SUM(A17_balance) AS 'total' FROM A17";
+            SUM(bui_balance) AS 'total' FROM buildings WHERE bui_name = '$bui'";
             break;
         case 'cuentas':
             $q = "SELECT acc_id AS 'id', acc_name AS 'Cuenta',
-            user_user AS 'Custodio', A17_number AS 'Apartamento',
-            acc_balance AS 'Monto' FROM accounts, users, userdata,
-            A17 WHERE acc_user = user_id AND acc_user = udata_user_fk
-            AND udata_number_fk = A17_id";
+            user_user AS 'Custodio', bui_apt AS 'Apartamento',
+            acc_balance AS 'Monto' FROM accounts, users, userdata, buildings WHERE acc_user = user_id AND acc_user = udata_user_fk
+            AND udata_number_fk = bui_id AND acc_bui = '$bui'";
             $q_foot = "SELECT '' AS 'a', 'Total en Cuentas:' AS 'b', '' AS 'c',
-            '' AS 'd', SUM(acc_balance) AS 'total' FROM accounts";
+            '' AS 'd', SUM(acc_balance) AS 'total' FROM accounts WHERE acc_bui = '$bui'";
             break;
         case 'fondos':
             $q = "SELECT fun_id AS 'id', fun_name AS 'Nombre', CASE fun_type
-            WHEN 1 THEN 'Porcentaje' WHEN 2 THEN 'Monto' END AS 'Tipo', fun_default AS 'Cuota', fun_balance AS 'Monto' FROM funds WHERE fun_rel = 'A17' ";
+            WHEN 1 THEN 'Porcentaje' WHEN 2 THEN 'Monto' END AS 'Tipo', fun_default AS 'Cuota', fun_balance AS 'Monto' FROM funds WHERE fun_bui = '$bui' ";
             $q_foot = "SELECT '' AS 'a', 'Total en Fondos:' AS 'b', '' AS 'c',
-            '' AS 'd', SUM(fun_balance) AS 'total' FROM funds";
+            '' AS 'd', SUM(fun_balance) AS 'total' FROM funds WHERE fun_bui = '$bui'";
             break;
         case 'apartamento':
-            $q = "SELECT A17_number AS `Apto`, A17_balance AS `Deuda`,
-                A17_assigned AS `Asignado?`, A17_occupied FROM A17, payments WHERE
-                A17_id = '$id'";
+            $q = "SELECT bui_apt AS `Apto`, bui_balance AS `Deuda`,
+                bui_assigned AS `Asignado`, bui_occupied AS 'Ocupado' FROM buildings WHERE
+                bui_id = '$id'";
             break;
         case 'corriente':
-            $sq = "SELECT SUM(A17_balance) AS 'a' FROM A17";
+            $sq = "SELECT SUM(bui_balance) AS 'a' FROM buildings WHERE bui_name = '$bui'";
             break;
         case 'total_fondos':
-            $sq = "SELECT SUM(fun_balance) FROM funds WHERE fun_rel = 'A17'";
+            $sq = "SELECT SUM(fun_balance) FROM funds WHERE fun_bui = '$bui'";
             break;
         default:
             die;

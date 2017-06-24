@@ -1,4 +1,7 @@
 <?php
+// Controlador: js/payments.js
+// Modelo: core/ async_payments.php
+
 session_start();
 require '../datos.php';
 require ROOTDIR.'header.php';
@@ -6,17 +9,16 @@ require ROOTDIR.'menu.php';
 require ROOTDIR.'server.php';
 connect();
  ?>
-<script src="<?php echo PROJECT_HOST;?>js/payments.js" charset="utf-8"></script>
 
 <div id="page-wrapper">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <h2 class="page-header">Pagos</h2>
         </div>
 
     </div>
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Mes Actual
@@ -26,7 +28,7 @@ connect();
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Mes Anterior
@@ -36,7 +38,7 @@ connect();
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Últimos 3 Meses
@@ -48,7 +50,7 @@ connect();
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Pagos Pendientes por Revisión
@@ -66,7 +68,7 @@ connect();
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Pagos Rechazados
@@ -79,7 +81,7 @@ connect();
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Pagos Aprobados
@@ -92,7 +94,7 @@ connect();
         </div>
     </div>
 </div>
-
+<script src="<?php echo PROJECT_HOST;?>js/payments.js" charset="utf-8"></script>
 <?php
 require ROOTDIR.'footer.php';
  ?>

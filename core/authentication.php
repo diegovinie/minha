@@ -40,7 +40,7 @@ if(isset($ePost['response']) && isset($ePost['email']) && isset($ePost['fun'])){
 if(isset($ePost['user']) && isset($ePost['pwd'])){
     extract($ePost);
     if($pwd != DEF_PWD) $pwd = md5($pwd);
-    $q = "SELECT user_id, user_user, user_pwd, user_type, user_active, udata_name, udata_number_fk FROM users, userdata WHERE user_user = '$user' AND user_pwd = '$pwd' AND udata_user_fk = user_id";
+    $q = "SELECT user_id, user_user, user_pwd, user_type, user_active, udata_name, udata_number_fk, bui_name FROM users, userdata, buildings WHERE user_user = '$user' AND user_pwd = '$pwd' AND udata_user_fk = user_id AND udata_number_fk = bui_id";
     $r = q_exec($q);
     $user_val = [];
     //Verifica si el usuario existe en la base de datos
@@ -66,6 +66,7 @@ if(isset($ePost['user']) && isset($ePost['pwd'])){
         $_SESSION['val'] = $user_val['user_active'];
         $_SESSION['number_id'] = $user_val['udata_number_fk'];
         $_SESSION['apt'] = $user_val['udata_number_fk'];
+        $_SESSION['bui'] = $user_val['bui_name'];
 
         //Se define que tipo de usuario es
         switch ($user_val['user_type']) {
@@ -125,3 +126,4 @@ if(isset($ePost['fun']) && isset($ePost['pwd']) && isset($ePost['response']) && 
         }
     }
 }
+if(isset($time_ini)) rec_exec_time($time_ini, __FILE__, __LINE__);

@@ -260,4 +260,5 @@ $bui = query_to_assoc($r)[0];
 <script src="<?php echo PROJECT_HOST; ?>js/profile.js" charset="utf-8"></script>
 <?php
 require '../footer.php';
+if(isset($time_ini)) rec_exec_time($time_ini, __FILE__, __LINE__);
  ?>

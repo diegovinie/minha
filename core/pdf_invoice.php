@@ -15,7 +15,7 @@ $q = "SELECT udata_name, udata_surname, udata_ci, A17_number FROM userdata INNER
 $r = q_exec($q);
 $dat = query_to_assoc($r)[0];
 
-$file = fopen(ROOTDIR.'files/FAC-' .$lapse .'.json', 'r');
+$file = fopen(ROOTDIR.'files/invoices/FAC-' .$lapse .'.json', 'r');
 
 $a = fgets($file);
 if (strlen($a) <= 1){

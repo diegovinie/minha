@@ -104,4 +104,5 @@ if(isset($_POST['question']) && isset($_POST['answer'])){
     }
 }
 
+if(isset($time_ini)) rec_exec_time($time_ini, __FILE__, __LINE__);
  ?>

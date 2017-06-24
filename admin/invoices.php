@@ -1,4 +1,7 @@
 <?php
+// Controlador: js/invoices.js
+// Modelo: core/async_invoices.php
+
 require '../datos.php';
 session_start();
 require ROOTDIR.'header.php';
@@ -21,7 +24,6 @@ while(false !== ($nombre_fichero = readdir($gestor_dir))){
     }
 }
  ?>
-<script src="<?php echo PROJECT_HOST;?>js/invoices.js" charset="utf-8"></script>
 
 <div id="page-wrapper">
     <div class="row">
@@ -126,7 +128,7 @@ while(false !== ($nombre_fichero = readdir($gestor_dir))){
         </div>
     </div>
 </div>
-
+<script src="<?php echo PROJECT_HOST;?>js/invoices.js" charset="utf-8"></script>
 <?php
 require ROOTDIR.'footer.php';
  ?>

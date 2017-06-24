@@ -1,5 +1,8 @@
 <?php
 // Datos: deberán ser configurados la primera vez por settings.php
+//define('TIME_I', microtime(true));
+$time_ini = microtime(true);
+
 $db_host = 'localhost';
 $db_user = 'root';
 $db_pwd = 'altura';
@@ -84,4 +87,15 @@ function escape_array($array){
     }
     return $result;
 }
+
+function rec_exec_time($ti, $file, $line){
+    $f = fopen(ROOTDIR."exec_time.log", 'r+');
+    $date1 = date_create();
+    $d = $date1->format('Y-m-d H:i:s');
+    $tt = number_format(microtime(true) - $ti, 4);
+    rewind($f);
+    fwrite($f, 'Tiempo: '.$tt .'s, Fecha: ' .$d .', H: ' .$_SERVER['HTTP_HOST'] .', File: ' .$file .', L: ' .$line);
+    fclose($f);
+}
+
  ?>

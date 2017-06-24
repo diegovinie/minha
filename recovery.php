@@ -87,3 +87,4 @@ require 'header.php';
         <script src="<?php echo PROJECT_HOST;?>js/recovery.js" charset="utf-8"></script>
     </body>
 </html>
+<?php if(isset($time_ini)) rec_exec_time($time_ini, __FILE__, __LINE__); ?>

@@ -1,12 +1,13 @@
 <?php
-//Formulario con campos dinámicos
+// Modelo: core/pdf_invoice.php
+
 session_start();
 require '../datos.php';
 require ROOTDIR.'header.php';
 require ROOTDIR.'menu.php';
 require ROOTDIR.'server.php';
 
-$dir = ROOTDIR.'files';
+$dir = ROOTDIR.'files/invoices';
 $gestor_dir = opendir($dir);
 while(false !== ($nombre_fichero = readdir($gestor_dir))){
     if($nombre_fichero != '.' && $nombre_fichero != '..'){
@@ -26,13 +27,13 @@ while(false !== ($nombre_fichero = readdir($gestor_dir))){
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4 col-md-offset-4">
+        <div class="col-md-4 col-md-offset-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Seleccione:</h3>
                 </div>
                 <div class="panel-body">
-                    <form class="" action="../core/pdf_invoice.php" method="get">
+                    <form class="" action="../core/pdf_invoice.php" method="get" target="_blank">
                         <div class="form-group">
                             <label for="">Periodo: </label>
                             <select class="form-control" name="lapse" id='date'>

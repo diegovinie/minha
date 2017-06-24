@@ -146,7 +146,7 @@ function checklogin(){
 						<ul class="nav nav-second-level">
 							<li><a href="<?php echo PROJECT_HOST;?>admin/payments.php">Pagos y Recibos<span class="fa arrow"></span></a>
 								<ul class="nav nav-third-level">
-									<li><a href="<?php echo PROJECT_HOST;?>admin/payments.php#pagos_pendientes">Pagos</a></li>
+									<li><a href="<?php echo PROJECT_HOST;?>admin/payments.php">Pagos</a></li>
 									<li><a href="<?php echo PROJECT_HOST;?>admin/invoices.php">Recibos</a></li>
 								</ul>
 							</li>

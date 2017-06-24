@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../datos.php';
 require_once ROOTDIR.'/server.php';
 require_once ROOTDIR.'/core/tables.php';
@@ -6,24 +7,28 @@ connect();
 
 if(isset($_GET['fun'])){
     extract($_GET);
+    $bui = $_SESSION['bui'];
     switch ($arg) {
         case 'mes_actual':
             $q = "SELECT CASE pay_check
                         WHEN 1 THEN 'Aprobados'
                         WHEN 2 THEN 'Rechazados'
                         WHEN 0 THEN 'Pendientes'
-                        END AS 'Condición', COUNT(pay_id) AS 'Cantidad', SUM(pay_amount) AS 'Monto' FROM payments WHERE MONTH(pay_date) = MONTH(NOW()) GROUP BY pay_check";
+                        END AS 'Condición', COUNT(pay_id) AS 'Cantidad', SUM(pay_amount) AS 'Monto' FROM payments
+                        WHERE MONTH(pay_date) = MONTH(NOW()) AND pay_bui = '$bui' GROUP BY pay_check";
             break;
         case 'mes_anterior':
             $q = "SELECT CASE pay_check
                         WHEN 1 THEN 'Aprobados'
                         WHEN 2 THEN 'Rechazados'
                         WHEN 0 THEN 'Pendientes'
-                        END AS 'Condición', COUNT(pay_id) AS 'Cantidad', SUM(pay_amount) AS 'Monto' FROM payments WHERE MONTH(pay_date) = MONTH(NOW())-1 GROUP BY pay_check";
+                        END AS 'Condición', COUNT(pay_id) AS 'Cantidad', SUM(pay_amount) AS 'Monto' FROM payments
+                        WHERE MONTH(pay_date) = MONTH(NOW())-1 AND pay_bui = '$bui' GROUP BY pay_check";
             break;
         case 'ultimos_tres':
             $q = "SELECT lap_name AS 'Mes', SUM(pay_amount)
-                AS 'Monto' FROM payments INNER JOIN lapses ON MONTH(pay_date) = lap_id WHERE pay_check = 0 GROUP BY lap_name LIMIT 3";
+                AS 'Monto' FROM payments INNER JOIN lapses ON MONTH(pay_date) = lap_id
+                WHERE pay_check = 0 AND pay_bui = '$bui' GROUP BY lap_name LIMIT 3";
             break;
         case 'pagos_rechazados':
             $q = "SELECT pay_id AS 'id', pay_date AS 'Fecha', bui_apt
@@ -36,7 +41,7 @@ if(isset($_GET['fun'])){
                 bank_name AS 'Banco', pay_op AS 'Num. Op.', pay_obs AS 'Observaciones' FROM payments
                 INNER JOIN buildings ON pay_fk_number = bui_id
                 INNER JOIN banks ON pay_fk_bank = bank_id
-                WHERE pay_check = 2
+                WHERE pay_check = 2  AND pay_bui = '$bui'
                 LIMIT 0, 10";
             break;
         case 'pagos_pendientes':
@@ -50,23 +55,23 @@ if(isset($_GET['fun'])){
                 bank_name AS 'Banco', pay_op AS 'Num. Op.' FROM payments
                 INNER JOIN buildings ON pay_fk_number = bui_id
                 INNER JOIN banks ON pay_fk_bank = bank_id
-                WHERE pay_check = 0
+                WHERE pay_check = 0  AND pay_bui = '$bui'
                 ";
             break;
         case 'pagos_aprobados':
-        $q = "SELECT pay_id AS 'id', pay_date AS 'Fecha', bui_apt
-            AS 'Apartamento', pay_amount AS 'Monto',
-                CASE pay_type
-                    WHEN 1 THEN 'Transferencia'
-                    WHEN 2 THEN 'Depósito'
-            ELSE 'otro'
-            END AS 'Forma de Pago',
-            bank_name AS 'Banco', pay_op AS 'Num. Op.' FROM payments
-            INNER JOIN buildings ON pay_fk_number = bui_id
-            INNER JOIN banks ON pay_fk_bank = bank_id
-            WHERE pay_check = 1
-            LIMIT 0, 10";
-        break;
+            $q = "SELECT pay_id AS 'id', pay_date AS 'Fecha', bui_apt
+                AS 'Apartamento', pay_amount AS 'Monto',
+                    CASE pay_type
+                        WHEN 1 THEN 'Transferencia'
+                        WHEN 2 THEN 'Depósito'
+                ELSE 'otro'
+                END AS 'Forma de Pago',
+                bank_name AS 'Banco', pay_op AS 'Num. Op.' FROM payments
+                INNER JOIN buildings ON pay_fk_number = bui_id
+                INNER JOIN banks ON pay_fk_bank = bank_id
+                WHERE pay_check = 1  AND pay_bui = '$bui'
+                LIMIT 0, 10";
+            break;
         default:
             die;
             break;
@@ -151,6 +156,6 @@ function aQueryTablaPrin($q, $id){
     $r = q_exec($q);
     tabla_radio($r, $id);
 }
-
+if(isset($time_ini)) rec_exec_time($time_ini, __FILE__, __LINE__);
 
  ?>

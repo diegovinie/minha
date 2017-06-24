@@ -152,5 +152,5 @@ require 'footer.php';
     </script>
     <?php
 }
-
+if(isset($time_ini)) rec_exec_time($time_ini, __FILE__, __LINE__);
   ?>

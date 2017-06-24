@@ -144,6 +144,7 @@ $rlapse = q_exec($qlapse);
  <?php
 require ROOTDIR.'footer.php';
 $session_user = $_SESSION['user'];
+$bui = $_SESSION['bui'];
 //Verifica si fue enviado el formulario
 if(isset($_POST['date']) &&
     isset($_POST['submit']) && isset($_POST['amount']) &&
@@ -159,7 +160,7 @@ if(isset($_POST['date']) &&
         $account = 1;
     }
 
-    $q = "INSERT INTO bills VALUES (NULL, '$date', '$class', '$desc', '$name', '$rif', $account, '$method', '$log', 0, $amount, $iva, $total, '$session_user', NULL)";
+    $q = "INSERT INTO bills VALUES (NULL, '$date', '$bui', '$class', '$desc', '$name', '$rif', $account, '$method', '$log', 0, $amount, $iva, $total, '$session_user', NULL)";
     $r = q_log_exec($session_user, $q);
 
     $q2 = "UPDATE accounts SET acc_balance = acc_balance - $total WHERE acc_id = $account";

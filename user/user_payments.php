@@ -67,4 +67,5 @@ require ROOTDIR.'menu.php';
 
 <?php
 require '../footer.php';
+if(isset($time_ini)) rec_exec_time($time_ini, __FILE__, __LINE__);
  ?>

@@ -1,18 +1,23 @@
 <?php
+// Controlador: js/invoices.js
+// Vista: admin/invoices.php
+
+session_start();
 require_once '../datos.php';
 require_once ROOTDIR.'/server.php';
 require_once ROOTDIR.'/core/tables.php';
 connect();
 $q2 = '';
 extract($_GET);
+$bui = $_SESSION['bui'];
 switch ($arg) {
     case 'agregar_gastos':
         $q = "SELECT bil_id AS 'id', bil_date AS 'Fecha', bil_class AS 'Clase',
         bil_desc AS 'Desc', bil_total AS 'Monto' FROM bills ORDER BY bil_id DESC";
         break;
     case 'fondos':
-        $q = "SELECT fun_id AS 'id', fun_name AS 'Nombre', fun_balance AS 'Saldo', fun_type FROM funds WHERE fun_rel = 'A17' ";
-        $q2 = "SELECT fun_type, CONVERT(fun_default, SIGNED) AS 'fun_monto' FROM funds WHERE fun_rel = 'A17'";
+        $q = "SELECT fun_id AS 'id', fun_name AS 'Nombre', fun_balance AS 'Saldo', fun_type FROM funds WHERE fun_bui = '$bui' ";
+        $q2 = "SELECT fun_type, CONVERT(fun_default, SIGNED) AS 'fun_monto' FROM funds WHERE fun_bui = '$bui'";
         break;
 
     default:

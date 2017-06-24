@@ -87,27 +87,28 @@ function getDataAjax(h, id, callback){
     ajax.send(null)
 }
 
-function trasTable(id){
+function trasTable(id, callback){
     tabla = $('#t_'+id);
     var x = tabla.find('tr')
     x.each(function(r, v){
         v.style.float = 'left';
         v.style.display = 'block';
-    })
+    });
     var y = tabla.find('td')
     y.each(function(r, v){
         v.style.display = 'block';
         v.style.textAlign = 'left';
-    })
+    });
     var z = tabla.find('th')
     z.each(function(r, v){
         v.style.display = 'block';
-    })
+    });
     var suma = 0;
     $('#t_'+id + ' tr').each(function(x){
-        suma += parseFloat($(this).css('width'))
-    })
+        suma += parseFloat($(this).css('width'));
+    });
     $('#ovCont')? $('#ovCont').css('width', suma + 70) : false;
+    if(callback) callback();
 }
 
 function markSuccess(self){
@@ -128,10 +129,11 @@ function tdChecker(id){
     })
 }
 
-function dataParser(tag){
+function dataParser(tag, callback){
     var money = ['monto', 'iva', 'total', 'deuda', 'balance', 'saldo', 'cuota'];
     var date = ['fecha', 'date'];
     var rif = ['rif','/ci', 'c.i'];
+    var others = ['asignado', 'ocupado'];
     money.forEach(function(x){
         var needle = new RegExp(x, 'i');
         if (needle.test(tag.dataset.type)){
@@ -158,7 +160,15 @@ function dataParser(tag){
             tag.style.textAlign = 'left';
 
         }
+    });
+    others.forEach(function(x){
+        var needle = new RegExp(x, 'i');
+        if(needle.test(tag.dataset.type)){
+            var bool = tag.dataset.value;
+            tag.innerHTML = bool == 1? "Sí" : "No";
+        }
     })
+    if(callback) callback();
 }
 
 function addRadioToTable(tr, id){

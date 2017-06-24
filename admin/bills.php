@@ -1,10 +1,13 @@
 <?php
+// Controlador: js/bills.js
+// Modelo: async_bills.php
+
 require '../datos.php';
 session_start();
 require ROOTDIR.'header.php';
 require ROOTDIR.'menu.php';
  ?>
- <script src="<?php echo PROJECT_HOST;?>js/bills.js" charset="utf-8"></script>
+
 
 <div id="page-wrapper">
     <div class="row">
@@ -46,6 +49,8 @@ require ROOTDIR.'menu.php';
             </div>
         </div>
     </div>
+</div>
+    <script src="<?php echo PROJECT_HOST;?>js/bills.js" charset="utf-8"></script>
  <?php
 require ROOTDIR.'footer.php';
   ?>

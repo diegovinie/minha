@@ -153,7 +153,7 @@ function generate($user, $data_ar){
                 'charges' => $content2];
     //Graba contenidos temporales de lo que se va a grabar en charges
     $type_json = json_encode($table) or die(json_last_error_msg());
-    $file = fopen(ROOTDIR.'files/FAC-'.$fac_number.'.json', 'w');
+    $file = fopen(ROOTDIR.'files/invoices/FAC-'.$fac_number.'.json', 'w');
     fwrite($file, $type_json);
     fclose($file);
     return $table;
@@ -169,7 +169,7 @@ function generate($user, $data_ar){
 function save_fact($fac_number){
 
     //Graba los datos temporales en charges
-    $file = fopen(ROOTDIR.'files/FAC-' .$fac_number. '.json', "r");
+    $file = fopen(ROOTDIR.'files/invoices/FAC-' .$fac_number. '.json', "r");
     $b = fgets($file);
     $c = json_decode($b);
 
@@ -208,8 +208,8 @@ function discard($fac_number){
     $q = "UPDATE bills SET bil_lapse_fk = 0 WHERE bil_lapse_fk = 99";
     $r = q_exec($q);
     //elimina los datos temporales y la factura. json
-    if(file_exists(ROOTDIR.'files/FAC-' .$fac_number .'.json')) {
-        unlink(ROOTDIR.'files/FAC-' .$fac_number .'.json');
+    if(file_exists(ROOTDIR.'files/invoices/FAC-' .$fac_number .'.json')) {
+        unlink(ROOTDIR.'files/invoices/FAC-' .$fac_number .'.json');
         $resp = "Borrado con éxito";
     }else{
         $resp = "no se encuentra";
