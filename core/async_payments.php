@@ -79,6 +79,40 @@ if(isset($_GET['fun'])){
 
     $fun($q, $arg);
 }
+function genpdf($q, $id){
+    ini_set('max_execution_time', 60);
+    ob_start();
+    $r = q_exec($q);
+    table_open($id);
+    table_head($r);
+    table_tbody($r);
+    table_close();
+    $table = ob_get_clean();
+
+    $dateNow = date_create();
+    $header = array(
+        $user = $_SESSION['name'] .' ' .$_SESSION['surname'],
+        $date = $dateNow->format('Y-m-d H:i:s'),
+        $time = $dateNow->format('Y-m-d H:i:s')
+    );
+    $header_needles = array('%user%', '%date%', '%time%');
+
+    $title = str_replace("_", " ", $id);
+    $title = '<h2 align="center">'.ucwords($title).'</h2>';
+
+    $handler = fopen('../templates/informetabla1.html', 'r');
+    $template = '';
+    while(!feof($handler)){
+        $template .= fgets($handler);
+    }
+
+    $template = str_replace($header_needles, $header, $template);
+    $template = str_replace('%title%', $title, $template );
+    $template = str_replace('%body%', $table, $template );
+    $inf = new Spipu\Html2Pdf\Html2Pdf();
+    $inf->writeHtml($template);
+    $inf->output();
+}
 
 if(isset($_POST['submits'])){
     //extract($_POST);

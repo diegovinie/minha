@@ -40,7 +40,7 @@ if(isset($ePost['response']) && isset($ePost['email']) && isset($ePost['fun'])){
 if(isset($ePost['user']) && isset($ePost['pwd'])){
     extract($ePost);
     if($pwd != DEF_PWD) $pwd = md5($pwd);
-    $q = "SELECT user_id, user_user, user_pwd, user_type, user_active, udata_name, udata_number_fk, bui_name FROM users, userdata, buildings WHERE user_user = '$user' AND user_pwd = '$pwd' AND udata_user_fk = user_id AND udata_number_fk = bui_id";
+    $q = "SELECT user_id, user_user, user_pwd, user_type, user_active, udata_name, udata_surname, udata_number_fk, bui_name FROM users, userdata, buildings WHERE user_user = '$user' AND user_pwd = '$pwd' AND udata_user_fk = user_id AND udata_number_fk = bui_id";
     $r = q_exec($q);
     $user_val = [];
     //Verifica si el usuario existe en la base de datos
@@ -50,12 +50,8 @@ if(isset($ePost['user']) && isset($ePost['pwd'])){
         }
         //Verifica si el usuario está activado
         if($user_val['user_active'] == 0){
-            ?>
-                <script type="text/javascript">
-                    alert("Aún no está activo. Contacte al administrador nombre@correo.org");
-                    window.location = "login.php";
-                </script>
-            <?php die;
+            echo '{"status": false, "msg": "Aún no está activo. Contacte al administrador nombre@correo.org"}';
+            die;
         }
         //Se establecen los parámetros de sesión
         session_start();
@@ -63,6 +59,7 @@ if(isset($ePost['user']) && isset($ePost['pwd'])){
         $_SESSION['user'] = $user;
         $_SESSION['status'] = 'active';
         $_SESSION['name'] = $user_val['udata_name'];
+        $_SESSION['surname'] = $user_val['udata_surname'];
         $_SESSION['val'] = $user_val['user_active'];
         $_SESSION['number_id'] = $user_val['udata_number_fk'];
         $_SESSION['apt'] = $user_val['udata_number_fk'];

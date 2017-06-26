@@ -1,6 +1,6 @@
 <?php
-// Controlador: js/add_user.js js/signup.js
-// Vista: admin/add_user.php, signup.php
+// Controlador: js/add_user.js js/signup.js, js/display_users.js
+// Vista: admin/add_user.php, signup.php, admin/display_users.php
 
 session_start();
 require_once '../datos.php';
@@ -17,26 +17,27 @@ if(isset($_GET['edificio'])){
 
 if(isset($_GET['arg'])){
     extract($_GET);
+    $bui = $_SESSION['bui'];
     switch ($arg) {
         case 'usuarios_registrados':
             $q = "SELECT udata_name AS 'Nombre', udata_surname AS 'Apellido',
-        	        udata_ci AS 'C.I.',  A17_number AS 'Apartamento',
+        	        udata_ci AS 'C.I.',  bui_apt AS 'Apartamento',
         			user_user AS 'Correo', CASE user_type
         				WHEN 1 THEN 'Administrador'
         				WHEN 2 THEN 'Usuario'
         				ELSE 'Indeterminado'
         			END AS 'Tipo de Usuario'
-        	    FROM users, userdata, A17 WHERE udata_user_fk = user_id AND udata_number_fk = A17_id AND user_active = 1";
-            $fun = 'display_users';
+        	    FROM users, userdata, buildings WHERE udata_user_fk = user_id AND udata_number_fk = bui_id AND user_active = 1 AND bui_name = '$bui'";
+//            $fun = 'display_users';
             break;
         case 'usuarios_pendientes':
         $q = "SELECT udata_id AS 'id', udata_name AS 'Nombre',
                 udata_surname AS 'Apellido',
                 udata_ci AS 'C.I.',
-                A17_number AS 'Apartamento',
+                bui_apt AS 'Apartamento',
                 user_user AS 'Correo'
-            FROM users, userdata, A17 WHERE udata_user_fk = user_id AND udata_number_fk = A17_id AND user_active = 0";
-        $fun = 'pending_users';
+            FROM users, userdata, buildings WHERE udata_user_fk = user_id AND udata_number_fk = bui_id AND user_active = 0 AND bui_name = '$bui'";
+//        $fun = 'pending_users';
             break;
 
         default:
@@ -106,6 +107,40 @@ if(isset($_POST['fun'])){
             # code...
             break;
     }
+}
+function genpdf($q, $id){
+    ini_set('max_execution_time', 60);
+    ob_start();
+    $r = q_exec($q);
+    table_open($id);
+    table_head($r);
+    table_tbody($r);
+    table_close();
+    $table = ob_get_clean();
+
+    $dateNow = date_create();
+    $header = array(
+        $user = $_SESSION['name'] .' ' .$_SESSION['surname'],
+        $date = $dateNow->format('Y-m-d H:i:s'),
+        $time = $dateNow->format('Y-m-d H:i:s')
+    );
+    $header_needles = array('%user%', '%date%', '%time%');
+
+    $title = str_replace("_", " ", $id);
+    $title = '<h2 align="center">'.ucwords($title).'</h2>';
+
+    $handler = fopen('../templates/informetabla1.html', 'r');
+    $template = '';
+    while(!feof($handler)){
+        $template .= fgets($handler);
+    }
+
+    $template = str_replace($header_needles, $header, $template);
+    $template = str_replace('%title%', $title, $template );
+    $template = str_replace('%body%', $table, $template );
+    $inf = new Spipu\Html2Pdf\Html2Pdf();
+    $inf->writeHtml($template);
+    $inf->output();
 }
 
 function display_users($q, $id){

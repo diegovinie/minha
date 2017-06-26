@@ -120,10 +120,20 @@ if(isset($_SESSION['user']) && $_SESSION['status'] == 'active'){
         }
         ?>
       <div class="row">
-      <div class="col-lg-8">
+      <div class="col-lg-4">
 
       </div>
       <!-- /.col-lg-8 -->
+      <div class="col-lg-4">
+          <div class="panel panel-info">
+              <div class="panel-heading">
+                  <h3 class="panel-title">Enviar Correo:</h3>
+              </div>
+              <div class="panel-body">
+                  <a href="<?php echo PROJECT_HOST;?>testing/email.php">enviar</a>
+              </div>
+          </div>
+      </div>
       <div class="col-lg-4">
           <div class="panel panel-warning">
               <div class="panel-heading">

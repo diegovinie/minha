@@ -1,11 +1,14 @@
 <?php
+// Controlador: js/display_users.js
+// Modelo: core/async_users.php
+
 require '../datos.php';
 //Tabla dinámica
 session_start();
 require ROOTDIR.'header.php';
 require ROOTDIR.'menu.php';
 ?>
-<script src="<?php echo PROJECT_HOST; ?>js/display_users.js" charset="utf-8"></script>
+
 <div id="page-wrapper">
 	<div class="row">
         <div class="col-md-12">
@@ -22,7 +25,8 @@ require ROOTDIR.'menu.php';
                     <!-- async data -->
                 </div>
                 <div class="panel-footer col-md-12" style="text-align:right;">
-                    <button type="button" name="agregar_proveedor" class="btn btn-primary btn-lg" onclick="window.location.href = 'add_user.php';">Agregar Usuarios</button>
+                    <button type="button" name="add_usuarios_registrados" class="btn btn-primary" onclick="window.location.href = 'add_user.php';">Agregar Usuarios</button>
+					<button type="button" name="pdf_usuarios_registrados" class="btn btn-info" data-type="pdf" onclick="window.open('../core/async_users.php?fun=genpdf&arg=usuarios_registrados')" >Imprimir</button>
                 </div>
 
             </div>
@@ -43,11 +47,13 @@ require ROOTDIR.'menu.php';
 				<div class="panel-footer button_box" align="center">
 					<button type="submit" name="submits" class="btn btn-primary">Aplicar</button>
 					<button type="reset" class="btn btn-default" onclick="resetAlerts(this)">Deshacer</button>
+					<button type="button" name="pdf_usuarios_pendientes" class="btn btn-info" data-type="pdf" onclick="window.open('../core/async_users.php?fun=genpdf&arg=usuarios_pendientes');" >Imprimir</button>
 				</div>
             </div>
         </div>
 	</div>
 </div>
+<script src="<?php echo PROJECT_HOST; ?>js/display_users.js" charset="utf-8"></script>
 <?php
 require ROOTDIR.'footer.php';
  ?>

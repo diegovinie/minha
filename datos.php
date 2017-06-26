@@ -42,6 +42,8 @@ setlocale(LC_TIME, 'es_VE.UTF-8');
 // Constante del MCM de los apartamentos de A17:
 define('FRAC', 0.4166);
 
+include ROOTDIR.'vendor/autoload.php';
+
 $file = fopen('hostname', 'w');
 fwrite($file, PROJECT_HOST);
 fclose($file);

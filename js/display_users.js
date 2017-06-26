@@ -7,20 +7,23 @@ window.onload = function(){
             tablePager(id1, function(){
                 $('#'+id1).find('tbody').children().each(function(){
                     $(this).attr('onclick', 'showInfo(this)')
-                })
-            })
-        })
-    })
+                });
+            });
+        });
+    });
+
     var id2 = "usuarios_pendientes"
     getDataAjax(host, id2, function(res){
         setTable(id2, res, function(){
             tablePager(id2, function(){
                 $('#'+id2).find('tbody').children().each(function(){
                     addRadioToTable(this, 'Correo');
-                })
-            })
-        })
-    })
+                });
+            });
+        });
+    });
+
+
 }
 function radioYes(self){
     console.log('yes')

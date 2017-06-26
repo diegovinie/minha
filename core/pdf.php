@@ -1,6 +1,6 @@
 <?php
 include_once '../vendor/fpdf181/fpdf.php';
-
+$ert = 'hola';
 class PDF_Grid extends FPDF {
     var $grid = false;
 
@@ -84,7 +84,7 @@ class PDF extends FPDF{
             $this->DrawGrid();
     }
     function format(){
-        $this->Image('../static/recibo.jpg', 0, 0, 210/2);
+        $this->Image('../static/banner468x60.png', 5, 5, 80);
     }
     function encabezado($id, $month, $date, $arr2, $array){
         $this->SetFont('Arial','', 8);
@@ -107,7 +107,7 @@ class PDF extends FPDF{
         $this->SetXY(7, 25);
         $this->Cell(17, 5, 'INMUEBLE:', 0, 0, 'L', true);
         $this->SetXY(25, 25);
-        $this->Cell(36, 5, 'EDIF A17', 0, 0, 'C', true);
+        $this->Cell(36, 5, '((EDITAR EDIFICIO))', 0, 0, 'C', true);
         // Nombre del propietario
         $this->SetXY(7, 30);
         $this->Cell(21, 5, 'PROPIETARIO:', 0, 0, 'L', true);
@@ -122,7 +122,7 @@ class PDF extends FPDF{
         $this->SetXY(36, 35);
         $this->Cell(10, 5, 'APTO:', 0, 0, 'L', true);
         $this->SetXY(47, 35);
-        $this->Cell(14, 5, $array['A17_number'], 0, 0, 'C', true);
+        $this->Cell(14, 5, $array['bui_apt'], 0, 0, 'C', true);
         // Mes
         $this->SetXY(65, 25);
         $this->Cell(10, 5, 'MES:', 0, 0, 'L', true);
