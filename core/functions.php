@@ -1,5 +1,44 @@
 <?php
 require_once '../datos.php';
+
+function genpdf($function, $q, $id){
+    ini_set('max_execution_time', 60);
+    ob_start();
+    $function($q, $id);
+    $table = ob_get_clean();
+
+    $dateNow = date_create();
+    $header = array(
+        $user = $_SESSION['name'] .' ' .$_SESSION['surname'],
+        $date = $dateNow->format('d-m-Y'),
+        $time = $dateNow->format('H:i:s')
+    );
+    $header_needles = array('%user%', '%date%', '%time%');
+
+    $title = str_replace("_", " ", $id);
+    $title = '<h2 align="center">'.ucwords($title).'</h2>';
+
+    $handler = fopen('../templates/mpdfinfoheader.html', 'r');
+    $htmlHeader = '';
+    while(!feof($handler)){
+        $htmlHeader .= fgets($handler);
+    }
+    $table = preg_replace('/(name|data-+(.)([^"]*))="([^"]*)"\s?/', "", $table);
+    $table = preg_replace('/<input(.*?)>/', "", $table);
+
+    $htmlHeader = str_replace($header_needles, $header, $htmlHeader);
+
+    $inf = new mPDF('utf-8','Letter','','','15','15','28','18');
+    $inf->pagenumPrefix = 'Página ';
+    $inf->nbpgPrefix = ' de ';
+    $inf->SetHTMLHeader($htmlHeader);
+    $inf->SetHTMLFooter('<h5 align="right">{PAGENO}{nbpg}</h5>');
+    $inf->WriteHTML($title);
+    $inf->WriteHTML($table);
+    $inf->Output($id .'.pdf', 'I');
+    global $time_ini; if(isset($time_ini)) rec_exec_time($time_ini, __FILE__, __LINE__);
+}
+
 // Construye tabla (thead. tbody) a partir de resultados mysql
 function tabla1($r, $id){
     ?>

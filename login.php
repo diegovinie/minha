@@ -28,12 +28,12 @@ require_once 'header.php';
         </header>
             <main>
 
-<div class="container">
+<div class="container" align="center">
     <div class="" style="align=right;">
-        <img src="static/banner468x60.png" alt="">
+        <img src="static/banner468x60.png" class="img-responsive" alt="">
     </div>
     <div class="row">
-        <div class="col-md-4 col-md-offset-4">
+        <div class="col-sm-4 col-sm-offset-4">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Ingresar</h3>
@@ -63,10 +63,10 @@ require_once 'header.php';
             </div>
             <div class="panel">
                 <div class="panel-body">
-                    <div class="col-md-6">
+                    <div class="col-xs-6">
                         <a href="signup.php">Registrarse</a>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-xs-6">
                         <a href="recovery.php">Recuperar Clave</a>
                     </div>
                 </div>
@@ -74,17 +74,18 @@ require_once 'header.php';
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4 col-md-offset-4">
+        <div class="col-sm-4 col-sm-offset-4">
             <div class="panel panel-danger">
                 <div class="panel-heading" align="center">
                     <h3 class="panel-title">Ingrese en modo de demostración</h3>
                 </div>
                 <div class="panel-body">
-                    <div class="col-md-6">
-                        <button class="btn btn-warning btn-block" type="button" name="button" onclick="demoAdmin()">Administrador</button>
+                    <div class="col-xs-12">
+                        <button class="btn btn-warning btn-lg btn-block" type="button" name="button" onclick="demoAdmin()">Administrador</button>
+                        <button class="btn btn-info btn-lg btn-block" type="button" name="button" onclick="demoUser()">Usuario</button>
                     </div>
-                    <div class="col-md-6">
-                        <button class="btn btn-info btn-block" type="button" name="button" onclick="demoUser()">Usuario</button>
+                    <div class="col-xs-6">
+
                     </div>
                 </div>
             </div>
@@ -94,7 +95,7 @@ require_once 'header.php';
         <div class="col-md-4 col-md-offset-4">
             <div class="panel panel-info">
                 <div class="panel-body">
-                    <a data-target="#myModal" class="btn btn-lg btn-primary" data-toggle="modal">Ver Video de Muestra</a>
+                    <a data-target="#myModal" class="btn btn-lg btn-primary btn-block" data-toggle="modal">Ver Video de Muestra</a>
                 </div>
             </div>
         </div>
@@ -109,7 +110,9 @@ require_once 'header.php';
                     <h4 class="modal-title">YouTube Video</h4>
                 </div>
                 <div class="modal-body">
-                    <iframe id="cartoonVideo" width="560" height="315" src="static/prueba2.mp4" frameborder="0" allowfullscreen></iframe>
+                    <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" id="cartoonVideo" width="560" height="315" src="static/prueba2.mp4" frameborder="0" allowfullscreen></iframe>
+                    </div>
                 </div>
             </div>
         </div>

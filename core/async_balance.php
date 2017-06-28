@@ -5,7 +5,7 @@
 session_start();
 require_once '../datos.php';
 require_once ROOTDIR.'/server.php';
-require_once ROOTDIR.'/core/tables.php';
+require_once ROOTDIR.'/core/functions.php';
 connect();
 
 if(isset($_GET['fun'])){

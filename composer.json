@@ -1,6 +1,7 @@
 {
     "require":{
         "spipu/html2pdf": "~5.0.0",
-        "coldtrick/imagick": "~1.0"
+        "coldtrick/imagick": "~1.0",
+        "mpdf/mpdf": "~6.1"
         }
 }

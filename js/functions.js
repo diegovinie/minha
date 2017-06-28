@@ -1,3 +1,8 @@
+function genPdf(item){
+    var fun = item.dataset.fun;
+    window.open(model + '?wrapper=genPdf&fun=' + fun);
+}
+
 function tablePager(id, callback){
     var cantidad = 10;
     var page = 1;

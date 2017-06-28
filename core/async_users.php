@@ -5,7 +5,7 @@
 session_start();
 require_once '../datos.php';
 require_once ROOTDIR.'/server.php';
-require_once ROOTDIR.'/core/tables.php';
+require_once ROOTDIR.'/core/functions.php';
 connect();
 
 if(isset($_GET['edificio'])){
@@ -15,10 +15,10 @@ if(isset($_GET['edificio'])){
     echo uniqueQuery($r);
 }
 
-if(isset($_GET['arg'])){
+if(isset($_GET['fun'])){
     extract($_GET);
     $bui = $_SESSION['bui'];
-    switch ($arg) {
+    switch ($fun) {
         case 'usuarios_registrados':
             $q = "SELECT udata_name AS 'Nombre', udata_surname AS 'Apellido',
         	        udata_ci AS 'C.I.',  bui_apt AS 'Apartamento',
@@ -28,7 +28,7 @@ if(isset($_GET['arg'])){
         				ELSE 'Indeterminado'
         			END AS 'Tipo de Usuario'
         	    FROM users, userdata, buildings WHERE udata_user_fk = user_id AND udata_number_fk = bui_id AND user_active = 1 AND bui_name = '$bui'";
-//            $fun = 'display_users';
+            $arg = $fun;
             break;
         case 'usuarios_pendientes':
         $q = "SELECT udata_id AS 'id', udata_name AS 'Nombre',
@@ -37,14 +37,18 @@ if(isset($_GET['arg'])){
                 bui_apt AS 'Apartamento',
                 user_user AS 'Correo'
             FROM users, userdata, buildings WHERE udata_user_fk = user_id AND udata_number_fk = bui_id AND user_active = 0 AND bui_name = '$bui'";
-//        $fun = 'pending_users';
+            $arg = $fun;
             break;
 
         default:
-            # code...
+            echo "problema"; die;
             break;
     }
-    $fun($q, $arg);
+    if(isset($wrapper)){
+        $wrapper($fun, $q, $arg);
+    }else{
+        $fun($q, $arg);
+    }
 }
 
 if(!isset($_POST['fun']) && isset($_POST['name']) && isset($_POST['surname']) &&
@@ -108,42 +112,8 @@ if(isset($_POST['fun'])){
             break;
     }
 }
-function genpdf($q, $id){
-    ini_set('max_execution_time', 60);
-    ob_start();
-    $r = q_exec($q);
-    table_open($id);
-    table_head($r);
-    table_tbody($r);
-    table_close();
-    $table = ob_get_clean();
 
-    $dateNow = date_create();
-    $header = array(
-        $user = $_SESSION['name'] .' ' .$_SESSION['surname'],
-        $date = $dateNow->format('Y-m-d H:i:s'),
-        $time = $dateNow->format('Y-m-d H:i:s')
-    );
-    $header_needles = array('%user%', '%date%', '%time%');
-
-    $title = str_replace("_", " ", $id);
-    $title = '<h2 align="center">'.ucwords($title).'</h2>';
-
-    $handler = fopen('../templates/informetabla1.html', 'r');
-    $template = '';
-    while(!feof($handler)){
-        $template .= fgets($handler);
-    }
-
-    $template = str_replace($header_needles, $header, $template);
-    $template = str_replace('%title%', $title, $template );
-    $template = str_replace('%body%', $table, $template );
-    $inf = new Spipu\Html2Pdf\Html2Pdf();
-    $inf->writeHtml($template);
-    $inf->output();
-}
-
-function display_users($q, $id){
+function usuarios_registrados($q, $id){
     $r = q_exec($q);
     table_open($id);
     table_head($r);
@@ -151,11 +121,12 @@ function display_users($q, $id){
     table_close();
 }
 
-function pending_users($q, $id){
+function usuarios_pendientes($q, $id){
     $r = q_exec($q);
     table_open($id);
     table_head($r);
     table_tbody($r);
     table_close();
 }
+
  ?>

@@ -91,12 +91,12 @@ function escape_array($array){
 }
 
 function rec_exec_time($ti, $file, $line){
-    $f = fopen(ROOTDIR."exec_time.log", 'r+');
+    $f = fopen(ROOTDIR."exec_time.log", 'a');
     $date1 = date_create();
     $d = $date1->format('Y-m-d H:i:s');
     $tt = number_format(microtime(true) - $ti, 4);
     rewind($f);
-    fwrite($f, 'Tiempo: '.$tt .'s, Fecha: ' .$d .', H: ' .$_SERVER['HTTP_HOST'] .', File: ' .$file .', L: ' .$line);
+    fwrite($f, 'Tiempo: '.$tt .'s, Fecha: ' .$d .', H: ' .$_SERVER['HTTP_HOST'] .', File: ' .$file .', L: ' .$line ."\n");
     fclose($f);
 }
 

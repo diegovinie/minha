@@ -1,5 +1,7 @@
+var model = '../core/async_users.php';
+
 window.onload = function(){
-    var host = "../core/async_users.php?fun=display_users&arg=";
+    var host = "../core/async_users.php?fun=";
     var lista_id = ["usuarios_registrados", "usuarios_pendientes"];
     var id1 = "usuarios_registrados";
     getDataAjax(host, id1, function(res){
@@ -22,9 +24,8 @@ window.onload = function(){
             });
         });
     });
-
-
 }
+
 function radioYes(self){
     console.log('yes')
 };

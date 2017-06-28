@@ -24,9 +24,9 @@ require ROOTDIR.'menu.php';
                 <div class="panel-body" id="usuarios_registrados">
                     <!-- async data -->
                 </div>
-                <div class="panel-footer col-md-12" style="text-align:right;">
+                <div class="panel-footer col-md-12" style="text-align:center;">
                     <button type="button" name="add_usuarios_registrados" class="btn btn-primary" onclick="window.location.href = 'add_user.php';">Agregar Usuarios</button>
-					<button type="button" name="pdf_usuarios_registrados" class="btn btn-info" data-type="pdf" onclick="window.open('../core/async_users.php?fun=genpdf&arg=usuarios_registrados')" >Imprimir</button>
+					<button type="button" data-fun="usuarios_registrados" class="btn btn-info"  onclick="genPdf(this)" >Imprimir</button>
                 </div>
 
             </div>
@@ -47,7 +47,7 @@ require ROOTDIR.'menu.php';
 				<div class="panel-footer button_box" align="center">
 					<button type="submit" name="submits" class="btn btn-primary">Aplicar</button>
 					<button type="reset" class="btn btn-default" onclick="resetAlerts(this)">Deshacer</button>
-					<button type="button" name="pdf_usuarios_pendientes" class="btn btn-info" data-type="pdf" onclick="window.open('../core/async_users.php?fun=genpdf&arg=usuarios_pendientes');" >Imprimir</button>
+					<button type="button" data-fun="usuarios_pendientes" class="btn btn-info"  onclick="genPdf(this)" >Imprimir</button>
 				</div>
             </div>
         </div>

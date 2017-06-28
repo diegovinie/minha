@@ -62,7 +62,7 @@ connect();
                     <div class="panel-footer button_box" align="center">
                         <button type="submit" name="submits" class="btn btn-primary">Aplicar</button>
                         <button type="reset" class="btn btn-default" onclick="resetAlerts(this)">Deshacer</button>
-                        <button type="button" name="pdf_pagos_pendientes" class="btn btn-info" data-type="pdf" onclick="window.open('../core/async_payments.php?fun=genpdf&arg=pagos_pendientes')" >Imprimir</button>
+					    <button type="button" data-fun="pagos_pendientes" class="btn btn-info"  onclick="genPdf(this)" >Imprimir</button>
                     </div>
                 </form>
             </div>
@@ -78,7 +78,7 @@ connect();
                     <!-- async data -->
                 </div>
                 <div class="panel-footer button_box" align="center">
-                    <button type="button" name="pdf_pagos_rechazados" class="btn btn-info" data-type="pdf" onclick="window.open('../core/async_payments.php?fun=genpdf&arg=pagos_rechazados')" >Imprimir</button>
+					    <button type="button" data-fun="pagos_rechazados" class="btn btn-info"  onclick="genPdf(this)" >Imprimir</button>
                 </div>
             </div>
 
@@ -94,7 +94,7 @@ connect();
                     <!-- async data -->
                 </div>
                 <div class="panel-footer button_box" align="center">
-                    <button type="button" name="pdf_pagos_aprobados" class="btn btn-info" data-type="pdf" onclick="window.open('../core/async_payments.php?fun=genpdf&arg=pagos_aprobados')" >Imprimir</button>
+					    <button type="button" data-fun="pagos_aprobados" class="btn btn-info"  onclick="genPdf(this)" >Imprimir</button>
                 </div>
             </div>
 
