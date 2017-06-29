@@ -12,9 +12,6 @@ $bui = $_SESSION['bui'];
 
 print_r($fun($number));
 
-
-
-
 function balance($number){
     $q = "SELECT bui_name, bui_apt, bui_balance FROM buildings WHERE bui_id = $number";
     $r = q_exec($q);

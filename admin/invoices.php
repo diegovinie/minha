@@ -4,6 +4,7 @@
 
 require '../datos.php';
 session_start();
+$bui = $_SESSION['bui'];
 require ROOTDIR.'header.php';
 require ROOTDIR.'menu.php';
 include ROOTDIR.'server.php';
@@ -12,7 +13,7 @@ $q = "SELECT lap_id, lap_name FROM lapses ORDER BY lap_id DESC";
 $r = q_exec($q);
 $lapses = query_to_assoc($r);
 
-$dir = ROOTDIR.'files';
+$dir = ROOTDIR."files/$bui";
 $gestor_dir = opendir($dir);
 while(false !== ($nombre_fichero = readdir($gestor_dir))){
     if($nombre_fichero != '.' && $nombre_fichero != '..'){

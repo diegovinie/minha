@@ -1,5 +1,8 @@
 <?php
 //Se construyen los recibos
+
+if(!isset($_SESSION)) session_start();
+$bui = $_SESSION['bui'];
 require_once '../datos.php';
 require_once ROOTDIR.'server.php';
 connect();
@@ -65,18 +68,19 @@ function generate($user, $data_ar){
     $bills_ar = query_to_array($r1); // El Array de los gastos
 
     // Selecciona los apartamentos y sus pesos ponderados
-    $q2 = "SELECT A17_number, A17_weight, A17_balance FROM A17 WHERE A17_assigned = 1";
+    $q2 = "SELECT bui_apt, bui_weight, bui_balance FROM buildings WHERE bui_assigned = 1 AND bui_name = '$bui'";
     $r2 = q_exec($q2);
     $apts_ar = query_to_array($r2); // El Array de los apartamentos
 
     //Selecciona la cantidad de apartamentos contribuyentes
-    $q4 = "SELECT COUNT(A17_id) AS `asignados` FROM A17 WHERE A17_assigned = 1";
+    $q4 = "SELECT COUNT(bui_id) AS `asignados` FROM buildings WHERE bui_assigned = 1 AND bui_name = '$bui'";
     $r4 = q_exec($q4);
     $actives_ar = query_to_array($r4);
     $actives = $actives_ar[0]['asignados'];
 
     //Selecciona el balance previo a la generación
-    $q5 = "SELECT SUM(cha_amount) AS `balance` FROM charges";
+    //$q5 = "SELECT SUM(cha_amount) AS `balance` FROM charges";
+    $q5 = "SELECT SUM(bui_balance) AS 'balance' FROM buildings WHERE bui_name = '$bui'"
     $r5 = q_exec($q5);
     $bal_ar = query_to_array($r5);
     $balance = $bal_ar[0]['balance'];
@@ -97,35 +101,35 @@ function generate($user, $data_ar){
     //Se genera el contenido
     foreach ($apts_ar as $index => $apt_val) {
         foreach ($bills_ar as $in => $bil_val) {
-            $content[$apt_val['A17_number']]['Comunes'][$in]['nombre'] = $bil_val['bil_class'] .' - ' .$bil_val['up_alias'] ;
-            $content[$apt_val['A17_number']]['Comunes'][$in]['porcentaje'] = round($bil_val['bil_total'] * $apt_val['A17_weight'] * $porc /100, 2);
-            $content[$apt_val['A17_number']]['Comunes'][$in]['total'] = $bil_val['bil_total'];
+            $content[$apt_val['bui_apt']]['Comunes'][$in]['nombre'] = $bil_val['bil_class'] .' - ' .$bil_val['up_alias'] ;
+            $content[$apt_val['bui_apt']]['Comunes'][$in]['porcentaje'] = round($bil_val['bil_total'] * $apt_val['bui_weight'] * $porc /100, 2);
+            $content[$apt_val['bui_apt']]['Comunes'][$in]['total'] = $bil_val['bil_total'];
             //Generar el campo del total a pagar por apartamento
             $sum = 0;
             $sum_total = 0;
-            foreach($content[$apt_val['A17_number']]['Comunes'] as $apt => $v){
+            foreach($content[$apt_val['bui_apt']]['Comunes'] as $apt => $v){
                 $sum += $v['porcentaje'];
                 $sum_total += $v['total'];
             }
-            $content2[$apt_val['A17_number']]['previo'] = -$apt_val['A17_balance'];
-            $content2[$apt_val['A17_number']]['actual'] = $sum;
-            $content2[$apt_val['A17_number']]['total'] = -$apt_val['A17_balance'] + $sum;
-            $lastapt = $content[$apt_val['A17_number']];
+            $content2[$apt_val['bui_apt']]['previo'] = -$apt_val['bui_balance'];
+            $content2[$apt_val['bui_apt']]['actual'] = $sum;
+            $content2[$apt_val['bui_apt']]['total'] = -$apt_val['bui_balance'] + $sum;
+            $lastapt = $content[$apt_val['bui_apt']];
         }
         //fondos
         foreach ($funds as $n => $value) {
             $valor = numToEng($value['def']);
 
             if($value['type'] == 1){
-                $content[$apt_val['A17_number']][$value['name']][$value['name']]['nombre'] = $value['def'].' %';
-                $content[$apt_val['A17_number']][$value['name']][$value['name']]['porcentaje'] = round($sum * ($valor /100), 2);
-                $content[$apt_val['A17_number']][$value['name']][$value['name']]['total'] = round($sum_total * ($valor / 100), 2);
+                $content[$apt_val['bui_apt']][$value['name']][$value['name']]['nombre'] = $value['def'].' %';
+                $content[$apt_val['bui_apt']][$value['name']][$value['name']]['porcentaje'] = round($sum * ($valor /100), 2);
+                $content[$apt_val['bui_apt']][$value['name']][$value['name']]['total'] = round($sum_total * ($valor / 100), 2);
             }elseif($value['type'] == 2){
-                $content[$apt_val['A17_number']][$value['name']][$value['name']]['nombre'] = 'Bs. '.$value['def'];
-                $content[$apt_val['A17_number']][$value['name']][$value['name']]['porcentaje'] = round($valor / $actives, 2);
-                $content[$apt_val['A17_number']][$value['name']][$value['name']]['total'] = $valor;
+                $content[$apt_val['bui_apt']][$value['name']][$value['name']]['nombre'] = 'Bs. '.$value['def'];
+                $content[$apt_val['bui_apt']][$value['name']][$value['name']]['porcentaje'] = round($valor / $actives, 2);
+                $content[$apt_val['bui_apt']][$value['name']][$value['name']]['total'] = $valor;
             }
-            $lastapt = $content[$apt_val['A17_number']];
+            $lastapt = $content[$apt_val['bui_apt']];
         }
     }
 
@@ -153,7 +157,7 @@ function generate($user, $data_ar){
                 'charges' => $content2];
     //Graba contenidos temporales de lo que se va a grabar en charges
     $type_json = json_encode($table) or die(json_last_error_msg());
-    $file = fopen(ROOTDIR.'files/invoices/FAC-'.$fac_number.'.json', 'w');
+    $file = fopen(ROOTDIR."files/invoices/$bui/FAC-".$fac_number.'.json', 'w');
     fwrite($file, $type_json);
     fclose($file);
     return $table;
@@ -169,7 +173,7 @@ function generate($user, $data_ar){
 function save_fact($fac_number){
 
     //Graba los datos temporales en charges
-    $file = fopen(ROOTDIR.'files/invoices/FAC-' .$fac_number. '.json', "r");
+    $file = fopen(ROOTDIR."files/invoices/$bui/FAC-" .$fac_number. '.json', "r");
     $b = fgets($file);
     $c = json_decode($b);
 
@@ -196,9 +200,9 @@ function save_fact($fac_number){
     foreach ($c->{'charges'} as $apto => $value) {
         $charg[$apto] = $value->{'total'};
     }
-    //Se actualiza A17_balance
+    //Se actualiza bui_balance
     foreach($charg as $apt => $total){
-        $q = "UPDATE A17 SET A17_balance = A17_balance - $total WHERE A17_number = '$apt'";
+        $q = "UPDATE buildings SET bui_balance = bui_balance - $total WHERE bui_apt = '$apt' AND bui_name = '$bui'";
         $r = q_exec($q);
     }
     return "Guardado con éxito";
@@ -208,8 +212,8 @@ function discard($fac_number){
     $q = "UPDATE bills SET bil_lapse_fk = 0 WHERE bil_lapse_fk = 99";
     $r = q_exec($q);
     //elimina los datos temporales y la factura. json
-    if(file_exists(ROOTDIR.'files/invoices/FAC-' .$fac_number .'.json')) {
-        unlink(ROOTDIR.'files/invoices/FAC-' .$fac_number .'.json');
+    if(file_exists(ROOTDIR."files/invoices/$bui/FAC-" .$fac_number .'.json')) {
+        unlink(ROOTDIR."files/invoices/$bui/FAC-" .$fac_number .'.json');
         $resp = "Borrado con éxito";
     }else{
         $resp = "no se encuentra";
@@ -258,13 +262,14 @@ function gen_A17_table(){
 }
 
 function porc(){
-    $q = "SELECT A17_id, A17_number FROM A17 WHERE A17_assigned = 1";
+
+    $q = "SELECT bui_id, bui_apt FROM buildings WHERE bui_assigned = 1 AND bui_name = '$bui'";
     $r = q_exec($q);
     $r_asc = query_to_assoc($r);
     $apt_ar = ["large" => 0, "med" => 0, "small" => 0];
     $array = [ "A" => 3, "B" => 2, "C" => 2, "D" => 3, "E" => 2, "F" => 1, "G" => 1, "H" => 2];
     for($i = 0; $i < sizeof($r_asc); $i++){
-        $number = $r_asc[$i]['A17_number'];
+        $number = $r_asc[$i]['bui_apt'];
         $letter = $number[strlen($number) - 1];
         if($letter == "A" || $letter == "D"){
             $apt_ar['large'] += 1;
