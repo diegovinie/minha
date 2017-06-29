@@ -1,9 +1,14 @@
 <?php
+// Controlador: js/balance.js
+// Vista: admin/balance.php
+
+session_start();
 require_once '../datos.php';
-require_once ROOTDIR.'/server.php';
-require_once ROOTDIR.'/core/tables.php';
+require_once ROOTDIR.'server.php';
+require_once ROOTDIR.'core/functions.php';
 connect();
 extract($_GET);
+$bui = $_SESSION['bui'];
 
 print_r($fun($number));
 
@@ -19,7 +24,7 @@ function balance($number){
 }
 
 function show_apt($number){
-    $q = "SELECT A17_number AS `Apto`, A17_balance AS `Deuda`, A17_assigned AS `Asignado?`, A17_occupied, sum(ifzero(pay_check)) AS `Pagos por chequear`, sum(iftwo(pay_check)) AS `Pagos devueltos` FROM A17, payments WHERE A17_id = '$number' AND pay_fk_number = '$number'";
+    $q = "SELECT bui_apt AS `Apto`, bui_balance AS `Deuda`, bui_assigned AS `Asignado?`, bui_occupied, sum(ifzero(pay_check)) AS `Pagos por chequear`, sum(iftwo(pay_check)) AS `Pagos devueltos` FROM buildings, payments WHERE bui_id = '$number' AND pay_fk_number = '$number' AND bui_name = '$bui'";
     $r = q_exec($q);
     $r_ar = query_to_assoc($r);
     $r_j = json_encode($r_ar);

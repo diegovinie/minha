@@ -183,3 +183,17 @@ Tiempo: 0.0030s, Fecha: 2017-06-28 17:45:21, H: localhost, File: /var/www/html/m
 Tiempo: 0.0032s, Fecha: 2017-06-28 17:45:21, H: localhost, File: /var/www/html/minha/core/async_payments.php, L: 160
 Tiempo: 0.6222s, Fecha: 2017-06-28 22:45:24, H: localhost, File: /var/www/html/minha/core/functions.php, L: 39
 Tiempo: 0.6350s, Fecha: 2017-06-28 22:45:24, H: localhost, File: /var/www/html/minha/core/async_payments.php, L: 160
+Tiempo: 0.0009s, Fecha: 2017-06-28 21:16:29, H: caracol, File: /var/www/html/minha/login.php, L: 133
+Tiempo: 0.1735s, Fecha: 2017-06-28 21:34:31, H: www.minha.com, File: /var/www/html/minha/login.php, L: 133
+Tiempo: 0.0816s, Fecha: 2017-06-28 21:34:52, H: www.minha.com, File: /var/www/html/minha/login.php, L: 133
+Tiempo: 0.0097s, Fecha: 2017-06-28 21:44:37, H: caracol, File: /var/www/html/minha/login.php, L: 133
+Tiempo: 0.0069s, Fecha: 2017-06-28 21:48:50, H: minhadvv.org, File: /var/www/html/minha/login.php, L: 133
+Tiempo: 0.0131s, Fecha: 2017-06-28 21:51:50, H: www.minha.org, File: /var/www/html/minha/login.php, L: 133
+Tiempo: 0.0097s, Fecha: 2017-06-28 21:54:24, H: minha.org, File: /var/www/html/minha/login.php, L: 133
+Tiempo: 0.0041s, Fecha: 2017-06-28 21:55:19, H: www.minha.org, File: /var/www/html/minha/login.php, L: 133
+Tiempo: 0.0055s, Fecha: 2017-06-28 21:55:24, H: minha.org, File: /var/www/html/minha/login.php, L: 133
+Tiempo: 0.0148s, Fecha: 2017-06-29 09:21:15, H: localhost, File: /var/www/html/minha/login.php, L: 133
+Tiempo: 0.0038s, Fecha: 2017-06-29 09:23:38, H: localhost, File: /var/www/html/minha/login.php, L: 133
+Tiempo: 0.0133s, Fecha: 2017-06-29 11:24:55, H: localhost, File: /var/www/html/minha/login.php, L: 133
+Tiempo: 0.7932s, Fecha: 2017-06-29 11:24:57, H: localhost, File: /var/www/html/minha/core/authentication.php, L: 126
+Tiempo: 0.0013s, Fecha: 2017-06-29 11:24:57, H: localhost, File: /var/www/html/minha/main.php, L: 165
