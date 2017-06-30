@@ -86,7 +86,7 @@ class PDF extends FPDF{
     function format(){
         $this->Image('../static/banner468x60.png', 5, 5, 80);
     }
-    function encabezado($id, $month, $date, $arr2, $array){
+    function encabezado($id, $month, $date, $inmueble, $arr2, $array){
         $this->SetFont('Arial','', 8);
         $this->SetFillColor(224,235,255);
         // Logo
@@ -107,7 +107,7 @@ class PDF extends FPDF{
         $this->SetXY(7, 25);
         $this->Cell(17, 5, 'INMUEBLE:', 0, 0, 'L', true);
         $this->SetXY(25, 25);
-        $this->Cell(36, 5, '((EDITAR EDIFICIO))', 0, 0, 'C', true);
+        $this->Cell(36, 5, $inmueble, 0, 0, 'C', true);
         // Nombre del propietario
         $this->SetXY(7, 30);
         $this->Cell(21, 5, 'PROPIETARIO:', 0, 0, 'L', true);

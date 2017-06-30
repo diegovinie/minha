@@ -18,6 +18,9 @@ define('DB_USER', $db_user);
 define('DB_PWD', $db_pwd);
 define('DB_NAME', $db_name);
 define('DEF_PWD', $defpwd);
+define('DEMO', true);
+define('PRUEBA', true);
+define('VIDEO', false);
 
 // Nombre del proyecto
 define('NAME', $name);

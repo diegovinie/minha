@@ -1,13 +1,9 @@
 window.onload = function(){
-    var id = document.getElementById('bui_id').value;
-    console.log('one');
     $.ajax({
-        url: '../core/async_profile.php?fun=load&bui_id=' + id,
+        url: '../core/async_profile.php?fun=load',
         type: 'get',
         dataType: 'json',
         success: function(data){
-            console.log('yes');
-            console.log(data);
             dat = data;
             for(let key in data){
                 if(key == 'cond'){
@@ -32,7 +28,7 @@ window.onload = function(){
         }
     });
     $.ajax({
-        url: '../core/async_profile.php?fun=notes&bui_id=' + id,
+        url: '../core/async_profile.php?fun=notes',
         type: 'get',
         dataType: 'json',
         success: function(notes){
@@ -52,10 +48,8 @@ window.onload = function(){
                         $('#'+key).val(notes[key]);
                         break;
                     default:
-                        console.log(key);
                         switch (notes[key]) {
                             case '1':
-                                console.log($('#op'+key));
                                 $('#op'+key).attr('checked', true);
                                 break;
                             case '2':
@@ -87,6 +81,10 @@ function pwdDialog(){
         $('body').append($.parseHTML(html));
         $('#chpwd').modal();
         $('#chpwd form input').val('');
+        $('#pwdSubmit').on('click', function(ev){
+            ev.preventDefault();
+        });
+
     }).fail(function(err){
         console.log('Error en template: ');
         console.log(err);
@@ -95,7 +93,7 @@ function pwdDialog(){
 
 function changePwd(){
     var param = {
-            user: $("#user").val(),
+            //user: $("#user").val(),
             old: $("#pwd_old").val(),
             new: $("#pwd").val()
         };
@@ -105,6 +103,7 @@ function changePwd(){
         data: param,
         dataType: 'json',
         success: function(data){
+            console.log(data);
             $('#resp').html(data.msg);
             if(data.status ==true){
                 setTimeout(function(){
@@ -116,7 +115,6 @@ function changePwd(){
                     $('#resp').html('');
                 }, 2000);
             }
-            resetInput();
         },
         error: function(err){
             console.log('changePwd: ' + err.responseText + ', status: ' +err.status);
@@ -124,11 +122,18 @@ function changePwd(){
     });
 }
 
+function resetInput($form){
+    $form.find('input').each(function(pos, ele){
+        ele.value = '';
+    });
+}
+
 function changeCel(self){
     var prefix = $('#cambioCel select').val(),
         number = $('#cambioCel input').val();
     var param = {
-        user: $('#user').val(),
+        //user: $('#user').val(),
+        fun : 'changeCel',
         cel: prefix + number
     };
     console.log(param);
@@ -161,7 +166,7 @@ function changeCel(self){
         }
     }).then(function(){
         $.ajax({
-            url: '../core/async_profile.php?fun=cel&user=' + $('#user').val(),
+            url: '../core/async_profile.php?fun=cel',
             type: 'get',
             dataType: 'text',
             success: function(cel){
@@ -173,7 +178,7 @@ function changeCel(self){
 
 function getQuestion(){
     $.ajax({
-        url: '../core/async_profile.php?fun=quest&user=' + $('#user').val(),
+        url: '../core/async_profile.php?fun=quest',
         type: 'get',
         dataType: 'text',
         success: function(data){
@@ -189,7 +194,7 @@ function changeQuestion(self){
     var param = {
         question: $('#question').val(),
         answer: $('#answer').val(),
-        user: $('#user').val()
+        //user: $('#user').val()
     }
     $.ajax({
         url: '../core/async_profile.php',

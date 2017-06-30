@@ -15,7 +15,7 @@ if(isset($_GET['fun'])){
         case 'balance_apartamentos':
             $q = "SELECT bui_id AS 'id', bui_apt AS 'Apartamento',
             bui_balance AS 'Deuda' FROM buildings WHERE bui_name = '$bui'";
-            $q_foot = "SELECT '' AS 'a', 'Deuda Total:' AS 'b',
+            $q_foot = "SELECT 'Deuda Total:' AS 'b',
             SUM(bui_balance) AS 'total' FROM buildings WHERE bui_name = '$bui'";
             break;
         case 'cuentas':

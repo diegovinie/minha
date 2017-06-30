@@ -8,8 +8,10 @@ window.onload = function(){
                     $('#'+id).find('tbody').children().each(function(){
                         if(id == 'balance_apartamentos'){
                             $(this).attr('onclick', 'showApt(this)');
+                            $(this).children()[0].setAttribute('hidden', true);
                         }
                     });
+                    $('#balance_apartamentos thead th')[0].setAttribute('hidden', true);
                     var foot = $('#'+id).find('tfoot') | 1;
                     if(foot != false){
                         $('#'+id).find("[data-type='total']")

@@ -38,3 +38,4 @@ window.onload = function(){
    $('#gen').attr('disabled', true);
    document.getElementById('ready').checked = false;
 }
+ 

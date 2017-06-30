@@ -7,22 +7,13 @@ require ROOTDIR.'header.php';
 require ROOTDIR.'menu.php';
 require ROOTDIR.'server.php';
 connect();
+$bui = $_SESSION['bui'];
 
- ?>
-<script type="text/javascript">
-    window.onload = function(){
-        var date;
-        date = document.getElementById('date');
-        date.options[date.options.length - 1].setAttribute('selected', 'true');
-    }
-</script>
-
-<?php
 //Selecciona la lista de proveedores de la base de datos y la pega en el html
 //como un json
-$qprov = "SELECT up_id, up_alias, up_name, up_rif, spe_name, up_op FROM usual_providers, spendings_types WHERE spe_id = up_fk_type";
+$qprov = "SELECT up_id, up_alias, up_name, up_rif, up_fk_type, up_desc, up_op FROM usual_providers WHERE up_bui = '$bui'";
 $rprov = q_exec($qprov);
-$prov_ar = query_to_array($rprov);
+$prov_ar = query_to_assoc($rprov);
 $prov_json = json_encode($prov_ar) or die(json_last_error_msg());
 echo "<div id='proveedor' hidden>$prov_json</div>\n";
 //Repite la consulta de proveedores para tener los datos en memoria
@@ -59,7 +50,7 @@ $rlapse = q_exec($qlapse);
                         </div>
                         <div class="form-group col-md-4">
                             <label for="">Fecha:</label>
-                            <input placeholder="aaaa-mm-dd" class="form-control" type="date" name="date" value="" onblur="">
+                            <input placeholder="aaaa-mm-dd" class="form-control" type="date" name="date" id="date" value="" onblur="">
                             <div class="">
 
                             </div>
@@ -82,17 +73,31 @@ $rlapse = q_exec($qlapse);
                         </div>
                         <div class="form-group col-md-12">
                             <label for="">Descipción:</label>
-                            <input class="form-control" placeholder="40 caracteres máximo" type="text" name="desc" value="">
+                            <input class="form-control" placeholder="40 caracteres máximo" maxlength="40" type="text" name="desc" id="desc" value="">
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="">RIF:</label>
                             <input class="form-control" type="text" name="rif" id="rif" value="" onblur="capitalize(this)">
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="">Tipo de Gasto:</label>
-                            <input class="form-control" type="text" name="class" id="spe_type" value="" onblur="check_type(this)">
+                            <!--<input class="form-control" type="text" name="class" id="spe_type" value="" onblur="check_type(this)">-->
+                            <select class="form-control" name="" id="spe_type">
+                                <option value="1" id="up_fk_type_1">PERSONAL</option>
+                                <option value="2" id="up_fk_type_2">MATERIALES</option>
+                                <option value="3" id="up_fk_type_3">SERVICIOS</option>
+                                <option value="4" id="up_fk_type_4">BIENES</option>
+                                <option value="5" id="up_fk_type_5">LEGAL</option>
+                            </select>
                         </div>
-
+                        <div class="form-group col-md-4">
+                            <label for="">Forma de Cargo:</label>
+                            <select class="form-control" name="" id="up_op">
+                                <option value="">Seleccione:</option>
+                                <option value="0" id="up_op_0">Equitativo</option>
+                                <option value="1" id="up_op_1">Ponderado</option>
+                            </select>
+                        </div>
                         <div class="from-group col-md-5">
                             <label for="">Monto:</label>
                             <input class="form-control" type="text" name="amount" value="" id="amount" placeholder="use ',' para separar decimales" onchange="setIvaTotal()">

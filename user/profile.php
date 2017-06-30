@@ -9,7 +9,7 @@ require ROOTDIR.'menu.php';
 require ROOTDIR.'server.php';
 $con = connect();
 
-$q = "SELECT bui_id, bui_name, bui_apt FROM buildings WHERE bui_id = " .$_SESSION['apt'];
+$q = "SELECT bui_id, bui_name, bui_apt FROM buildings WHERE bui_id = " .$_SESSION['number_id'];
 $r = q_exec($q);
 $bui = query_to_assoc($r)[0];
 
@@ -35,7 +35,6 @@ $bui = query_to_assoc($r)[0];
                                 <label for="apt">Apartamento:</label>
                                 <input type="text" id="apt" name="apt" class="form-control" value=<?php echo $bui['bui_apt']; ?> readonly>
                             </div>
-                            <input type="text" name="bui_id" id="bui_id" value=<?php echo $bui['bui_id']; ?> hidden>
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
@@ -125,7 +124,7 @@ $bui = query_to_assoc($r)[0];
                                 <label for="multi"><input type="checkbox" id="multi" name="multi" value="1"> Documento Multifamiliar</label>
                             </div>
                             <div class="checkbox">
-                                <label for=""><input type="checkbox" name="uni" value="1"> Documento Unifamiliar</label>
+                                <label for=""><input type="checkbox" name="uni" id="uni" value="1"> Documento Unifamiliar</label>
                             </div>
                         </div>
                         <div class="form-group">

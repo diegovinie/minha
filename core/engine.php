@@ -2,7 +2,6 @@
 //Se construyen los recibos
 
 if(!isset($_SESSION)) session_start();
-$bui = $_SESSION['bui'];
 require_once '../datos.php';
 require_once ROOTDIR.'server.php';
 connect();
@@ -33,9 +32,10 @@ switch ($_GET['fun']) {
 }
 
 function generate($user, $data_ar){
+    $bui = $_SESSION['bui'];
     $periodo = $data_ar['lapse']; // Periodo (mes) de los recibos
 
-    $porc = round(porc(), 4); // Porcentaje de los apartamentos
+    $porc = round(porc($bui), 4); // Porcentaje de los apartamentos
 
     // Seleciona los datos del periodo
     $q = "SELECT * FROM lapses WHERE lap_id = '$periodo'";
@@ -52,7 +52,7 @@ function generate($user, $data_ar){
 
     // Selecciona los gastos hechos que se seleccionaron
     $arg_bills = '';
-    $q = "SELECT bil_total, bil_class, up_alias, up_op FROM bills INNER JOIN usual_providers ON bil_name = up_name WHERE ";
+    $q = "SELECT bil_total, bil_class, bil_desc FROM bills WHERE ";
     $qu = "UPDATE bills SET bil_lapse_fk = 99 WHERE ";
     foreach ($data_ar as $key => $value) {
         if(is_integer($key) && $value == 1){
@@ -76,11 +76,11 @@ function generate($user, $data_ar){
     $q4 = "SELECT COUNT(bui_id) AS `asignados` FROM buildings WHERE bui_assigned = 1 AND bui_name = '$bui'";
     $r4 = q_exec($q4);
     $actives_ar = query_to_array($r4);
-    $actives = $actives_ar[0]['asignados'];
+    $actives = intval($actives_ar[0]['asignados']);
 
     //Selecciona el balance previo a la generación
     //$q5 = "SELECT SUM(cha_amount) AS `balance` FROM charges";
-    $q5 = "SELECT SUM(bui_balance) AS 'balance' FROM buildings WHERE bui_name = '$bui'"
+    $q5 = "SELECT SUM(bui_balance) AS 'balance' FROM buildings WHERE bui_name = '$bui'";
     $r5 = q_exec($q5);
     $bal_ar = query_to_array($r5);
     $balance = $bal_ar[0]['balance'];
@@ -101,9 +101,9 @@ function generate($user, $data_ar){
     //Se genera el contenido
     foreach ($apts_ar as $index => $apt_val) {
         foreach ($bills_ar as $in => $bil_val) {
-            $content[$apt_val['bui_apt']]['Comunes'][$in]['nombre'] = $bil_val['bil_class'] .' - ' .$bil_val['up_alias'] ;
+            $content[$apt_val['bui_apt']]['Comunes'][$in]['nombre'] = $bil_val['bil_class'] .' - ' .$bil_val['bil_desc'] ;
             $content[$apt_val['bui_apt']]['Comunes'][$in]['porcentaje'] = round($bil_val['bil_total'] * $apt_val['bui_weight'] * $porc /100, 2);
-            $content[$apt_val['bui_apt']]['Comunes'][$in]['total'] = $bil_val['bil_total'];
+            $content[$apt_val['bui_apt']]['Comunes'][$in]['total'] = round($bil_val['bil_total'], 2);
             //Generar el campo del total a pagar por apartamento
             $sum = 0;
             $sum_total = 0;
@@ -146,9 +146,23 @@ function generate($user, $data_ar){
             $tot += $value2;
         }
     }
-
+    $handler = fopen(ROOTDIR."files/EDI-$bui.json", 'r');
+    $f = '';
+    while(!feof($handler)){
+        $f .= fgets($handler);
+    }
+    $json = json_decode($f);
+    $edif = $json->name;
     // Se genera la cabecera
-    $head = ['fecha' => date('d-m-y'), 'Creador' => $user, 'Periodo' => $lap_ar[0]['lap_name'], 'Gen Num' => $fac_number,'Num Aptos' => $actives, 'MCD' => $porc, 'Monto Total' => $tot, 'Balance a la fecha' => ($balance + $tot)];
+    $head = ['fecha' => date('d-m-y'),
+            'Creador' => $user,
+            'Periodo' => $lap_ar[0]['lap_name'],
+            'Inmueble' => $edif,
+            'Gen Num' => $fac_number,
+            'Num Aptos' => $actives,
+            'MCD' => $porc,
+            'Monto Total' => $tot,
+            'Balance a la fecha' => ($balance + $tot)];
 
     //Se construye el array
     $table =    ['head' => $head,
@@ -171,7 +185,7 @@ function generate($user, $data_ar){
 }
 
 function save_fact($fac_number){
-
+    $bui = $_SESSION['bui'];
     //Graba los datos temporales en charges
     $file = fopen(ROOTDIR."files/invoices/$bui/FAC-" .$fac_number. '.json', "r");
     $b = fgets($file);
@@ -209,6 +223,7 @@ function save_fact($fac_number){
 }
 
 function discard($fac_number){
+    $bui = $_SESSION['bui'];
     $q = "UPDATE bills SET bil_lapse_fk = 0 WHERE bil_lapse_fk = 99";
     $r = q_exec($q);
     //elimina los datos temporales y la factura. json
@@ -261,28 +276,35 @@ function gen_A17_table(){
     return true;
 }
 
-function porc(){
-
-    $q = "SELECT bui_id, bui_apt FROM buildings WHERE bui_assigned = 1 AND bui_name = '$bui'";
-    $r = q_exec($q);
-    $r_asc = query_to_assoc($r);
-    $apt_ar = ["large" => 0, "med" => 0, "small" => 0];
-    $array = [ "A" => 3, "B" => 2, "C" => 2, "D" => 3, "E" => 2, "F" => 1, "G" => 1, "H" => 2];
-    for($i = 0; $i < sizeof($r_asc); $i++){
-        $number = $r_asc[$i]['bui_apt'];
-        $letter = $number[strlen($number) - 1];
-        if($letter == "A" || $letter == "D"){
-            $apt_ar['large'] += 1;
-        }elseif($letter == "B" || $letter == "C" || $letter == "E" || $letter == "H"){
-            $apt_ar['med'] += 1;
-        }elseif($letter == "F" || $letter == "G"){
-            $apt_ar['small'] += 1;
+function porc($bui){
+    if($bui == 'A17'){
+        $q = "SELECT bui_id, bui_apt FROM buildings WHERE bui_assigned = 1 AND bui_name = '$bui'";
+        $r = q_exec($q);
+        $r_asc = query_to_assoc($r);
+        $apt_ar = ["large" => 0, "med" => 0, "small" => 0];
+        $array = [ "A" => 3, "B" => 2, "C" => 2, "D" => 3, "E" => 2, "F" => 1, "G" => 1, "H" => 2];
+        for($i = 0; $i < sizeof($r_asc); $i++){
+            $number = $r_asc[$i]['bui_apt'];
+            $letter = $number[strlen($number) - 1];
+            if($letter == "A" || $letter == "D"){
+                $apt_ar['large'] += 1;
+            }elseif($letter == "B" || $letter == "C" || $letter == "E" || $letter == "H"){
+                $apt_ar['med'] += 1;
+            }elseif($letter == "F" || $letter == "G"){
+                $apt_ar['small'] += 1;
+            }
         }
+        $large = $apt_ar['large'];
+        $med = $apt_ar['med'];
+        $small = $apt_ar['small'];
+        $part = 100 / (3*$large + 2*$med + $small);
     }
-    $large = $apt_ar['large'];
-    $med = $apt_ar['med'];
-    $small = $apt_ar['small'];
-    $part = 100 / (3*$large + 2*$med + $small);
+    if($bui == 'Country_Park'){
+        $q = "SELECT COUNT(bui_id) FROM buildings WHERE bui_assigned = 1 AND bui_name = '$bui'";
+        $r = q_exec($q);
+        $res = uniqueQuery($r);
+        $part = 100 / $res;
+    }
     return $part;
 }
  ?>

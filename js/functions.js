@@ -139,6 +139,7 @@ function dataParser(tag, callback){
     var date = ['fecha', 'date'];
     var rif = ['rif','/ci', 'c.i'];
     var others = ['asignado', 'ocupado'];
+    var bills = ['Cargado'];
     money.forEach(function(x){
         var needle = new RegExp(x, 'i');
         if (needle.test(tag.dataset.type)){
@@ -168,11 +169,51 @@ function dataParser(tag, callback){
     });
     others.forEach(function(x){
         var needle = new RegExp(x, 'i');
+
         if(needle.test(tag.dataset.type)){
             var bool = tag.dataset.value;
             tag.innerHTML = bool == 1? "Sí" : "No";
         }
+    });
+    bills.forEach(function(x){
+        var needle = new RegExp(x, 'i');
+
+        if(needle.test(tag.dataset.type)){
+            switch (tag.dataset.value) {
+                case '0':
+                    tag.innerHTML = 'Por Relacionar';
+                    break;
+                case '99':
+                    tag.innerHTML = 'En revisión';
+                    break;
+                default:
+                    tag.innerHTML = periodo(tag.dataset.value);
+            }
+        }
+        function periodo(number){
+            var mes = {
+                1: 'Enero',
+                2: 'Febrero',
+                3: 'Marzo',
+                4: 'Abril',
+                5: 'Mayo',
+                6: 'Junio',
+                7: 'Julio',
+                8: 'Agosto',
+                9: 'Septiembre',
+                10: 'Octubre',
+                11: 'Noviembre',
+                12: 'Diciembre'
+            };
+            var year = 2017;
+            while(number > 12){
+                ++year;
+                number = number -12;
+            }
+            return mes[number] + '/' + year;
+        }
     })
+
     if(callback) callback();
 }
 

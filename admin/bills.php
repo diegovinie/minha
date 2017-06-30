@@ -26,7 +26,7 @@ require ROOTDIR.'menu.php';
                 </div>
                 <div class="panel-footer col-lg-12" style="text-align:right;">
                     <button type="button" name="agregar_proveedor" class="btn btn-primary" onclick="window.location.href = 'add_bill.php';">Agregar Gasto</button>
-					<button type="button" name="pdf_agregar_proveedor" class="btn btn-info" data-type="pdf" onclick="window.open('../core/async_bills.php?fun=genpdf&arg=gastos')" >Imprimir</button>
+					<button type="button" data-fun="gastos" class="btn btn-info"  onclick="genPdf(this)" >Imprimir</button>
                 </div>
 
             </div>
@@ -46,7 +46,7 @@ require ROOTDIR.'menu.php';
                 </div>
                 <div class="panel-footer col-lg-12" style="text-align:right;">
                     <button type="button" name="agregar_proveedor" class="btn btn-primary" disabled>Agregar Proveedor</button>
-					<button type="button" name="pdf_agregar_proveedor" class="btn btn-info" data-type="pdf" onclick="window.open('../core/async_bills.php?fun=genpdf&arg=proveedores')" >Imprimir</button>
+					<button type="button" data-fun="proveedores" class="btn btn-info"  onclick="genPdf(this)" >Imprimir</button>
                 </div>
             </div>
         </div>

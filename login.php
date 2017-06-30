@@ -51,7 +51,7 @@ require_once 'header.php';
                                 <input class="form-control" placeholder="clave" type="password" name="pwd" id="pwd" value="">
 
                             </div>
-                            <div class="checkbox">
+                            <div class="checkbox" align="left">
                                 <label for="">
                                     <input type="checkbox" name="remember" value="1">Recordarme
                                 </label>
@@ -73,50 +73,29 @@ require_once 'header.php';
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-4 col-sm-offset-4">
-            <div class="panel panel-danger">
-                <div class="panel-heading" align="center">
-                    <h3 class="panel-title">Ingrese en modo de demostración</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="col-xs-12">
-                        <button class="btn btn-warning btn-lg btn-block" type="button" name="button" onclick="demoAdmin()">Administrador</button>
-                        <button class="btn btn-info btn-lg btn-block" type="button" name="button" onclick="demoUser()">Usuario</button>
-                    </div>
-                    <div class="col-xs-6">
+<?php
+if(DEMO == true){
+    $handler = fopen(ROOTDIR.'templates/demo_buttons.html', 'r');
+    $htmlDemo = '';
+    while(!feof($handler)){
+        $htmlDemo .= fgets($handler);
+    }
+    fclose($handler);
+    echo $htmlDemo;
+}
 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <div class="panel panel-info">
-                <div class="panel-body">
-                    <a data-target="#myModal" class="btn btn-lg btn-primary btn-block" data-toggle="modal">Ver Video de Muestra</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="bs-example">
+if(VIDEO == true){
+    $handler = fopen(ROOTDIR.'templates/demo_video.html', 'r');
+    $htmlVideo = '';
+    while(!feof($handler)){
+        $htmlVideo .= fgets($handler);
+    }
+    fclose($handler);
+    echo $htmlVideo;
+}
+ ?>
 
-    <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">YouTube Video</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" id="cartoonVideo" width="560" height="315" src="static/prueba2.mp4" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 </div>
 

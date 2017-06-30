@@ -40,7 +40,7 @@ if(isset($ePost['response']) && isset($ePost['email']) && isset($ePost['fun'])){
 if(isset($ePost['user']) && isset($ePost['pwd'])){
     extract($ePost);
     if($pwd != DEF_PWD) $pwd = md5($pwd);
-    $q = "SELECT user_id, user_user, user_pwd, user_type, user_active, udata_name, udata_surname, udata_number_fk, bui_name FROM users, userdata, buildings WHERE user_user = '$user' AND user_pwd = '$pwd' AND udata_user_fk = user_id AND udata_number_fk = bui_id";
+    $q = "SELECT user_id, user_user, user_pwd, user_type, user_active, udata_name, udata_surname, udata_number_fk, bui_name, bui_apt FROM users, userdata, buildings WHERE user_user = '$user' AND user_pwd = '$pwd' AND udata_user_fk = user_id AND udata_number_fk = bui_id";
     $r = q_exec($q);
     $user_val = [];
     //Verifica si el usuario existe en la base de datos
@@ -62,7 +62,7 @@ if(isset($ePost['user']) && isset($ePost['pwd'])){
         $_SESSION['surname'] = $user_val['udata_surname'];
         $_SESSION['val'] = $user_val['user_active'];
         $_SESSION['number_id'] = $user_val['udata_number_fk'];
-        $_SESSION['apt'] = $user_val['udata_number_fk'];
+        $_SESSION['apt'] = $user_val['bui_apt'];
         $_SESSION['bui'] = $user_val['bui_name'];
 
         //Se define que tipo de usuario es

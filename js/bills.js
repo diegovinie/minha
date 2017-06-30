@@ -1,3 +1,4 @@
+var model = '../core/async_bills.php';
 window.onload = function(){
     var host = "../core/async_bills.php?fun=aQuery&arg=";
     var lista_id = ["proveedores", "gastos"];
@@ -6,8 +7,10 @@ window.onload = function(){
             setTable(id, res, function(){
                 tablePager(id, function(){
                     $('#'+id).find('tbody').children().each(function(){
-                        $(this).attr('onclick', 'showInfo(this)')
-                    })
+                        $(this).attr('onclick', 'showInfo(this)');
+                        $(this).children()[0].setAttribute('hidden', true);
+                    });
+                    $('#'+id + ' th')[0].setAttribute('hidden', true);
                 })
             })
         })

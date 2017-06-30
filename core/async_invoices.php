@@ -13,7 +13,7 @@ $bui = $_SESSION['bui'];
 switch ($arg) {
     case 'agregar_gastos':
         $q = "SELECT bil_id AS 'id', bil_date AS 'Fecha', bil_class AS 'Clase',
-        bil_desc AS 'Desc', bil_total AS 'Monto' FROM bills ORDER BY bil_id DESC";
+        bil_desc AS 'Desc', bil_total AS 'Monto' FROM bills WHERE bil_bui = '$bui' AND bil_lapse_fk = 0 ORDER BY bil_date DESC";
         break;
     case 'fondos':
         $q = "SELECT fun_id AS 'id', fun_name AS 'Nombre', fun_balance AS 'Saldo', fun_type FROM funds WHERE fun_bui = '$bui' ";

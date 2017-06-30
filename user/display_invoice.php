@@ -6,8 +6,9 @@ require '../datos.php';
 require ROOTDIR.'header.php';
 require ROOTDIR.'menu.php';
 require ROOTDIR.'server.php';
+$bui = $_SESSION['bui'];
 
-$dir = ROOTDIR.'files/invoices';
+$dir = ROOTDIR."files/invoices/$bui";
 $gestor_dir = opendir($dir);
 while(false !== ($nombre_fichero = readdir($gestor_dir))){
     if($nombre_fichero != '.' && $nombre_fichero != '..'){
@@ -47,7 +48,7 @@ while(false !== ($nombre_fichero = readdir($gestor_dir))){
                             </select>
                         </div>
                         <div class="" align="center">
-                            <button class="btn btn-success" type="submit" name="button" class="button_hot principal">Enviar</button>
+                            <button class="btn btn-success" type="submit" name="button" class="button_hot principal">Mostrar</button>
                             <button class="btn btn-danger" type="button" name="button" class="button_hot secundary" onclick="history.go(-1)">Regresar</button>
                         </div>
                     </form>

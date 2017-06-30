@@ -83,10 +83,12 @@ if(isset($_POST['fun'])){
             //Verificar si el usuario existe
             $q = "SELECT user_id FROM users WHERE user_user = '$email'";
             $r = q_exec($q);
+            $active = PRUEBA == true? 1 : 0;
+            $type = PRUEBA == true? 1 : 2;
             if(mysql_num_rows($r) == 0){
                 //Registra en users usuario y clave como inactivo
                 $pwd = md5($pwd);
-                $q1 = "INSERT INTO users VALUES (NULL, '$email', '$pwd', '', '', 2, 0, 'register:$email', NULL)";
+                $q1 = "INSERT INTO users VALUES (NULL, '$email', '$pwd', '', '', $type, $active, 'register:$email', NULL)";
                 $r1 = q_log_exec('register:$email', $q1);
                 //Se obtienen los datos para las claves foráneas
                 $q2 = "SELECT bui_id, user_id FROM users, buildings WHERE user_user = '$email' AND bui_name = '$edf' AND bui_apt = '$apt'";

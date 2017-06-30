@@ -13,7 +13,8 @@ $q = "SELECT lap_id, lap_name FROM lapses ORDER BY lap_id DESC";
 $r = q_exec($q);
 $lapses = query_to_assoc($r);
 
-$dir = ROOTDIR."files/$bui";
+$dir = ROOTDIR."files/invoices/$bui";
+
 $gestor_dir = opendir($dir);
 while(false !== ($nombre_fichero = readdir($gestor_dir))){
     if($nombre_fichero != '.' && $nombre_fichero != '..'){
@@ -32,7 +33,7 @@ while(false !== ($nombre_fichero = readdir($gestor_dir))){
             <h2 class="page-header">Recibos</h2>
         </div>
     </div>
-    <!--<div class="row">
+    <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -79,11 +80,12 @@ while(false !== ($nombre_fichero = readdir($gestor_dir))){
                 </div>
             </div>
         </div>
-    </div>-->
+    </div>
     <div class="row">
         <div class="col-md-12">
             <form class="" action="<?php echo PROJECT_HOST;?>admin/make_invoices.php" method="get">
                 <input type="text" name="fun" value="generate" hidden>
+                <input type="text" name="bui" value="<?php echo $bui; ?>" hidden>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3>Generar Recibos</h3>
