@@ -10,7 +10,7 @@ connect();
 
 if(isset($_GET['edificio'])){
     extract($_SESSION);
-    $q = "SELECT bui_name FROM buildings WHERE bui_id = $apt";
+    $q = "SELECT bui_name FROM buildings WHERE bui_id = $number_id";
     $r = q_exec($q);
     echo uniqueQuery($r);
 }

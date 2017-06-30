@@ -8,7 +8,7 @@ window.onload = function(){
     getAjax(host, 'ultimos_tres', setTablaMes, tdChecker)
     getAjax(host, 'pagos_rechazados', setTablaMes,  tablePager)
     getAjax(host, 'pagos_aprobados', setTablaMes,  tablePager)
-    getAjax(host, 'pagos_pendientes', setTablaMes, tablePager)
+    getAjax(aQueryTablaPrin, 'pagos_pendientes', setTablaMes, tablePager)
 
     setTimeout(function(){
         var id = 'pagos_pendientes';

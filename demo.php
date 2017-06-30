@@ -6,9 +6,10 @@ $_SESSION['user_id'] = 2;
 $_SESSION['user'] = 'admin@caracol';
 $_SESSION['status'] = 'active';
 $_SESSION['name'] = 'Curioso';
+$_SESSION['surname'] = 'Eres';
 $_SESSION['val'] = 'activo';
 $_SESSION['number_id'] = 1;
-$_SESSION['apt'] = 2;
+$_SESSION['apt'] = '1B';
 $_SESSION['bui'] = 'A17';
 
 //Se define que tipo de usuario es

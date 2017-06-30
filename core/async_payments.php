@@ -59,6 +59,7 @@ if(isset($_GET['fun'])){
                 INNER JOIN banks ON pay_fk_bank = bank_id
                 WHERE pay_check = 0  AND pay_bui = '$bui'
                 ";
+            $fun = 'aQueryTablaPrin';
             break;
         case 'pagos_aprobados':
             $q = "SELECT pay_id AS 'id', pay_date AS 'Fecha', bui_apt
@@ -124,7 +125,8 @@ if(isset($_POST['submits'])){
             $qw = "UPDATE buildings SET bui_balance = bui_balance + $row[1] WHERE bui_id = '$row[0]'";
             $rw = q_exec($qw);
             // Se actualiza la cuenta principal
-            $qw2 = "UPDATE accounts SET acc_balance = acc_balance + $row[1] WHERE acc_id = 1";
+            $bui = $_SESSION['bui'];
+            $qw2 = "UPDATE accounts SET acc_balance = acc_balance + $row[1] WHERE acc_type = 1 AND acc_bui = '$bui'";
             $rw2 = q_exec($qw2);
         }
     }

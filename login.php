@@ -74,25 +74,8 @@ require_once 'header.php';
         </div>
     </div>
 <?php
-if(DEMO == true){
-    $handler = fopen(ROOTDIR.'templates/demo_buttons.html', 'r');
-    $htmlDemo = '';
-    while(!feof($handler)){
-        $htmlDemo .= fgets($handler);
-    }
-    fclose($handler);
-    echo $htmlDemo;
-}
-
-if(VIDEO == true){
-    $handler = fopen(ROOTDIR.'templates/demo_video.html', 'r');
-    $htmlVideo = '';
-    while(!feof($handler)){
-        $htmlVideo .= fgets($handler);
-    }
-    fclose($handler);
-    echo $htmlVideo;
-}
+if(DEMO == true) include ROOTDIR.'templates/demo_buttons.html';
+if(VIDEO == true) include ROOTDIR.'templates/demo_video.html';
  ?>
 
 

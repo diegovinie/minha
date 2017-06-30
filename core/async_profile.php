@@ -43,20 +43,23 @@ if(isset($_GET['fun'])){
 if(isset($_POST['submit'])){
     //print_r($_POST);
     extract($_POST);
-    $notes = Array( 'multi' => isset($multi)? true : false,
-                    'uni' => isset($uni)? true : false,
-                    'abacantv' => isset($abacantv)? $abacantv : false,
-                    'tvcantv' => isset($tvcantv)? $tvcantv : false,
-                    'telcantv' => isset($telcantv)? $telcantv : false,
-                    'gas' => isset($gas)? $gas : false,
-                    'directv' => isset($directv)? $directv : false,
-                    'cars' => isset($cars)? $cars : false,
-                    'motos' => isset($motos)? $motos : false);
+    if(isset($edif) && $edif == 'A17'){
+        $notes = Array( 'multi' => isset($multi)? true : false,
+                        'uni' => isset($uni)? true : false,
+                        'abacantv' => isset($abacantv)? $abacantv : false,
+                        'tvcantv' => isset($tvcantv)? $tvcantv : false,
+                        'telcantv' => isset($telcantv)? $telcantv : false,
+                        'gas' => isset($gas)? $gas : false,
+                        'directv' => isset($directv)? $directv : false,
+                        'cars' => isset($cars)? $cars : false,
+                        'motos' => isset($motos)? $motos : false);
 
-    $notes_j = json_encode($notes);
-    //print_r($notes_j);
-    $q1 = "UPDATE buildings SET bui_notes = '$notes_j' WHERE bui_id = $bui_id";
-    $r1 = q_exec($q1);
+        $notes_j = json_encode($notes);
+        //print_r($notes_j);
+        $q1 = "UPDATE buildings SET bui_notes = '$notes_j' WHERE bui_id = $bui_id";
+        $r1 = q_exec($q1);        
+    }
+
     $q2 = "UPDATE userdata SET udata_name = '$name', udata_surname ='$surname', udata_ci = '$ci', udata_cel = '$cel', udata_gender = '$gen' WHERE udata_user_fk = $user_id";
     $r2 = q_exec($q2);
     echo "cambios aplicados";
