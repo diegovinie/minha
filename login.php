@@ -53,7 +53,7 @@ require_once 'header.php';
                             </div>
                             <div class="checkbox" align="left">
                                 <label for="">
-                                    <input type="checkbox" name="remember" value="1">Recordarme
+                                    <input type="checkbox" name="remember" id="remember" value="1">Recordarme
                                 </label>
                             </div>
                             <button type="submit" href="" name="" class="btn btn-lg btn-success btn-block" onclick="sendLogin()">Enviar</button>
@@ -82,7 +82,7 @@ if(VIDEO == true) include ROOTDIR.'templates/demo_video.html';
 </div>
 </div>
 
-
+<script src="<?php echo PROJECT_HOST; ?>js/functions.js" charset="utf-8"></script>
 <script src="<?php echo PROJECT_HOST; ?>js/forms.js" charset="utf-8"></script>
 <script src="<?php echo PROJECT_HOST; ?>js/ajax.js" charset="utf-8"></script>
 <script src="<?php echo PROJECT_HOST; ?>js/login.js" charset="utf-8"></script>

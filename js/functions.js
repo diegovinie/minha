@@ -249,3 +249,51 @@ function addRadioToTable(tr, id){
     tr.insertBefore(tdn, tr.children[0]);
     tr.insertBefore(tdy, tr.children[0]);
 }
+
+function pressEnterNext(list){
+    $('#'+list[0]).focus();
+    $(list).each(function(pos, id_n){
+        var input = $('#'+id_n);
+        var valid = 'input, button, select';
+        input.on('keypress', function(evt){
+            var keyCode = evt ? (evt.which ? evt.which : evt.keyCode) : event.keyCode;
+            if(keyCode == 13){
+                evt.preventDefault();
+                var next = document.getElementById(list[pos+1]);
+                next? $(next).focus() : findernext(this, valid);
+            }
+        });
+    });
+    function findernext(i, valid){
+        var input = $(i);
+        var $next = input.parent().next().find(valid);
+        if($next.is(valid)){
+            $next.each(function(pos, ele){
+                if(ele.type === "submit") $(ele).focus();
+            });
+        }else{
+            $next = input.parent().parent().next();
+            if($next.is(valid)){
+                $next.each(function(pos, ele){
+                    if(ele.type === "submit") $(ele).focus();
+                });
+            }else{
+                $next = input.parent().parent().next().find(valid);
+                if($next.is(valid)){
+                    $next.each(function(pos, ele){
+                        if(ele.type === "submit") $(ele).focus();
+                    });
+                }else{
+                    $next = $(this).next();
+                    if($next.is(valid)){
+                        $next.each(function(pos, ele){
+                            if(ele.type === "submit") $$(ele).focus();
+                        });
+                    }else{
+                        throw "Problema con el cambio de elemento con enter";
+                    }
+                }
+            }
+        }
+    }
+}

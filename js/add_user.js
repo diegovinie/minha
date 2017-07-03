@@ -3,6 +3,9 @@ window.onload = function(){
         event.preventDefault();
     });
 
+    var list = ['name', 'surname', 'ci', 'apt', 'email', 'type', 'cond'];
+    pressEnterNext(list);
+
     $.ajax({
         url: '../core/async_users.php?edificio',
         type: 'get',

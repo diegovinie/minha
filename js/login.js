@@ -2,6 +2,8 @@ window.onload = function(){
     $("form").on("submit", function(event){
     event.preventDefault();
     });
+    var ids = ['user', 'pwd', 'remember'];
+    pressEnterNext(ids);
 }
 
 function sendLogin(){

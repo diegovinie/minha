@@ -1,5 +1,6 @@
 window.onload = function(){
-    host = "../core/async_user_payments.php?fun=pays&arg=";
+    var date = new Date();
+    var host = "../core/async_user_payments.php?fun=pays&arg=";
     var id1 = "pagos";
     getDataAjax(host, id1, function(res){
         setTable(id1, res, function(){
@@ -41,7 +42,7 @@ window.onload = function(){
 }
 
 function newPayment(){
-    $.get('../templates/payment.html', function(html){
+    $.get('../templates/payment.html?'+date.getTime(), function(html){
         $('body').append(html);
         var modal = $('#payment'),
             btnSubmit = $('#btnSubmit');
@@ -70,6 +71,7 @@ function newPayment(){
                 console.log(err);
             }
         });
+
         $.ajax({
             url: '../core/async_user_payments.php?fun=&arg=apt',
             type: 'get',
@@ -83,6 +85,10 @@ function newPayment(){
                 console.log(err);
             }
         });
+
+    }).then(function(){
+        var list = ['date', 'type', 'n_op', 'bank', 'amount', 'notes'];
+        pressEnterNext(list);
     });
 }
 

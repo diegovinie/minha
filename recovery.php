@@ -1,4 +1,5 @@
 <?php
+// Controlador: js/recovery.js
 //Formulario con verificación de campos JS
 require 'datos.php';
 require 'header.php';
@@ -60,7 +61,7 @@ require 'header.php';
                  </div>
                  <div class="form-group" align="center">
                     <a id="pwdSubmit" type="submit" class="btn btn-success" onclick="changePwd()" disabled>Aplicar</a>
-                     <a type="back" href="recovery.php" class="btn btn-danger" name="button">Regresar</a>
+                     <a type="button" href="recovery.php" class="btn btn-danger" name="button">Regresar</a>
                  </div>
              </div>
          </div>
@@ -80,6 +81,7 @@ require 'header.php';
 </div>
 
         </main>
+        <script src="<?php echo PROJECT_HOST; ?>js/functions.js" charset="utf-8"></script>
         <script src="<?php echo PROJECT_HOST; ?>js/forms.js" charset="utf-8"></script>
         <script src="<?php echo PROJECT_HOST; ?>js/ajax.js" charset="utf-8"></script>
         <script src="<?php echo PROJECT_HOST.TEMPLATE;?>vendor/bootstrap/js/bootstrap.min.js"></script>

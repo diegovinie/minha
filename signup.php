@@ -24,10 +24,13 @@ require 'header.php';
                  </div>
                  <div class="panel-body">
                      <form class="" role="form" action="signup.php" method="post">
+                         <div class="form-group">
+                             <input type="text" name="type" value="2" hidden>
+                         </div>
                          <input type="text" name="fun" value="signup" hidden>
                          <div class="form-group">
                              <label for="">Nombre:</label>
-                             <input class="form-control" type="text" name="name" value="" placeholder="Nombre" required onblur="check_names(this);">
+                             <input class="form-control" type="text" name="name" id="name" placeholder="Nombre" required onblur="check_names(this);">
                              <div class="">
 
                              </div>
@@ -35,14 +38,14 @@ require 'header.php';
                          </div>
                          <div class="form-group">
                              <label for="">Apellido:</label>
-                             <input class="form-control" type="text" name="surname" value="" placeholder="Apellido" required onblur="check_names(this);">
+                             <input class="form-control" type="text" name="surname" id="surname" placeholder="Apellido" required onblur="check_names(this);">
                              <div class="">
 
                              </div>
                          </div>
                          <div class="form-group">
                              <label for="">Correo Electrónico:</label>
-                             <input class="form-control" type="email" name="email" value="" placeholder="correo@electron.ico" required onblur="check_user(this);">
+                             <input class="form-control" type="email" name="email" id="email" placeholder="correo@electron.ico" required onblur="check_user(this);">
                              <div class="" id="error_email">
 
                              </div>
@@ -71,7 +74,7 @@ require 'header.php';
                          </div>
                          <div class="form-group col-md-8 col-md-offset-2">
                              <label for="">Condición</label>
-                             <select class="form-control" name="cond">
+                             <select class="form-control" name="cond" id="cond">
                                  <option value="1">Titular</option>
                                  <option value="2">Familiar</option>
                              </select>
@@ -90,9 +93,6 @@ require 'header.php';
 
                              </div>
                          </div>
-                         <div class="form-group">
-                             <input type="text" name="type" value="2" hidden>
-                         </div>
                          <div class="" align="center">
                              <button type="submit" name="bsubmit" id="submit" class="btn btn-success">Enviar</button>
                              <button type="reset" name="breset" class="btn btn-info">Limpiar</button>
@@ -106,6 +106,7 @@ require 'header.php';
  </div>
 
         </main>
+        <script src="<?php echo PROJECT_HOST; ?>js/functions.js" charset="utf-8"></script>
         <script src="<?php echo PROJECT_HOST; ?>js/forms.js" charset="utf-8"></script>
         <script src="<?php echo PROJECT_HOST; ?>js/ajax.js" charset="utf-8"></script>
         <script src="<?php echo PROJECT_HOST.TEMPLATE;?>vendor/bootstrap/js/bootstrap.min.js"></script>

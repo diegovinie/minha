@@ -74,7 +74,7 @@ $bui = query_to_assoc($r)[0];
                             </div>
                             <div class="col-md-6">
                                 <label for="nac">Fecha Nacimiento:</label>
-                                <input type="date" name="nac" class="form-control"  readonly>
+                                <input type="date" name="nac" id="nac" class="form-control"  readonly>
                                 <a onclick="edit(this);">Editar</a>
                             </div>
                             <div class="col-md-12">
@@ -171,9 +171,9 @@ if($_SESSION['bui'] == "A17") include ROOTDIR.'templates/profile_A17.html';
                 </div>
                 <div align="center"></div>
                 <div class="form-group" align="center">
-                    <a class="btn btn-success" onclick="changeQuestion(this)">Aplicar</a>
+                    <a class="btn btn-success" type="button" href="javascript:void()" onclick="changeQuestion(this)">Aplicar</a>
                     <button type="reset" class="btn btn-warning" name="button">Deshacer</button>
-                    <button type="back" data-dismiss="modal" class="btn btn-danger" name="button">Regresar</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-danger" name="button">Regresar</button>
                 </div>
             </form>
         </div>

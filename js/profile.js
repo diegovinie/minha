@@ -1,4 +1,5 @@
 window.onload = function(){
+    token = new Date().getTime();
     $.ajax({
         url: '../core/async_profile.php?fun=load',
         type: 'get',
@@ -70,6 +71,8 @@ window.onload = function(){
             er2 = err;
         }
     });
+    var list = ['name', 'surname', 'ci', 'nac', 'cel', 'gen'];
+    pressEnterNext(list);
 }
 
 function edit(self){
@@ -77,15 +80,19 @@ function edit(self){
 }
 
 function pwdDialog(){
-    $.get('../templates/changepwd.html', function(html){
+    $.get('../templates/changepwd.html?'+token, function(html){
         $('body').append($.parseHTML(html));
         $('#chpwd').modal();
         $('#chpwd form input').val('');
         $('#pwdSubmit').on('click', function(ev){
             ev.preventDefault();
         });
-
-    }).fail(function(err){
+    })
+    .then(function(){
+        var list = ['pwd_old', 'pwd', 'pwd_rep'];
+        pressEnterNext(list);
+    })
+    .fail(function(err){
         console.log('Error en template: ');
         console.log(err);
     });
@@ -187,6 +194,9 @@ function getQuestion(){
         error: function(err){
             console.log('getQuestion: ' + err.responseText + ', status: ' +err.status);
         }
+    }).then(function(){
+        var list = ['question', 'answer'];
+        pressEnterNext(list);
     })
 }
 
@@ -212,5 +222,5 @@ function changeQuestion(self){
         error: function(err){
             console.log('cambioPregunta: ' + err.responseText + ', status: ' +err.status);
         }
-    })
+    });
 }

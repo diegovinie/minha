@@ -15,7 +15,7 @@
                     </div>
                     <div class="form-group col-md-5">
                         <label for="">Fecha de operación:</label>
-                        <input class="form-control" placeholder="aaaa-mm-dd" type="date" name="date" required>
+                        <input class="form-control" placeholder="aaaa-mm-dd" type="date" name="date" id="date" required>
                         <div class="">
 
                         </div>
@@ -23,7 +23,7 @@
                 </div>
                 <div class="form-group">
                     <label>Tipo de Operación:</label>
-                    <select class="form-control" name="type">
+                    <select class="form-control" name="type" id="type">
                         <option value="1">Depósito</option>
                         <option value="2" selected>Transferencia</option>
                     </select>
@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="">Número Operación:</label>
-                        <input class="form-control" type="text" name="n_op" value="" required>
+                        <input class="form-control" type="text" name="n_op" id="n_op" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="">Banco:</label>
@@ -43,19 +43,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Monto:</label><input class="form-control" placeholder="use ',' para separar decimales" type="text" name="amount" value="" onblur="checkNumEsp(this)" required>
+                    <label>Monto:</label><input class="form-control" placeholder="use ',' para separar decimales" type="text" name="amount" id="amount" onblur="checkNumEsp(this)" required>
                     <div class="">
 
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Obsercaciones:</label>
-                    <textarea class="form-control" name="notes" rows="4" cols="20"></textarea>
+                    <textarea class="form-control" name="notes" id="notes" rows="4" cols="20"></textarea>
                 </div>
                 <div class="button_box" align="center">
                     <button type="submit" id='btnSubmit' name="btnSubmit" class="btn btn-success btn-lg" >Enviar</button>
                     <button type="reset" name="btnReset" class="btn btn-info btn-lg">Limpiar</button>
-                    <button type="" name="btnBack" class="btn btn-danger btn-lg" onclick="window.location.reload()">Regresar</button>
+                    <button type="button" name="btnBack" class="btn btn-danger btn-lg" onclick="window.location.reload()">Regresar</button>
                 </div>
             </form>
         </div>

@@ -37,7 +37,7 @@ $rlapse = q_exec($qlapse);
                     <form class="" action="add_bill.php" method="post">
                         <div class="form-group col-md-8">
                             <label for="">Proveedor:</label>
-                            <select class="form-control" name="prov" onchange="select_prov(this)">
+                            <select class="form-control" name="prov" id="prov" onchange="select_prov(this)">
                                 <option value="0" default>Otro</option>
                                 <?php
                                 while($a = mysql_fetch_array($rprov)){
@@ -62,7 +62,7 @@ $rlapse = q_exec($qlapse);
                         </div>
                         <div class="form-group col-md-4">
                             <label for="">Forma de Pago:</label>
-                            <select class="form-control" name="method">
+                            <select class="form-control" name="method" id="method">
                                 <option value="CHEQUE">Cheque</option>
                                 <option value="CAJA CHICA">Caja Chica</option>
                                 <option value="TRANSFERENCIA">Transferencia</option>
@@ -92,7 +92,7 @@ $rlapse = q_exec($qlapse);
                         </div>
                         <div class="form-group col-md-4">
                             <label for="">Forma de Cargo:</label>
-                            <select class="form-control" name="" id="up_op">
+                            <select class="form-control" name="up_op" id="up_op">
                                 <option value="">Seleccione:</option>
                                 <option value="0" id="up_op_0">Equitativo</option>
                                 <option value="1" id="up_op_1">Ponderado</option>
@@ -125,7 +125,7 @@ $rlapse = q_exec($qlapse);
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">Tipo de Soporte:</label>
-                            <select class="form-control" name="log">
+                            <select class="form-control" name="log" id="log">
                                 <option value="COMPROBANTE">Comprobante</option>
                                 <option value="FACTURA">Factura</option>
                                 <option value="RECIBO">Recibo</option>
@@ -143,7 +143,12 @@ $rlapse = q_exec($qlapse);
     </div>
 </div>
 
-
+<script type="text/javascript">
+window.onload = function(){
+    var list = ['prov','date', 'name', 'method', 'desc', 'rif', 'spe_type', 'up_op', 'amount', 'alic', 'log'];
+    pressEnterNext(list);
+}
+</script>
 
 
  <?php
@@ -172,10 +177,10 @@ if(isset($_POST['date']) &&
     $r2 = q_exec($q2);
     ?>
     <script type="text/javascript">
-        ventana('Gasto almacenado', '');
-        setTimeout(function(){
-            window.location.href = HOSTNAME + 'main.php';
-        }, 2000);
+    ventana('Gasto almacenado', '');
+    setTimeout(function(){
+        window.location.href = HOSTNAME + 'main.php';
+    }, 2000);
     </script>
     <?php
 }

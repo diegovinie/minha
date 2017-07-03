@@ -1,6 +1,6 @@
 <?php
 // Formulario con verificación de campos JS
-// Controlador: js/user.js
+// Controlador: js/add_user.js
 // Modelo: core/async_users.php
 
 require '../datos.php';
@@ -23,14 +23,14 @@ require ROOTDIR.'menu.php';
                         <form class="" action="add_user.php" method="post">
                             <div class="form-group">
                                 <label for="">Nombre:</label>
-                                <input class="form-control" type="text" name="name" placeholder="Nombre" value="" onblur="check_names(this)" required>
-                                <div class="">
+                                <input class="form-control" type="text" name="name" id="name" placeholder="Nombre"  onblur="check_names(this)" required>
+                                <div>
 
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Apellido:</label>
-                                <input class="form-control" type="text" name="surname" value="" onblur="check_names(this)" placeholder="Apellido" required>
+                                <input class="form-control" type="text" name="surname" id="surname" onblur="check_names(this)" placeholder="Apellido" required>
                                 <div class="">
 
                                 </div>
@@ -39,7 +39,7 @@ require ROOTDIR.'menu.php';
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label for="">Cédula de Identidad:</label>
-                                        <input class="form-control" type="text" placeholder="V12345678" name="ci" value="" onblur="check_ci(this)">
+                                        <input class="form-control" type="text" placeholder="V12345678" name="ci" id="ci" onblur="check_ci(this)">
                                         <div class="">
 
                                         </div>
@@ -61,7 +61,7 @@ require ROOTDIR.'menu.php';
                             </div>
                             <div class="form-group">
                                 <label for="">Correo-e:</label>
-                                <input class="form-control" type="email" name="email" placeholder="correo@electron.ico" value="" onblur="check_user(this, false)" required>
+                                <input class="form-control" type="email" id="email" name="email" placeholder="correo@electron.ico"  onblur="check_user(this, false)" required>
                                 <div class="">
 
                                 </div>
@@ -78,7 +78,7 @@ require ROOTDIR.'menu.php';
 
                             <div class="form-group col-md-6">
                                 <label>Tipo de usuario:</label>
-                                <select class="form-control" name="type" required>
+                                <select class="form-control" name="type" id="type" required>
                                     <option selected>Seleccionar</option>
                                     <option value="1">Administrador</option>
                                     <option value="2">Usuario Registrado</option>
@@ -86,7 +86,7 @@ require ROOTDIR.'menu.php';
                             </div>
                             <div class="form-group col-md-6">
                                 <label>Condición:</label>
-                                <select class="form-control" name="cond" required>
+                                <select class="form-control" name="cond" id="cond" required>
                                     <option selected>Seleccionar</option>
                                     <option value="1">Titular</option>
                                     <option value="2">Familiar</option>

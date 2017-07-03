@@ -66,5 +66,7 @@ window.onload = function(){
                 console.log('Recibiendo apts: ' +err.responseText + ' estatus: '+ err.status);
             }
         });
-    })
+    });
+    var lista = ['name', 'surname', 'email', 'edf', 'apt', 'cond', 'pwd', 'rpwd'];
+    pressEnterNext(lista);
 }

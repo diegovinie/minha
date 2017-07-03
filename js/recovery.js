@@ -8,6 +8,9 @@ window.onload = function(){
             checkResponse(btn);
         });
     };
+
+    var list = ['email', 'question', 'response'];
+    pressEnterNext(list);
 }
 
 function checkEmail(self){
@@ -26,7 +29,7 @@ function checkEmail(self){
             error: function(err){
                 console.log('checkEmail: ' + err.responseText + ', status: ' + err.status);
             }
-        });        
+        });
     }
 
 }
@@ -54,6 +57,8 @@ function checkResponse(self){
                     $('#newPwd').modal('hide');
                 });
                 $('#pwd').focus();
+                var list = ['pwd', 'pwd_ret'];
+                pressEnterNext(list);
             }else {
                 setTimeout(function(){
                     window.location.reload();
