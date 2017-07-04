@@ -10,6 +10,7 @@ $db_name = 'bd_minha';
 $alias = 'minha';
 $template = 'startbootstrap-sb-admin-2-gh-pages';
 $name = 'Minha Administradora';
+$version = '0.5-a1';
 $defpwd = '1234';
 
 // Datos para conectarse a la base de datos:
@@ -17,6 +18,7 @@ define('DB_HOST', $db_host);
 define('DB_USER', $db_user);
 define('DB_PWD', $db_pwd);
 define('DB_NAME', $db_name);
+define('VERSION', $version);
 define('DEF_PWD', $defpwd);
 define('DEMO', true);
 define('PRUEBA', true);

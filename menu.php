@@ -22,7 +22,7 @@ function checklogin(){
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="index.html"><?php echo NAME; ?> v0.2</a>
+			<a class="navbar-brand" href="index.html"><?php echo NAME ." " .VERSION; ?></a>
 		</div>
 		<!-- /.navbar-header -->
 

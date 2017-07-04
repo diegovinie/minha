@@ -93,26 +93,31 @@ function getDataAjax(h, id, callback){
 }
 
 function trasTable(id, callback){
-    tabla = $('#t_'+id);
-    var x = tabla.find('tr')
+    var tabla = $('#t_'+id);
+    var x = tabla.find('tr'),
+        y = tabla.find('td'),
+        z = tabla.find('th'),
+        suma = 0;
+    tabla.find('thead, tbody, tfoot').each(function(){
+        $(this).css('float', 'left');
+    });
     x.each(function(r, v){
         v.style.float = 'left';
         v.style.display = 'block';
     });
-    var y = tabla.find('td')
     y.each(function(r, v){
         v.style.display = 'block';
         v.style.textAlign = 'left';
     });
-    var z = tabla.find('th')
     z.each(function(r, v){
         v.style.display = 'block';
     });
-    var suma = 0;
-    $('#t_'+id + ' tr').each(function(x){
-        suma += parseFloat($(this).css('width'));
+    x.each(function(x){
+        var w = parseFloat($(this).css('width'));
+        suma += w;
     });
-    $('#ovCont')? $('#ovCont').css('width', suma + 70) : false;
+    $('#ovCont')? $('#ovCont').css('width', suma + 50) : void(0);
+    //$(tabla).css('width', suma + 25);
     if(callback) callback();
 }
 
@@ -137,7 +142,7 @@ function tdChecker(id){
 function dataParser(tag, callback){
     var money = ['monto', 'iva', 'total', 'deuda', 'balance', 'saldo', 'cuota'];
     var date = ['fecha', 'date'];
-    var rif = ['rif','/ci', 'c.i'];
+    var rif = ['rif','/ci', 'ci[^óa]'];
     var others = ['asignado', 'ocupado'];
     var bills = ['Cargado'];
     money.forEach(function(x){
