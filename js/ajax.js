@@ -46,7 +46,14 @@ function addButtonUsers(self){
     button.setAttribute('type', 'button');
 	button.setAttribute('class', 'btn btn-success btn-sm');
     button.addEventListener('click', function(){
-        AjaxPromete("../core/query.php?fun=show_users&number=" + self).then(function(res){return showUl(res)}).then(function(res2){ventana('Usuarios Registrados', res2)})})
+        AjaxPromete("core/query.php?fun=show_users&number=" + self)
+		.then(function(res){
+			return showUl(res);
+		})
+		.then(function(res2){
+			ventana('Usuarios Registrados', res2);
+		});
+	});
     button.innerHTML = 'Usuarios';
     document.getElementById('ovCont').appendChild(button);
 }

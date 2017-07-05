@@ -1,5 +1,5 @@
 window.onload = function(){
-   var host = "../core/async_invoices.php?fun=show_funds&arg=";
+   var host = "core/async_invoices.php?fun=show_funds&arg=";
    var id = "fondos";
    getDataAjax(host, id, function(res){
        var container = document.getElementById("accordion");
@@ -12,7 +12,7 @@ window.onload = function(){
            container.appendChild(divRes.firstChild);
        }
    });
-   var host2 = "../core/async_invoices.php?fun=show_bills&arg=";
+   var host2 = "core/async_invoices.php?fun=show_bills&arg=";
    var id2 = "agregar_gastos";
    getDataAjax(host2, id2, function(res2){
        var container = document.getElementById(id2);
@@ -38,4 +38,3 @@ window.onload = function(){
    $('#gen').attr('disabled', true);
    document.getElementById('ready').checked = false;
 }
- 

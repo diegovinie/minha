@@ -23,7 +23,7 @@ $bui = query_to_assoc($r)[0];
     </div>
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form class="" action="../core/async_profile.php" method="post">
+            <form class="" action="core/async_profile.php" method="post">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="form-group">
@@ -181,7 +181,7 @@ if($_SESSION['bui'] == "A17") include ROOTDIR.'templates/profile_A17.html';
 </div>
 <input type="text" name="user" id="user" value="<?php echo $_SESSION['user_id']; ?>" hidden>
 
-<script src="<?php echo PROJECT_HOST; ?>js/profile.js" charset="utf-8"></script>
+<script src="<?php echo PROJECT_HOST; ?>js/profile.js?<?php echo TOKEN; ?>" charset="utf-8"></script>
 <?php
 require '../footer.php';
 if(isset($time_ini)) rec_exec_time($time_ini, __FILE__, __LINE__);

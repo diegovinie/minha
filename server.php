@@ -1,6 +1,5 @@
 <?php
 //Funciones de conexión a base de datos y manejo de datos
-require_once ROOTDIR.'datos.php';
 
 function connect(){
     $con = mysql_connect(DB_HOST, DB_USER, DB_PWD) or die("Error de conexión: ". mysql_error());

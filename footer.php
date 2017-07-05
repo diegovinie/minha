@@ -11,11 +11,11 @@
             </div>
         </footer>
 
-        <script src="<?php echo PROJECT_HOST;?>js/modal.js" charset="utf-8"></script>
-        <script src="<?php echo PROJECT_HOST;?>js/ajax.js" charset="utf-8"></script>
-        <script src="<?php echo PROJECT_HOST;?>js/unpacking_ajax.js" charset="utf-8"></script>
-        <script src="<?php echo PROJECT_HOST;?>js/functions.js" charset="utf-8"></script>
-                <script src="<?php echo PROJECT_HOST;?>js/forms.js" charset="utf-8"></script>
+        <script src="<?php echo PROJECT_HOST;?>js/modal.js?<?php echo TOKEN; ?>" charset="utf-8"></script>
+        <script src="<?php echo PROJECT_HOST;?>js/ajax.js?<?php echo TOKEN; ?>" charset="utf-8"></script>
+        <script src="<?php echo PROJECT_HOST;?>js/unpacking_ajax.js?<?php echo TOKEN; ?>" charset="utf-8"></script>
+        <script src="<?php echo PROJECT_HOST;?>js/functions.js?<?php echo TOKEN; ?>" charset="utf-8"></script>
+                <script src="<?php echo PROJECT_HOST;?>js/forms.js?<?php echo TOKEN; ?>" charset="utf-8"></script>
         <!-- Bootstrap Core JavaScript -->
         <script src="<?php echo PROJECT_HOST.TEMPLATE;?>vendor/bootstrap/js/bootstrap.min.js"></script>
 

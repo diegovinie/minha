@@ -25,7 +25,7 @@ require ROOTDIR.'menu.php';
                     <!-- async data -->
                 </div>
                 <div class="panel-footer col-md-12" style="text-align:center;">
-                    <button type="button" name="add_usuarios_registrados" class="btn btn-primary" onclick="window.location.href = 'add_user.php';">Agregar Usuarios</button>
+                    <button type="button" name="add_usuarios_registrados" class="btn btn-primary" onclick="window.location.href = 'admin/add_user.php';">Agregar Usuarios</button>
 					<button type="button" data-fun="usuarios_registrados" class="btn btn-info"  onclick="genPdf(this)" >Imprimir</button>
                 </div>
 

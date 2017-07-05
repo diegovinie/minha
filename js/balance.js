@@ -1,5 +1,5 @@
 window.onload = function(){
-    var host = "../core/async_balance.php?fun=aQuery&arg=";
+    var host = "core/async_balance.php?fun=aQuery&arg=";
     var lista_id = ["balance_apartamentos", "cuentas", "fondos"];
     lista_id.forEach(function(id){
         getDataAjax(host, id, function(res){
@@ -44,7 +44,7 @@ window.onload = function(){
 function showApt(self){
     var n = self.children.namedItem('id').dataset.value;
     var id = "apartamento";
-    AjaxPromete("../core/async_balance.php?fun=aQueryTbody&arg=" + id +"&id=" + n)
+    AjaxPromete("core/async_balance.php?fun=aQueryTbody&arg=" + id +"&id=" + n)
         .then(function(res2){ventana('Información:', res2) })
         .then(function(){ trasTable(id) })
         .then(function(res4){addButtonUsers(n)})

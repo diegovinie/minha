@@ -20,7 +20,7 @@ require ROOTDIR.'menu.php';
                         Añadir Usuario
                     </div>
                     <div role="form" class="panel-body">
-                        <form class="" action="add_user.php" method="post">
+                        <form class="" action="admin/add_user.php" method="post">
                             <div class="form-group">
                                 <label for="">Nombre:</label>
                                 <input class="form-control" type="text" name="name" id="name" placeholder="Nombre"  onblur="check_names(this)" required>
@@ -94,7 +94,7 @@ require ROOTDIR.'menu.php';
                             </div>
                             <div class="button_box" align="center">
                                 <button type="submit" id='submit' name="button" class="btn btn-success" onclick="sendNewuser()" >Enviar</button>
-                                <button type="button" name="button" class="btn btn-danger" onclick="window.location.href='display_users.php'">Regresar</button>
+                                <button type="button" name="button" class="btn btn-danger" onclick="window.location.href='admin/display_users.php'">Regresar</button>
                             </div>
                         </form>
                     </div>
@@ -111,7 +111,7 @@ require ROOTDIR.'menu.php';
 
     </div>
     <!--/page-wrapper-->
-<script src="../js/add_user.js" charset="utf-8"></script>
+<script src="js/add_user.js" charset="utf-8"></script>
 
 <?php
 require ROOTDIR.'footer.php';

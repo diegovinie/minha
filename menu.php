@@ -4,16 +4,10 @@
 
 require_once 'datos.php';
 if(!isset($_SESSION['name'])){
-	checklogin();
+	header('Location: login.php');
+    exit;
 }
-function checklogin(){
-	?>
-	<script type="text/javascript">
-		window.location.href = '<?php echo PROJECT_HOST;?>login.php';
-	</script>
-	<?php
-}
- ?>
+?>
 	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 		<div class="navbar-header">
 			<button  type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -22,7 +16,7 @@ function checklogin(){
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="index.html"><?php echo NAME ." " .VERSION; ?></a>
+			<a class="navbar-brand" href="main.php"><?php echo NAME ." " .VERSION; ?></a>
 		</div>
 		<!-- /.navbar-header -->
 
@@ -79,7 +73,7 @@ function checklogin(){
 			</li>
 			<!-- /.dropdown -->
 			<li class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php
+				<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><?php
 					echo "Bienvenido, ".$_SESSION['name'];
 				?>
 					<i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -117,10 +111,10 @@ function checklogin(){
 						<a href="<?php echo PROJECT_HOST;?>main.php"><i class="fa fa-dashboard fa-fw"></i> Inicio</a>
 					</li>
 					<li>
-						<a class="text-muted" href="#">Información<span class="fa arrow"></span></a>
+						<a class="text-muted" href="javascript:void(0);">Información<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
-							<li><a class="text-muted" href="#">Normas</a></li>
-							<li><a class="text-muted" href="#">Seguimiento de Casos Especiales</a></li>
+							<li><a class="text-muted" href="javascript:void(0);">Normas</a></li>
+							<li><a class="text-muted" href="javascript:void(0);">Seguimiento de Casos Especiales</a></li>
 						</ul>
 					</li>
 					<li>
@@ -131,10 +125,10 @@ function checklogin(){
 						</ul>
 					</li>
 					<li>
-						<a class="text-muted" href="#">Solicitudes <span class="fa arrow"></span></a>
+						<a class="text-muted" href="javascript:void(0);">Solicitudes <span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
-							<li><a class="text-muted" href="#">Constancias</a></li>
-							<li><a class="text-muted" href="#">Llaves</a></li>
+							<li><a class="text-muted" href="javascript:void(0);">Constancias</a></li>
+							<li><a class="text-muted" href="javascript:void(0);">Llaves</a></li>
 						</ul>
 					</li>
 
@@ -152,23 +146,23 @@ function checklogin(){
 							</li>
 							<li><a href="<?php echo PROJECT_HOST;?>admin/bills.php">Gastos y Proveedores</a></li>
 							<li><a href="<?php echo PROJECT_HOST;?>admin/balance.php">Estados Financieros</a></li>
-							<li><a class="text-muted" href="#">Casos Especiales</a></li>
+							<li><a class="text-muted" href="javascript:void(0);">Casos Especiales</a></li>
 							<li><a href="<?php echo PROJECT_HOST;?>admin/display_users.php">Usuarios</a></li>
-							<li><a class="text-muted" href="#">Solicitudes</a></li>
+							<li><a class="text-muted" href="javascript:void(0);">Solicitudes</a></li>
 						</ul>
 					</li>
 					<?php
 						}
 					}
 					?>
-					<li><a class="text-muted" href="#">Medios <span class="fa arrow"></span></a>
+					<li><a class="text-muted" href="javascript:void(0);">Medios <span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
-							<li><a class="text-muted" href="#">Publicar Nota</a></li>
-							<li><a class="text-muted" href="#">Encuestas</a></li>
-							<li><a class="text-muted" href="#">Mensajes</a></li>
+							<li><a class="text-muted" href="javascript:void(0);">Publicar Nota</a></li>
+							<li><a class="text-muted" href="javascript:void(0);">Encuestas</a></li>
+							<li><a class="text-muted" href="javascript:void(0);">Mensajes</a></li>
 						</ul>
 					</li>
-					<li><a class="text-muted" href="#">Ayuda</a></li>
+					<li><a class="text-muted" href="javascript:void(0);">Ayuda</a></li>
 				</ul>
 			</div>
 

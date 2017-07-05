@@ -1,7 +1,7 @@
-var model = '../core/async_users.php';
+var model = 'core/async_users.php';
 
 window.onload = function(){
-    var host = "../core/async_users.php?fun=";
+    var host = "core/async_users.php?fun=";
     var lista_id = ["usuarios_registrados", "usuarios_pendientes"];
     var id1 = "usuarios_registrados";
     getDataAjax(host, id1, function(res){

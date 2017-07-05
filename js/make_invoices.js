@@ -1,7 +1,7 @@
 
 function seeInvoice(self){
     var lapse = self.dataset.lapse;
-    open('../core/pdf_invoice.php?lapse='+lapse);
+    open('core/pdf_invoice.php?lapse='+lapse);
 }
 
 function saveInvoices(id){
@@ -14,7 +14,7 @@ function saveInvoices(id){
        success: function (msg) {
            if (msg) {
               notification(true, msg, 'result', function(){
-                  window.location.href = HOSTNAME + 'main.php';
+                  window.location.href = 'main.php';
               })
            } else {
                notification(false, "Ocurrió un error guardando", 'result');
@@ -32,7 +32,7 @@ function discard(id){
         dataType: "text",
         success: function(msg){
             notification(false, msg, 'result', function(){
-                window.location.href = HOSTNAME + 'main.php';
+                window.location.href = 'main.php';
                 console.log('echa pa atras');
             })
         }

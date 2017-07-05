@@ -63,7 +63,7 @@ require ROOTDIR.'menu.php';
         </div>
     </div>
 </div>
-<script src="../js/user_payments.js" charset="utf-8"></script>
+<script src="js/user_payments.js?<?php echo TOKEN; ?>" charset="utf-8"></script>
 
 <?php
 require '../footer.php';

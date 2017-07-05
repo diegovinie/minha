@@ -17,7 +17,6 @@ require 'header.php';
     </div>
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
-
              <div class="panel panel-default">
                  <div class="panel-heading">
                      <h3 class="panel-title">Ingrese sus datos</h3>
@@ -101,11 +100,12 @@ require 'header.php';
                      </form>
                  </div>
              </div>
-         </div>
-     </div>
- </div>
+        </div>
+    </div>
+</div>
 
-        </main>
+            </main>
+        </div>
         <script src="<?php echo PROJECT_HOST; ?>js/functions.js" charset="utf-8"></script>
         <script src="<?php echo PROJECT_HOST; ?>js/forms.js" charset="utf-8"></script>
         <script src="<?php echo PROJECT_HOST; ?>js/ajax.js" charset="utf-8"></script>

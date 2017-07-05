@@ -20,7 +20,8 @@ define('DB_PWD', $db_pwd);
 define('DB_NAME', $db_name);
 define('VERSION', $version);
 define('DEF_PWD', $defpwd);
-define('DEMO', true);
+define('TOKEN', md5($time_ini));
+define('DEMO', false);
 define('PRUEBA', true);
 define('VIDEO', false);
 
@@ -49,9 +50,9 @@ define('FRAC', 0.4166);
 
 include ROOTDIR.'vendor/autoload.php';
 
-$file = fopen('hostname', 'w');
-fwrite($file, PROJECT_HOST);
-fclose($file);
+//$file = fopen('hostname', 'w');
+//fwrite($file, PROJECT_HOST);
+//fclose($file);
 
 function genA17(){
     //Retorna un array con todos los apartamentos de A17

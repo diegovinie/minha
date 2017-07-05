@@ -34,7 +34,7 @@ $rlapse = q_exec($qlapse);
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-info">
                 <div class="panel-body">
-                    <form class="" action="add_bill.php" method="post">
+                    <form class="" action="admin/add_bill.php" method="post">
                         <div class="form-group col-md-8">
                             <label for="">Proveedor:</label>
                             <select class="form-control" name="prov" id="prov" onchange="select_prov(this)">
@@ -179,7 +179,7 @@ if(isset($_POST['date']) &&
     <script type="text/javascript">
     ventana('Gasto almacenado', '');
     setTimeout(function(){
-        window.location.href = HOSTNAME + 'main.php';
+        window.location.href = 'main.php';
     }, 2000);
     </script>
     <?php

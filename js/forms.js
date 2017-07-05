@@ -306,11 +306,11 @@ function toBs(number){
         .toLocaleString(undefined, { minimumFractionDigits: 2 });
 }
 
-$.ajax({
+/*$.ajax({
     url:'hostname',
     type:'get',
     dataType:'text',
     success: function(response){
         HOSTNAME = response;
     }
-});
+});*/

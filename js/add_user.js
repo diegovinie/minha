@@ -7,7 +7,7 @@ window.onload = function(){
     pressEnterNext(list);
 
     $.ajax({
-        url: '../core/async_users.php?edificio',
+        url: 'core/async_users.php?edificio',
         type: 'get',
         dataType: 'text',
         success: function(data){
@@ -17,7 +17,7 @@ window.onload = function(){
         }
     }).then(function(res){
         $.ajax({
-            url: '../files/EDI-'+res+'.json',
+            url: 'files/EDI-'+res+'.json',
             type: 'get',
             dataType: 'json',
             success: function(data){
@@ -37,7 +37,7 @@ window.onload = function(){
 
 function sendNewuser(){
     $.ajax({
-        url:'../core/async_users.php',
+        url:'core/async_users.php',
         type: 'post',
         data: $('form').serialize(),
         dataType: 'json',
@@ -45,7 +45,7 @@ function sendNewuser(){
             console.log('sendNewuser: ' +err.responseText + ' estatus: '+ err.status);
         }
     }).done(function(res){
-        $.get('../templates/alert.html', function(html){
+        $.get('templates/alert.html', function(html){
             $('body').append($.parseHTML(html));
             var modal = $('#alert'),
                 content = $('#alert_content'),

@@ -64,7 +64,7 @@ require_once 'header.php';
             <div class="panel">
                 <div class="panel-body">
                     <div class="col-xs-6">
-                        <a href="signup.php">Registrarse</a>
+                        <a href="./signup.php">Registrarse</a>
                     </div>
                     <div class="col-xs-6">
                         <a href="recovery.php">Recuperar Clave</a>
@@ -77,18 +77,15 @@ require_once 'header.php';
 if(DEMO == true) include ROOTDIR.'templates/demo_buttons.html';
 if(VIDEO == true) include ROOTDIR.'templates/demo_video.html';
  ?>
-
-
-</div>
 </div>
 
-<script src="<?php echo PROJECT_HOST; ?>js/functions.js" charset="utf-8"></script>
-<script src="<?php echo PROJECT_HOST; ?>js/forms.js" charset="utf-8"></script>
-<script src="<?php echo PROJECT_HOST; ?>js/ajax.js" charset="utf-8"></script>
-<script src="<?php echo PROJECT_HOST; ?>js/login.js" charset="utf-8"></script>
-<script src="<?php echo PROJECT_HOST.TEMPLATE;?>vendor/bootstrap/js/bootstrap.min.js"></script>
             </main>
         </div>
+        <script src="<?php echo PROJECT_HOST; ?>js/functions.js" charset="utf-8"></script>
+        <script src="<?php echo PROJECT_HOST; ?>js/forms.js" charset="utf-8"></script>
+        <script src="<?php echo PROJECT_HOST; ?>js/ajax.js" charset="utf-8"></script>
+        <script src="<?php echo PROJECT_HOST; ?>js/login.js" charset="utf-8"></script>
+        <script src="<?php echo PROJECT_HOST.TEMPLATE;?>vendor/bootstrap/js/bootstrap.min.js"></script>
     </body>
 </html>
 <?php

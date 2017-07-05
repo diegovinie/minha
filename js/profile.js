@@ -1,7 +1,7 @@
 window.onload = function(){
     token = new Date().getTime();
     $.ajax({
-        url: '../core/async_profile.php?fun=load',
+        url: 'core/async_profile.php?fun=load',
         type: 'get',
         dataType: 'json',
         success: function(data){
@@ -29,7 +29,7 @@ window.onload = function(){
         }
     });
     $.ajax({
-        url: '../core/async_profile.php?fun=notes',
+        url: 'core/async_profile.php?fun=notes',
         type: 'get',
         dataType: 'json',
         success: function(notes){
@@ -80,7 +80,7 @@ function edit(self){
 }
 
 function pwdDialog(){
-    $.get('../templates/changepwd.html?'+token, function(html){
+    $.get('templates/changepwd.html?'+token, function(html){
         $('body').append($.parseHTML(html));
         $('#chpwd').modal();
         $('#chpwd form input').val('');
@@ -105,7 +105,7 @@ function changePwd(){
             new: $("#pwd").val()
         };
     $.ajax({
-        url: '../core/async_profile.php',
+        url: 'core/async_profile.php',
         type: 'post',
         data: param,
         dataType: 'json',
@@ -145,7 +145,7 @@ function changeCel(self){
     };
     console.log(param);
     $.ajax({
-        url: '../core/async_profile.php',
+        url: 'core/async_profile.php',
         type: 'post',
         data: param,
         dataType: 'json',
@@ -173,7 +173,7 @@ function changeCel(self){
         }
     }).then(function(){
         $.ajax({
-            url: '../core/async_profile.php?fun=cel',
+            url: 'core/async_profile.php?fun=cel',
             type: 'get',
             dataType: 'text',
             success: function(cel){
@@ -185,7 +185,7 @@ function changeCel(self){
 
 function getQuestion(){
     $.ajax({
-        url: '../core/async_profile.php?fun=quest',
+        url: 'core/async_profile.php?fun=quest',
         type: 'get',
         dataType: 'text',
         success: function(data){
@@ -207,7 +207,7 @@ function changeQuestion(self){
         //user: $('#user').val()
     }
     $.ajax({
-        url: '../core/async_profile.php',
+        url: 'core/async_profile.php',
         type: 'post',
         data: param,
         dataType: 'json',

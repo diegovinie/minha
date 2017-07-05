@@ -2,7 +2,6 @@ function showUl(json){
     if(json.length <= 2){
         return '<span>No hay usuarios registrados</span>'
     }
-    console.log(json);
     var data = JSON.parse(json)
     var table = document.createElement('table')
     list = "";

@@ -80,7 +80,8 @@ require 'header.php';
      </div>
 </div>
 
-        </main>
+            </main>
+        </div>    
         <script src="<?php echo PROJECT_HOST; ?>js/functions.js" charset="utf-8"></script>
         <script src="<?php echo PROJECT_HOST; ?>js/forms.js" charset="utf-8"></script>
         <script src="<?php echo PROJECT_HOST; ?>js/ajax.js" charset="utf-8"></script>

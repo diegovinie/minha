@@ -8,7 +8,7 @@ require ROOTDIR.'menu.php';
 ?>
 <div id="page-wrapper">
     <h2 align="center">Usuarios Pendiente por Activación</h2>
-    <form class="" action="pending_users.php" method="post">
+    <form class="" action="admin/pending_users.php" method="post">
         <table width="100%" class="table table-striped table-bordered table-hover">
         <?php
         require ROOTDIR.'server.php';

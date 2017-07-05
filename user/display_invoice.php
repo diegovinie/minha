@@ -34,7 +34,7 @@ while(false !== ($nombre_fichero = readdir($gestor_dir))){
                     <h3 class="panel-title">Seleccione:</h3>
                 </div>
                 <div class="panel-body">
-                    <form class="" action="../core/pdf_invoice.php" method="get" target="_blank">
+                    <form class="" action="core/pdf_invoice.php" method="get" target="_blank">
                         <div class="form-group">
                             <label for="">Periodo: </label>
                             <select class="form-control" name="lapse" id='date'>

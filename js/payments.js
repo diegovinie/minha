@@ -1,8 +1,8 @@
-var model = '../core/async_payments.php';
+var model = 'core/async_payments.php';
 
 window.onload = function(){
-    var host = "../core/async_payments.php?fun=aQuery&arg=";
-    var aQueryTablaPrin = "../core/async_payments.php?fun=aQueryTablaPrin&arg=";
+    var host = "core/async_payments.php?fun=aQuery&arg=";
+    var aQueryTablaPrin = "core/async_payments.php?fun=aQueryTablaPrin&arg=";
     getAjax(host, 'mes_actual', setTablaMes, tdChecker)
     getAjax(host, 'mes_anterior', setTablaMes, tdChecker)
     getAjax(host, 'ultimos_tres', setTablaMes, tdChecker)

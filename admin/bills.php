@@ -25,7 +25,7 @@ require ROOTDIR.'menu.php';
                     <!-- async data -->
                 </div>
                 <div class="panel-footer col-lg-12" style="text-align:right;">
-                    <button type="button" name="agregar_proveedor" class="btn btn-primary" onclick="window.location.href = 'add_bill.php';">Agregar Gasto</button>
+                    <button type="button" name="agregar_proveedor" class="btn btn-primary" onclick="window.location.href = 'admin/add_bill.php';">Agregar Gasto</button>
 					<button type="button" data-fun="gastos" class="btn btn-info"  onclick="genPdf(this)" >Imprimir</button>
                 </div>
 

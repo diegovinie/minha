@@ -4,6 +4,7 @@ require_once 'datos.php';
 <!DOCTYPE html>
 <html>
     <head>
+        <base href="http:<?php echo PROJECT_HOST;?>" />
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +12,6 @@ require_once 'datos.php';
         <meta name="author" content="">
 
         <link rel="icon" type="image/png" href="<?php echo PROJECT_HOST;?>static/favicon.png" />
-
         <link rel="stylesheet" href="<?php echo PROJECT_HOST;?>css/modal.css">
 
         <!-- Bootstrap Core CSS -->

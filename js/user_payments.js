@@ -1,6 +1,6 @@
 window.onload = function(){
-    var date = new Date();
-    var host = "../core/async_user_payments.php?fun=pays&arg=";
+    token = new Date().getTime();
+    var host = "core/async_user_payments.php?fun=pays&arg=";
     var id1 = "pagos";
     getDataAjax(host, id1, function(res){
         setTable(id1, res, function(){
@@ -42,7 +42,7 @@ window.onload = function(){
 }
 
 function newPayment(){
-    $.get('../templates/payment.html?'+date.getTime(), function(html){
+    $.get('templates/payment.html?'+token, function(html){
         $('body').append(html);
         var modal = $('#payment'),
             btnSubmit = $('#btnSubmit');
@@ -56,7 +56,7 @@ function newPayment(){
         console.log(err);
     }).then(function(){
         $.ajax({
-            url: '../core/async_user_payments.php?fun=&arg=banks',
+            url: 'core/async_user_payments.php?fun=&arg=banks',
             type: 'get',
             dataType: 'json',
             success: function(data){
@@ -73,7 +73,7 @@ function newPayment(){
         });
 
         $.ajax({
-            url: '../core/async_user_payments.php?fun=&arg=apt',
+            url: 'core/async_user_payments.php?fun=&arg=apt',
             type: 'get',
             dataType: 'json',
             success: function(data){
@@ -94,7 +94,7 @@ function newPayment(){
 
 function sendPayment(){
     $.ajax({
-        url: '../core/async_user_payments.php',
+        url: 'core/async_user_payments.php',
         type: 'post',
         data: $('#payment form').serialize(),
         dataType: 'json',
@@ -103,7 +103,7 @@ function sendPayment(){
         }
     }).done(function(res){
         console.log(res);
-        $.get('../templates/alert.html', function(html){
+        $.get('templates/alert.html', function(html){
             $('body').append($.parseHTML(html));
             var modal = $('#alert'),
                 content = $('#alert_content'),

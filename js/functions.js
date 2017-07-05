@@ -116,7 +116,7 @@ function trasTable(id, callback){
         var w = parseFloat($(this).css('width'));
         suma += w;
     });
-    $('#ovCont')? $('#ovCont').css('width', suma + 50) : void(0);
+    $('#ovCont')? $('#ovCont').css('width', suma + 70) : void(0);
     //$(tabla).css('width', suma + 25);
     if(callback) callback();
 }
