@@ -100,7 +100,7 @@ $rlapse = q_exec($qlapse);
                         </div>
                         <div class="from-group col-md-5">
                             <label for="">Monto:</label>
-                            <input class="form-control" type="text" name="amount" value="" id="amount" placeholder="use ',' para separar decimales" onchange="setIvaTotal()">
+                            <input class="form-control" type="text" name="amount" value="" id="amount" placeholder="Formato : #.###.###,##" onblur="setIvaTotal()" onkeyup="alertNumberEs(this)">
                         </div>
                         <div class="form-group col-md-7" style="text-align:center;">
                             <div class="col-md-12">
@@ -115,24 +115,26 @@ $rlapse = q_exec($qlapse);
                                 </select>
                             </div>
                             <div class="col-md-8">
-                                <input class="form-control" width="12px" type="text" name="iva" value="" id="iva">
+                                <input class="form-control" width="12px" type="text" name="iva" value="" id="iva" readonly>
                             </div>
 
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="">Total:</label>
-                            <input class="form-control" type="text" name="total" value="" id="total" onchange="setIvaTotal()">
+                        <div class="col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="">Total:</label>
+                                <input class="form-control" type="text" name="total" value="" id="total" onchange="setIvaTotal()" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="">Tipo de Soporte:</label>
+                                <select class="form-control" name="log" id="log">
+                                    <option value="COMPROBANTE">Comprobante</option>
+                                    <option value="FACTURA">Factura</option>
+                                    <option value="RECIBO">Recibo</option>
+                                    <option value="N/D" selected>Ninguno</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="">Tipo de Soporte:</label>
-                            <select class="form-control" name="log" id="log">
-                                <option value="COMPROBANTE">Comprobante</option>
-                                <option value="FACTURA">Factura</option>
-                                <option value="RECIBO">Recibo</option>
-                                <option value="N/D" selected>Ninguno</option>
-                            </select>
-                        </div>
-                        <div class="button_box" align="center">
+                        <div class="col-md-12 button_box" align="center">
                             <button type="submit" name="submit" class="btn btn-success">Enviar</button>
                              <button type="button" name="back" class="btn btn-warning" onclick="history.go(-1)">Regresar</button>
                         </div>

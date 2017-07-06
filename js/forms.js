@@ -131,19 +131,17 @@ var formatNumber = {
 }
 
 function checkNumEsp(input){
-    var num = input.value = input.value.replace(/[^0-9\,]/g, '');
-    var sep = num.split(',');
-    if(sep.length == 1){
-        input.value = num + ',00';
-    }else if(sep.length == 2){
-        if(sep[1].length == 1){
-            input.value = num + '0';
-        }else{
-            input.value = sep[0] +',' +sep[1].substring(0,2);
-        }
+    var num = input.value = input.value.replace(/[^0-9\.,]/g, '');
+    var sep = num.split(','),
+        reg = /^\d{1,3}(\.\d{3})?(\.\d{3})?(,\d{2})?$/;
+    $(input).addClass('alert');
+    if(num.match(reg)){
+        $(input).addClass('alert-success').removeClass('alert-danger');
     }else{
+        $(input).addClass('alert-danger').removeClass('alert-success');
         errorLine(input, 'error en número');
     }
+
 }
 //Retornar un número con formato español y una cantidad de decimales
 function numToSpa(amount, decimals) {
@@ -247,7 +245,7 @@ function check_names(input){
 function check_user(input, cond){
     var msg = cond? 'usuario no existe' : 'usuario ya registrado';
     var user = input.value = input.value.toLowerCase();
-        h = HOSTNAME + 'core/query.php?fun=checkmail&number=';
+        h = 'core/query.php?fun=checkmail&number=';
     getAjax(h, user, function(x, t){
         if(t == !cond){ errorLine(input, msg)};
     })
@@ -286,19 +284,43 @@ function check_type(self){
     }
 }
 
+function alertNumberEs(ele){
+    var amount = ele.value;
+    $(ele).addClass('alert');
+    reg2 = /^\d{1,3}(\.\d{3})?(\.\d{3})?(,\d{1,2})?$/
+    if(!amount.match(reg2)){
+        $(ele).addClass('alert-danger').removeClass('alert-success');
+    } else{
+        $(ele).addClass('alert-success').removeClass('alert-danger');
+    }
+}
+
 //Tomar el monto, calcular el IVA, el total y pasar los datos al DOM.
 //No devuelve resultado
 function setIvaTotal(){
-    var amount = document.getElementById('amount').value;
+    var format = {"minimumFractionDigits": 2, "maximumFractionDigits": 2},
+        eAmount = document.getElementById('amount'),
+        eIva = document.getElementById('iva'),
+        eTotal = document.getElementById('total'),
+        eAlic = document.getElementById('alic');
+    var amount = eAmount.dataset.value? eAmount.dataset.value
+        : eAmount.dataset.value = eAmount.value
+            .replace(',', '*').replace(/\./g, '').replace(/\*/, '.');
+    amount = parseFloat(amount);
+    //amount = amount.match(regx)? parseFloat(amount) : parseFloat(amount.replace(",", "."));
     //Reemplaza las comas decimales por punto antes de pasarlo a float
-    amount = parseFloat(amount.replace(",", "."));
-    var alic = parseFloat(document.getElementById('alic').value);
+    //amount = parseFloat(amount.replace(",", "."));
+    var alic = parseFloat(eAlic.value);
     var iva = amount * alic;
     var total = amount + (amount * alic);
     //Regresa los números a formato español y los incrusta en el DOM
-    document.getElementById('amount').value = numToSpa(amount, 2);
-    document.getElementById('iva').value = numToSpa(iva, 2);
-    document.getElementById('total').value =  numToSpa(total, 2);
+    eAmount.value = amount.toLocaleString('es-ES', format);
+    eIva.value = iva.toLocaleString('es-ES', format);
+    eTotal.value = total.toLocaleString('es-ES', format);
+    alertNumberEs(eAmount);
+    $(eAmount).on('change', function(){
+        $(eAmount).removeAttr('data-value');
+    });
 }
 
 function toBs(number){

@@ -9,7 +9,7 @@ function saveInvoices(id){
    var name = cont.dataset.value;
    $.ajax({
        type: "GET",
-       url: HOSTNAME + 'core/engine.php?fun=save_fact&number=' + name,
+       url: 'core/engine.php?fun=save_fact&number=' + name,
        dataType: 'text',
        success: function (msg) {
            if (msg) {
@@ -28,7 +28,7 @@ function discard(id){
     var name = cont.dataset.value;
     $.ajax({
         type: "GET",
-        url: HOSTNAME + 'core/engine.php?fun=discard&number=' + name,
+        url: 'core/engine.php?fun=discard&number=' + name,
         dataType: "text",
         success: function(msg){
             notification(false, msg, 'result', function(){

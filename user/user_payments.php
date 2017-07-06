@@ -27,7 +27,7 @@ require ROOTDIR.'menu.php';
 
                 </div>
                 <div class="panel-footer col-lg-12" style="margin-bottom: 60px;">
-                    <button type="button" name="agregar_proveedor" class="btn btn-primary btn-lg" style="float: right;" onclick="newPayment()">Registrar Nuevo Pago</button>
+                    <button type="button" name="nuevo_pago" class="btn btn-primary btn-lg" style="float: right;" onclick="newPayment()">Registrar Nuevo Pago</button>
                 </div>
             </div>
         </div>
