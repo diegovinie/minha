@@ -131,17 +131,17 @@ var formatNumber = {
 }
 
 function checkNumEsp(input){
-    var num = input.value = input.value.replace(/[^0-9\.,]/g, '');
-    var sep = num.split(','),
-        reg = /^\d{1,3}(\.\d{3})?(\.\d{3})?(,\d{2})?$/;
-    $(input).addClass('alert');
+    var num = input.value.replace(/[^0-9\.,]/g, '');
+    num = num.toString().match(/,/)? num : num + ',00';
+    var reg = /^\d{1,3}(\.\d{3})?(\.\d{3})?(,\d{2})?$/;
+    //$(input).addClass('alert');
     if(num.match(reg)){
         $(input).addClass('alert-success').removeClass('alert-danger');
     }else{
         $(input).addClass('alert-danger').removeClass('alert-success');
         errorLine(input, 'error en número');
     }
-
+    input.value = num;
 }
 //Retornar un número con formato español y una cantidad de decimales
 function numToSpa(amount, decimals) {
@@ -286,7 +286,7 @@ function check_type(self){
 
 function alertNumberEs(ele){
     var amount = ele.value;
-    $(ele).addClass('alert');
+    //$(ele).addClass('alert');
     reg2 = /^\d{1,3}(\.\d{3})?(\.\d{3})?(,\d{1,2})?$/
     if(!amount.match(reg2)){
         $(ele).addClass('alert-danger').removeClass('alert-success');

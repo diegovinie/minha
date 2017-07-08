@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="css/dpicker.css">
 <div class="modal" id="payment" role="dialog">
     <div class="modal-dialog panel panel-default">
         <div class="modal-header panel-heading">
@@ -13,12 +14,9 @@
                     <div class="form-group col-md-3">
                         <label for="">Apartamento:</label><input  class="form-control" type="text" name="apt" id="apt" readonly>
                     </div>
-                    <div class="form-group col-md-5">
+                    <div class="form-group col-md-5" >
                         <label for="">Fecha de operación:</label>
-                        <input class="form-control" placeholder="aaaa-mm-dd" type="date" name="date" id="date" required>
-                        <div class="">
-
-                        </div>
+                        <input class="form-control" placeholder="aaaa-mm-dd" format="YYYY-MM-DD" type="date" name="date" id="date" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -44,13 +42,14 @@
 
                 <div class="form-group">
                     <label>Monto:</label><input class="form-control" placeholder="Formato : #.###.###,##" type="text" name="amount" id="amount" onblur="checkNumEsp(this)" onkeyup="alertNumberEs(this)" required>
+                    <!--<label>Monto:</label><input class="form-control" placeholder="Formato : #.###.###,##" type="text" name="amount" id="amount" onblur="checkNumEsp(this)" onkeyup="alertNumberEs(this)" required>-->
                     <div class="">
 
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Obsercaciones:</label>
-                    <textarea class="form-control" name="notes" id="notes" rows="4" cols="20"></textarea>
+                    <textarea class="form-control" name="notes" id="notes" rows="3" cols="20"></textarea>
                 </div>
                 <div class="button_box" align="center">
                     <button type="submit" id='btnSubmit' name="btnSubmit" class="btn btn-success btn-lg" >Enviar</button>

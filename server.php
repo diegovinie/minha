@@ -32,7 +32,7 @@ function q_exec($query){
 function q_log_exec($user, $query){
     $q = mysql_escape_string($query);
     //$res = mysql_query($query) or die("No puede procesar la consulta: " . mysql_error());
-    $res = mysql_query($query) or die("No puede procesar la consulta");
+    $res = mysql_query($query) or die("No puede procesar la consulta" .$query);
 //    $log = mysql_query("INSERT INTO db_logs VALUES (NULL, NULL, '$user','$q')") or die("No almacenado en log ". mysql_error());
     $log = mysql_query("INSERT INTO db_logs VALUES (NULL, NULL, '$user','$q')");
     return $res;

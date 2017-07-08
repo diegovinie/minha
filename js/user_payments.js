@@ -50,11 +50,14 @@ function newPayment(){
         $(btnSubmit).on('click', sendPayment);
         $('form').on('submit', function(ev){
             ev.preventDefault();
+
         });
-    }).fail(function(err){
+    })
+    .fail(function(err){
         console.log('Fallo al obtener payment.html');
         console.log(err);
-    }).then(function(){
+    })
+    .then(function(){
         $.ajax({
             url: 'core/async_user_payments.php?fun=&arg=banks',
             type: 'get',
@@ -85,10 +88,15 @@ function newPayment(){
                 console.log(err);
             }
         });
-
-    }).then(function(){
+    })
+    .then(function(){
         var list = ['date', 'type', 'n_op', 'bank', 'amount', 'notes'];
         pressEnterNext(list);
+    })
+    .done(function(){
+        if(!navigator.userAgent.match(/Chrome/ig)){
+            var dp = new dpicker(document.getElementById('date'));
+        }
     });
 }
 

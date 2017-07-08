@@ -14,6 +14,9 @@ $r = q_exec($q);
 $bui = query_to_assoc($r)[0];
 
  ?>
+<link rel="stylesheet" href="css/dpicker.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/dpicker@latest/dist/dpicker.all.min.js"></script>
 
 <div id='page-wrapper'>
     <div class="row">
@@ -74,7 +77,7 @@ $bui = query_to_assoc($r)[0];
                             </div>
                             <div class="col-md-6">
                                 <label for="nac">Fecha Nacimiento:</label>
-                                <input type="date" name="nac" id="nac" class="form-control"  readonly>
+                                <input type="date" min="1910-01-01" format="YYYY-MM-DD" name="nac" id="nac" class="form-control"  readonly>
                                 <a onclick="edit(this);">Editar</a>
                             </div>
                             <div class="col-md-12">

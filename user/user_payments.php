@@ -64,6 +64,8 @@ require ROOTDIR.'menu.php';
     </div>
 </div>
 <script src="js/user_payments.js?<?php echo TOKEN; ?>" charset="utf-8"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/dpicker@latest/dist/dpicker.all.min.js"></script>
 
 <?php
 require '../footer.php';

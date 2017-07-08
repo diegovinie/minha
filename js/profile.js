@@ -73,6 +73,9 @@ window.onload = function(){
     });
     var list = ['name', 'surname', 'ci', 'nac', 'cel', 'gen'];
     pressEnterNext(list);
+    if(!navigator.userAgent.match(/Chrome/ig)){
+        var dp = new dpicker(document.getElementById('nac'));
+    }
 }
 
 function edit(self){

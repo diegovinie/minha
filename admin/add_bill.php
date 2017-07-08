@@ -24,6 +24,9 @@ $qlapse = "SELECT lap_id, lap_name FROM lapses";
 $rlapse = q_exec($qlapse);
 
  ?>
+<link rel="stylesheet" href="css/dpicker.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/dpicker@latest/dist/dpicker.all.min.js"></script>
 <div id="page-wrapper">
     <div class="row">
         <div class="col-md-12">
@@ -50,7 +53,7 @@ $rlapse = q_exec($qlapse);
                         </div>
                         <div class="form-group col-md-4">
                             <label for="">Fecha:</label>
-                            <input placeholder="aaaa-mm-dd" class="form-control" type="date" name="date" id="date" value="" onblur="">
+                            <input placeholder="aaaa-mm-dd" class="form-control" type="date" name="date" id="date" value="" format="YYYY-MM-DD" onblur="">
                             <div class="">
 
                             </div>
@@ -149,6 +152,9 @@ $rlapse = q_exec($qlapse);
 window.onload = function(){
     var list = ['prov','date', 'name', 'method', 'desc', 'rif', 'spe_type', 'up_op', 'amount', 'alic', 'log'];
     pressEnterNext(list);
+    if(!navigator.userAgent.match(/Chrome/ig)){
+        var dp = new dpicker(document.getElementById('date'));
+    }
 }
 </script>
 

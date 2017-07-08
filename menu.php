@@ -4,7 +4,7 @@
 
 require_once 'datos.php';
 if(!isset($_SESSION['name'])){
-	header('Location: login.php');
+	header("Location: ${HTTP_HOST}login.php");
     exit;
 }
 ?>
