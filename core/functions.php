@@ -257,4 +257,16 @@ function invoice_summary($invoices){
     </div>
     <?php
 }
+
+function nombreEinicial($string){
+    $a = preg_split("/\s+/", $string);
+    $s = $a[0] .' ' .substr($a[1], 0, 1) .'.';
+    return $s;
+}
+
+function beautifyCI($ci){
+    $a = substr($ci, 0, 1);
+    $n = substr($ci, 1);
+    return $newCI = $a .'-'.number_format($n, 0, '', '.');
+}
  ?>

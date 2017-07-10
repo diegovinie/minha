@@ -48,16 +48,31 @@ while(false !== ($nombre_fichero = readdir($gestor_dir))){
                             </select>
                         </div>
                         <div class="" align="center">
-                            <button class="btn btn-success" type="submit" name="button" class="button_hot principal">Mostrar</button>
-                            <button class="btn btn-danger" type="button" name="button" class="button_hot secundary" onclick="history.go(-1)">Regresar</button>
+                            <button class="btn btn-success" type="submit" name="button">Mostrar</button>
+                            <button class="btn btn-danger" type="button" name="button" onclick="history.go(-1)">Regresar</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2" hidden>
+            <!--<embed id="pdf" src="" type="application/pdf" width="600" height="600">-->
+            <iframe id="pdf" src=""  width="630" height="600"></iframe>
+            <div class="col-md-12" style="text-align:center;">
+                <div class="col-md-6">
+                    <button id="send" type="button" class="btn btn-success btn-block" name="send" onclick="sendMail()">Enviar por Correo</button>
+                </div>
+                <div class="col-md-6">
+                    <button id="save" type="button" class="btn btn-info btn-block" name="save" onclick="downloadInvoice()">Guardar</button>
+                </div>
 
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/display_invoice.js" charset="utf-8"></script>
 
 <?php
 require '../footer.php';

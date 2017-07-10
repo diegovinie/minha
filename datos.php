@@ -9,9 +9,10 @@ $db_pwd = 'altura';
 $db_name = 'bd_minha';
 $alias = 'minha';
 $template = 'startbootstrap-sb-admin-2-gh-pages';
-$name = 'Minha Administradora';
+$name = 'TuAdministradora.com';
 $version = '0.5-a1';
 $defpwd = '1234';
+$adminemail = 'diego.viniegra@gmail.com';
 
 // Datos para conectarse a la base de datos:
 define('DB_HOST', $db_host);
@@ -24,6 +25,7 @@ define('TOKEN', md5($time_ini));
 define('DEMO', false);
 define('PRUEBA', true);
 define('VIDEO', false);
+define('EMAIL', $adminemail);
 
 // Nombre del proyecto
 define('NAME', $name);

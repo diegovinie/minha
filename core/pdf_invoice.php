@@ -2,9 +2,11 @@
 session_start();
 require_once '../datos.php';
 include_once 'pdf.php';
-include_once '../server.php';
+include_once ROOTDIR.'server.php';
+include_once ROOTDIR.'core/functions.php';
 connect();
 $bui = $_SESSION['bui'];
+$apt = $_SESSION['apt'];
 
 if(isset($_POST['lapse'])){
     $lapse = $_POST['lapse'];
@@ -12,10 +14,13 @@ if(isset($_POST['lapse'])){
     $lapse = $_GET['lapse'];
 }
 $user = $_SESSION['user_id'];
-$q = "SELECT udata_name, udata_surname, udata_ci, bui_apt FROM userdata INNER JOIN buildings ON udata_number_fk = bui_id WHERE udata_user_fk = '$user' ";
+$q = "SELECT udata_name, udata_surname, udata_ci, bui_apt FROM userdata INNER JOIN buildings ON udata_number_fk = bui_id WHERE bui_apt = '$apt' AND udata_cond = 1";
 
 $r = q_exec($q);
 $dat = query_to_assoc($r)[0];
+$dat['udata_name'] = nombreEinicial($dat['udata_name']);
+$dat['udata_surname'] = nombreEinicial($dat['udata_surname']);
+$dat['udata_ci'] = beautifyCI($dat['udata_ci']);
 
 $file = fopen(ROOTDIR."files/invoices/$bui/FAC-" .$lapse .'.json', 'r');
 
@@ -36,9 +41,10 @@ foreach ($invoice->{'content'}->{"$apt"} as $key => $value) {
 
 $data = [[1, 2, 3], [6,7,8],['FFWEFWFWF99W', 1234, 34567]];
 
+ob_start();
 $pdf = new PDF();
 
-$pdf->grid = 5;
+//$pdf->grid = 5;
 
 
 $pdf->AddPage('P', [210/2, 220]);
@@ -54,5 +60,19 @@ $pdf->encabezado($invoice->{'head'}->{'Gen Num'},
 $pdf->contenido($bills);
 $pdf->foote($e);
 $pdf ->Output();
+$pdfclean = ob_get_clean();
+$pdf64 =  base64_encode($pdfclean);
+
+if(isset($_GET['fun']) && $_GET['fun'] == 'sendmail'){
+    $data = array(
+        'to' => $_SESSION['user'],
+        'att' => $pdfclean,
+        'invoice' => $invoice->{'head'}->{'Gen Num'}
+    );
+    include ROOTDIR.'core/includes/mail_invoice.php';
+    echo '{"status": true, "msg": "El recibo ha sido enviado a tu dirección de correo registrada"}';
+}else{
+    echo $pdf64;
+}
 
  ?>

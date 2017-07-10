@@ -16,7 +16,7 @@ if(!isset($_SESSION['name'])){
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="main.php"><?php echo NAME ." " .VERSION; ?></a>
+			<a class="navbar-brand" href="main.php"><?php echo NAME ." versión: " .VERSION; ?></a>
 		</div>
 		<!-- /.navbar-header -->
 

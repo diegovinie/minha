@@ -101,6 +101,7 @@ if(isset($_POST['fun'])){
                 $r3 = q_exec($q3);
                 if($r3){
                     echo '{"status": true, "msg": "Registro Exitoso!"}';
+                    include ROOTDIR.'core/includes/mail_signup.php';
                 }else{
                     echo '{"status": false, "msg": "Error al guardar datos"}';
                 }
