@@ -12,27 +12,28 @@ if(isset($_GET['arg']) && isset($_GET['fun'])){
     extract($_GET);
     $user = $_SESSION['user'];
     $bui = $_SESSION['bui'];
+    $numapt = $_SESSION['number_id'];
     switch ($arg) {
         case 'pagos':
             $q = "SELECT `pay_id` AS 'id', `pay_date` AS 'Fecha', CASE pay_type
             WHEN 1 THEN 'Depósito'
             WHEN 2 THEN 'Transferencia'
-            END AS 'Tipo', pay_op AS 'Num. Operación', bank_name AS 'Banco', pay_amount AS 'Monto' FROM `payments` INNER JOIN users ON pay_fk_user = user_id INNER JOIN banks ON pay_fk_bank = bank_id
-            WHERE user_user = '$user' AND pay_bui = '$bui' AND pay_check = 1";
+            END AS 'Tipo', pay_op AS 'Num. Operación', bank_name AS 'Banco', pay_amount AS 'Monto' FROM `payments` INNER JOIN buildings ON pay_fk_number = bui_id INNER JOIN banks ON pay_fk_bank = bank_id
+            WHERE bui_id = $numapt AND pay_bui = '$bui' AND pay_check = 1";
             break;
         case 'pagos_en_revision':
             $q = "SELECT `pay_id` AS 'id', `pay_date` AS 'Fecha', CASE pay_type
             WHEN 1 THEN 'Depósito'
             WHEN 2 THEN 'Transferencia'
-            END AS 'Tipo', pay_op AS 'Num. Operación', bank_name AS 'Banco', pay_amount AS 'Monto' FROM `payments` INNER JOIN users ON pay_fk_user = user_id INNER JOIN banks ON pay_fk_bank = bank_id
-            WHERE user_user = '$user' AND pay_bui = '$bui' AND pay_check = 0";
+            END AS 'Tipo', pay_op AS 'Num. Operación', bank_name AS 'Banco', pay_amount AS 'Monto' FROM `payments` INNER JOIN buildings ON pay_fk_number = bui_id INNER JOIN banks ON pay_fk_bank = bank_id
+            WHERE bui_id = $numapt AND pay_bui = '$bui' AND pay_check = 0";
             break;
         case 'devueltos':
             $q = "SELECT `pay_id` AS 'id', `pay_date` AS 'Fecha', CASE pay_type
             WHEN 1 THEN 'Depósito'
             WHEN 2 THEN 'Transferencia'
-            END AS 'Tipo', pay_op AS 'Num. Operación', bank_name AS 'Banco', pay_amount AS 'Monto' FROM `payments` INNER JOIN users ON pay_fk_user = user_id INNER JOIN banks ON pay_fk_bank = bank_id
-            WHERE user_user = '$user' AND pay_bui = '$bui' AND pay_check = 2";
+            END AS 'Tipo', pay_op AS 'Num. Operación', bank_name AS 'Banco', pay_amount AS 'Monto' FROM `payments` INNER JOIN buildings ON pay_fk_number = bui_id INNER JOIN banks ON pay_fk_bank = bank_id
+            WHERE bui_id = $numapt AND pay_bui = '$bui' AND pay_check = 2";
             break;
         case 'banks':
             $q = "SELECT bank_id, bank_name FROM banks";

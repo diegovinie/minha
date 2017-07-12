@@ -142,7 +142,7 @@ function tdChecker(id){
 function dataParser(tag, callback){
     var money = ['monto', 'iva', 'total', 'deuda', 'balance', 'saldo', 'cuota'];
     var date = ['fecha', 'date'];
-    var rif = ['rif','/ci', 'ci[^óa]'];
+    var rif = ['rif','/ci', '[^a-z]ci[^oóa]'];
     var others = ['asignado', 'ocupado'];
     var bills = ['Cargado'];
     money.forEach(function(x){

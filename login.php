@@ -33,7 +33,10 @@ require_once 'header.php';
         <img src="static/banner468x60.png" class="img-responsive" alt="">
     </div>
     <div class="row">
-        <div class="col-sm-4 col-sm-offset-4">
+        <div class="col-sm-4" style="margin-top:100px;">
+            <?php include ROOTDIR.'templates/slidertextlogin.html'; ?>
+        </div>
+        <div class="col-sm-4">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Ingresar</h3>
@@ -72,6 +75,12 @@ require_once 'header.php';
                 </div>
             </div>
         </div>
+        <div class="col-sm-4" style="padding: 10px 6px 6px 6px; ">
+            <div class="alert alert-info alert-dismissable" id="aviso1">
+                <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Bienvenido!</strong> <p>Si es la primera vez que nos visitas puedes registrarte para ingresar y probar nuestros servicios.</p>
+            </div>
+        </div>
     </div>
 <?php
 if(DEMO == true) include ROOTDIR.'templates/demo_buttons.html';
@@ -86,6 +95,9 @@ if(VIDEO == true) include ROOTDIR.'templates/demo_video.html';
         <script src="<?php echo PROJECT_HOST; ?>js/ajax.js" charset="utf-8"></script>
         <script src="<?php echo PROJECT_HOST; ?>js/login.js" charset="utf-8"></script>
         <script src="<?php echo PROJECT_HOST.TEMPLATE;?>vendor/bootstrap/js/bootstrap.min.js"></script>
+
+        <script src="js/slidertextlogin.js" charset="utf-8"></script>
+        <link rel="stylesheet" href="css/slidertextlogin.css">
     </body>
 </html>
 <?php

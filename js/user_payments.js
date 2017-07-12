@@ -22,10 +22,11 @@ window.onload = function(){
         })
     })
     var id3 = "devueltos"
-    getDataAjax(host, id2, function(res){
-        setTable(id2, res, function(){
-            tablePager(id2, function(){
-                $('#'+id2).find('tbody').children().each(function(){
+    getDataAjax(host, id3, function(res3){
+        //console.log(res3);
+        setTable(id3, res3, function(){
+            tablePager(id3, function(){
+                $('#'+id3).find('tbody').children().each(function(){
                     $(this).attr('onclick', 'showInfo(this)');
                 })
             })
