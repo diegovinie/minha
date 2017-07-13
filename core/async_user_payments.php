@@ -48,6 +48,20 @@ if(isset($_GET['arg']) && isset($_GET['fun'])){
             echo toJson($r);
             exit;
             break;
+        case 'editpayment':
+            $q = "SELECT pay_id AS 'id', pay_date AS 'Fecha', pay_amount AS 'Monto', pay_op AS 'n_op', pay_fk_bank AS 'bankid', pay_type AS 'type', pay_obs AS 'notes' from payments WHERE pay_id = $id";
+            $r = q_exec($q);
+            echo json_encode(query_to_assoc($r)[0]);
+            exit;
+            break;
+        case 'removepayment':
+            $q = "UPDATE payments SET pay_check = 3 WHERE pay_id = $id";
+            $r= q_exec($q);
+            if($r){
+                echo '{"status": true, "msg": "borrado"}';
+            }
+            exit;
+            break;
         default:
             # code...
             break;
@@ -63,12 +77,23 @@ if(isset($_POST['type']) && isset($_POST['amount'])){
     $number_id = $_SESSION['number_id'];
     $user_id = $_SESSION['user_id'];
     $amount = numToEng($amount);
-    $q = "INSERT INTO payments VALUES (NULL, '$date', '$bui', '$number_id', '$type', '$n_op', $bank, $amount, 0, '$notes', NULL, '$user_id')";
-    $r = q_log_exec($user, $q);
-    if($r){
-        echo '{"status": true, "msg": "Pago registrado exitosamente"}';
+    if(isset($chk) && $chk == 0){
+        $q = "UPDATE payments SET pay_date = '$date', pay_type = $type, pay_op = '$n_op', pay_fk_bank = $bank , pay_amount = $amount, pay_check = 0, pay_obs = '$notes' WHERE pay_id = $id";
+        $r = q_log_exec($user, $q);
+        if($r){
+            echo '{"status": true, "msg": "Actualizado"}';
+        }else{
+            echo '{"status": false, "msg": "No se pudo actualizar"}';
+        }
     }else{
-        echo '{"status": false, "msg": "No se pudo registrar el pago"}';
+
+        $q = "INSERT INTO payments VALUES (NULL, '$date', '$bui', '$number_id', $type, '$n_op', $bank, $amount, 0, '$notes', NULL, '$user_id')";
+        $r = q_log_exec($user, $q);
+        if($r){
+            echo '{"status": true, "msg": "Pago registrado exitosamente"}';
+        }else{
+            echo '{"status": false, "msg": "No se pudo registrar el pago"}';
+        }
     }
 }
 

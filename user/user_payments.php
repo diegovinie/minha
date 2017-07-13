@@ -57,7 +57,7 @@ require ROOTDIR.'menu.php';
                     <!-- async data -->
                 </div>
                 <div class="panel-footer">
-
+                    
                 </div>
             </div>
         </div>

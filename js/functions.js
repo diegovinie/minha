@@ -302,3 +302,34 @@ function pressEnterNext(list){
         }
     }
 }
+
+function addEditRemoveButtons(tableid, edit, remove){
+    var tr = $('#'+tableid + ' tbody tr');
+    tr.each(function(p, e){
+        var edt = document.createElement('a'),
+            rem = document.createElement('a');
+        $(edt).addClass('fa fa-edit').on('click', function(ev){
+            var typeId = $(ev.currentTarget).parents('tr').find('td[data-type="id"]')[0];
+            valueId = typeId.dataset.value;
+            edit(valueId);
+        });
+
+        $(rem).addClass('fa fa-times').on('click', function(ev){
+            var tr = $(ev.currentTarget).parents('tr');
+            var typeId = $(ev.currentTarget).parents('tr').find('td[data-type="id"]')[0];
+            valueId = typeId.dataset.value;
+            remove(valueId);
+            setTimeout(function(){
+                $(tr).remove();
+            }, 2000);
+            $(tr).addClass('alert alert-danger')
+        });
+        
+        [edt, rem].forEach(function(ele, pos){
+            var td = document.createElement('td');
+            $(td).css('textAlign', 'center');
+            $(td).append(ele);
+            $(e).append(td);
+        })
+    });
+}
