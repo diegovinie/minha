@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<parameters>
+    <database>
+        <hostname>localhost</hostname>
+        <user>root</user>
+        <password>altura</password>
+        <db_name>bd_minha</db_name>
+    </database>
+    <principal>
+        <name>TuAdministradora.com</name>
+        <version>0.8-a1</version>
+        <defpwd>1234</defpwd>
+        <adminemail>diego.viniegra@gmail.com</adminemail>
+        <alias>minha</alias>
+        <template>startbootstrap-sb-admin-2-gh-pages</template>
+        <components>components/</components>
+    </principal>
+</parameters>

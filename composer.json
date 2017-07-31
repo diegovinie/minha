@@ -1,7 +1,24 @@
 {
+    "name": "minha",
     "require":{
         "spipu/html2pdf": "~5.0.0",
         "coldtrick/imagick": "~1.0",
-        "mpdf/mpdf": "~6.1"
+        "mpdf/mpdf": "~6.1",
+        "twig/twig": "^1.0||^2.0",
+        "BlackrockDigital/startbootstrap-sb-admin-2": "^3.0"
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "BlackrockDigital/startbootstrap-sb-admin-2",
+                "version": "3.3.7+1",
+                "source": {
+                    "url": "https://github.com/BlackrockDigital/startbootstrap-sb-admin-2.git",
+                    "type": "git",
+                    "reference": "v3.3.7+1"
+                }
+            }
         }
+    ]
 }
