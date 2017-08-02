@@ -3,13 +3,14 @@
  *
  * Controlador secundario
  */
+defined('_EXE') or die('Acceso restringido');
 
-include ROOTDIR.'/components/security/models/checkuser.php';
+include ROOTDIR.'/components/security/models/authentication.php';
 
 $user = mysql_escape_string((string)$_POST['user']);
 $pwd = mysql_escape_string((string)$_POST['pwd']);
 $rem = isset($_POST['remember']) ? 1 : 0;
 
-$res = checkUser($user, $pwd, $rem);
-
-print_r(json_decode($res));
+echo $res_json = checkUser($user, $pwd, $rem);
+die;
+$res = json_decode($res_json);

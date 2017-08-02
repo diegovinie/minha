@@ -244,11 +244,25 @@ function check_names(input){
 
 function check_user(input, cond){
     var msg = cond? 'usuario no existe' : 'usuario ya registrado';
-    var user = input.value = input.value.toLowerCase();
+    var email = input.value = input.value.toLowerCase();
+
+    $.ajax({
+        url: '/index.php/login/checkemail/?email=' + email,
+        type: 'get',
+        dataType: 'json',
+        error: function(err){
+            console.log('Error chequeando el email :', err);
+        }
+    })
+    .then(function(json){
+        console.log(json);
+        if(json.status !== cond) errorLine(input, msg);
+    })
+        /*
         h = 'core/query.php?fun=checkmail&number=';
     getAjax(h, user, function(x, t){
         if(t == !cond){ errorLine(input, msg)};
-    })
+    })*/
 }
 
 function check_ci(input){

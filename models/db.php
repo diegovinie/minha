@@ -5,7 +5,7 @@
  * Retorna un objeto PDO o un error PDOException
  */
 
-include_once '../settings.php';
+defined('_EXE') or die('Acceso restringido');
 
 $options = array(
     PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',

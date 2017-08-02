@@ -29,6 +29,9 @@ define('TEMPLATE', 'vendor/'.$parameters->principal->template.'/');
 // Token para evitar cache
 define('TOKEN', md5($time_ini));
 
+// Controlador de acceso
+define('ACCESS_CONTROL', $parameters->principal->security_control);
+
 // Datos de prueba
 define('DEMO', false);
 define('PRUEBA', true);

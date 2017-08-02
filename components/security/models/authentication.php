@@ -1,9 +1,10 @@
 <?php
-/* components/security/models/checkuser.php
+/* components/security/models/authentication.php
  *
  * Modelo de verificación de credenciales de usuario
  * Retorna un json (status, msg, [otros])
  */
+defined('_EXE') or die('Acceso restringido');
 
 $db = include ROOTDIR.'/models/db.php';
 
@@ -20,14 +21,21 @@ function checkUser($user, $pwd, $remember){
     );
     // Si es igual a 1 puede entrar
     if($stmt->rowCount() != 1){
-        return '{"status": false, "msg": "Clave inválida"}';
+        $status = false;
+        $msg = "Clave inválida";
+
     }else{
         $values = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // Si es igual a "0" no está activado
         if($values['user_active'] == 0){
-            return '{"status": false, "msg": "Aún no está activo. Contacte al administrador '.$adminemail .'"}';
+            $status = false;
+            $msg = "Aún no está activo. Contacte al administrador $adminemail";
+
         }else{
+            $status = true;
+            $msg = "Sesión iniciada";
+
             //Se establecen los parámetros de sesión
             session_start();
             $_SESSION['user_id'] = $values['user_id'];
@@ -51,7 +59,7 @@ function checkUser($user, $pwd, $remember){
                     //echo "ir a usuario";
                     break;
                 default:
-                    echo "ha ocurrido un error";
+                    echo "ha ocurrido un error al definir el tipo de sesión";
                     die;
                     break;
             }
@@ -61,11 +69,11 @@ function checkUser($user, $pwd, $remember){
                 $token = md5(time().rand(0,100));
                 $info = json_encode($_SESSION);
                 $qc = "INSERT INTO cookies VALUES(null, 'remember', '$token', '$info', null)";
+
                 try{
                     $db->exec($qc);
                     setcookie('remember', $token, time()+60*60*24, '/');
                     $cookie = $token;
-                    echo 'bien';
                 }catch(PDOStatement $err){
                     echo 'problemas al guardar cookie: ';
                     echo $err;
@@ -74,12 +82,88 @@ function checkUser($user, $pwd, $remember){
             }else{
                 $cookie = false;
             }
-
-            return '{
-                "status": true,
-                "msg": "Sesión iniciada",
-                "session": true
-            }';
         }
     }
+    $response = array(
+        'status'    => $status,
+        'msg'       => $msg,
+        'session'   => $cookie
+    );
+    return json_encode($response);
+}
+
+function getQuestion($email){
+    global $db;
+    $stmt = $db->query(
+        "SELECT user_question FROM users
+        WHERE user_user = '$email'"
+    );
+    $question = (string)$stmt->fetch(PDO::FETCH_NUM)[0];
+    $status = $question? true : false;
+    return json_encode(array(
+        'status' => $status,
+        'question' => $question)
+    );
+}
+
+function checkResponse($question, $response, $email){
+    global $db;
+    $response = md5($response);
+    $stmt = $db->query(
+        "SELECT user_response FROM users
+        WHERE user_user = '$email'"
+    );
+
+    $origin = $stmt->fetch(PDO::FETCH_NUM)[0];
+
+    if($response == $origin){
+        $status = true;
+        $msg = "Correcto!";
+    }else{
+        $status = false;
+        $msg = "Los datos no coinciden";
+    }
+    return json_encode(array(
+        'status' => $status,
+        'msg' => $msg
+    ));
+}
+
+function setPassword($email, $response, $pwd){
+    global $db;
+    $pwd = md5($pwd);
+    $response = md5($response);
+    $stmt = $db->query(
+        "UPDATE users SET user_pwd = '$pwd'
+        WHERE user_user = '$email' AND user_response = '$response'"
+    );
+    $stmt2 = $db->query(
+        "SELECT user_pwd FROM users
+        WHERE user_user = '$email'"
+    );
+    $verif = $stmt2->fetch(PDO::FETCH_NUM)[0];
+
+    if($pwd === $verif){
+        $status = true;
+        $msg = "Clave guardada con éxito";
+    }else{
+        $status = false;
+        $msg = $stmt;
+    }
+    return json_encode(array(
+        'status' => $status,
+        'msg' => $msg
+    ));
+
+}
+
+function checkEmail($email){
+    global $db;
+    $stmt = $db->query(
+        "SELECT user_id FROM users WHERE user_user = '$email'"
+    );
+
+    $status = $stmt->rowCount() == 1? true : false;
+
+    return json_encode(array('status' =>  $status, 'count' => $stmt->rowCount()));
 }

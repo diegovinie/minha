@@ -3,60 +3,68 @@
 {% extends 'views/base.html.twig' %}
 
 {% block body %}
-    <div id="wrapper">
-        <div class="container" align="center">
-            <div class="" style="align=right;">
-                <img src="static/banner468x60.png" class="img-responsive" alt="">
+<div id="wrapper">
+    <div class="container" align="center">
+        <div class="" style="align=right;">
+            <img src="static/banner468x60.png" class="img-responsive" alt="">
+        </div>
+        <div class="row">
+            <div class="col-sm-4" style="margin-top:100px;">
+                <!--php include ROOTDIR.'templates/slidertextlogin.html'; -->
             </div>
-            <div class="row">
-                <div class="col-sm-4" style="margin-top:100px;">
-                    <!--php include ROOTDIR.'templates/slidertextlogin.html'; -->
-                </div>
-                <div class="col-sm-4">
-                    <div class="login-panel panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Ingresar</h3>
-                        </div>
-                        <div class="panel-body">
-                            <form class="" role="form" action="{{ form.action }}" method="{{ form.method }}">
-                                <fieldset>
-                                    <div class="form-group">
-                                        <input class=form-control placeholder="E-mail" type="text" name="user" id="user" value="" onblur="check_user(this, true)">
-                                        <div class="">
-
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <input class="form-control" placeholder="clave" type="password" name="pwd" id="pwd" value="">
+            <div class="col-sm-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Ingresar</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form class="" role="form" action="{{ form.action }}" method="{{ form.method }}">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class=form-control placeholder="E-mail" type="text" name="user" id="user" value="" onblur="check_user(this, true)">
+                                    <div class="">
 
                                     </div>
-                                    <div class="checkbox" align="left">
-                                        <label for="">
-                                            <input type="checkbox" name="remember" id="remember" value="1">Recordarme
-                                        </label>
-                                    </div>
-                                    <button type="submit" href="" name="" class="btn btn-lg btn-success btn-block" onclick="sendLogin()">Enviar</button>
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="panel">
-                        <div class="panel-body">
-                            <div class="col-xs-6">
-                                <a href="{{ a.register }}">Registrarse</a>
-                            </div>
-                            <div class="col-xs-6">
-                                <a href="{{ a.recovery }}">Recuperar Clave</a>
-                            </div>
-                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="clave" type="password" name="pwd" id="pwd" value="">
+
+                                </div>
+                                <div class="checkbox" align="left">
+                                    <label for="">
+                                        <input type="checkbox" name="remember" id="remember" value="1">Recordarme
+                                    </label>
+                                </div>
+                                <button type="submit" href="" name="" class="btn btn-lg btn-success btn-block" onclick="sendLogin()">Enviar</button>
+                            </fieldset>
+                        </form>
                     </div>
                 </div>
-                <div class="col-sm-4" style="padding: 10px 6px 6px 6px; ">
-                    <div class="alert alert-info alert-dismissable" id="aviso1">
-                        <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>Bienvenido!</strong> <p>Si es la primera vez que nos visitas puedes registrarte para ingresar y probar nuestros servicios.</p>
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="col-xs-6">
+                            <a href="{{ a.register }}">Registrarse</a>
+                        </div>
+                        <div class="col-xs-6">
+                            <a href="{{ a.recovery }}">Recuperar Clave</a>
+                        </div>
                     </div>
                 </div>
             </div>
-    </div>
+            <div class="col-sm-4" style="padding: 10px 6px 6px 6px; ">
+                <div class="alert alert-info alert-dismissable" id="aviso1">
+                    <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Bienvenido!</strong> <p>Si es la primera vez que nos visitas puedes registrarte para ingresar y probar nuestros servicios.</p>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% for script in js %}
+        <script src="{{ script }}" charset="utf-8"></script>        
+    {% endfor %}
+
 {% endblock %}

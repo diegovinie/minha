@@ -1,5 +1,5 @@
 /* public_html/components/security/js/register.js
- * 
+ *
  */
 
 window.onload = function(){
@@ -18,7 +18,7 @@ window.onload = function(){
         })
         .then(function(data){
             // Pedir el modal
-            $.get('/index.php/register/views/modals/alert.html')
+            $.get('/index.php/views/modals/alert.html')
             .done(function(html){
                 $('body').append(html);
                 var modal = $('#alert'),

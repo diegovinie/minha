@@ -16,14 +16,20 @@ $route[2] = isset($route[2])? $route[2] : '';
 // Enrutador de /login/{opcion}
 if($route[1] == 'login'){
     switch ($route[2]) {
-        // Comprobar credenciales
-        case 'check':
-            $controller = $basedir .'controllers/checkuser.php';
-            break;
         // Página de login
         case '':
             $controller = $basedir .'controllers/login.php';
             break;
+        // Comprobar credenciales
+        case 'check':
+            $controller = $basedir .'controllers/checkuser.php';
+            break;
+        // Chequear si existe email
+        case 'checkemail':
+        $controller = $basedir .'controllers/checkemail.php';
+        break;
+        // Salir de sesión
+
         // Ruta no identificada
         default:
             die('sin ruta');
@@ -54,13 +60,7 @@ if($route[1] == 'register'){
         case 'create':
             $controller = $basedir .'controllers/createuser.php';
             break;
-        // asinc Vistas estandar /views/{tipo}
-        case 'views':
-            ob_start();
-            include ROOTDIR .'/' .$route[2] .'/' .$route[3] .'/' .$route[4];
-            $view = ob_get_clean();
-            echo $view;
-            exit;
+
         // Página de registro
         case '':
             $controller = $basedir .'controllers/register.php';
@@ -68,8 +68,36 @@ if($route[1] == 'register'){
         // Ruta no identificada
         default:
             # code...
+
+            break;
+    }
+}
+
+if($route[1] == 'recovery'){
+    switch ($route[2]) {
+        case '':
+            $controller = $basedir .'controllers/recovery.php';
+            break;
+
+        case 'getquestion':
+            $controller = $basedir .'controllers/getquestion.php';
+            break;
+
+        case 'checkresponse':
+            $controller = $basedir .'controllers/checkresponse.php';
+            break;
+
+        case 'setpwd':
+            $controller = $basedir .'controllers/setpwd.php';
+            break;
+
+        default:
             print_r($route);
             die('sin ruta');
             break;
     }
+}
+
+if($route[1] == 'logout'){
+    $controller = $basedir .'controllers/logout.php';
 }

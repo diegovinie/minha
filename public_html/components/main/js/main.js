@@ -36,13 +36,15 @@ window.onload = function(){
             console.log(err);
         })
     })
+
     $.ajax({
         type: 'GET',
-        url: 'core/async_main.php?fun=balance',
+        url: '/index.php/main/balance',
         dataType: 'json',
         success: function(res){
+            console.log('ba: ', res);
             var cont = document.getElementById('balance');
-            cont.innerHTML = 'Edificio: '+ res.bui_name + '<br/>Apartamento: ' +res.bui_apt + '<br/>Bs. ' + toBs(res.bui_balance);
+            cont.innerHTML = 'Edificio: '+ res.data.bui_name + '<br/>Apartamento: ' +res.data.bui_apt + '<br/>Bs. ' + toBs(res.data.bui_balance);
         }
     });
 }

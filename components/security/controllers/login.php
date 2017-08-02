@@ -4,19 +4,9 @@
  * Controlador
  * Genera la Vista
  */
+defined('_EXE') or die('Acceso restringido');
 
-include ROOTDIR .'/components/security/models/login.php';
-
-// Se revisa si tiene sesión guardada en cookie
-if(isset($_COOKIE['remember'])){
-    $remember = $_COOKIE['remember'];
-    $res = json_decode(checkRemember($remember));
-
-    if($res->status == true){
-        header('Location: /index.php/main');
-        exit;
-    }
-}
+if(isset($_SESSION)) session_destroy();
 
 // Datos para el formulario
 $form = array(
@@ -30,10 +20,17 @@ $href = array(
     "recovery"  => "/index.php/recovery"
 );
 
+// javascript a incluir
+$js = array(
+    "login"     => "/components/security/js/login.js",
+    "forms"     => "/js/forms.js",
+    "functions" => "/js/functions.js"
+);
+
 $loader = new Twig_Loader_Filesystem(ROOTDIR.'/');
 $twig = new Twig_Environment($loader);
 
 echo $twig->render(
     'components/security/views/login.html.twig',
-    array('form' => $form, 'a' => $href)
+    array('form' => $form, 'a' => $href, 'js' => $js)
 );

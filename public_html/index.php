@@ -10,10 +10,14 @@ require_once('../settings.php');
 define('_EXE', TOKEN);
 
 // Pasa la ruta a string
-$route = explode('/', $_SERVER['PATH_INFO']) ;
+if(isset($_SERVER['PATH_INFO'])){
+    $route = explode('/', $_SERVER['PATH_INFO']) ;
+}else{
+    $route[1] = '';
+}
 
 // El enrutador retorna un controlador
 $contoller = include ROOTDIR.'/router.php';
 
 // Llama al controlador secundario
-include $controller;
+isset($controller)? include $controller : exit;

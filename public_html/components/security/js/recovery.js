@@ -1,3 +1,8 @@
+/* JQuery, pressEnter(), checkResponse()
+ * #response, #email
+ *
+ */
+
 window.onload = function(){
     var ele  = document.getElementById('response'),
         btn = $(ele).parent().next().next().children()[0],
@@ -13,47 +18,47 @@ window.onload = function(){
     pressEnterNext(list);
 }
 
-function checkEmail(self){
-    email = $(self).val();
+
+function getQuestion(input){
+    email = $(input).val();
     if(email != ''){
         $.ajax({
-            url: 'core/authentication.php?fun=email&user=' + email,
+            url: '/index.php/recovery/getquestion/?email=' + email,
             type: 'get',
-            dataType: 'text',
-            success: function(data){
-                if (data == ''){
-                    warningMsg(self, 'Usuario no encontrado');
+            dataType: 'json',
+            success: function(json){
+                if(json.status == true){
+                    $('#question').val(json.question);
+                }else{
+                    warningMsg(input, 'Usuario no encontrado');
                 }
-                $('#question').val(data);
             },
             error: function(err){
-                console.log('checkEmail: ' + err.responseText + ', status: ' + err.status);
+                console.log('getQuestion: ' + err.responseText + ', status: ' + err.status);
             }
         });
     }
-
 }
 
-function checkResponse(self){
+function checkResponse(input){
     param = {
         question: $('#question').val(),
         response: $('#response').val(),
-        email: $('#email').val(),
-        fun: 'checkResponse'
+        email: $('#email').val()
     }
     $.ajax({
-        url: 'core/authentication.php',
+        url: '/index.php/recovery/checkresponse',
         data: param,
         type: 'post',
         dataType: 'json',
         success: function(data){
-            var response = $(self).parent().prev();
+            var response = $(input).parent().prev();
             response.addClass('text-warning');
             response.html(data.msg);
             if(data.status == true){
                 $('#newPwd').modal()
                 $('#pwdSubmit').on('click', function(){
-                    savePwd(param);
+                    setPwd(param);
                     $('#newPwd').modal('hide');
                 });
                 $('#pwd').focus();
@@ -72,26 +77,26 @@ function checkResponse(self){
 
 }
 
-function savePwd(args){
+function setPwd(args){
     params = {
         email: args.email,
         response: args.response,
-        pwd: $('#pwd').val(),
-        fun: 'savepassword'
+        pwd: $('#pwd').val()
+
     };
     $.ajax({
-        url: 'core/authentication.php',
+        url: '/index.php/recovery/setpwd',
         data:params,
         type: 'post',
         dataType: 'json',
         success: function(data){
-            console.log(data.status);
+            console.log(data.msg);
             var modal = $('#alert'),
                 content = $('#alert_content'),
                 btn = $('#alert_btn');
             modal.modal();
             modal.on('hidden.bs.modal', function(){
-                window.location = (data.status == true? 'login.php' : 'recovery.php');
+                window.location = (data.status == true? '/index.php/login' : '/index.php/recovery');
             });
             content.html(data.msg);
             if(data.status == true){
