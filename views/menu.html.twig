@@ -125,9 +125,9 @@
 				{% if menu.session == 1 %}
 				<li><a href="">Administracion<span class="fa arrow"></span></a>
 					<ul class="nav nav-second-level">
-						<li><a href="<?php echo PROJECT_HOST;?>admin/payments.php">Pagos y Recibos<span class="fa arrow"></span></a>
+						<li><a href="javascript:void()">Pagos y Recibos<span class="fa arrow"></span></a>
 							<ul class="nav nav-third-level">
-								<li><a href="<?php echo PROJECT_HOST;?>admin/payments.php">Pagos</a></li>
+								<li><a href="{{ menu.href.payments.manage }}">Pagos</a></li>
 								<li><a href="<?php echo PROJECT_HOST;?>admin/invoices.php">Recibos</a></li>
 							</ul>
 						</li>

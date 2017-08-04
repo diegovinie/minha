@@ -1,0 +1,10 @@
+{# views/widgets/panel.html.twig #}
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ panel.title }}</h3>
+    </div>
+    <div class="panel-body" id="balance">
+        {% block panel %}{{ panel.body }}{% endblock %}
+    </div>
+</div>

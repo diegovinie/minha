@@ -42,7 +42,27 @@ if($route[1] == 'payments'){
             $controller = $basedir .'controllers/sendpayment.php';
             break;
 
+        case 'edit':
+            $controller = $basedir .'controllers/editpayment.php';
+            break;
+
         // Ruta no identificada
+        default:
+            die('sin ruta');
+            break;
+    }
+}
+
+if($route[1] == 'admin' && $route[2] == 'payments'){
+
+    // Identificador del 3er parámetro en /{primero}/{segundo}/{tercer}
+    $route[3] = isset($route[3])? $route[3] : '';
+
+    switch ($route[3]) {
+        case 'manage':
+            $controller = $basedir .'controllers/manage.php';
+            break;
+
         default:
             die('sin ruta');
             break;

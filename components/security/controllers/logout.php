@@ -9,7 +9,7 @@ defined('_EXE') or die('Acceso restringido');
 if(isset($_COOKIE['remember'])){
     $remember = mysql_escape_string((string)$_COOKIE['remember']);
 
-    include ROOTDIR .'/components/security/models/remembersession.php';
+    include $basedir .'models/remembersession.php';
     $res = delRemember($remember);
 
     if($res->status == true) setcookie('remember', '', time()-3600, '/');

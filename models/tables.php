@@ -17,6 +17,10 @@ function setTheadTbodyFromPDO(PDOStatement $objStmt){
             }
         }
     }
+    if(isset($thead) && isset($tbody)){
+        return array('thead' => $thead, 'tbody' => $tbody);
+    }else{
+        return false;
+    }
 
-    return array('thead' => $thead, 'tbody' => $tbody);
 }

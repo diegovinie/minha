@@ -4,7 +4,7 @@
  * Modelo
  * Retorna un json (status, msg, [otros])
  */
- 
+
 defined('_EXE') or die('Acceso restringido');
 
 $db = include ROOTDIR.'/models/db.php';
@@ -33,6 +33,7 @@ function getPayments($bui, $napt){
 
     }else{
         $status = false;
+
     }
 
     $response = array(
@@ -114,21 +115,40 @@ function getBanks(){
     return json_encode($banks);
 }
 
-function editPayment(){
-    // 'core/async_user_payments.php?arg=editpayment&fun=&id='+id
+function editPayment($id){
+
     global $db;
+    $status = false;
+    $data = array();
+
     $stmt = $db->query(
         "SELECT pay_id AS 'id', pay_date AS 'Fecha', pay_amount AS 'Monto', pay_op AS 'n_op', pay_fk_bank AS 'bankid', pay_type AS 'type', pay_obs AS 'notes'
         FROM payments WHERE pay_id = $id"
     );
+
+    if($stmt){
+        foreach ($stmt->fetch(PDO::FETCH_ASSOC) as $key => $val) {
+
+            $data[$key] = $val;
+        }
+        $status = true;
+
+    }
+    return json_encode(array(
+        'status' => $status, 'data' => $data
+    ));
 }
 
-function removePayment(){
-    // 'core/async_user_payments.php?arg=removepayment&fun=&id='+id
+function removePayment($id){
+
     global $db;
     $ex = $db->exec(
         "UPDATE payments SET pay_check = 3 WHERE pay_id = $id"
     );
+    $status = $ex? true : false;
+    $msg = $ex? 'Pago descartado' : 'No se pudo realizar la operación';
+
+    return json_encode(array('status' => $status, 'msg' => $msg));
 }
 
 function sendPayment($collection){

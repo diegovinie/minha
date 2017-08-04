@@ -14,7 +14,7 @@ $href = array(
 
 // javascript a incluir
 $js = array(
-    "register"     => "/components/security/js/register.js",
+    "register"     => $basedir."js/register.js",
     "forms"     => "/js/forms.js",
     "functions" => "/js/functions.js"
 );

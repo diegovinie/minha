@@ -167,3 +167,52 @@ function checkEmail($email){
 
     return json_encode(array('status' =>  $status, 'count' => $stmt->rowCount()));
 }
+
+function checkOldPassword($id){
+    global $db;
+    $stmt = $db->query(
+        "SELECT user_pwd FROM users
+        WHERE user_id = $id"
+    );
+    if($stmt){
+        $pwd = $stmt->fetch(PDO::FETCH_NUM)[0];
+        $status = $pwd == DEF_PWD? true : false;
+    }
+    return json_encode(['status' => $status, 'old' => $pwd]);
+}
+
+function updatePassword($id, $old, $new){
+    global $db;
+
+    $stmt = $db->query(
+        "SELECT user_pwd FROM users
+        WHERE user_id = $id"
+    );
+
+    if($stmt){
+        if($old == $stmt->fetch(PDO::FETCH_NUM)[0]){
+
+            $new = md5($new);
+            $ex = $db->exec(
+                "UPDATE users SET user_pwd = '$new'
+                WHERE user_id = $id"
+            );
+
+            if($ex){
+                $status = true;
+                $msg = "Clave guardada con éxito.";
+            }else{
+                $status = false;
+                $msg = "No se pudo guardar la clave";
+            }
+        }else{
+            $status = false;
+            $msg = "La antigua clave no coincide.";
+        }
+    }else{
+        $status = false;
+        $msg = "Error interno.";
+    }
+
+    return json_encode(array('status' => $status, 'msg' => $msg));
+}

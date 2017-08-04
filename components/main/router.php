@@ -25,6 +25,10 @@ if($route[1] == 'main'){
             $controller = $basedir .'controllers/balance.php';
             break;
 
+            case 'notices':
+                $controller = $basedir .'controllers/notices.php';
+                break;
+
         // Ruta no identificada
         default:
             die('sin ruta');

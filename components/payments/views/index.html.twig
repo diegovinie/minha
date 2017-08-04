@@ -19,11 +19,9 @@
                         <h4>Historial de Pagos</h4>
                     </div>
                     <div class="panel-body" id="getpayments">
-                        <!-- async data -->
+                        {% include '/views/widgets/loading.html.twig' %}
                     </div>
-                    <div class="panel-footer">
 
-                    </div>
                     <div class="panel-footer col-lg-12" style="margin-bottom: 60px;">
                         <button type="button" name="nuevo_pago" class="btn btn-primary btn-lg" style="float: right;" onclick="newPayment()">Registrar Nuevo Pago</button>
                     </div>
@@ -37,7 +35,7 @@
                         <h4>Pagos En Revisión</h4>
                     </div>
                     <div class="panel-body" id="getpendingpayments">
-                        <!-- async data -->
+                        {% include '/views/widgets/loading.html.twig' %}
                     </div>
                     <div class="panel-footer">
 
@@ -52,7 +50,7 @@
                         <h4>Pagos Devueltos</h4>
                     </div>
                     <div class="panel-body" id="getreturnedpayments">
-                        <!-- async data -->
+                        {% include '/views/widgets/loading.html.twig' %}
                     </div>
                     <div class="panel-footer">
 

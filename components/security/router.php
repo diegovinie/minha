@@ -29,7 +29,14 @@ if($route[1] == 'login'){
         case 'checkemail':
         $controller = $basedir .'controllers/checkemail.php';
         break;
-        // Salir de sesión
+
+        case 'checkoldpassword':
+            include $basedir .'controllers/checkoldpassword.php';
+            break;
+
+        case 'updatepassword':
+            include $basedir .'controllers/updatepassword.php';
+            break;
 
         // Ruta no identificada
         default:

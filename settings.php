@@ -2,11 +2,14 @@
 //print_r($_SERVER);
 $time_ini = microtime(true);
 
+// Directorio raiz
 define('ROOTDIR', dirname(__FILE__));
 
+// Carga los parámetros
 $parameters = simplexml_load_file(ROOTDIR.'/parameters.xml');
 
-define('COMDIR', $parameters->principal->components);
+// Directorio de componentes
+define('COMDIR', ROOTDIR.'/'.$parameters->principal->components);
 
 // Nombre del proyecto
 define('NAME', $parameters->principal->name);
@@ -45,7 +48,5 @@ if(dirname(__FILE__) == $_SERVER['DOCUMENT_ROOT']){
 }
 
 setlocale(LC_TIME, 'es_VE.UTF-8');
-
-
 
 include ROOTDIR.'/vendor/autoload.php';

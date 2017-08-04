@@ -9,7 +9,7 @@
 defined('_EXE') or die('Acceso restringido');
 
 // Directorio de componentes
-$comdir = ROOTDIR.'/'.COMDIR;
+$comdir = COMDIR;
 
 
 switch ($route[1]) {
@@ -18,19 +18,19 @@ switch ($route[1]) {
 
     case "login":
         // Enrutador secundario de componente
-        include $comdir .'security/router.php';
+        include COMDIR .'security/router.php';
         break;
     case 'register':
         // Enrutador secundario de componente
-        include $comdir .'security/router.php';
+        include COMDIR .'security/router.php';
         break;
     case 'recovery':
         // Controlador
-        include $comdir .'security/router.php';
+        include COMDIR .'security/router.php';
         break;
 
     case 'logout':
-        include $comdir .'security/router.php';
+        include COMDIR .'security/router.php';
         break;
 
     // asinc Vistas estandar /views/{tipo}
@@ -47,21 +47,40 @@ switch ($route[1]) {
     // Rutas protegidas
     require ROOTDIR.'/'.ACCESS_CONTROL;
     include ROOTDIR.'/controllers/menu.php';
-    
+
     switch ($route[1]) {
         // Página principal
         case '':
-            include $comdir .'main/controllers/main.php';
+            include COMDIR .'main/controllers/main.php';
             break;
+
         //
         case 'main':
-            include $comdir.'main/router.php';
+            include COMDIR.'main/router.php';
             break;
 
         // Componente Payments
         case 'payments':
-            include $comdir .'payments/router.php';
+            include COMDIR .'payments/router.php';
         break;
+
+        // Área de administradores
+        case 'admin':
+            // Si el tipo de sesión no es administrador termina
+            if($_SESSION['type'] !== 1) die('No tiene autorización.');
+            switch ($route[2]) {
+                case 'payments':
+                    include COMDIR .'payments/router.php';
+                    break;
+
+                default:
+                    print_r($route);
+                    die('sin ruta');
+                    break;
+
+            }
+            break;
+
         // No se encuentra ruta
         default:
             print_r($route);

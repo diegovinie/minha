@@ -16,7 +16,8 @@ $_menu = array(
 
 // Payments - Enlaces:
 $_menu['href']['payments'] =  array(
-        'index' => '/index.php/payments/'
+        'index' => '/index.php/payments/',
+        'manage' => '/index.php/admin/payments/manage'
 );
 
 // Profile - Enlaces:

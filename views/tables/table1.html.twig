@@ -14,7 +14,7 @@
         {% for row in table.tbody %}
             <tr>
                 {% for item in row %}
-                    <td name="{{ table.thead[loop.index] }}" data-type="{{ table.thead[loop.index] }}" data-value="{{ item }}" align="center">{{ item }}</td>
+                    <td name="{{ table.thead[loop.index - 1] }}" data-type="{{ table.thead[loop.index - 1] }}" data-value="{{ item }}" align="center">{{ item }}</td>
                 {% endfor %}
             </tr>
         {% endfor %}
