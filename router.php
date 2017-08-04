@@ -46,17 +46,22 @@ switch ($route[1]) {
 
     // Rutas protegidas
     require ROOTDIR.'/'.ACCESS_CONTROL;
-
+    include ROOTDIR.'/controllers/menu.php';
+    
     switch ($route[1]) {
         // Página principal
         case '':
-            include ROOTDIR .'/components/main/controllers/main.php';
+            include $comdir .'main/controllers/main.php';
             break;
         //
         case 'main':
             include $comdir.'main/router.php';
             break;
 
+        // Componente Payments
+        case 'payments':
+            include $comdir .'payments/router.php';
+        break;
         // No se encuentra ruta
         default:
             print_r($route);

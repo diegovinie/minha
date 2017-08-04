@@ -24,5 +24,5 @@ $twig = new Twig_Environment($loader);
 
 echo $twig->render(
     'components/main/views/main.html.twig',
-    array('a' => $href, 'js' => $js)
+    array('a' => $href, 'js' => $js, 'menu' => $_menu)
 );

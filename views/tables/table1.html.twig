@@ -1,0 +1,22 @@
+{# views/tables/table1.html.twig #}
+
+<table width="100%" class="table table-striped">
+    <thead>
+        <tr>
+            {% for item in table.thead %}
+                <th style="text-align:center;">
+                    {{ item }}
+                </th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in table.tbody %}
+            <tr>
+                {% for item in row %}
+                    <td name="{{ table.thead[loop.index] }}" data-type="{{ table.thead[loop.index] }}" data-value="{{ item }}" align="center">{{ item }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

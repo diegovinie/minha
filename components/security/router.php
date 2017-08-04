@@ -10,6 +10,7 @@ defined('_EXE') or die('No hay acceso');
 
 $basedir = dirname(__FILE__).'/';
 
+
 // Identificador del 2do parámetro en /{primero}/{segundo}
 $route[2] = isset($route[2])? $route[2] : '';
 

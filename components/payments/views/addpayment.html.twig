@@ -2,17 +2,17 @@
 <div class="modal" id="payment" role="dialog">
     <div class="modal-dialog panel panel-default">
         <div class="modal-header panel-heading">
-            <h3>Agregar Pago <small>Ingrese los datos de su operación</small> </h3>
+            <h3>{{ title }}  <small> Ingrese los datos de su operación</small> </h3>
 
         </div>
         <div role="form" class="modal-body panel-body">
-            <form >
+            <form action="{{ form.action }}" method="{{ form.method }}">
                 <div class="row">
                     <div class="form-group col-md-4">
-                        <label for="">Edificio:</label><input  class="form-control" type="text" name="edif" id="edif" readonly>
+                        <label for="">Edificio:</label><input  class="form-control" type="text" name="edif" id="edif" value="{{ bui }}" readonly>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="">Apartamento:</label><input  class="form-control" type="text" name="apt" id="apt" readonly>
+                        <label for="">Apartamento:</label><input  class="form-control" type="text" name="apt" id="apt" value="{{ apt }}" readonly>
                     </div>
                     <div class="form-group col-md-5" >
                         <label for="">Fecha de operación:</label>
@@ -35,7 +35,9 @@
                     <div class="form-group col-md-6">
                         <label for="">Banco:</label>
                         <select class="form-control" name="bank" id="bank">
-
+                            {% for bank in banks %}
+                                <option value="{{ bank.id }}">{{ bank.name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>

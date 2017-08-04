@@ -1,5 +1,5 @@
 <?php
-/* db.php
+/* models/db.php
  *
  * Modelo de conexión a la base de datos
  * Retorna un objeto PDO o un error PDOException

@@ -1,0 +1,22 @@
+<?php
+/* models/tables.php
+ *
+ * Funciones que modifican los resultados de los queries
+ * de la base de datos.
+ * Retorna varios tipos
+ */
+
+defined('_EXE') or die('Acceso restringido');
+
+function setTheadTbodyFromPDO(PDOStatement $objStmt){
+    foreach ($objStmt->fetchAll(PDO::FETCH_NUM) as $ind => $row) {
+        foreach ($row as $key => $val) {
+            $tbody[$ind][$key] = $val;
+            if($ind == 0){
+                $thead[$key] = $objStmt->getColumnMeta($key)['name'];
+            }
+        }
+    }
+
+    return array('thead' => $thead, 'tbody' => $tbody);
+}
