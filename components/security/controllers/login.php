@@ -8,10 +8,13 @@ defined('_EXE') or die('Acceso restringido');
 
 if(isset($_SESSION)) session_destroy();
 
+include $basedir .'controllers/tokenator.php';
+$t = createFormToken();
 // Datos para el formulario
 $form = array(
     "action"    => "/index.php/login/check",
-    "method"    => "post"
+    "method"    => "post",
+    "token"     => $t
 );
 
 // Datos para los botones

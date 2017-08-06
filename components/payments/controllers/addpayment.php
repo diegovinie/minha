@@ -7,6 +7,7 @@
 defined('_EXE') or die('Acceso restringido');
 
 include $basedir .'models/payments.php';
+include ROOTDIR.'/components/security/controllers/tokenator.php';
 
 $banks = json_decode(getBanks());
 
@@ -19,7 +20,8 @@ $title = 'Agregar Pago';
 // Datos para el formulario
 $form = array(
     "action"    => "/index.php/payments/sendpayment",
-    "method"    => "post"
+    "method"    => "post",
+    "token"     => createFormToken()
 );
 
 $loader = new Twig_Loader_Filesystem(ROOTDIR.'/');
@@ -29,7 +31,7 @@ echo $twig->render(
     'components/payments/views/addpayment.html.twig',
     array(
         'form' => $form,
-        'banks' => $banks, 
+        'banks' => $banks,
         'bui' => $bui,
         'apt' => $apt,
         'title' => $title)

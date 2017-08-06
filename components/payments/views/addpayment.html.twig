@@ -7,6 +7,7 @@
         </div>
         <div role="form" class="modal-body panel-body">
             <form action="{{ form.action }}" method="{{ form.method }}">
+                <input type="hidden" name="token" value="{{ form.token }}">
                 <div class="row">
                     <div class="form-group col-md-4">
                         <label for="">Edificio:</label><input  class="form-control" type="text" name="edif" id="edif" value="{{ bui }}" readonly>

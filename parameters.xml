@@ -16,5 +16,7 @@
         <template>startbootstrap-sb-admin-2-gh-pages</template>
         <components>components/</components>
         <security_control>components/security/controllers/accesscontrol.php</security_control>
+        <vardir>var/</vardir>
+        <secret>meridian</secret>
     </principal>
 </parameters>

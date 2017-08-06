@@ -11,9 +11,15 @@ $parameters = simplexml_load_file(ROOTDIR.'/parameters.xml');
 // Directorio de componentes
 define('COMDIR', ROOTDIR.'/'.$parameters->principal->components);
 
+// Directorio de varios
+define('VARDIR', $parameters->principal->vardir);
+
 // Nombre del proyecto
 define('NAME', $parameters->principal->name);
 define('VERSION', $parameters->principal->version);
+
+// Frase secreta
+define('SECRET', $parameters->principal->secret);
 
 // Datos para conectarse a la base de datos:
 define('DB_HOST', $parameters->database->hostname);

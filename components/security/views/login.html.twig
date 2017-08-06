@@ -6,7 +6,7 @@
 <div id="wrapper">
     <div class="container" align="center">
         <div class="" style="align=right;">
-            <img src="static/banner468x60.png" class="img-responsive" alt="">
+            <!--<img src="static/banner468x60.png" class="img-responsive" alt="">-->
         </div>
         <div class="row">
             <div class="col-sm-4" style="margin-top:100px;">
@@ -19,6 +19,7 @@
                     </div>
                     <div class="panel-body">
                         <form class="" role="form" action="{{ form.action }}" method="{{ form.method }}">
+                            <input type="hidden" name="token" value="{{ form.token }}">
                             <fieldset>
                                 <div class="form-group">
                                     <input class=form-control placeholder="E-mail" type="text" name="user" id="user" value="" onblur="check_user(this, true)">
@@ -64,7 +65,7 @@
 {% block javascripts %}
     {{ parent() }}
     {% for script in js %}
-        <script src="{{ script }}" charset="utf-8"></script>        
+        <script src="{{ script }}" charset="utf-8"></script>
     {% endfor %}
 
 {% endblock %}
