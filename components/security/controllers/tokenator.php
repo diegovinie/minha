@@ -13,8 +13,8 @@ function createFormToken(){
 
     $json = json_encode(array($client, $time, SECRET));
 
-    $token = md5($json);
-    $handle = fopen(ROOTDIR.'/'.VARDIR.$token, 'w+');
+    //$token = md5($json);
+    //$handle = fopen(ROOTDIR.'/'.VARDIR.$token, 'w+');
 
     if(!isset($_SESSION)) session_start();
     $_SESSION['token'] = $token;
@@ -24,7 +24,10 @@ function createFormToken(){
 
 function checkFormToken($token){
 
-    if(file_exists(ROOTDIR.'/'.VARDIR.$token)){
+    if(!isset($_SESSION)) session_start();
+    
+    if($_SESSION['token'] == $token)
+    {
         unlink(ROOTDIR.'/'.VARDIR.$token);
 
         return true;

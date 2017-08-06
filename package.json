@@ -1,0 +1,23 @@
+{
+  "name": "minha",
+  "version": "2.0.0",
+  "description": "Administracion de condominios",
+  "main": "index.php",
+  "dependencies": {
+    "dpicker": "^5.0.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/diegovinie/minha.git"
+  },
+  "author": "Diego Viniegra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diegovinie/minha/issues"
+  },
+  "homepage": "https://github.com/diegovinie/minha#readme"
+}
