@@ -4,7 +4,7 @@ window.onload = function(){
     var ids = ['getpayments', 'getpendingpayments', 'getreturnedpayments'];
     $(ids).each(function(pos, id){
         $.ajax({
-            url: '/index.php/payments/' + id,
+            url: '/index.php/pagos/' + id,
             type: 'get',
             dataType: 'html',
             error: function(err){
@@ -33,7 +33,7 @@ window.onload = function(){
 function newPayment(){
     return new Promise(function(resolve, reject){
         $.ajax({
-            url: '/index.php/payments/add',
+            url: '/index.php/pagos/add',
             type: 'get',
             dataType: 'html',
             error: function(err){
@@ -68,7 +68,7 @@ function editPayment(id){
     .then(function(){
         return new Promise(function(resolve,reject){
             $.ajax({
-                url: '/index.php/payments/edit/?id='+id,
+                url: '/index.php/pagos/edit/?id='+id,
                 type: 'get',
                 dataType: 'json',
                 error: function(err){
@@ -99,14 +99,14 @@ function editPayment(id){
 }
 
 function removePayment(id){
-    $.get('/index.php/payments/remove/?id='+id, function(res){
+    $.get('/index.php/pagos/remove/?id='+id, function(res){
         console.log(res);
     }, 'json');
 }
 
 function sendPayment(){
     $.ajax({
-        url: '/index.php/payments/sendpayment',
+        url: '/index.php/pagos/sendpayment',
         type: 'post',
         data: $('#payment form').serialize(),
         dataType: 'json',

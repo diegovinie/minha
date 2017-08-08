@@ -46,7 +46,6 @@ switch ($route[1]) {
 
     // Rutas protegidas
     require ROOTDIR.'/'.ACCESS_CONTROL;
-    include ROOTDIR.'/controllers/menu.php';
 
     switch ($route[1]) {
         // Página principal
@@ -60,7 +59,7 @@ switch ($route[1]) {
             break;
 
         // Componente Payments
-        case 'payments':
+        case 'pagos':
             include COMDIR .'payments/router.php';
         break;
 
@@ -69,8 +68,16 @@ switch ($route[1]) {
             // Si el tipo de sesión no es administrador termina
             if($_SESSION['type'] !== 1) die('No tiene autorización.');
             switch ($route[2]) {
-                case 'payments':
+                case 'pagos':
                     include COMDIR .'payments/router.php';
+                    break;
+
+                case 'balance':
+                    include COMDIR .'finances/router.php';
+                    break;
+
+                case 'usuarios':
+                    include COMDIR .'users/router.php';
                     break;
 
                 default:
@@ -79,6 +86,10 @@ switch ($route[1]) {
                     break;
 
             }
+            break;
+
+        case 'balance':
+            include COMDIR .'finances/router.php';
             break;
 
         // No se encuentra ruta

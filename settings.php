@@ -55,4 +55,11 @@ if(dirname(__FILE__) == $_SERVER['DOCUMENT_ROOT']){
 
 setlocale(LC_TIME, 'es_VE.UTF-8');
 
+if(!isset($_SESSION)) session_start();
+
 include ROOTDIR.'/vendor/autoload.php';
+
+include ROOTDIR.'/controllers/globals.php';
+
+// La clase LoadTwigWithGlobals
+include ROOTDIR.'/controllers/LoadTwigWithGlobals.php';

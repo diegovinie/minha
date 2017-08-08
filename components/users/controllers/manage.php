@@ -1,5 +1,5 @@
 <?php
-/* components/payments/controllers/payments.php
+/* components/users/controllers/manage.php
  *
  *
  * Genera la vista
@@ -26,11 +26,10 @@ $js = array(
     "dpicker"   => "/vendor/dpicker/dpicker.all.min.js"
 );
 
-
 $twig = new LoadTwigWithGlobals($_globals['view']);
 
 echo $twig->render(
-    'components/payments/views/index.html.twig',
+    'components/users/views/manage.html.twig',
     array('form' => $form,
     'a' => $href,
     'js' => $js,

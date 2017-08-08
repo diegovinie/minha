@@ -19,10 +19,9 @@ $js = array(
     "functions" => "/js/functions.js"
 );
 
-$loader = new Twig_Loader_Filesystem(ROOTDIR.'/');
-$twig = new Twig_Environment($loader);
+$twig = new LoadTwigWithGlobals($_globals['view']);
 
 echo $twig->render(
     'components/main/views/main.html.twig',
-    array('a' => $href, 'js' => $js, 'menu' => $_menu)
+    array('a' => $href, 'js' => $js)
 );

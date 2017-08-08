@@ -1,0 +1,46 @@
+{# views/tables/table2.html.twig #}
+
+<table width="100%" class="table table-striped table-bordered table-hover" >
+    <thead>
+
+    </thead>
+    <tbody>
+        {% for row in table.tbody %}
+            <tr>
+                {% for item in row %}
+                    <td name="{{ loop.index - 1 }}" align="center">{{ item }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+?>
+<table width="100%" class="table table-striped table-bordered table-hover" id="t_<?php echo $id ?>">
+    <thead>
+        <tr>
+            <?php
+            for ($i = 0; $i < mysql_num_fields($r); $i++) {
+                ?><th align="center"><?php echo mysql_field_name($r, $i) ?></th>
+                <?php
+        } ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        while ($row = mysql_fetch_assoc($r)) {
+        ?>
+        <tr>
+        <?php
+        foreach ($row as $key => $value) {
+            //Se construyen las filas de la tabla
+            ?><td name="<?php echo $key ?>" data-type="<?php echo $key; ?>" data-value="<?php echo $value ?>" align="center"><?php echo $lista[$key] = $value; ?></td><?php
+        }
+        ?>
+        </tr>
+        <?php
+        }
+        ?>
+    </tbody>
+ </table>
+<?php

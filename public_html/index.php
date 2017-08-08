@@ -17,7 +17,7 @@ if(isset($_SERVER['PATH_INFO'])){
 }
 
 // El enrutador retorna un controlador
-$contoller = include ROOTDIR.'/router.php';
+include ROOTDIR.'/router.php';
 
 // Llama al controlador secundario
 isset($controller)? include $controller : exit;

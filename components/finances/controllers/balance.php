@@ -1,5 +1,5 @@
 <?php
-/* components/payments/controllers/payments.php
+/* components/finances/controllers/balance.php
  *
  *
  * Genera la vista
@@ -30,7 +30,7 @@ $js = array(
 $twig = new LoadTwigWithGlobals($_globals['view']);
 
 echo $twig->render(
-    'components/payments/views/index.html.twig',
+    'components/finances/views/balance.html.twig',
     array('form' => $form,
     'a' => $href,
     'js' => $js,

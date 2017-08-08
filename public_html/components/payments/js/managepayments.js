@@ -1,6 +1,21 @@
-var model = 'core/async_payments.php';
-
 window.onload = function(){
+
+    var items = new Array(
+        'getcurrentmonth',
+        'getlastmonth',
+        'getlastthreemonths',
+        'approvedpayments',
+        'refusedpayments',
+        'pendingpayments'
+    );
+
+    $(items).each(function(p, item){
+        setInterval(function(e){
+            console.log(e);
+            getFromPayments(item);
+        }, 2000);
+    });
+/*
     var host = "core/async_payments.php?fun=aQuery&arg=";
     var aQueryTablaPrin = "core/async_payments.php?fun=aQueryTablaPrin&arg=";
     getAjax(host, 'mes_actual', setTablaMes, tdChecker)
@@ -83,5 +98,26 @@ function explain(self){
     var cont = document.getElementById('ovCont');
     cont.appendChild(msj);
     document.getElementById('text_msj').focus();
+*/
+}
 
+function getFromPayments(id){
+    return new Promise(function(resolve, reject){
+        $.ajax({
+            url: '/index.php/admin/pagos/'+ id,
+            type: 'get',
+            dataType: 'html',
+            error: function(err){
+                console.log('Error en getcurrentmonth: ', err);
+            }
+        })
+        .then(function(res){
+            $('#'+id).html(res);
+            $('#'+id+' td').each(function(p, td){
+                dataParser(td);
+            });
+
+            resolve();
+        });
+    });
 }

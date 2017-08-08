@@ -28,8 +28,7 @@ $css = array(
     "dpicker"   => '/css/dpicker.css'
 );
 
-$loader = new Twig_Loader_Filesystem(ROOTDIR.'/');
-$twig = new Twig_Environment($loader);
+$twig = new LoadTwigWithGlobals($_globals['view']);
 
 echo $twig->render(
     'components/payments/views/addpayment.html.twig',

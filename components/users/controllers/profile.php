@@ -1,5 +1,5 @@
 <?php
-/* components/payments/controllers/payments.php
+/* components/users/controllers/profile.php
  *
  *
  * Genera la vista
@@ -27,12 +27,13 @@ $js = array(
 );
 
 
-$twig = new LoadTwigWithGlobals($_globals['view']);
+$loader = new Twig_Loader_Filesystem(ROOTDIR.'/');
+$twig = new Twig_Environment($loader);
 
 echo $twig->render(
-    'components/payments/views/index.html.twig',
+    'components/users/views/profile.html.twig',
     array('form' => $form,
     'a' => $href,
     'js' => $js,
-    )
+    'menu' => $_menu)
 );

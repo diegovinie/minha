@@ -19,8 +19,8 @@
                     <div class="panel-heading">
                         Mes Actual
                     </div>
-                    <div class="panel-body" id="mes_actual">
-                        {% include '/views/widgets/loading.html.twig' %}
+                    <div class="panel-body" id="getcurrentmonth">
+                        {% include loading %}
                     </div>
                 </div>
             </div>
@@ -29,8 +29,8 @@
                     <div class="panel-heading">
                         Mes Anterior
                     </div>
-                    <div class="panel-body" id="mes_anterior">
-                        {% include '/views/widgets/loading.html.twig' %}
+                    <div class="panel-body" id="getlastmonth">
+                        {% include loading %}
                     </div>
                 </div>
             </div>
@@ -39,8 +39,8 @@
                     <div class="panel-heading">
                         Últimos 3 Meses
                     </div>
-                    <div class="panel-body" id="ultimos_tres">
-                        {% include '/views/widgets/loading.html.twig' %}
+                    <div class="panel-body" id="getlastthreemonths">
+                        {% include loading %}
                     </div>
                 </div>
             </div>
@@ -52,8 +52,8 @@
                         Pagos Pendientes por Revisión
                     </div>
                     <form class="" action="<?php echo PROJECT_HOST;?>core/async_payments.php" method="post">
-                        <div class="panel-body" id="pagos_pendientes">
-                            {% include '/views/widgets/loading.html.twig' %}
+                        <div class="panel-body" id="pendingpayments">
+                            {% include loading %}
                         </div>
                         <div class="panel-footer button_box" align="center">
                             <button type="submit" name="submits" class="btn btn-primary">Aplicar</button>
@@ -70,8 +70,8 @@
                     <div class="panel-heading">
                         Pagos Rechazados
                     </div>
-                    <div class="panel-body" id="pagos_rechazados">
-                        {% include '/views/widgets/loading.html.twig' %}
+                    <div class="panel-body" id="refusedpayments">
+                        {% include loading %}
                     </div>
                     <div class="panel-footer button_box" align="center">
     					    <button type="button" data-fun="pagos_rechazados" class="btn btn-info"  onclick="genPdf(this)" >Imprimir</button>
@@ -86,8 +86,8 @@
                     <div class="panel-heading">
                         Pagos Aprobados
                     </div>
-                    <div class="panel-body" id="pagos_aprobados">
-                        {% include '/views/widgets/loading.html.twig' %}
+                    <div class="panel-body" id="approvedpayments">
+                        {% include loading %}
                     </div>
                     <div class="panel-footer button_box" align="center">
     					    <button type="button" data-fun="pagos_aprobados" class="btn btn-info"  onclick="genPdf(this)" >Imprimir</button>

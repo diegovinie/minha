@@ -13,8 +13,8 @@ $res = json_decode(getReturnedPayments($bui, $napt));
 
 if($res->status == true){
     if($res->table != false){
-        $loader = new Twig_Loader_Filesystem(ROOTDIR.'/');
-        $twig = new Twig_Environment($loader);
+        
+        $twig = new LoadTwigWithGlobals($_globals['view']);
 
         echo $twig->render(
             'views/tables/table1.html.twig',

@@ -1,5 +1,5 @@
 <?php
-/* components/payments/router.php
+/* components/finances/router.php
  *
  * Enrutador secundario
  * Se incluye en el enrutador principal
@@ -15,11 +15,13 @@ $basedir = dirname(__FILE__).'/';
 $route[2] = isset($route[2])? $route[2] : '';
 
 // Enrutador de /login/{opcion}
-if($route[1] == 'pagos'){
+/*
+if($route[1] == 'balance'){
     switch ($route[2]) {
         // Página de inicio
+
         case '':
-            $controller = $basedir .'controllers/index.php';
+            $controller = $basedir .'controllers/balance.php';
             break;
         // Abrir la ventana de agregar un pago
         case 'add':
@@ -46,23 +48,24 @@ if($route[1] == 'pagos'){
             $controller = $basedir .'controllers/editpayment.php';
             break;
 
+
         // Ruta no identificada
         default:
             die('sin ruta');
             break;
     }
-}
+}*/
 
-if($route[1] == 'admin' && $route[2] == 'pagos'){
+if($route[1] == 'admin' && $route[2] == 'balance'){
 
     // Identificador del 3er parámetro en /{primero}/{segundo}/{tercer}
     $route[3] = isset($route[3])? $route[3] : '';
 
     switch ($route[3]) {
         case '':
-            $controller = $basedir .'controllers/manage.php';
+            $controller = $basedir .'controllers/balance.php';
             break;
-
+        /*
         case 'getcurrentmonth':
             $controller = $basedir .'controllers/getcurrentmonth.php';
             break;
@@ -84,7 +87,7 @@ if($route[1] == 'admin' && $route[2] == 'pagos'){
         case 'pendingpayments':
             $controller = $basedir .'controllers/pendingpayments.php';
             break;
-
+        */
         default:
             die('sin ruta');
             break;
