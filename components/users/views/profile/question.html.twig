@@ -1,0 +1,25 @@
+{# components/users/views/profile/question.html.twig #}
+<div class="modal" id="cambioPregunta" role="dialog">
+    <div class="modal-dialog panel panel-info">
+        <div class="modal-header">
+            Cambio de pregunta secreta
+        </div>
+        <form class="modal-body">
+            <input type="hidden" name="token" value="{{ form.token }}">
+            <div class="form-group">
+                <label for="">Pregunta:</label>
+                <input type="text" class="form-control" name="question" id="question" value="{{ question }}">
+            </div>
+            <div class="form-group">
+                <label for="">Respuesta:</label>
+                <input type="text" name="response" id="response" class="form-control">
+            </div>
+            <div align="center" id="_response"></div>
+            <div class="form-group" align="center">
+                <button class="btn btn-success" type="submit">Aplicar</button>
+                <button type="reset" class="btn btn-warning" name="button">Deshacer</button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger" name="button">Regresar</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -67,15 +67,16 @@ function newPwd(self){
     }
 }
 
-function checkPwdChange(self){
-    var pwd = $('#pwd').val(),
-        ret = $(self).val();
+function checkPwdChange(input){
+    var pwd = $('#pwd_new').val(),
+        ret = $(input).val();
+
     if(pwd === ret){
         $('#pwdSubmit').removeAttr('disabled');
-        $(self).parent().removeClass('has-error');
+        $(input).parent().removeClass('has-error');
     }else {
         $('#pwdSubmit').attr('disabled', true);
-        $(self).parent().addClass('has-error');
+        $(input).parent().addClass('has-error');
     }
 }
 

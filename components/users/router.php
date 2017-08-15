@@ -21,6 +21,30 @@ if($route[1] == 'usuarios'){
         case 'perfil':
             $controller = $basedir .'controllers/profile.php';
             break;
+
+        case 'getquestion':
+            $controller = $basedir .'controllers/getquestion.php';
+            break;
+
+        case 'setquestionresponse':
+            $controller = $basedir .'controllers/setquestionresponse.php';
+            break;
+
+        case 'getpassworddialog':
+            $controller = $basedir .'controllers/getpassworddialog.php';
+            break;
+
+        case 'setpassword':
+            $controller = $basedir .'controllers/setpassword.php';
+            break;
+
+        case 'updatepersonal':
+            $controller = $basedir .'controllers/updatepersonal.php';
+            break;
+
+        case 'updatenotes':
+            $controller = $basedir .'controllers/updatenotes.php';
+            break;
         // Abrir la ventana de agregar un pago
         /*case 'add':
             $controller = $basedir .'controllers/addpayment.php';
@@ -62,29 +86,24 @@ if($route[1] == 'admin' && $route[2] == 'usuarios'){
         case '':
             $controller = $basedir .'controllers/manage.php';
             break;
-        /*
-        case 'getcurrentmonth':
-            $controller = $basedir .'controllers/getcurrentmonth.php';
+        case 'getusers':
+            $controller = $basedir .'controllers/getusers.php';
+            break;
+        case 'getpendingusers':
+            $controller = $basedir .'controllers/getpendingusers.php';
+            break;
+        case 'aceptar':
+            $controller = $basedir .'controllers/activeuser.php';
+            break;
+        case 'eliminar':
+            $controller = $basedir .'controllers/deleteuser.php';
             break;
 
-        case 'getlastmonth':
-            $controller = $basedir .'controllers/getlastmonth.php';
+        case 'notas':
+            $controller = $basedir .'controllers/getnotes.php';
             break;
 
-        case 'getlastthreemonths':
-            $controller = $basedir .'controllers/getlastthreemonths.php';
-            break;
 
-        case 'approvedpayments':
-            $controller = $basedir .'controllers/approvedpayments.php';
-            break;
-        case 'refusedpayments':
-            $controller = $basedir .'controllers/refusedpayments.php';
-            break;
-        case 'pendingpayments':
-            $controller = $basedir .'controllers/pendingpayments.php';
-            break;
-            */
         default:
             die('sin ruta');
             break;

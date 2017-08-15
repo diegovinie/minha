@@ -37,7 +37,7 @@ function checkUser($user, $pwd, $remember){
             $msg = "Sesión iniciada";
 
             //Se establecen los parámetros de sesión
-            session_start();
+            if(!isset($_SESSION)) session_start();
             $_SESSION['user_id'] = $values['user_id'];
             $_SESSION['user'] = $user;
             $_SESSION['status'] = 'active';
@@ -94,16 +94,43 @@ function checkUser($user, $pwd, $remember){
 
 function getQuestion($email){
     global $db;
+
     $stmt = $db->query(
         "SELECT user_question FROM users
         WHERE user_user = '$email'"
     );
     $question = (string)$stmt->fetch(PDO::FETCH_NUM)[0];
+
     $status = $question? true : false;
     return json_encode(array(
         'status' => $status,
         'question' => $question)
     );
+}
+
+function setQuestionResponse($id, $question, $response){
+    global $db;
+    $status = false;
+    $response = md5($response);
+
+    $exe1 = $db->exec(
+        "UPDATE users
+        SET user_question = '$question', user_response = '$response'
+        WHERE user_id = $id"
+    );
+
+    if(!$exe1){
+        $msg = 'Error al guardar datos.';
+    }
+    else{
+        $status = true;
+        $msg = 'Datos guardados con éxito.';
+    }
+
+    return json_encode(array(
+        'status' => $status,
+        'msg' => $msg
+    ));
 }
 
 function checkResponse($question, $response, $email){
@@ -155,6 +182,49 @@ function setPassword($email, $response, $pwd){
         'msg' => $msg
     ));
 
+}
+
+function setPasswordFromOld($id, $old, $new){
+    global $db;
+    $status = false;
+    if($old != DEF_PWD) $old = md5($old);
+    $new = md5($new);
+
+    $stmt1 = $db->query(
+        "SELECT user_pwd FROM users
+        WHERE user_id = $id"
+    );
+
+    if(!$stmt1){
+        $msg = 'Error al consultar base de datos.';
+
+    }
+    else{
+        $pwd = $stmt1->fetch(PDO::FETCH_NUM)[0];
+
+        if($pwd != $old){
+            $msg = 'La clave actual no coincide.';
+        }
+        else{
+            $exe2 = $db->query(
+                "UPDATE users SET user_pwd = '$new'
+                WHERE user_id = $id"
+            );
+
+            if(!$exe2){
+                $msg = 'No se pudo guardar la nueva clave.';
+            }
+            else{
+                $msg = 'Cambio de clave exitoso.';
+                $status = true;
+            }
+        }
+    }
+
+    return json_encode(array(
+        'status' => $status,
+        'msg' => $msg
+    ));
 }
 
 function checkEmail($email){

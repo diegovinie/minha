@@ -1,0 +1,132 @@
+{# components/users/views/profile.html.twig #}
+
+{% extends 'views/base.html.twig' %}
+
+{% block body %}
+
+    {% for sheet in css %}
+        <link rel="stylesheet" href="{{ sheet }}">
+    {% endfor %}
+
+    {% include 'views/menu.html.twig' %}
+
+    {% block main %}
+    <div id='page-wrapper'>
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="page-header">Perfil</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <form class="" action="{{ form.action }}" method="{{ form.method }}">
+                    <input type="hidden" name="token" value="{{ form.token }}">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-8">
+                                    <label for="building">Edificio:</label>
+                                    <input type="text" id="building" name="building" class="form-control" value="{{ bui.name }}" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="apt">Apartamento:</label>
+                                    <input type="text" id="apt" name="apt" class="form-control" value="{{ bui.apt }}" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label for="condition">Condición:</label>
+                                </div>
+
+                                <div class="col-md-6" id="cond">
+
+                                    <input id="titular" type="radio" name="cond" value="" disabled {% if udata.cond == 1 %}checked{% endif %}>
+                                    <label for="tit">Titular</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="radio" name="cond" value="" id="familiar" disabled {% if udata.cond == 2 %}checked{% endif %} >
+                                    <label for="cond">Familiar
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <button type="button" name="button" class="btn btn-block btn-info" onclick="showFamily()">Ver Grupo Familiar</button>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="name">Nombres:</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ udata.name }}" readonly>
+                                <a onclick="edit(this);">Editar</a>
+                            </div>
+                            <div class="form-group">
+                                <label for="surname">Apellidos:</label>
+                                <input type="text" id="surname" name="surname" class="form-control" value="{{ udata.surname }}" readonly>
+                                <a onclick="edit(this);">Editar</a>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6" >
+                                    <label for="ci">Cédula de Identidad:</label>
+                                    <input type="text" id="ci" name="ci" class="form-control" value="{{ udata.ci }}" readonly>
+                                    <a onclick="edit(this);">Editar</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="nac">Fecha Nacimiento:</label>
+                                    <input type="date" min="1910-01-01" format="YYYY-MM-DD" name="nac" id="nac" class="form-control"  readonly>
+                                    <a onclick="edit(this);">Editar</a>
+                                </div>
+                                <div class="col-md-12">
+
+                                </div>
+                            </div>
+                            <div class="from-group">
+                                <div class="col-md-6">
+                                    <label for="cel">Número Celular:</label>
+                                    <input type="text" id="cel" name="cel" class="form-control" value="{{ udata.cel }}" readonly>
+                                    <a data-target="#cambioCel" data-toggle="modal">Editar</a>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="gen">Género:</label>
+                                    <input type="text" class="form-control" name="gender" id="gender" value="{{ udata.gender }}" readonly>
+                                    <a onclick="edit(this);">Editar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Datos de Acceso:
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="email">Correo Electrónico:</label>
+                                <input type="text" id="email" name="email" class="form-control" value="{{ user.email }}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <a data-target="#cambioPregunta" data-toggle="modal" onclick="getQuestionDialog()">Pregunta de Seguridad</a>
+
+                            </div>
+                            <div class="form-group">
+                                <a onclick="getPasswordDialog()">Cambio de Clave</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% include extra %}
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn btn-success btn-block" name="submit">Actualizar</button>
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="/index.php" class="btn btn-danger btn-block" name="submit">Regresar</a>
+                            </div>
+                        </div>
+                    </div>
+    {% endblock %}
+    {% for script in js %}
+        <script src="{{ script }}" charset="utf-8"></script>
+    {% endfor %}
+{% endblock %}

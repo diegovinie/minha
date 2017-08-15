@@ -5,7 +5,7 @@
  * Se llama desde el controlador frontal
  * Debe retornar un controlador o incluir un enrutador secundario
  */
-
+ 
 defined('_EXE') or die('Acceso restringido');
 
 // Directorio de componentes

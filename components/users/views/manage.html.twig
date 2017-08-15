@@ -18,7 +18,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Usuarios Registrados</h3>
                     </div>
-                    <div class="panel-body" id="usuarios_registrados">
+                    <div class="panel-body" id="getusers">
                         {% include loading %}
                     </div>
                     <div class="panel-footer col-md-12" style="text-align:center;">
@@ -38,7 +38,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Usuarios Pendiendes</h3>
                     </div>
-                    <div class="panel-body" id="usuarios_pendientes">
+                    <div class="panel-body" id="getpendingusers">
                         {% include loading %}
                     </div>
     				<div class="panel-footer button_box" align="center">
@@ -50,6 +50,13 @@
             </div>
     	</div>
     </div>
+    {% endblock %}
+
+    {% block javascripts %}
+        {% for script in js %}
+            <script src="{{ script }}" charset="utf-8"></script>
+        {% endfor %}
+
     {% endblock %}
 
 {% endblock %}

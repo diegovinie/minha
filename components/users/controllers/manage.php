@@ -20,10 +20,8 @@ $href = array(
 
 // javascript a incluir
 $js = array(
-    "payments"  => "/components/payments/js/payments.js",
+    "manage"  => "/components/users/js/manage.js",
     "functions" => "/js/functions.js",
-    "moment"    => "/vendor/moment/moment.min.js",
-    "dpicker"   => "/vendor/dpicker/dpicker.all.min.js"
 );
 
 $twig = new LoadTwigWithGlobals($_globals['view']);

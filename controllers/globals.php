@@ -9,9 +9,9 @@ $_globals = array(
         'menu'         => array(
             'name'          => NAME,
             'version'       => VERSION,
-            'session'       => $_SESSION['type'],
+            'session'       => isset($_SESSION['type'])? $_SESSION['type'] : false,
             'user'          => array(
-                'name'          => $_SESSION['name'],
+                'name'          => isset($_SESSION['name'])? $_SESSION['name'] : false,
             ),
             'href'          => array(
                 // Payments - Enlaces:

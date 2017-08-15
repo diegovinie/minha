@@ -7,7 +7,8 @@ function tablePager(id, callback){
     var cantidad = 10;
     var page = 1;
     var num = 0;
-    var t = $('#t_' + id)? $('#t_' + id) : $('#' + id);
+    var t = $('#'+id+' table');
+    //var t = $('#t_' + id)? $('#t_' + id) : $('#' + id);
     //var rows = $('#t_' + id).find('tbody').children();
     var rows = t.find('tbody').children();
     rows.each(function(x){
@@ -283,7 +284,7 @@ function pressEnterNext(list){
                     if(ele.type === "submit") $(ele).focus();
                 });
             }else{
-                $next = input.parent().parent().next().find(valid);
+                $next = input.parent().next().next().find(valid);
                 if($next.is(valid)){
                     $next.each(function(pos, ele){
                         if(ele.type === "submit") $(ele).focus();
@@ -324,7 +325,7 @@ function addEditRemoveButtons(tableid, edit, remove){
             }, 2000);
             $(tr).addClass('alert alert-danger')
         });
-        
+
         [edt, rem].forEach(function(ele, pos){
             var td = document.createElement('td');
             $(td).css('textAlign', 'center');
