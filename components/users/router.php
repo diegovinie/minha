@@ -45,30 +45,6 @@ if($route[1] == 'usuarios'){
         case 'updatenotes':
             $controller = $basedir .'controllers/updatenotes.php';
             break;
-        // Abrir la ventana de agregar un pago
-        /*case 'add':
-            $controller = $basedir .'controllers/addpayment.php';
-            break;
-
-        case 'getpayments':
-            $controller = $basedir .'controllers/getpayments.php';
-            break;
-
-        case 'getpendingpayments':
-            $controller = $basedir .'controllers/getpendingpayments.php';
-            break;
-
-        case 'getreturnedpayments':
-            $controller = $basedir .'controllers/getreturnedpayments.php';
-            break;
-
-        case 'sendpayment':
-            $controller = $basedir .'controllers/sendpayment.php';
-            break;
-
-        case 'edit':
-            $controller = $basedir .'controllers/editpayment.php';
-            break;*/
 
         // Ruta no identificada
         default:
@@ -93,7 +69,7 @@ if($route[1] == 'admin' && $route[2] == 'usuarios'){
             $controller = $basedir .'controllers/getpendingusers.php';
             break;
         case 'aceptar':
-            $controller = $basedir .'controllers/activeuser.php';
+            $controller = $basedir .'controllers/activateuser.php';
             break;
         case 'eliminar':
             $controller = $basedir .'controllers/deleteuser.php';

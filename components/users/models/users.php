@@ -74,18 +74,20 @@ function getPendingUsers($bui){
 }
 
 function setUserActive($id){
-
     global $db;
-    $exe = $db->exec(
-        "UPDATE users SET user_active = 1
-        WHERE user_id = $id"
-    );
+    $status = false;
 
-    if($exe){
+    $stmt = $db->prepare(
+        "UPDATE users SET user_active = 1
+        WHERE user_id = :id"
+    );
+    $stmt->bindValue('id', $id, PDO::PARAM_INT);
+    $res = $stmt->execute();
+
+    if($res){
         $status = true;
         $msg = 'Activado con éxito.';
     }else{
-        $status = false;
         $msg = 'Error al actualizar';
     }
 
@@ -98,23 +100,27 @@ function setUserActive($id){
 function deleteUser($id){
     global $db;
 
-    $exe1 = $db->exec(
+    $stmt1 = $db->prepare(
         "DELETE FROM userdata
-        WHERE udata_user_fk = $id"
+        WHERE udata_user_fk = :id"
     );
+    $stmt1->bindValue('id', $id, PDO::PARAM_INT);
+    $res1 = $stmt1->execute();
 
-    if(!$exe1){
+    if(!$res1){
         $status = false;
         $msg = 'Error al borrar metadatos';
     }
     else{
         // Borrar de la tabla users
-        $exe2 = $db->exec(
+        $stmt2 = $db->prepare(
             "DELETE FROM users
-            WHERE user_id = $id"
+            WHERE user_id = :id"
         );
+        $stmt2->bindValue('id', $id, PDO::PARAM_INT);
+        $res2 = $stmt2->execute();
 
-        if(!$exe2){
+        if(!$res2){
             $status = false;
             $msg = 'Error al borrar el usuario';
         }

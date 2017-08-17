@@ -55,6 +55,6 @@ function checkFormToken($token){
         return true;
     }
     else{
-        die('{"status": false, "msg": "El formulario fue alterado."}');
+        die('{"status": false, "msg": "Por favor recargue la página."}');
     }
 }

@@ -8,7 +8,7 @@ defined('_EXE') or die('Acceso restringido');
 $bui = (string)$_SESSION['bui'];
 
 include $basedir .'/models/managepayments.php';
-
+//sleep(2);
 //echo getCurrentMonth($bui); die;
 $res = json_decode(getLastThreeMonths($bui));
 

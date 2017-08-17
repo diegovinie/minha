@@ -14,7 +14,7 @@
                 <label for="">Respuesta:</label>
                 <input type="text" name="response" id="response" class="form-control">
             </div>
-            <div align="center" id="_response"></div>
+            {% include 'views/widgets/flash.html.twig' %}
             <div class="form-group" align="center">
                 <button class="btn btn-success" type="submit">Aplicar</button>
                 <button type="reset" class="btn btn-warning" name="button">Deshacer</button>

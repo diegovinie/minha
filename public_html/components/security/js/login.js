@@ -7,6 +7,7 @@ window.onload = function(){
 }
 
 function sendLogin(){
+    loadingBarOn();
     $.ajax({
         url: '/index.php/login/check',
         type: 'post',
@@ -15,11 +16,17 @@ function sendLogin(){
         error: function(err){
             console.log('Error en login: ', err);
         }
-    }).done(function(res){
+    })
+    .always(function(){
+        loadingBarOff();
+    })
+    .done(function(res){
         if(res.status == true){
             window.location = '/index.php';
         }
         if(res.status == false){
+            flashText('danger', res.msg);
+            /*
             $.get('/index.php/views/modals/alert.html', function(html){
                 $('body').append($.parseHTML(html));
                 var modal = $('#alert'),
@@ -27,9 +34,6 @@ function sendLogin(){
                     btn = $('#alert_btn');
                 modal.modal();
                 content.addClass('alert-danger');
-                /*modal.on('hidden.bs.modal', function(){
-                    window.location.reload();
-                });*/
                 content.html(res.msg);
                 btn.on('click', function(){
                     modal.modal('hide');
@@ -37,7 +41,7 @@ function sendLogin(){
             }, 'html')
             .fail(function(err){
                 console.log('Error en la ventana modal: ', err);
-            });
+            });*/
         }
     });
 }

@@ -9,10 +9,16 @@ $db = include ROOTDIR.'/models/db.php';
 
 function getBalance($napt){
     global $db;
-    $stmt = $db->query(
-        "SELECT bui_name, bui_apt, bui_balance FROM buildings
-        WHERE bui_id = $napt"
+    $status = false;
+
+    $stmt = $db->prepare(
+        "SELECT bui_name, bui_apt, bui_balance
+        FROM buildings
+        WHERE bui_id = :napt"
     );
+    $stmt->bindValue('napt', $napt, PDO::PARAM_INT);
+    $stmt->execute();
+
     if($stmt){
         $status = true;
         foreach($stmt->fetchAll() as $row){
@@ -21,22 +27,29 @@ function getBalance($napt){
             }
         }
     }else{
-        $status = false;
+        $data = 'Error al consultar la base de datos.';
     }
+
     $response = array('status' => $status, 'data' => $data);
     return json_encode($response);
 }
 
+/* Posiblemente sin uso, pendiente borrar
+
 function checkDefPwd($userid){
     global $db;
-    $stmt = $db->query(
+    $stmt = $db->prepare(
         "SELECT user_pwd FROM users
-        WHERE user_id = $userid"
+        WHERE user_id = :userid"
     );
-    $res = $stmt->fetch(PDO::FETCH_NUM)[0];
+    $stmt->bindValue('userid', $userid, PDO::PARAM_INT);
+    $stmt->execute();
 
-    $status = $res == 1? true : false;
+    $res = $stmt->rowCount();
+
+    $status = $res === 2? true : false;
 
     //return json_encode(array('status' => $status));
     return 'hola aqui';
 }
+*/

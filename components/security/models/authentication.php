@@ -10,18 +10,27 @@ $db = include ROOTDIR.'/models/db.php';
 
 function checkUser($user, $pwd, $remember){
     global $db;
+    $status = false;
+    $cookie = false;
+
     if($pwd != DEF_PWD) $pwd = md5($pwd);
-    $stmt = $db->query(
+    $stmt = $db->prepare(
         "SELECT user_id, user_user, user_pwd, user_type, user_active, udata_name, udata_surname, udata_number_fk, bui_name, bui_apt
         FROM users, userdata, buildings
-        WHERE user_user = '$user' AND
-            user_pwd = '$pwd' AND
+        WHERE user_user = :user AND
+            user_pwd = :pwd AND
             udata_user_fk = user_id AND
             udata_number_fk = bui_id"
     );
+
+    $stmt->execute(array(
+        'user' => $user,
+        'pwd'  => $pwd
+    ));
+
     // Si es igual a 1 puede entrar
     if($stmt->rowCount() != 1){
-        $status = false;
+
         $msg = "Clave inválida";
 
     }else{
@@ -29,8 +38,8 @@ function checkUser($user, $pwd, $remember){
 
         // Si es igual a "0" no está activado
         if($values['user_active'] == 0){
-            $status = false;
-            $msg = "Aún no está activo. Contacte al administrador $adminemail";
+
+            $msg = "Aún no está activo. Contacte al administrador: ".EMAIL;
 
         }else{
             $status = true;
@@ -59,8 +68,7 @@ function checkUser($user, $pwd, $remember){
                     //echo "ir a usuario";
                     break;
                 default:
-                    echo "ha ocurrido un error al definir el tipo de sesión";
-                    die;
+                    die("Ha ocurrido un error al definir el tipo de sesión.");
                     break;
             }
 
@@ -75,12 +83,9 @@ function checkUser($user, $pwd, $remember){
                     setcookie('remember', $token, time()+60*60*24, '/');
                     $cookie = $token;
                 }catch(PDOStatement $err){
-                    echo 'problemas al guardar cookie: ';
-                    echo $err;
+                    echo 'Problemas al guardar cookie: '.$err;
                     $cookie = false;
                 }
-            }else{
-                $cookie = false;
             }
         }
     }
@@ -94,14 +99,24 @@ function checkUser($user, $pwd, $remember){
 
 function getQuestion($email){
     global $db;
+    $status = false;
 
-    $stmt = $db->query(
+    $stmt = $db->prepare(
         "SELECT user_question FROM users
-        WHERE user_user = '$email'"
+        WHERE user_user = :email"
     );
-    $question = (string)$stmt->fetch(PDO::FETCH_NUM)[0];
+    $stmt->bindValue('email', $email);
+    $stmt->execute();
 
-    $status = $question? true : false;
+    $question = $stmt->fetchColumn();
+
+    if(!$question){
+        $msg = "No se recuperó pregunta.";
+    }
+    else{
+        $status = true;
+    }
+
     return json_encode(array(
         'status' => $status,
         'question' => $question)
@@ -113,13 +128,18 @@ function setQuestionResponse($id, $question, $response){
     $status = false;
     $response = md5($response);
 
-    $exe1 = $db->exec(
+    $stmt = $db->prepare(
         "UPDATE users
-        SET user_question = '$question', user_response = '$response'
-        WHERE user_id = $id"
+        SET user_question = :question, user_response = :response
+        WHERE user_id = :id"
     );
+    $stmt->execute(array(
+        'question' => $question,
+        'response' => $response,
+        'id'    => $id
+    ));
 
-    if(!$exe1){
+    if(!$stmt->rowCount()){
         $msg = 'Error al guardar datos.';
     }
     else{
@@ -135,19 +155,25 @@ function setQuestionResponse($id, $question, $response){
 
 function checkResponse($question, $response, $email){
     global $db;
-    $response = md5($response);
-    $stmt = $db->query(
-        "SELECT user_response FROM users
-        WHERE user_user = '$email'"
-    );
+    $status = false;
 
-    $origin = $stmt->fetch(PDO::FETCH_NUM)[0];
+    $response = md5($response);
+    $stmt = $db->prepare(
+        "SELECT user_response FROM users
+        WHERE user_user = :email
+        AND user_question = :question"
+    );
+    $stmt->execute(array(
+        'email'=> $email,
+        'question' => $question
+    ));
+
+    $origin = $stmt->fetchColumn();
 
     if($response == $origin){
         $status = true;
         $msg = "Correcto!";
     }else{
-        $status = false;
         $msg = "Los datos no coinciden";
     }
     return json_encode(array(
@@ -160,22 +186,32 @@ function setPassword($email, $response, $pwd){
     global $db;
     $pwd = md5($pwd);
     $response = md5($response);
-    $stmt = $db->query(
-        "UPDATE users SET user_pwd = '$pwd'
-        WHERE user_user = '$email' AND user_response = '$response'"
+
+    $stmt = $db->prepare(
+        "UPDATE users SET user_pwd = :pwd
+        WHERE user_user = :email AND user_response = :response"
     );
-    $stmt2 = $db->query(
+    $stmt->execute(array(
+        'pwd' => $pwd,
+        'email' => $email,
+        'response' => $response
+    ));
+
+    $stmt2 = $db->prepare(
         "SELECT user_pwd FROM users
-        WHERE user_user = '$email'"
+        WHERE user_user = :email"
     );
-    $verif = $stmt2->fetch(PDO::FETCH_NUM)[0];
+    $stmt2->bindValue('email', $email);
+    $stmt2->execute();
+
+    $verif = $stmt2->fetchColumn();
 
     if($pwd === $verif){
         $status = true;
         $msg = "Clave guardada con éxito";
     }else{
         $status = false;
-        $msg = $stmt;
+        $msg = "Error al guardar la clave.";
     }
     return json_encode(array(
         'status' => $status,
@@ -187,31 +223,36 @@ function setPassword($email, $response, $pwd){
 function setPasswordFromOld($id, $old, $new){
     global $db;
     $status = false;
+
     if($old != DEF_PWD) $old = md5($old);
     $new = md5($new);
 
-    $stmt1 = $db->query(
+    $stmt1 = $db->prepare(
         "SELECT user_pwd FROM users
-        WHERE user_id = $id"
+        WHERE user_id = :id"
     );
+    $stmt1->bindValue('id', $id, PDO::PARAM_INT);
+    $res1 = $stmt1->execute();
 
-    if(!$stmt1){
+    if(!$res1){
         $msg = 'Error al consultar base de datos.';
-
     }
     else{
-        $pwd = $stmt1->fetch(PDO::FETCH_NUM)[0];
+        $pwd = $stmt1->fetchColumn();
 
         if($pwd != $old){
             $msg = 'La clave actual no coincide.';
         }
         else{
-            $exe2 = $db->query(
-                "UPDATE users SET user_pwd = '$new'
-                WHERE user_id = $id"
+            $stmt2 = $db->prepare(
+                "UPDATE users SET user_pwd = :new
+                WHERE user_id = :id"
             );
+            $stmt2->bindValue('new', $new);
+            $stmt2->bindValue('id', $id, PDO::PARAM_INT);
+            $res2 = $stmt2->execute();
 
-            if(!$exe2){
+            if(!$res2){
                 $msg = 'No se pudo guardar la nueva clave.';
             }
             else{
@@ -229,60 +270,60 @@ function setPasswordFromOld($id, $old, $new){
 
 function checkEmail($email){
     global $db;
-    $stmt = $db->query(
-        "SELECT user_id FROM users WHERE user_user = '$email'"
+    $status = false;
+
+    $stmt = $db->prepare(
+        "SELECT user_id FROM users
+        WHERE user_user = :email"
     );
+    $stmt->bindValue('email', $email);
+    $res = $stmt->execute();
 
-    $status = $stmt->rowCount() == 1? true : false;
+    if(!$res){
+        $msg = "Error al consultar la base de datos";
+    }
+    else{
+        if($stmt->rowCount() != 1){
+            $msg = "El usuario no existe.";
+        }
+        else{
+            $status = true;
+        }
+    }
 
-    return json_encode(array('status' =>  $status, 'count' => $stmt->rowCount()));
+    return json_encode(array('status' =>  $status, 'msg' => $msg));
 }
 
 function checkOldPassword($id){
     global $db;
-    $stmt = $db->query(
+    $status = false;
+
+    $stmt = $db->prepare(
         "SELECT user_pwd FROM users
-        WHERE user_id = $id"
+        WHERE user_id = :id"
     );
-    if($stmt){
-        $pwd = $stmt->fetch(PDO::FETCH_NUM)[0];
-        $status = $pwd == DEF_PWD? true : false;
+    $stmt->bindValue('id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    if(!$stmt){
+        $msg = "No se pudo recuperar la clave.";
     }
-    return json_encode(['status' => $status, 'old' => $pwd]);
+    else{
+        $pwd = $stmt->fetchColumn();
+        if($pwd != DEF_PWD){
+            $msg = 'Es diferente.';
+        }
+        else{
+            $status = true;
+            $msg = array('old' => $pwd);
+        }
+    }
+
+    return json_encode(
+        ['status' => $status,
+         'msg' => $msg]);
 }
 
 function updatePassword($id, $old, $new){
-    global $db;
-
-    $stmt = $db->query(
-        "SELECT user_pwd FROM users
-        WHERE user_id = $id"
-    );
-
-    if($stmt){
-        if($old == $stmt->fetch(PDO::FETCH_NUM)[0]){
-
-            $new = md5($new);
-            $ex = $db->exec(
-                "UPDATE users SET user_pwd = '$new'
-                WHERE user_id = $id"
-            );
-
-            if($ex){
-                $status = true;
-                $msg = "Clave guardada con éxito.";
-            }else{
-                $status = false;
-                $msg = "No se pudo guardar la clave";
-            }
-        }else{
-            $status = false;
-            $msg = "La antigua clave no coincide.";
-        }
-    }else{
-        $status = false;
-        $msg = "Error interno.";
-    }
-
-    return json_encode(array('status' => $status, 'msg' => $msg));
+    setPasswordFromOld($id, $old, $new);
 }

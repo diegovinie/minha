@@ -22,15 +22,17 @@ window.onload = function(){
 function getQuestion(input){
     email = $(input).val();
     if(email != ''){
+        var question = $('#question');
+        question.val('');
         $.ajax({
             url: '/index.php/recovery/getquestion/?email=' + email,
             type: 'get',
             dataType: 'json',
             success: function(json){
                 if(json.status == true){
-                    $('#question').val(json.question);
+                    question.val(json.question);
                 }else{
-                    warningMsg(input, 'Usuario no encontrado');
+                    flashText('warning', 'Usuario no encontrado.');
                 }
             },
             error: function(err){
@@ -45,16 +47,17 @@ function checkResponse(input){
         question: $('#question').val(),
         response: $('#response').val(),
         email: $('#email').val()
-    }
+    };
+    loadingBarOn();
+
     $.ajax({
         url: '/index.php/recovery/checkresponse',
         data: param,
         type: 'post',
         dataType: 'json',
         success: function(data){
-            var response = $(input).parent().prev();
-            response.addClass('text-warning');
-            response.html(data.msg);
+            flashText('danger', data.msg);
+
             if(data.status == true){
                 $('#newPwd').modal()
                 $('#pwdSubmit').on('click', function(){
@@ -64,16 +67,15 @@ function checkResponse(input){
                 $('#pwd').focus();
                 var list = ['pwd', 'pwd_ret'];
                 pressEnterNext(list);
-            }else {
-                setTimeout(function(){
-                    window.location.reload();
-                }, 2000);
             }
         },
         error: function(err){
             console.log('checkResponse: ' + err.responseText + ', status: ' + err.status);
         }
     })
+    .always(function(){
+        loadingBarOff();
+    });
 
 }
 

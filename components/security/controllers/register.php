@@ -12,9 +12,16 @@ $href = array(
     "return"    => "/index.php/login"
 );
 
+include ROOTDIR.'/models/tokenator.php';
+$form = array(
+    "action" => '/index.php/register/create',
+    "method" => 'post',
+    "token"  => createFormToken()
+);
+
 // javascript a incluir
 $js = array(
-    "register"     => $basedir."js/register.js",
+    "register"     => "/components/security/js/register.js",
     "forms"     => "/js/forms.js",
     "functions" => "/js/functions.js"
 );
@@ -27,6 +34,7 @@ echo $twig->render(
     'components/security/views/register.html.twig',
     array(
         'titulo'    => $titulo,
+        'form'      => $form,
         'a'         => $href,
         'js'        => $js
     )

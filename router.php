@@ -5,7 +5,7 @@
  * Se llama desde el controlador frontal
  * Debe retornar un controlador o incluir un enrutador secundario
  */
- 
+
 defined('_EXE') or die('Acceso restringido');
 
 // Directorio de componentes
@@ -92,10 +92,14 @@ switch ($route[1]) {
             include COMDIR .'finances/router.php';
             break;
 
+        case 'usuarios':
+            include COMDIR .'users/router.php';
+            break;
+
         // No se encuentra ruta
         default:
             print_r($route);
-            die('sin ruta');
+            die('sin ruta desde el principal');
             break;
         break;
     }

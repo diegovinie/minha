@@ -18,11 +18,13 @@ function validateInput($val, $exp, $message){
         $msg = $message;
     }
     else{
-        $status = true;
+        return $val;
       }
 
-    return json_encode(array(
+    $response = json_encode(array(
         'status' => $status, 'msg' => $msg));
+
+    die($response);
 }
 
 function validateCi($ci){
@@ -74,4 +76,24 @@ function validateSurname($surname){
     $msg = 'Error al introducir apellidos.';
 
     return validateInput($surname, $exp, $msg);
+}
+
+function validatePassword($password){
+
+    $n1 = 6;
+    $exp1 = "/^.{".$n1.",}$/";
+    $msg1 = "La clave debe tener al menos $n1 caractéres.";
+    $res1 = validateInput($password, $exp1, $msg1);
+
+    $n2 = 2;
+    $exp2 = "/[0-9]{".$n2.",}/";
+    $msg2 = "La clave debe tener al menos $n2 números.";
+    $res2 = validateInput($password, $exp2, $msg2);
+
+    $n3 = 2;
+    $exp3 = "/[a-zA-Z]{".$n3.",}/";
+    $msg3 = "La clave debe tener al menos $n3 letras.";
+    $res3 = validateInput($password, $exp3, $msg3);
+
+    return $res3;
 }

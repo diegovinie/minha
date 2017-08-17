@@ -16,6 +16,8 @@ $old = (string)$_POST['pwd_old'];
 
 $new = (string)$_POST['pwd_new'];
 
+if($old == $new) die('{"status": false, "msg": "La clave nueva es igual a la actual"}');
+
 include ROOTDIR.'/components/security/models/authentication.php';
 
 echo setPasswordFromOld($id, $old, $new);

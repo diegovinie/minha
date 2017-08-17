@@ -9,7 +9,7 @@ define('ROOTDIR', dirname(__FILE__));
 $parameters = simplexml_load_file(ROOTDIR.'/parameters.xml');
 
 // Directorio de componentes
-define('COMDIR', ROOTDIR.'/'.$parameters->principal->components); 
+define('COMDIR', ROOTDIR.'/'.$parameters->principal->components);
 
 // Directorio de varios
 define('VARDIR', ROOTDIR.'/'.$parameters->principal->vardir);

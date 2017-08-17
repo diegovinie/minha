@@ -11,46 +11,42 @@ window.onload = function(){
             type: 'post',
             data: $('form').serialize(),
             dataType: 'json',
-            success: function(data){
-
+            error: function(err){
+                console.log('Error en create: ', err);
             }
-
         })
         .then(function(data){
-            // Pedir el modal
-            $.get('/index.php/views/modals/alert.html')
-            .done(function(html){
-                $('body').append(html);
-                var modal = $('#alert'),
-                    content = $('#alert_content'),
-                    btn = $('#alert_btn');
-                // Mensaje del modal
-                content.html(data.msg);
-                btn.on('click', function(){
-                    modal.modal('hide');
-                });
-                modal.on('hidden.bs.modal', function(){
-                    // Rediigir según la respuesta
-                    if(data.status == true){
+            if(data.status != true){
+                flashText('warning', data.msg);
+            }
+            else{
+                // Pedir el modal
+                $.get('/index.php/views/modals/alert.html')
+                .done(function(html){
+                    $('body').append(html);
+                    var modal = $('#alert'),
+                        content = $('#alert_content'),
+                        btn = $('#alert_btn');
+                    // Mensaje del modal
+                    content.html(data.msg);
+                    // Colores del modal
+                    content.addClass('alert-success');
+
+                    btn.on('click', function(){
+                        modal.modal('hide');
+                    });
+                    modal.on('hidden.bs.modal', function(){
                         window.location.href = '/index.php/login';
-                    }else{
-                        window.location.reload();
-                    }
+                    });
+
+                    modal.modal();
+                })
+                .catch(function(err){
+                    console.log('Problema con modal: ');
+                    console.log(err);
                 });
-                // Colores del modal
-                content.addClass(data.status == true?
-                    'alert-success' : 'alert-danger');
-                modal.modal();
-            })
-            .catch(function(err){
-                console.log('Problema con modal: ');
-                console.log(err);
-            });
-        })
-        .catch(function(err){
-            console.log('Error al enviar: ');
-            console.log(err);
-        })
+            }
+        });
     });
 
     // Lista de edificios en el select

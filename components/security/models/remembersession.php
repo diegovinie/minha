@@ -10,22 +10,36 @@ $db = include ROOTDIR.'/models/db.php';
 
 function checkRemember($remember){
     global $db;
-    $stmt = $db->query(
+    $status = false;
+
+    $stmt = $db->prepare(
         "SELECT coo_info FROM cookies
-        WHERE coo_val = '$remember'"
+        WHERE coo_val = :remember"
     );
-    $rString = $stmt->fetch(PDO::FETCH_NUM)[0];
-    if(isset($rString)){
+    $stmt->bindValue('remember', $remember);
+    $stmt->execute();
+
+    $rString = $stmt->fetchColumn();
+    if(!$rString){
+        $msg = "No hay sesión guardada.";
+    }
+    else{
         if(!isset($_SESSION)) session_start();
+
         $obj = json_decode($rString);
+
         foreach ($obj as $key => $value) {
             $_SESSION[$key] = $value;
         }
 
-        return '{"status": true, "msg": "Sesión activada"}';
+        $status = true;
+        $msg = "Sesión recuperada.";
     }
 
-    return '{"status": false, "msg": "No se pudo recuperar la sesión"}';
+    return json_encode(array(
+        'status' => $status,
+        'msg' => $msg
+    ));
 }
 
 function delRemember($remember){

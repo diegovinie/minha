@@ -13,12 +13,15 @@ function getFromBuildings($id){
     global $db;
     $status = false;
 
-    $stmt1 = $db->query(
+    $stmt1 = $db->prepare(
         "SELECT bui_id AS 'id', bui_name AS 'name', bui_apt AS 'apt'
-        FROM buildings WHERE bui_id = $id"
+        FROM buildings
+        WHERE bui_id = :id"
     );
+    $stmt1->bindValue('id', $id, PDO::PARAM_INT);
+    $res = $stmt1->execute();
 
-    if(!$stmt1){
+    if(!$res){
         $msg = 'Error al consultar datos';
     }
     else{
@@ -37,14 +40,17 @@ function getFromUserdata($userid){
     global $db;
     $status = false;
 
-    $stmt1 = $db->query(
+    $stmt1 = $db->prepare(
         "SELECT udata_name AS 'name', udata_surname AS 'surname',
         udata_ci AS 'ci', udata_cel AS 'cel', udata_cond AS 'cond',
-        udata_gender AS 'gender' FROM userdata
-        WHERE udata_user_fk = $userid"
+        udata_gender AS 'gender'
+        FROM userdata
+        WHERE udata_user_fk = :userid"
     );
+    $stmt1->bindValue('userid', $userid, PDO::PARAM_INT);
+    $res1 = $stmt1->execute();
 
-    if(!$stmt1){
+    if(!$res1){
         $msg = 'Error al consultar datos';
     }
     else{
@@ -115,16 +121,25 @@ function updateUserdata($id,
     global $db;
     $status = false;
 
-
-    $exe1 = $db->exec(
+    $stmt1 = $db->prepare(
         "UPDATE userdata
-        SET udata_name = '$name', udata_surname ='$surname',
-        udata_ci = '$ci', udata_cel = '$cel',
-        udata_gender = '$gender'
-        WHERE udata_user_fk = $id"
+        SET udata_name = :name,
+        udata_surname = :surname,
+        udata_ci = :ci,
+        udata_cel = :cel,
+        udata_gender = :gender
+        WHERE udata_user_fk = :id"
     );
+    $res1 = $stmt1->execute(array(
+        'name'      => $name,
+        'surname'   => $surname,
+        'ci'        => $ci,
+        'cel'       => $cel,
+        'gender'    => $gender,
+        'id'        => $id
+    ));
 
-    if(!$exe1){
+    if(!$res1){
         //$msg = $db->errorInfo();
         $msg = 'Error al consultar base de datos.';
     }
@@ -144,13 +159,17 @@ function updateNotes($buiid, $notes){
     global $db;
     $status = false;
 
-    $exe1 = $db->exec(
+    $stmt1 = $db->prepare(
         "UPDATE buildings
-        SET bui_notes = '$notes'
-        WHERE bui_id = $buiid"
+        SET bui_notes = :notes
+        WHERE bui_id = :buiid"
     );
+    $res1 = $stmt1->execute(array(
+        'notes' => $notes,
+        'buiid' => $buiid
+    ));
 
-    if(!$exe1){
+    if(!$res1){
         //$msg = $db->errorInfo();
         $msg = 'Error al consultar base de datos.';
     }

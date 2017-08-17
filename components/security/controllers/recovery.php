@@ -13,7 +13,7 @@ $href = array(
 
 // javascript a incluir
 $js = array(
-    "recovery"     => $basedir."js/recovery.js",
+    "recovery"     => "/components/security/js/recovery.js",
     "forms"     => "/js/forms.js",
     "functions" => "/js/functions.js"
 );

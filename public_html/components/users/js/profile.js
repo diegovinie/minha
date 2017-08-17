@@ -181,26 +181,15 @@ function setPassword(form){
         }
     })
     .then(function(data){
-        var response = document.createElement('div');
-        $('#_response').append(response);
 
         if(data.status == true){
-            console.log(data.msg);
-            $(response).addClass('alert alert-success');
-
             setTimeout(function(){
-                $(response).html('');
-                $('.modal').modal('hide');
-            }, 2000);
-        }else{
-            $(response).addClass('alert alert-danger');
-            setTimeout(function(){
-                $(response).remove();
+                $('.modal').modal('hide').remove();
             }, 2000);
         }
 
-        $(response).html(data.msg);
-
+        var clss = data.status? 'success' : 'danger';
+        flashText(clss, data.msg);
     });
 }
 
@@ -300,25 +289,18 @@ function setQuestionResponse(form){
     })
     .then(function(data){
         var response = document.createElement('div');
-        $('#_response').append(response);
 
         if(data.status == true){
             console.log(data.msg);
-            $(response).addClass('alert alert-success');
+            flashText('success', data.msg);
 
             setTimeout(function(){
-                $(response).html('');
                 $('.modal').modal('hide');
             }, 2000);
         }else{
-            $(response).addClass('alert alert-danger');
-            setTimeout(function(){
-                $(response).remove();
-            }, 2000);
+            flashText('danger', data.msg);
         }
-
-        $(response).html(data.msg);
-    })
+    });
 }
 
 function showFamily(){

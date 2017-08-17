@@ -51,7 +51,7 @@ function show_submit(self){
 
 //Passwords
 function check_pwdretry(input){
-    var pass1 = document.getElementById("pwd").value,
+    var pass1 = document.getElementById("pwd_new").value,
         pass2 = input.value;
     pass1 != pass2 ?
         errorLine(input, 'las claves no coinciden') : false;
@@ -82,7 +82,7 @@ function checkPwdChange(input){
 
 function check_pwd(input){
     if(input.value.length < 6){
-        warningMsg(input, 'demasiado corto');
+        flashText('warning', 'Clave demasiado corta.');
         $('#pwdSubmit').attr('disabled', true);
     }
 }
@@ -100,15 +100,43 @@ function warningMsg(self, msg, callback){
     }, 2000);
 }
 
+function flashText(clss, msg){
+    var flash = document.createElement('div');
+    flash.innerHTML = msg;
+    $(flash).addClass('text-'+clss);
+
+    var box = document.getElementById('_flash');
+
+    if(box){
+        $(box).html('');
+        $(box).append(flash);
+
+        //input.nextElementSibling.appendChild(e);
+        setTimeout(function(){
+            flash.remove();
+            //input.value = '';
+        }, 4000);
+        return true;
+
+    }else{
+        console.log('No hay caja flash.');
+        return false;
+    }
+}
+
+// envoltura para flashLine
+// Input debe ser eliminado
 function errorLine(input, msg){
-    var e = document.createElement('div');
-    e.innerHTML = msg;
-    $(e).css('color', 'red');
-    input.nextElementSibling.appendChild(e);
-    setTimeout(function(){
-        e.remove();
-        input.value = '';
-    }, 1500);
+    flashText('info', msg);
+}
+
+function loadingBarOn(){
+    $('#_flash').html('');
+    $('#_loadingbar').css('display', 'block');
+}
+
+function loadingBarOff(){
+    $('#_loadingbar').css('display', 'none');
 }
 
 var formatNumber = {
@@ -244,8 +272,10 @@ function check_names(input){
 }
 
 function check_user(input, cond){
-    var msg = cond? 'usuario no existe' : 'usuario ya registrado';
+    var msg = cond? 'El usuario no existe.' : 'Usuario ya registrado.';
     var email = input.value = input.value.toLowerCase();
+
+    if(input.value == '') return true;
 
     $.ajax({
         url: '/index.php/login/checkemail/?email=' + email,
@@ -255,10 +285,13 @@ function check_user(input, cond){
             console.log('Error chequeando el email :', err);
         }
     })
-    .then(function(json){
-        console.log(json);
-        if(json.status !== cond) errorLine(input, msg);
+    .always(function(){
+        loadingBarOff();
     })
+    .then(function(json){
+        if(json.status !== cond) flashText('warning', msg);
+    })
+
         /*
         h = 'core/query.php?fun=checkmail&number=';
     getAjax(h, user, function(x, t){

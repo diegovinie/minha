@@ -296,7 +296,12 @@ function pressEnterNext(list){
                             if(ele.type === "submit") $$(ele).focus();
                         });
                     }else{
-                        throw "Problema con el cambio de elemento con enter";
+                        next = input.parent().parent().next().next();
+                        if($(next)){
+                            $(next).focus();
+                        }else {
+                            throw "Problema con el cambio de elemento con enter";
+                        }
                     }
                 }
             }

@@ -1,5 +1,5 @@
 <?php
-/*
+/* components/security/models/createuser.php
  *
  */
 defined('_EXE') or die('Acceso restringido');
@@ -7,62 +7,105 @@ defined('_EXE') or die('Acceso restringido');
 $db = include ROOTDIR.'/models/db.php';
 
 // Repetida en users/models/users.php
-function createUser($array){
-    global $db;
-    explode($array);
+function createUser(    $name,
+                        $surname,
+                        $email,
+                        $edf,
+                        $apt,
+                        $cond,
+                        $type,
+                        $active,
+                        $pwd){
 
-    $active = PRUEBA == true? 1 : 0;
-    $type = PRUEBA == true? 1 : 2;
+    global $db;
+    $status = false;
+
+    $active = isset($active)? $active : PRUEBA == true? 1 : 0;
+    $type = isset($type)? $type : PRUEBA == true? 1 : 2;
 
     // Verifica que no exista el usuario
-    $stmt1 = $db->query(
+    $stmt1 = $db->prepare(
         "SELECT user_id FROM users
-        WHERE user_user = '$email'"
+        WHERE user_user = :email"
     );
+    $stmt1->bindValue('email', $email);
+    $stmt1->execute();
 
-    if(!$stmt1->rowCount() === 0){
-        $status = false;
+    if($stmt1->rowCount() != 0){
         $msg = 'El usuario ya está registrado';
     }
     else{
         //Registra en users usuario y clave como inactivo
         $pwd = md5($pwd);
-        $ex1 = $db->exec(
+        $stmt2 = $db->prepare(
             "INSERT INTO users
-            VALUES (NULL, '$email', '$pwd', '', '', $type, $active,
-            'register:$email', NULL)"
+            VALUES (
+                NULL,
+                :email,
+                :pwd,
+                '',
+                '',
+                :type,
+                :active,
+                'register: auto',
+                NULL)"
         );
+        $res2 = $stmt2->execute(array(
+            'email' => $email,
+            'pwd' => $pwd,
+            'type' => $type,
+            'active' => $active
+        ));
 
-        if(!$ex1){
-            $status = false;
+        if(!$res2){
             $msg = 'Error al insertar usuario.';
         }
         else{
             // Solicitando claves foráneas
-            $stmt2 = $db->query(
+            $stmt3 = $db->prepare(
                 "SELECT bui_id, user_id FROM users, buildings
-                WHERE user_user = '$email' AND bui_name = '$edf'
-                AND bui_apt = '$apt'"
+                WHERE user_user = :email
+                AND bui_name = :edf
+                AND bui_apt = :apt"
             );
+            $stmt3->execute(array(
+                'email' => $email,
+                'edf'   => $edf,
+                'apt'   => $apt
+            ));
 
-            if(!$stmt2){
-                $status = false;
-                $msg = 'Error al solicitar claves.';
+            if($stmt3->rowCount() != 1){
+                $msg = 'Error duante la creación.';
             }
             else{
                 // Preparar array de fk e insertar en userdata
-                foreach ($stmt2->fetchAll(PDO::FETCH_NUM) as $key => $value) {
+                foreach ($stmt3->fetch(PDO::FETCH_NUM) as $key => $value) {
                     $fk[$key] = $value;
                 }
 
-                $ex3 = $db->exec(
+                $stmt4 = $db->prepare(
                     "INSERT INTO userdata
-                    VALUES (NULL, '$name', '$surname', '$ci',
-                    NULL, $cond, 'M', $fk[0], $fk[1])"
+                    VALUES (
+                        NULL,
+                        :name,
+                        :surname,
+                        :ci,
+                        NULL,
+                        :cond,
+                        'M',
+                        :buiid,
+                        :userid)"
                 );
+                $res4 = $stmt4->execute(array(
+                    'name'  => $name,
+                    'surname' => $surname,
+                    'ci'    => isset($ci)? $ci : '',
+                    'cond'  => $cond,
+                    'buiid' => $fk[0],
+                    'userid' => $fk[1]
+                ));
 
-                if(!$ex3){
-                    $status = false;
+                if(!$res4){
                     $msg = 'Error al guardar metadatos.';
                 }
                 else{

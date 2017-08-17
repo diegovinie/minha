@@ -8,6 +8,7 @@ window.onload = function(){
         }
     })
     .then(function(json){
+        console.log(json);
         if(json.status == true){
             $.ajax({
                 url: '/index.php/main/notices',
@@ -36,7 +37,7 @@ window.onload = function(){
                     setTimeout(function(){
                         $('#chpwd').modal();
                         $('#chpwd form input').val('');
-                        $('#pwd_old').val(json.old).attr('readonly', 'true');
+                        $('#pwd_old').val(json.msg.old).attr('readonly', 'true');
                         $('#chpwd form').on('submit', function(ev){
                             ev.preventDefault();
                         });
