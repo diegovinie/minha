@@ -8,6 +8,8 @@ defined('_EXE') or die('Acceso restringido');
 include ROOTDIR.'/models/validations.php';
 include ROOTDIR.'/models/tokenator.php';
 
+include ROOTDIR.'/tests/getpost.php'; die;
+
 checkFormToken($_POST['token']);
 
 $name = (string)validateName($_POST['name']);

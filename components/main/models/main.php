@@ -6,6 +6,7 @@
 defined('_EXE') or die('Acceso restringido');
 
 $db = include ROOTDIR.'/models/db.php';
+include ROOTDIR.'/models/modelresponse.php';
 
 function getBalance($napt){
     global $db;

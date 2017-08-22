@@ -10,10 +10,7 @@ window.onload = function(){
     );
 
     $(items).each(function(p, item){
-        setInterval(function(e){
-            console.log(e);
-            getFromPayments(item);
-        }, 2000);
+        getFromPayments(item);
     });
 /*
     var host = "core/async_payments.php?fun=aQuery&arg=";

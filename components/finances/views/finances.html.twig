@@ -23,15 +23,15 @@
                             <tbody>
                                 <tr>
                                     <th>Saldo Corriente:</th>
-                                    <td id="corriente" data-type='monto' data-value=10></td>
+                                    <td id="totalaccounts" align="right" data-type='monto' data-value="{{ data.accounts.msg }}">{{ data.accounts.msg|number_format }}</td>
                                 </tr>
                                 <tr>
                                     <th>Total Fondos:</th>
-                                    <td id="total_fondos" data-type='monto'></td>
+                                    <td id="totalfunds" align="right" data-type='monto' data-value="{{ data.funds.msg }}">{{ data.funds.msg|number_format }}</td>
                                 </tr>
                                 <tr>
                                     <th>Total:</th>
-                                    <th id="disponibilidad" data-type='monto'></th>
+                                    <th id="disponibility" align="right" data-type='monto'></th>
                                 </tr>
                             </tbody>
                         </table>
@@ -41,8 +41,8 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Balance por apartamento</h3>
                     </div>
-                    <div class="panel-body" id="balance_apartamentos">
-                        {% include loading %}
+                    <div class="panel-body" id="aptbalances">
+                        {{ include(template_from_string(apts)) }}
                     </div> <!--/panel-body-->
                 </div> <!--/panel-->
             </div> <!-- /col-lg-6-->
@@ -51,8 +51,8 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Cuentas</h3>
                     </div>
-                    <div class="panel-body" id="cuentas">
-                        {% include loading %}
+                    <div class="panel-body" id="accounts">
+                        {{ include(template_from_string(accounts)) }}
                     </div>
                     <div class="panel-footer col-lg-12" style="text-align:right;">
                         <button type="button" name="agregar_proveedor" class="btn btn-primary" disabled>Nueva Cuenta</button>
@@ -62,8 +62,8 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Fondos Especiales</h3>
                     </div>
-                    <div class="panel-body" id="fondos">
-                        {% include loading %}
+                    <div class="panel-body" id="funds">
+                        {{ include(template_from_string(funds)) }}
                     </div>
                     <div class="panel-footer col-lg-12" style="text-align:right;">
                         <button type="button" name="agregar_proveedor" class="btn btn-primary" disabled>Nuevo Fondo</button>
@@ -84,5 +84,7 @@
         </div> <!-- /row-->
     </div> <!--/page-wrapper-->
     {% endblock %}
-
+    {% for script in js %}
+        <script src="{{ script }}" charset="utf-8"></script>
+    {% endfor %}
 {% endblock %}

@@ -63,7 +63,7 @@ if($route[1] == 'admin' && $route[2] == 'balance'){
 
     switch ($route[3]) {
         case '':
-            $controller = $basedir .'controllers/balance.php';
+            $controller = $basedir .'controllers/finances.php';
             break;
         /*
         case 'getcurrentmonth':

@@ -5,6 +5,7 @@
 defined('_EXE') or die('Acceso restringido');
 
 $db = include ROOTDIR.'/models/db.php';
+include ROOTDIR.'/models/modelresponse.php';
 
 // Repetida en users/models/users.php
 function createUser(    $name,
@@ -117,8 +118,5 @@ function createUser(    $name,
         }
     }
 
-    return json_encode(array(
-        'status' => $status,
-        'msg'   => $msg
-    ));
+    return jsonResponse($status, $msg);
 }

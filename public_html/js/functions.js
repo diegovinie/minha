@@ -148,10 +148,11 @@ function dataParser(tag, callback){
     var bills = ['Cargado'];
     money.forEach(function(x){
         var needle = new RegExp(x, 'i');
-        if (needle.test(tag.dataset.type)){
+        if (needle.test(tag.dataset.type) && tag.dataset.value){
             tag.innerHTML = parseFloat(tag.dataset.value)
                 .toLocaleString(undefined, { minimumFractionDigits: 2 });
             tag.style.textAlign = 'right';
+
         }
     });
     date.forEach(function(x){

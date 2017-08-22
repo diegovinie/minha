@@ -7,6 +7,7 @@
 defined('_EXE') or die('Acceso restringido');
 
 $db = include ROOTDIR.'/models/db.php';
+include ROOTDIR.'/models/modelresponse.php';
 
 function checkRemember($remember){
     global $db;
@@ -36,10 +37,7 @@ function checkRemember($remember){
         $msg = "Sesión recuperada.";
     }
 
-    return json_encode(array(
-        'status' => $status,
-        'msg' => $msg
-    ));
+    return jsonResponse($status, $msg);
 }
 
 function delRemember($remember){
@@ -50,5 +48,5 @@ function delRemember($remember){
     );
     $status = $e? true : false;
 
-    return json_encode(array('status' => $status));
+    return jsonResponse($status, '');
 }

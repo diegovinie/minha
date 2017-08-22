@@ -8,6 +8,7 @@
 defined('_EXE') or die('Acceso restringido');
 
 $db = include ROOTDIR.'/models/db.php';
+include ROOTDIR.'/models/modelresponse.php';
 
 function getFromBuildings($id){
     global $db;
@@ -29,11 +30,7 @@ function getFromBuildings($id){
         $msg = $stmt1->fetch(PDO::FETCH_ASSOC);
     }
 
-    return json_encode(array(
-        'status' => $status,
-        'msg' => $msg
-    ));
-
+    return jsonResponse($status, $msg);
 }
 
 function getFromUserdata($userid){
@@ -58,11 +55,7 @@ function getFromUserdata($userid){
         $msg = $stmt1->fetch(PDO::FETCH_ASSOC);
     }
 
-    return json_encode(array(
-        'status' => $status,
-        'msg' => $msg
-    ));
-
+    return jsonResponse($status, $msg);
 }
 
 function getFromUsers($id){
@@ -82,10 +75,7 @@ function getFromUsers($id){
         $msg = $stmt1->fetch(PDO::FETCH_ASSOC);
     }
 
-    return json_encode(array(
-        'status' => $status,
-        'msg' => $msg
-    ));
+    return jsonResponse($status, $msg);
 }
 
 function getNotesFromBuildings($id){
@@ -105,10 +95,7 @@ function getNotesFromBuildings($id){
         $msg = json_decode($stmt1->fetch(PDO::FETCH_NUM)[0]);
     }
 
-    return json_encode(array(
-        'status' => $status,
-        'msg' => $msg
-    ));
+    return jsonResponse($status, $msg);
 }
 
 function updateUserdata($id,
@@ -148,11 +135,7 @@ function updateUserdata($id,
         $msg = 'Cambios guardados con éxito.';
     }
 
-    return json_encode(array(
-        'status' => $status,
-        'msg' => $msg
-    ));
-
+    return jsonResponse($status, $msg);
 }
 
 function updateNotes($buiid, $notes){
@@ -178,8 +161,5 @@ function updateNotes($buiid, $notes){
         $msg = 'Cambios guardados con éxito.';
     }
 
-    return json_encode(array(
-        'status' => $status,
-        'msg' => $msg
-    ));
+    return jsonResponse($status, $msg);
 }

@@ -7,6 +7,7 @@
 defined('_EXE') or die('Acceso restringido');
 
 $db = include ROOTDIR.'/models/db.php';
+include ROOTDIR.'/models/modelresponse.php';
 
 function checkUser($user, $pwd, $remember){
     global $db;
@@ -147,10 +148,7 @@ function setQuestionResponse($id, $question, $response){
         $msg = 'Datos guardados con éxito.';
     }
 
-    return json_encode(array(
-        'status' => $status,
-        'msg' => $msg
-    ));
+    return jsonResponse($status, $msg);
 }
 
 function checkResponse($question, $response, $email){
@@ -176,10 +174,8 @@ function checkResponse($question, $response, $email){
     }else{
         $msg = "Los datos no coinciden";
     }
-    return json_encode(array(
-        'status' => $status,
-        'msg' => $msg
-    ));
+
+    return jsonResponse($status, $msg);
 }
 
 function setPassword($email, $response, $pwd){
@@ -213,11 +209,8 @@ function setPassword($email, $response, $pwd){
         $status = false;
         $msg = "Error al guardar la clave.";
     }
-    return json_encode(array(
-        'status' => $status,
-        'msg' => $msg
-    ));
 
+    return jsonResponse($status, $msg);
 }
 
 function setPasswordFromOld($id, $old, $new){
@@ -262,10 +255,7 @@ function setPasswordFromOld($id, $old, $new){
         }
     }
 
-    return json_encode(array(
-        'status' => $status,
-        'msg' => $msg
-    ));
+    return jsonResponse($status, $msg);
 }
 
 function checkEmail($email){
@@ -291,7 +281,7 @@ function checkEmail($email){
         }
     }
 
-    return json_encode(array('status' =>  $status, 'msg' => $msg));
+    return jsonResponse($status, $msg);
 }
 
 function checkOldPassword($id){
@@ -319,9 +309,7 @@ function checkOldPassword($id){
         }
     }
 
-    return json_encode(
-        ['status' => $status,
-         'msg' => $msg]);
+    return jsonResponse($status, $msg);
 }
 
 function updatePassword($id, $old, $new){

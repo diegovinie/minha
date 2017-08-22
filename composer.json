@@ -5,7 +5,8 @@
         "coldtrick/imagick": "~1.0",
         "mpdf/mpdf": "~6.1",
         "twig/twig": "^1.0||^2.0",
-        "BlackrockDigital/startbootstrap-sb-admin-2": "^3.0"
+        "BlackrockDigital/startbootstrap-sb-admin-2": "^3.0",
+        "guzzlehttp/guzzle": "~6.0"
     },
     "repositories": [
         {

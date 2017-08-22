@@ -22,5 +22,22 @@ function setTheadTbodyFromPDO(PDOStatement $objStmt){
     }else{
         return false;
     }
+}
 
+function setTheadTbodyTfootFromPDO( PDOStatement $theadTbodyPDO,
+                                    PDOStatement $tfootPDO){
+
+    $table = setTheadTbodyFromPDO($theadTbodyPDO);
+
+    foreach ($tfootPDO->fetch(PDO::FETCH_ASSOC) as $key => $value) {
+        $tfoot[] = $value;
+    }
+
+    if(!isset($tfoot)){
+        return false;
+    }
+    else{
+        $table['tfoot'] = $tfoot;
+        return $table;
+    }
 }

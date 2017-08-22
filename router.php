@@ -11,6 +11,7 @@ defined('_EXE') or die('Acceso restringido');
 // Directorio de componentes
 $comdir = COMDIR;
 
+//include ROOTDIR.'/tests/getsession.php';
 
 switch ($route[1]) {
 

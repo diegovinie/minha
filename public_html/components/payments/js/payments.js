@@ -17,6 +17,10 @@ window.onload = function(){
             }else{
                 $('#'+id).html(html);
                 tablePager(id, function(){
+                    $('#'+id).find('tbody td').each(function(pos, ele){
+                        dataParser(ele);
+                    });
+                    
                     if(id === 'getreturnedpayments'){
                         addEditRemoveButtons(id, editPayment, removePayment);
                     }else{

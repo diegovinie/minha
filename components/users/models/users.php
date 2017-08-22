@@ -9,6 +9,7 @@ defined('_EXE') or die('Acceso restringido');
 
 $db = include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/tables.php';
+include ROOTDIR.'/models/modelresponse.php';
 
 
 function getUsers($bui){
@@ -91,10 +92,7 @@ function setUserActive($id){
         $msg = 'Error al actualizar';
     }
 
-    return json_encode(array(
-        'status' => $status,
-        'msg' => $msg
-    ));
+    return jsonResponse($status, $msg);
 }
 
 function deleteUser($id){
@@ -131,10 +129,7 @@ function deleteUser($id){
         }
     }
 
-    return json_encode(array(
-        'status' => $status,
-        'msg' => $msg
-    ));
+    return jsonResponse($status, $msg);
 }
 
 // Repetida de security/models/createuser.php
@@ -205,8 +200,5 @@ function createUser($array){
         }
     }
 
-    return json_encode(array(
-        'status' => $status,
-        'msg'   => $msg
-    ));
+    return jsonResponse($status, $msg);
 }

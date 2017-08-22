@@ -9,6 +9,7 @@ defined('_EXE') or die('Acceso restringido');
 
 $db = include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/tables.php';
+include ROOTDIR.'/models/modelresponse.php';
 
 function getCurrentMonth($bui){
     global $db;
@@ -31,7 +32,8 @@ function getCurrentMonth($bui){
         $status = false;
         $data = 'No se encontraros registros';
     }
-    return json_encode(array('status' => $status, 'table' => $data));
+
+    return jsonTableResponse($status, $data);
 }
 
 function getLastMonth($bui){
@@ -54,7 +56,8 @@ function getLastMonth($bui){
         $status = false;
         $data = 'No se encontraros registros';
     }
-    return json_encode(array('status' => $status, 'table' => $data));
+
+    return jsonTableResponse($status, $data);
 }
 
 function getLastThreeMonths($bui){
@@ -76,7 +79,8 @@ function getLastThreeMonths($bui){
         $status = false;
         $data = 'No se encontraros registros';
     }
-    return json_encode(array('status' => $status, 'table' => $data));
+
+    return jsonTableResponse($status, $data);
 }
 
 function approvedPayments($bui){
@@ -104,7 +108,8 @@ function approvedPayments($bui){
         $status = false;
         $data = 'No se encontraros registros';
     }
-    return json_encode(array('status' => $status, 'table' => $data));
+
+    return jsonTableResponse($status, $data);
 }
 
 function refusedPayments($bui){
@@ -132,7 +137,8 @@ function refusedPayments($bui){
         $status = false;
         $data = 'No se encontraros registros';
     }
-    return json_encode(array('status' => $status, 'table' => $data));
+
+    return jsonTableResponse($status, $data);
 }
 
 function pendingPayments($bui){
@@ -160,5 +166,6 @@ function pendingPayments($bui){
         $status = false;
         $data = 'No se encontraros registros';
     }
-    return json_encode(array('status' => $status, 'table' => $data));
+
+    return jsonTableResponse($status, $data);
 }
