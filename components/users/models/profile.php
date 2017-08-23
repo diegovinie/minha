@@ -10,7 +10,7 @@ defined('_EXE') or die('Acceso restringido');
 $db = include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/modelresponse.php';
 
-function getFromBuildings($id){
+function getFromBuildings(/*int*/ $id){
     global $db;
     $status = false;
 
@@ -33,7 +33,7 @@ function getFromBuildings($id){
     return jsonResponse($status, $msg);
 }
 
-function getFromUserdata($userid){
+function getFromUserdata(/*int*/ $userid){
     global $db;
     $status = false;
 
@@ -58,7 +58,7 @@ function getFromUserdata($userid){
     return jsonResponse($status, $msg);
 }
 
-function getFromUsers($id){
+function getFromUsers(/*int*/ $id){
     global $db;
     $status = false;
 
@@ -78,7 +78,7 @@ function getFromUsers($id){
     return jsonResponse($status, $msg);
 }
 
-function getNotesFromBuildings($id){
+function getNotesFromBuildings(/*int*/ $id){
     global $db;
     $status = false;
 
@@ -98,12 +98,12 @@ function getNotesFromBuildings($id){
     return jsonResponse($status, $msg);
 }
 
-function updateUserdata($id,
-                        $name,
-                        $surname,
-                        $ci,
-                        $cel,
-                        $gender){
+function updateUserdata(/*int*/     $id,
+                        /*string*/  $name,
+                        /*string*/  $surname,
+                        /*string[9]*/  $ci,
+                        /*string[11]*/  $cel,
+                        /*string[1]*/ $gender){
 
     global $db;
     $status = false;
@@ -138,7 +138,7 @@ function updateUserdata($id,
     return jsonResponse($status, $msg);
 }
 
-function updateNotes($buiid, $notes){
+function updateNotes(/*int*/ $buiid, /*array*/ $notes){
     global $db;
     $status = false;
 

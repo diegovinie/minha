@@ -56,7 +56,7 @@ if($route[1] == 'balance'){
     }
 }*/
 
-if($route[1] == 'admin' && $route[2] == 'balance'){
+if($route[1] == 'admin' && $route[2] == 'finanzas'){
 
     // Identificador del 3er parámetro en /{primero}/{segundo}/{tercer}
     $route[3] = isset($route[3])? $route[3] : '';

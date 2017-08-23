@@ -12,7 +12,7 @@ include ROOTDIR.'/models/tables.php';
 include ROOTDIR.'/models/modelresponse.php';
 
 
-function getUsers($bui){
+function getUsers(/*string*/ $bui){
     global $db;
     $stmt = $db->query(
         "SELECT user_id AS 'id', udata_name AS 'Nombre',
@@ -43,7 +43,7 @@ function getUsers($bui){
     return json_encode($response);
 }
 
-function getPendingUsers($bui){
+function getPendingUsers(/*string*/ $bui){
     global $db;
     $stmt = $db->query(
         "SELECT user_id AS 'id', udata_name AS 'Nombre', udata_surname AS 'Apellido',
@@ -74,7 +74,7 @@ function getPendingUsers($bui){
     return json_encode($response);
 }
 
-function setUserActive($id){
+function setUserActive(/*int*/ $id){
     global $db;
     $status = false;
 
@@ -95,7 +95,7 @@ function setUserActive($id){
     return jsonResponse($status, $msg);
 }
 
-function deleteUser($id){
+function deleteUser(/*int*/ $id){
     global $db;
 
     $stmt1 = $db->prepare(
@@ -133,7 +133,7 @@ function deleteUser($id){
 }
 
 // Repetida de security/models/createuser.php
-function createUser($array){
+function createUser(/*array*/ $array){
     global $db;
     explode($array);
 

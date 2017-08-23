@@ -9,7 +9,7 @@ defined('_EXE') or die('Acceso restringido');
 $db = include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/modelresponse.php';
 
-function checkUser($user, $pwd, $remember){
+function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
     global $db;
     $status = false;
     $cookie = false;
@@ -98,7 +98,7 @@ function checkUser($user, $pwd, $remember){
     return json_encode($response);
 }
 
-function getQuestion($email){
+function getQuestion(/*string*/ $email){
     global $db;
     $status = false;
 
@@ -124,7 +124,7 @@ function getQuestion($email){
     );
 }
 
-function setQuestionResponse($id, $question, $response){
+function setQuestionResponse($id, /*string*/ $question, /*string*/ $response){
     global $db;
     $status = false;
     $response = md5($response);
@@ -151,7 +151,7 @@ function setQuestionResponse($id, $question, $response){
     return jsonResponse($status, $msg);
 }
 
-function checkResponse($question, $response, $email){
+function checkResponse(/*string*/ $question, /*string*/ $response, /*string*/ $email){
     global $db;
     $status = false;
 
@@ -178,7 +178,7 @@ function checkResponse($question, $response, $email){
     return jsonResponse($status, $msg);
 }
 
-function setPassword($email, $response, $pwd){
+function setPassword(/*string*/ $email, /*string*/ $response, /*string*/ $pwd){
     global $db;
     $pwd = md5($pwd);
     $response = md5($response);
@@ -213,7 +213,7 @@ function setPassword($email, $response, $pwd){
     return jsonResponse($status, $msg);
 }
 
-function setPasswordFromOld($id, $old, $new){
+function setPasswordFromOld(/*int*/ $id, /*string*/ $old, /*string*/ $new){
     global $db;
     $status = false;
 
@@ -258,7 +258,7 @@ function setPasswordFromOld($id, $old, $new){
     return jsonResponse($status, $msg);
 }
 
-function checkEmail($email){
+function checkEmail(/*string*/ $email){
     global $db;
     $status = false;
 
@@ -284,7 +284,7 @@ function checkEmail($email){
     return jsonResponse($status, $msg);
 }
 
-function checkOldPassword($id){
+function checkOldPassword(/*int*/ $id){
     global $db;
     $status = false;
 
@@ -312,6 +312,6 @@ function checkOldPassword($id){
     return jsonResponse($status, $msg);
 }
 
-function updatePassword($id, $old, $new){
+function updatePassword(/*int*/ $id, /*string*/ $old, /*string*/ $new){
     setPasswordFromOld($id, $old, $new);
 }

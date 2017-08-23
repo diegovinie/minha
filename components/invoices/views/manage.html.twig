@@ -1,0 +1,108 @@
+{# components/invoices/views/manage.html.twig #}
+
+{% extends 'views/base.html.twig' %}
+
+{% block body %}
+    {% include 'views/menu.html.twig' %}
+
+    {% block main %}
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="page-header">Recibos</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>Ver y Comparar Recibos</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-6">
+                            <div class="col-md-6" style="margin-bottom:10px;">
+                                <label for="">Elegir:</label>
+                                <select class="form-control" name="">
+                                    {% for k,v in invoices %}
+                                        <option value="{{ v }}">{{ k }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="button" name="button" class="btn btn-primary btn-block" >Mostrar</button>
+                            <div class="" id="header">
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-6" style="margin-bottom:10px;">
+                                <label for="">Elegir:</label>
+                                <select class="form-control" name="">
+                                    {% for k,v in invoices %}
+                                        <option value="{{ v }}">{{ k }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <button type="button" name="button" class="btn btn-primary btn-block" onclick="displayInvoice(this)" >Mostrar</button>
+                            <div class="" id="summary">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form action="{{ form.action }}" method="{{ form.method }}">
+                    <input type="hidden" name="token" value="{{ form.token }}">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>Generar Recibos</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Periodo:</h4>
+                                        <select class="form-control" name="lapse">
+                                            {% for lapse in lapses %}
+                                                <option value="{{ lapse.id }}">{{ lapse.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a href="#addbills" data-toggle="collapse" data-parent="#accordion">Agregar Gastos</a>
+                                        </h4>
+                                    </div>
+                                    <div  class="panel-body panel-collapse collapse in" id="addbills">
+                                        {{ include(template_from_string(bills)) }}
+                                    </div>
+                                </div>
+                                {% for fund in funds %}
+                                    {% include '/components/invoices/views/fund.html.twig' with fund %}
+                                {% endfor %}
+                            </div>
+                            <div class="checkbox" style="padding-bottom:10px;">
+                                <label>
+                                    <input type="checkbox" name="ready" id="ready" onclick="activateOnCheck(this, 'gen')" value="1" required>Cambios Completos
+                                </label>
+                            </div>
+
+                            <button type="submit" name="button" id="gen" class="btn btn-block btn-lg btn-success">Generar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% for script in js %}
+        <script src="{{ script }}" charset="utf-8"></script>
+    {% endfor %}
+
+{% endblock %}

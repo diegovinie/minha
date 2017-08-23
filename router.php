@@ -73,8 +73,12 @@ switch ($route[1]) {
                     include COMDIR .'payments/router.php';
                     break;
 
-                case 'balance':
+                case 'finanzas':
                     include COMDIR .'finances/router.php';
+                    break;
+
+                case 'recibos':
+                    include COMDIR .'invoices/router.php';
                     break;
 
                 case 'usuarios':

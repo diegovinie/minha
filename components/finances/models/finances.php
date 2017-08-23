@@ -12,7 +12,7 @@ include ROOTDIR.'/models/tables.php';
 include ROOTDIR.'/models/modelresponse.php';
 
 
-function getAccountsForTables($bui){
+function getAccountsForTables(/*string*/ $bui){
     global $db;
     $status = false;
 
@@ -44,7 +44,7 @@ function getAccountsForTables($bui){
         $table = setTheadTbodyTfootFromPDO($stmt1, $stmt2);
 
         if(!$table){
-            $msg = 'Error al constuir la tabla';
+            $msg = 'Error al construir la tabla';
         }
         else{
             $status = true;
@@ -55,7 +55,7 @@ function getAccountsForTables($bui){
     return jsonTableResponse($status, $msg);
 }
 
-function getFundsForTables($bui){
+function getFundsForTables(/*string*/ $bui){
     global $db;
     $status = false;
 
@@ -89,7 +89,7 @@ function getFundsForTables($bui){
         $table = setTheadTbodyTfootFromPDO($stmt1, $stmt2);
 
         if(!$table){
-            $msg = 'Error al constuir la tabla';
+            $msg = 'Error al construir la tabla';
         }
         else{
             $status = true;
@@ -110,7 +110,7 @@ function getMovementsForTables(){
     $res = $stmt->execute();
 }
 
-function getAptBalancesForTables($bui){
+function getAptBalancesForTables(/*string*/ $bui){
     global $db;
     $status = false;
 
@@ -140,7 +140,7 @@ function getAptBalancesForTables($bui){
         $table = setTheadTbodyTfootFromPDO($stmt1, $stmt2);
 
         if(!$table){
-            $msg = 'Error al constuir la tabla';
+            $msg = 'Error al construir la tabla';
         }
         else{
             $status = true;
@@ -161,7 +161,7 @@ function getDisponibility(){
     $res = $stmt->execute();
 }
 
-function getCurrentBalance($bui){
+function getCurrentBalance(/*string*/ $bui){
     global $db;
     $status = false;
 
@@ -183,7 +183,7 @@ function getCurrentBalance($bui){
     return jsonResponse($status, $msg);
 }
 
-function getTotalFunds($bui){
+function getTotalFunds(/*string*/ $bui){
     global $db;
     $status = false;
 

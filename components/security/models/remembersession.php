@@ -9,7 +9,7 @@ defined('_EXE') or die('Acceso restringido');
 $db = include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/modelresponse.php';
 
-function checkRemember($remember){
+function checkRemember(/*string*/ $remember){
     global $db;
     $status = false;
 
@@ -40,7 +40,7 @@ function checkRemember($remember){
     return jsonResponse($status, $msg);
 }
 
-function delRemember($remember){
+function delRemember(/*string*/ $remember){
     global $db;
     $e = $db->exec(
         "DELETE FROM cookies

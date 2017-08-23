@@ -8,15 +8,15 @@ $db = include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/modelresponse.php';
 
 // Repetida en users/models/users.php
-function createUser(    $name,
-                        $surname,
-                        $email,
-                        $edf,
-                        $apt,
-                        $cond,
-                        $type,
-                        $active,
-                        $pwd){
+function createUser(    /*string*/ $name,
+                        /*string*/ $surname,
+                        /*string*/ $email,
+                        /*string*/ $edf,
+                        /*string*/ $apt,
+                        /*int*/ $cond,
+                        /*int*/ $type,
+                        /*int*/ $active,
+                        /*string*/ $pwd){
 
     global $db;
     $status = false;

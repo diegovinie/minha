@@ -26,11 +26,15 @@ $_globals = array(
                 ),
                 // Finances - Enlaces:
                 'finances'      => array(
-                    'balance'       => '/index.php/admin/balance'
+                    'balance'       => '/index.php/admin/finanzas'
                 ),
                 // Security - Enlaces:
                 'security'      => array(
                     'logout'        => '/index.php/logout'
+                ),
+                //Invoices - Enlaces:
+                'invoices'      => array(
+                    'manage'        => '/index.php/admin/recibos/'
                 )
             )
         ),

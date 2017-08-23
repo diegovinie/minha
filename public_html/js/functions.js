@@ -340,3 +340,26 @@ function addEditRemoveButtons(tableid, edit, remove){
         })
     });
 }
+
+function setCheckboxRow(id){
+
+    var rows = $('#'+id+' table tbody').find('tr');
+        th = document.createElement('th');
+
+    $(th).css('textAlign', 'center')
+         .html('Agregar');
+    $('#'+id+' table thead tr').append(th);
+
+    rows.each(function(pos,ele){
+        var td = document.createElement('td'),
+            inp = document.createElement('input');
+
+        var name = $(this).find('[name="id"]').data('value');
+        $(inp).attr('type', 'checkbox')
+              .attr('name', 'chk_'+name).val(1);
+        $(td).css('textAlign', 'center')
+             .append(inp);
+
+        $(this).append(td);
+    });
+}

@@ -1,0 +1,43 @@
+{# components/invoices/views/fund.html.twig #}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a href="#e_{{ fund.id }}" data-toggle="collapse" data-parent="#accordion">{{ fund.name }}</a>
+        </h4>
+    </div>
+    <div class="panel-body panel-collapse collapse" id="e_{{ fund.id }}">
+        <table width="100%" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th align="center">Nombre</th>
+                    <th align="center">Saldo</th>
+                    <th align="center">Tipo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td align="center">{{ fund.name }}</td>
+                    <td align="center">{{ fund.balance|number_format(2, ',', '.') }}</td>
+                    <td align="center">{{ fund.type }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div  class="form-inline" style="margin-top:10px;">
+            <div class="form-group">
+                <input class="form-control checkbox" type="checkbox"
+                    name="fundt_{{ fund.id }}" value="{{ fund.type }}"
+                    onclick="activateOnCheck(this, ['fundv_{{ fund.id }}'])">
+                <label width="50px" for="chk_{{ fund.id }}">Incluir
+                </label>
+                <span> | </span>
+                <label for="fund_{{ fund.id }}.id">Monto: </label>
+                <input class="form-control" type="text"
+                    name="fundv_{{ fund.id }}"  id="fundv_{{ fund.id }}"
+                    value="{{ fund.amount|number_format(2, ',', '.') }}" disabled>
+                <span>{% if fund.type == 1 %} % {% else %} Bs. {% endif %}</span>
+            </div>
+        </div>
+    </div>
+</div>

@@ -11,7 +11,7 @@ $db = include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/tables.php';
 include ROOTDIR.'/models/modelresponse.php';
 
-function getPayments($bui, $napt){
+function getPayments(/*string*/ $bui, /*int*/ $napt){
 
     global $db;
     $status = false;
@@ -44,7 +44,7 @@ function getPayments($bui, $napt){
     return json_encode($response);
 }
 
-function getPendingPayments($bui, $napt){
+function getPendingPayments(/*string*/ $bui, /*int*/ $napt){
 
     global $db;
     $stmt = $db->query(
@@ -72,7 +72,7 @@ function getPendingPayments($bui, $napt){
     return json_encode($response);
 }
 
-function getReturnedPayments($bui, $napt){
+function getReturnedPayments(/*string*/ $bui, /*int*/ $napt){
     // id3 = "devueltos"
     global $db;
     $stmt = $db->query(
@@ -116,7 +116,7 @@ function getBanks(){
     return json_encode($banks);
 }
 
-function editPayment($id){
+function editPayment(/*int*/ $id){
 
     global $db;
     $status = false;
@@ -140,7 +140,7 @@ function editPayment($id){
     ));
 }
 
-function removePayment($id){
+function removePayment(/*int*/ $id){
 
     global $db;
     $ex = $db->exec(
@@ -152,7 +152,7 @@ function removePayment($id){
     return json_encode(array('status' => $status, 'msg' => $msg));
 }
 
-function sendPayment($collection){
+function sendPayment(/*array*/ $collection){
 
     global $db;
     extract($collection);

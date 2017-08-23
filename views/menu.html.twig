@@ -128,11 +128,11 @@
 						<li><a href="javascript:void()">Pagos y Recibos<span class="fa arrow"></span></a>
 							<ul class="nav nav-third-level">
 								<li><a href="{{ menu.href.payments.manage }}">Pagos</a></li>
-								<li><a href="<?php echo PROJECT_HOST;?>admin/invoices.php">Recibos</a></li>
+								<li><a href="{{ menu.href.invoices.manage }}">Recibos</a></li>
 							</ul>
 						</li>
 						<li><a href="<?php echo PROJECT_HOST;?>admin/bills.php">Gastos y Proveedores</a></li>
-						<li><a href="/index.php/admin/balance">Estados Financieros</a></li>
+						<li><a href="{{ menu.href.finances.balance }}">Estados Financieros</a></li>
 						<li><a class="text-muted" href="javascript:void(0);">Casos Especiales</a></li>
 						<li><a href="/index.php/admin/usuarios">Usuarios</a></li>
 						<li><a class="text-muted" href="javascript:void(0);">Solicitudes</a></li>

@@ -11,7 +11,7 @@ $db = include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/tables.php';
 include ROOTDIR.'/models/modelresponse.php';
 
-function getCurrentMonth($bui){
+function getCurrentMonth(/*string*/ $bui){
     global $db;
     $stmt = $db->query(
         "SELECT CASE pay_check
@@ -36,7 +36,7 @@ function getCurrentMonth($bui){
     return jsonTableResponse($status, $data);
 }
 
-function getLastMonth($bui){
+function getLastMonth(/*string*/ $bui){
     global $db;
     $stmt = $db->query(
         "SELECT CASE pay_check
@@ -60,7 +60,7 @@ function getLastMonth($bui){
     return jsonTableResponse($status, $data);
 }
 
-function getLastThreeMonths($bui){
+function getLastThreeMonths(/*string*/ $bui){
     global $db;
     $stmt = $db->query(
         "SELECT lap_name AS 'Mes', SUM(pay_amount)
@@ -83,7 +83,7 @@ function getLastThreeMonths($bui){
     return jsonTableResponse($status, $data);
 }
 
-function approvedPayments($bui){
+function approvedPayments(/*string*/ $bui){
     global $db;
     $stmt = $db->query(
         "SELECT pay_id AS 'id', pay_date AS 'Fecha', bui_apt
@@ -112,7 +112,7 @@ function approvedPayments($bui){
     return jsonTableResponse($status, $data);
 }
 
-function refusedPayments($bui){
+function refusedPayments(/*string*/ $bui){
     global $db;
     $stmt = $db->query(
         "SELECT pay_id AS 'id', pay_date AS 'Fecha', bui_apt
@@ -141,7 +141,7 @@ function refusedPayments($bui){
     return jsonTableResponse($status, $data);
 }
 
-function pendingPayments($bui){
+function pendingPayments(/*string*/ $bui){
     global $db;
     $stmt = $db->query(
         "SELECT pay_id AS 'id', pay_date AS 'Fecha', bui_apt
