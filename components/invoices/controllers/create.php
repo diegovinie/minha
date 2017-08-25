@@ -3,9 +3,11 @@
 include ROOTDIR.'/models/locale.php';
 //include ROOTDIR.'/models/validations.php';
 
-$user = (string)$_SESSION['user_user'];
+$userid = (int)$_SESSION['user_id'];
 $bui = $_SESSION['bui'];
 $lapse = (int)$_POST['lapse'];
+$bills = array();
+$funds = array();
 
 foreach ($_POST as $key => $value) {
     if(preg_match("/^chk/", $key) && $value == 1){
@@ -26,14 +28,17 @@ foreach ($_POST as $key => $value) {
 
 include $basedir.'models/invoices.php';
 
-//var_dump(json_decode(getBillsInfo($bills))) ;
-//var_dump(json_decode(getLapseInfo($lapse)));
+//var_dump(getBillsInfo($bills)) ;
+//var_dump(getLapseInfo($lapse));
 //var_dump(json_decode(setBillsQueue($bills)));
-//var_dump(json_decode(getAssignedApts($bui)));
+//var_dump(getAssignedApts($bui));
 //var_dump(json_decode(getNumberApts($bui)));
-var_dump(json_decode(getBalanceFromBuildings($bui)));
-die;
+//var_dump(json_decode(getBalanceFromBuildings($bui)));
+//var_dump(getFractionBuilding('Country_Park'));
+//var_dump(getFundsInfo($funds));
 
-var_dump($bills);
+$jsInvoice = generateInvoicesBatch( $userid, $bui, $lapse, $bills, $funds);
 
-var_dump($funds); die;
+?><script type="text/javascript">
+    invoice = <?php echo $jsInvoice ?>;
+</script>

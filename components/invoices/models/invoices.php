@@ -9,10 +9,44 @@ defined('_EXE') or die('Acceso restringido');
 
 $db = include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/modelresponse.php';
+include ROOTDIR.'/models/errors.php';
+include ROOTDIR.'/models/buildings.php';
 
+/**
+ *
+ * @return Array|false Registra el error.
+ */
+function getUserInfo(/*int*/ $id){
+    global $db;
+
+    $stmt = $db->prepare(
+        "SELECT udata_name AS 'name',
+        udata_surname AS 'surname',
+        user_user AS 'email'
+        FROM userdata INNER JOIN users
+        ON user_id = udata_user_fk
+        WHERE user_id = :id"
+    );
+    $stmt->bindValue('id', $id, PDO::PARAM_INT);
+    $res = $stmt->execute();
+
+    if(!$res){
+        $msg = "Error en recuperar los datos del usuario.";
+        errorRegister($msg);
+
+        return false;
+    }
+    else{
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+}
+
+/**
+ *
+ * @return Array|false Registra el error.
+ */
 function getLapseInfo(/*int*/ $lapse){
     global $db;
-    $status = false;
 
     $stmt = $db->prepare(
         "SELECT lap_id AS 'id', lap_name AS 'name',
@@ -24,19 +58,22 @@ function getLapseInfo(/*int*/ $lapse){
     $res = $stmt->execute();
 
     if(!$res){
+        $msg = "Error en el Periodo.";
+        errorRegister($msg);
 
+        return false;
     }
     else{
-        $status = true;
-        $msg = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    return jsonResponse($status, $msg);
 }
 
+/**
+ *
+ * @return array[][]|false Registra el error.
+ */
 function getBillsInfo(/*array*/ $listid){
     global $db;
-    $status = false;
-    $error = false;
 
     $stmt = $db->prepare(
         "SELECT bil_total AS 'total', bil_class AS 'class',
@@ -50,26 +87,59 @@ function getBillsInfo(/*array*/ $listid){
         $res = $stmt->execute();
 
         if(!$res){
-            $error = true;
             $msg = 'Algunos gastos no fueron correctamente seleccionados.';
-            break;
+            errorRegister($msg);
+
+            return false;
         }
         else{
             $data[] = $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
 
-    if(!$error){
-        $status = true;
-        $msg = $data;
-    }
-    return jsonResponse($status, $msg);
+    return $data;
 }
 
+/**
+ *
+ * @return array[][]|false Registra el error.
+ */
+function getFundsInfo(/*array*/ $listid){
+    global $db;
+
+    $stmt = $db->prepare(
+        "SELECT fun_name AS 'name',
+        fun_type AS 'type'
+        FROM funds
+        WHERE fun_id = :id"
+    );
+    $stmt->bindParam('id', $id, PDO::PARAM_INT);
+
+    foreach ($listid as $id => $f) {
+        $res = $stmt->execute();
+
+        if(!$res){
+            $msg = 'Algunos fondos no fueron correctamente seleccionados.';
+            errorRegister($msg);
+
+            return false;
+        }
+        else{
+            $prep = $stmt->fetch(PDO::FETCH_ASSOC);
+            $prep['val'] = $f['val'];
+            $data[] = $prep;
+        }
+    }
+
+    return $data;
+}
+
+/**
+ *
+ * @return bool / Registra el error.
+ */
 function setBillsQueue(/*array*/ $listid){
     global $db;
-    $status = false;
-    $error = false;
 
     $stmt = $db->prepare(
         "UPDATE bills
@@ -82,22 +152,46 @@ function setBillsQueue(/*array*/ $listid){
         $res = $stmt->execute();
 
         if(!$res){
-            $error = true;
             $msg = 'Algunos gastos no fueron correctamente actualizados.';
-            break;
+            errorRegister($msg);
+
+            return false;
         }
     }
-
-    if(!$error){
-        $status = true;
-        $msg = 'Todos los gastos actualizados con éxito.';
-    }
-    return jsonResponse($status, $msg);
+    return true;
 }
 
-function getAssignedApts(/*string*/ $bui){
+/**
+ *
+ * @return bool / Registra el error.
+ */
+function unsetBillsQueue(){
     global $db;
     $status = false;
+
+    // Desmarcar los gastos en la base de datos.
+    $res = $db->exec(
+        "UPDATE bills
+        SET bil_lapse_fk = 0
+        WHERE bil_lapse_fk = 99"
+    );
+
+    if(!$res){
+        $msg = "Problemas para desmarcar los gastos.";
+        errorRegister($msg);
+
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ *
+ * @return array[][]|false Registra el error.
+ */
+function getAssignedApts(/*string*/ $bui){
+    global $db;
 
     $stmt = $db->prepare(
         "SELECT bui_apt AS 'name', bui_weight AS 'w',
@@ -111,17 +205,21 @@ function getAssignedApts(/*string*/ $bui){
 
     if(!$res){
         $msg = 'Error al seleccionar apartamentos.';
+        errorRegister($msg);
+
+        return false;
     }
     else{
-        $status = true;
-        $msg = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    return jsonResponse($status, $msg);
 }
 
+/**
+ *
+ * @return integer|false Registra el error.
+ */
 function getNumberApts(/*string*/ $bui){
     global $db;
-    $status =false;
 
     $stmt = $db->prepare(
         "SELECT COUNT(bui_id) AS `asignados`
@@ -134,18 +232,22 @@ function getNumberApts(/*string*/ $bui){
 
     if(!$res){
         $msg = 'Error al seleccionar el total de apartamentos';
+        errorRegister($msg);
+
+        return false;
     }
     else{
-        $status = true;
-        $msg = (int)$stmt->fetchColumn();
-    }
 
-    return jsonResponse($status, $msg);
+        return (int)$stmt->fetchColumn();
+    }
 }
 
+/**
+ *
+ * @return float | false Registra el error.
+ */
 function getBalanceFromBuildings(/*string*/ $bui){
     global $db;
-    $status =false;
 
     $stmt = $db->prepare(
         "SELECT SUM(bui_balance) AS 'balance'
@@ -157,20 +259,37 @@ function getBalanceFromBuildings(/*string*/ $bui){
 
     if(!$res){
         $msg = 'Error al recuperar el balance total.';
+        errorRegister($msg);
+
+        return false;
     }
     else{
-        $status = true;
-        $msg = (float)$stmt->fetchColumn();
+        return (float)$stmt->fetchColumn();
     }
-
-    return jsonResponse($status, $msg);
 }
 
-function generateInvoices(  /*string*/  $user,
+/**
+ * @return float | false
+ */
+function getFractionBuilding(/*string*/ $bui){
+
+    return call_user_func('getFraction'.$bui, $bui);
+}
+
+/**
+ * Marca los gastos como en espera (99) en la BD
+ * Crea un array del lote de recibos y lo guarda como
+ * json en /files/invoices/
+ *
+ * @return jsonResponse((bool)status, (mix)msg)
+ */
+function generateInvoicesBatch(  /*int*/  $userid,
                             /*string*/  $bui,
                             /*int*/     $lapse,
                             /*array*/   $bills,
                             /*array*/   $funds){
+
+    $aUser = getUserInfo($userid);
 
     $aLapse = getLapseInfo($lapse);
 
@@ -182,7 +301,7 @@ function generateInvoices(  /*string*/  $user,
     // Selecciona la información de los gastos hechos que se seleccionaron
     $aBills = getBillsInfo($bills);
 
-    $res = setBillsQueue($bills);
+    $aFunds = getFundsInfo($funds);
 
     // Selecciona los apartamentos y sus pesos ponderados
     $aApts = getAssignedApts($bui);
@@ -193,7 +312,7 @@ function generateInvoices(  /*string*/  $user,
     //Selecciona el balance previo a la generación
     $balance = getBalanceFromBuildings($bui);
 
-    $porc =round(porc($bui), 4);
+    $frac =round(getFractionBuilding($bui), 4);
 
     //Se genera el contenido por apartamento
     foreach ($aApts as $index => $apt) {
@@ -211,7 +330,7 @@ function generateInvoices(  /*string*/  $user,
                     [$inB]
                     ['porcentaje'] = round($bill['total'] *
                                            $apt['w'] *
-                                           $porc/100, 2);
+                                           $frac/100, 2);
 
             $content[$apt['name']]
                     ['Comunes']
@@ -239,16 +358,16 @@ function generateInvoices(  /*string*/  $user,
         }
 
         // Se agrega el contenido de los fondos
-        foreach ($funds as $fund) {
+        foreach ($aFunds as $fund) {
 
-            $defNum = numToEng($fund['def']);
+            $defNum = numToEng($fund['val']);
 
             if($fund['type'] == 1){
 
                 $content[$apt['name']]
                         [$fund['name']]
                         [$fund['name']]
-                        ['nombre'] = $fund['def'].' %';
+                        ['nombre'] = $fund['val'].' %';
 
                 $content[$apt['name']]
                         [$fund['name']]
@@ -265,7 +384,7 @@ function generateInvoices(  /*string*/  $user,
                 $content[$apt['name']]
                         [$fund['name']]
                         [$fund['name']]
-                        ['nombre'] = 'Bs. '.$fund['def'];
+                        ['nombre'] = 'Bs. '.$fund['val'];
 
                 $content[$apt['name']]
                         [$fund['name']]
@@ -300,8 +419,8 @@ function generateInvoices(  /*string*/  $user,
         }
     }
 
+    // Se busca el nombre completo del edificio
     $hdr = fopen(ROOTDIR."/files/EDI-$bui.json", 'r');
-
     $f = '';
     while(!feof($hdr)){
         $f .= fgets($hdr);
@@ -310,31 +429,181 @@ function generateInvoices(  /*string*/  $user,
     $json = json_decode($f);
     $edif = $json->name;
 
+    // Se genera la cabecera
     $head = array(
-            'fecha' => date('d-m-y'),
-            'Creador' => $user,
+            'Fecha' => date('d-m-Y'),
+            'Creador' => "{$aUser['name']} {$aUser['surname']}",
+            'Correo-e' => $aUser['email'],
             'Periodo' => $aLapse['name'],
             'Inmueble' => $edif,
             'Gen Num' => $fNum,
             'Num Aptos' => $actives,
-            'MCD' => $porc,
+            'MCD' => $frac,
             'Monto Total' => $total,
             'Balance a la fecha' => ($balance + $total)
     );
 
+    //Se construye el array final
     $invoices = array(
-            'head' => $head,
+            'head'    => $head,
             'summary' => $summary,
             'content' => $content,
             'charges' => $charges
     );
 
+    //Graba contenidos temporales de lo que se va a grabar en charges
     $tj = json_encode($invoices);
 
-    $hdr2 = fopen(ROOTDIR."/files/invoices/$bui/FAC-$fNum.json", 'w');
+    $hdr2 = fopen(ROOTDIR."/files/invoices/$bui/LOT-$fNum.json", 'w');
 
     fwrite($hdr2, $tj);
-    fclose($hrd2);
+    fclose($hdr2);
 
-    return $invoices;
+    // Se marcan los gastos en espera.
+    $res = setBillsQueue($bills);
+
+    return checkErrorsResponse(
+        $invoices,
+        array(  'discardInvoicesBatch',
+                $bui,
+                $fNum
+        )
+    );
+}
+
+/**
+ * Busca el archivo json del lote y borra.
+ * También desmarca los gastos en la base de datos.
+ *
+ * @return jsonResponse()
+ */
+function discardInvoicesBatch(/*string*/ $bui, /*int*/ $number){
+    $status = false;
+
+    $res = unsetBillsQueue();
+
+    if(!$res){
+        $msg = "Problemas para desmarcar los gastos.";
+    }
+    else{
+        // Recupera el archivo json con la información del lote.
+        $fileInvoices = ROOTDIR."/files/invoices/$bui/LOT-$number.json";
+
+        if(!is_file($fileInvoices)){
+
+            $msg = "No se encontró el lote LOT-$number.";
+        }
+        else{
+            // Borra el archivo del lote.
+            unlink($fileInvoices);
+            $status = true;
+            $msg = "Lote LOT-$number borrado con éxito.";
+        }
+    }
+
+    return jsonResponse($status, $msg);
+}
+
+/**
+ * Busca el archivo json del lote y actualiza
+ * la base de datos.
+ *
+ * @return jsonResponse()
+ */
+function saveInvoicesBatch(/*string*/ $bui, /*int*/ $number){
+    global $db;
+    $status = false;
+    $error = false;
+
+    // Recupera el archivo json con la información del lote.
+    $fileInvoices = ROOTDIR."/files/invoices/$bui/LOT-$number.json";
+
+    // Decodifica el lote como un array de objetos.
+    $inv = json_decode(include($fileInvoices));
+
+    $lapse = $inv->{'head'}->{'Periodo'};
+
+    $stmt1 = $db->prepare(
+        "SELECT lap_id AS 'id'
+        FROM lapses
+        WHERE lap_name = :lapse"
+    );
+    $stmt1->bindValue('lapse', $lapse);
+    $res1 = $stmt1->execute();
+
+    if(!$res1){
+        $msg = "Error al recuperar datos del periodo $lapse";
+    }
+    else{
+        // Agrega a los gastos en cuestión el periodo.
+        $lapid = (int)$stmt1->fetchColumn();
+
+        $exe2 = $db->exec(
+            "UPDATE bills
+            SET bil_lapse_fk = $lapid
+            WHERE bil_lapse_fk = 99"
+        );
+
+        if(!$exe2){
+            $msg = "No se pudo fijar el periodo a los gastos.";
+        }
+        else{
+            // Actualizar la tabla funds.
+            $stmt3 = $db->prepare(
+                "UPDATE funds
+                SET fun_balance = fun_balance + :amount
+                WHERE fun_name = :name"
+            );
+            // fund[0] es el monto, es un array[1]
+            $stmt3->bindParam('amount', $fund[0], PDO::PARAM_FLOAT);
+            $stmt3->bindParam('name', $name);
+
+            foreach ($inv->{'summary'} as $name => $fund) {
+                // Descarta los gastos comunes.
+                if($name != 'Comunes'){
+                    $exe3 = $stmt3->execute();
+
+                    if(!$exe3){
+                        $error = true;
+                        $msg = "Error al actualizar el fondo $name.";
+                        break;
+                    }
+                }
+            }
+
+            // Se actualiza el balance de cada apartamento
+            // restandole el total.
+            foreach ($inv->{'charges'} as $apt => $val) {
+                $chargues[$apt] = $val->{'total'} ;
+            }
+
+            $stmt4 = $db->prepare(
+                "UPDATE buildings
+                SET bui_balance = bui_balance - :total
+                WHERE bui_apt = :apt
+                AND bui_name = :bui"
+            );
+            $stmt4->bindParam('total', $total, PDO::PARAM_FLOAT);
+            $stmt4->bindParam('apt', $apt);
+            $stmt4->bindValue('bui', $bui);
+
+            foreach ($charges as $apt => $total) {
+                $res4 = $stmt->execute();
+
+                if(!$res4){
+                    $error = true;
+                    $msg = "Error al actualizar apt. $apt.";
+                    break;
+                }
+            }
+
+            if(!$error){
+                // Si no hay ningún problema.
+                $status = true;
+                $msg = "Guardado con éxito.";
+            }
+        }
+    }
+
+    return jsonResponse($status, $msg);
 }
