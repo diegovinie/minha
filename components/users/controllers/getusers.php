@@ -10,12 +10,12 @@ $bui = (string)$_SESSION['bui'];
 
 include $basedir .'/models/users.php';
 
-$res = json_decode(getUsers($bui));
+$res = json_decode(getUsers($bui), true);
 
-if($res->table != false){
+if($res['table'] != false){
 
     include ROOTDIR.'/controllers/tablebuilder.php';
-    echo tableBuilder($res->table);
+    echo tableBuilder($res['table']);
 
 }else{
     echo false;

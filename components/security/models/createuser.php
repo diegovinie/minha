@@ -4,7 +4,7 @@
  */
 defined('_EXE') or die('Acceso restringido');
 
-$db = include ROOTDIR.'/models/db.php';
+include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/modelresponse.php';
 
 // Repetida en users/models/users.php
@@ -18,7 +18,9 @@ function createUser(    /*string*/ $name,
                         /*int*/ $active,
                         /*string*/ $pwd){
 
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $active = isset($active)? $active : PRUEBA == true? 1 : 0;
@@ -26,7 +28,7 @@ function createUser(    /*string*/ $name,
 
     // Verifica que no exista el usuario
     $stmt1 = $db->prepare(
-        "SELECT user_id FROM users
+        "SELECT user_id FROM {$prx}users
         WHERE user_user = :email"
     );
     $stmt1->bindValue('email', $email);
@@ -64,7 +66,8 @@ function createUser(    /*string*/ $name,
         else{
             // Solicitando claves foráneas
             $stmt3 = $db->prepare(
-                "SELECT bui_id, user_id FROM users, buildings
+                "SELECT bui_id, user_id
+                FROM {$prx}users, {$prx}buildings
                 WHERE user_user = :email
                 AND bui_name = :edf
                 AND bui_apt = :apt"
@@ -85,7 +88,7 @@ function createUser(    /*string*/ $name,
                 }
 
                 $stmt4 = $db->prepare(
-                    "INSERT INTO userdata
+                    "INSERT INTO {$prx}userdata
                     VALUES (
                         NULL,
                         :name,

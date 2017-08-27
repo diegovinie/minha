@@ -34,6 +34,10 @@ switch ($route[1]) {
         include COMDIR .'security/router.php';
         break;
 
+    case 'demo':
+        include COMDIR .'demo/router.php';
+        break;
+
     // asinc Vistas estandar /views/{tipo}
     case 'views':
         ob_start();

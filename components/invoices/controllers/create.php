@@ -26,19 +26,26 @@ foreach ($_POST as $key => $value) {
     }
 }
 
+if(!$userid || !$bui || !$lapse) die('Hubo un problema en la selección.');
+
 include $basedir.'models/invoices.php';
 
-//var_dump(getBillsInfo($bills)) ;
-//var_dump(getLapseInfo($lapse));
-//var_dump(json_decode(setBillsQueue($bills)));
-//var_dump(getAssignedApts($bui));
-//var_dump(json_decode(getNumberApts($bui)));
-//var_dump(json_decode(getBalanceFromBuildings($bui)));
-//var_dump(getFractionBuilding('Country_Park'));
-//var_dump(getFundsInfo($funds));
+$res = generateInvoicesBatch( $userid, $bui, $lapse, $bills, $funds);
 
-$jsInvoice = generateInvoicesBatch( $userid, $bui, $lapse, $bills, $funds);
+extract(json_decode($res, true));
 
-?><script type="text/javascript">
-    invoice = <?php echo $jsInvoice ?>;
-</script>
+if(!$status){
+    var_dump($msg); die;
+}
+
+$twig = new LoadTwigWithGlobals($_globals['view']);
+
+echo $twig->render(
+    'components/invoices/views/preview.html.twig',
+    array(
+        'head' => $msg['head'],
+        'summary' => $msg['summary'],
+        'number' => $msg['head']['Gen Num'],
+        'discard' => '/index.php/admin/recibos/descartar'
+    )
+);

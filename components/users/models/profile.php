@@ -7,16 +7,18 @@
 
 defined('_EXE') or die('Acceso restringido');
 
-$db = include ROOTDIR.'/models/db.php';
+include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/modelresponse.php';
 
 function getFromBuildings(/*int*/ $id){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt1 = $db->prepare(
         "SELECT bui_id AS 'id', bui_name AS 'name', bui_apt AS 'apt'
-        FROM buildings
+        FROM {$prx}buildings
         WHERE bui_id = :id"
     );
     $stmt1->bindValue('id', $id, PDO::PARAM_INT);
@@ -34,14 +36,16 @@ function getFromBuildings(/*int*/ $id){
 }
 
 function getFromUserdata(/*int*/ $userid){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt1 = $db->prepare(
         "SELECT udata_name AS 'name', udata_surname AS 'surname',
         udata_ci AS 'ci', udata_cel AS 'cel', udata_cond AS 'cond',
         udata_gender AS 'gender'
-        FROM userdata
+        FROM {$prx}userdata
         WHERE udata_user_fk = :userid"
     );
     $stmt1->bindValue('userid', $userid, PDO::PARAM_INT);
@@ -59,12 +63,14 @@ function getFromUserdata(/*int*/ $userid){
 }
 
 function getFromUsers(/*int*/ $id){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt1 = $db->query(
         "SELECT user_user AS 'email', user_type AS 'rol'
-        FROM users WHERE user_id = $id"
+        FROM {$prx}users WHERE user_id = $id"
     );
 
     if(!$stmt1){
@@ -79,11 +85,14 @@ function getFromUsers(/*int*/ $id){
 }
 
 function getNotesFromBuildings(/*int*/ $id){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt1 = $db->query(
-        "SELECT bui_notes AS 'notes' FROM buildings
+        "SELECT bui_notes AS 'notes'
+        FROM {$prx}buildings
         WHERE bui_id = $id"
     );
 
@@ -105,11 +114,13 @@ function updateUserdata(/*int*/     $id,
                         /*string[11]*/  $cel,
                         /*string[1]*/ $gender){
 
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt1 = $db->prepare(
-        "UPDATE userdata
+        "UPDATE {$prx}userdata
         SET udata_name = :name,
         udata_surname = :surname,
         udata_ci = :ci,
@@ -139,11 +150,13 @@ function updateUserdata(/*int*/     $id,
 }
 
 function updateNotes(/*int*/ $buiid, /*array*/ $notes){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt1 = $db->prepare(
-        "UPDATE buildings
+        "UPDATE {$prx}buildings
         SET bui_notes = :notes
         WHERE bui_id = :buiid"
     );

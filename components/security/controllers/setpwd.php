@@ -10,7 +10,7 @@ include $basedir.'models/authentication.php';
 
 $email = mysql_escape_string((string)$_POST['email']);
 $response = mysql_escape_string((string)$_POST['response']);
-$pwd = mysql_escape_string((string)$_POST['pwd']);
+$pwd = (string)$_POST['pwd'];
 
 echo setPassword($email, $response, $pwd);
 

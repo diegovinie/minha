@@ -75,6 +75,8 @@ function getLapseInfo(/*int*/ $lapse){
 function getBillsInfo(/*array*/ $listid){
     global $db;
 
+    if(empty($listid) || !$listid) return false;
+
     $stmt = $db->prepare(
         "SELECT bil_total AS 'total', bil_class AS 'class',
         bil_desc AS 'desc'
@@ -106,6 +108,8 @@ function getBillsInfo(/*array*/ $listid){
  */
 function getFundsInfo(/*array*/ $listid){
     global $db;
+
+    if(empty($listid) || !$listid) return false;
 
     $stmt = $db->prepare(
         "SELECT fun_name AS 'name',
@@ -286,8 +290,11 @@ function getFractionBuilding(/*string*/ $bui){
 function generateInvoicesBatch(  /*int*/  $userid,
                             /*string*/  $bui,
                             /*int*/     $lapse,
-                            /*array*/   $bills,
-                            /*array*/   $funds){
+                            /*array*/   $bills=null,
+                            /*array*/   $funds=null){
+
+    $sumPer = 0;
+    $sumTotal = 0;
 
     $aUser = getUserInfo($userid);
 
@@ -317,84 +324,88 @@ function generateInvoicesBatch(  /*int*/  $userid,
     //Se genera el contenido por apartamento
     foreach ($aApts as $index => $apt) {
         // Cada uno de los gastos
-        foreach ($aBills as $inB => $bill) {
+        if($aBills){
+            foreach ($aBills as $inB => $bill) {
 
-            $content[$apt['name']]
-                    ['Comunes']
-                    [$inB]
-                    ['nombre'] = $bill['class']
-                                 .' - ' .$bill['desc'];
+                $content[$apt['name']]
+                        ['Comunes']
+                        [$inB]
+                        ['nombre'] = $bill['class']
+                                     .' - ' .$bill['desc'];
 
-            $content[$apt['name']]
-                    ['Comunes']
-                    [$inB]
-                    ['porcentaje'] = round($bill['total'] *
-                                           $apt['w'] *
-                                           $frac/100, 2);
+                $content[$apt['name']]
+                        ['Comunes']
+                        [$inB]
+                        ['porcentaje'] = round($bill['total'] *
+                                               $apt['w'] *
+                                               $frac/100, 2);
 
-            $content[$apt['name']]
-                    ['Comunes']
-                    [$inB]
-                    ['total'] = round($bill['total'], 2);
+                $content[$apt['name']]
+                        ['Comunes']
+                        [$inB]
+                        ['total'] = round($bill['total'], 2);
 
-            //Generar el campo del total a pagar por apartamento
-            $sumPer = 0;
-            $sumTotal = 0;
+                //Generar el campo del total a pagar por apartamento
+                $sumPer = 0;
+                $sumTotal = 0; 
 
-            foreach ($content[$apt['name']]['Comunes'] as $val) {
+                foreach ($content[$apt['name']]['Comunes'] as $val) {
 
-                $sumPer += $val['porcentaje'];
-                $sumTotal += $val['total'];
+                    $sumPer += $val['porcentaje'];
+                    $sumTotal += $val['total'];
+                }
+
+                $charges[$apt['name']]
+                        ['previo'] = -$apt['balance'];
+
+                $charges[$apt['name']]
+                        ['actual'] = $sumPer;
+
+                $charges[$apt['name']]
+                        ['total'] = $sumPer -$apt['balance'];
             }
-
-            $charges[$apt['name']]
-                    ['previo'] = -$apt['balance'];
-
-            $charges[$apt['name']]
-                    ['actual'] = $sumPer;
-
-            $charges[$apt['name']]
-                    ['total'] = $sumPer -$apt['balance'];
         }
 
         // Se agrega el contenido de los fondos
-        foreach ($aFunds as $fund) {
+        if($aFunds){
+            foreach ($aFunds as $fund) {
 
-            $defNum = numToEng($fund['val']);
+                $defNum = numToEng($fund['val']);
 
-            if($fund['type'] == 1){
+                if($fund['type'] == 1){
 
-                $content[$apt['name']]
-                        [$fund['name']]
-                        [$fund['name']]
-                        ['nombre'] = $fund['val'].' %';
+                    $content[$apt['name']]
+                            [$fund['name']]
+                            [$fund['name']]
+                            ['nombre'] = $fund['val'].' %';
 
-                $content[$apt['name']]
-                        [$fund['name']]
-                        [$fund['name']]
-                        ['porcentaje'] = round($sumPer * $defNum /100, 2);
+                    $content[$apt['name']]
+                            [$fund['name']]
+                            [$fund['name']]
+                            ['porcentaje'] = round($sumPer * $defNum /100, 2);
 
-                $content[$apt['name']]
-                        [$fund['name']]
-                        [$fund['name']]
-                        ['total'] = round($sumTotal * ($defNum / 100), 2);
-            }
-            elseif($fund['type'] == 2){
+                    $content[$apt['name']]
+                            [$fund['name']]
+                            [$fund['name']]
+                            ['total'] = round($sumTotal * ($defNum / 100), 2);
+                }
+                elseif($fund['type'] == 2){
 
-                $content[$apt['name']]
-                        [$fund['name']]
-                        [$fund['name']]
-                        ['nombre'] = 'Bs. '.$fund['val'];
+                    $content[$apt['name']]
+                            [$fund['name']]
+                            [$fund['name']]
+                            ['nombre'] = 'Bs. '.$fund['val'];
 
-                $content[$apt['name']]
-                        [$fund['name']]
-                        [$fund['name']]
-                        ['porcentaje'] = round($defNum / $actives, 2);
+                    $content[$apt['name']]
+                            [$fund['name']]
+                            [$fund['name']]
+                            ['porcentaje'] = round($defNum / $actives, 2);
 
-                $content[$apt['name']]
-                        [$fund['name']]
-                        [$fund['name']]
-                        ['total'] = $defNum;
+                    $content[$apt['name']]
+                            [$fund['name']]
+                            [$fund['name']]
+                            ['total'] = $defNum;
+                }
             }
         }
 

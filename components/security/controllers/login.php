@@ -20,7 +20,8 @@ $form = array(
 // Datos para los botones
 $href = array(
     "register"  => "/index.php/register",
-    "recovery"  => "/index.php/recovery"
+    "recovery"  => "/index.php/recovery",
+    "demo"      => "/index.php/demo"
 );
 
 // javascript a incluir

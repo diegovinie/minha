@@ -1,0 +1,79 @@
+{# components/invoices/views/preview.html.twig #}
+
+{% extends 'views/base.html.twig' %}
+
+{% block body %}
+    {% include 'views/menu.html.twig' %}
+    {% block main %}
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="page-header">
+                <h3>Generador de Recibos</h3>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                               <h3 class="panel-title">Cabecera</h3>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-bordered" id="cabecera">
+                                    {% for k,v in head %}
+                                        <tr>
+                                            <th>{{ k }}</th>
+                                            <td>{{ v }}</td>
+                                        </tr>
+                                    {% endfor %}
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                               <h3 class="panel-title">Resumen</h3>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-bordered" id="resumen">
+                                    {% for k,cat in summary %}
+                                    <tr>
+                                        <th>{{ k }}</th>
+                                        {% for i,v in cat %}
+                                            <tr>
+                                                <td>{{ i }}</td>
+                                                <td>{{ v }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" name="button" class="btn btn-primary btn-block btn-lg" data-id="<?php echo $_SESSION['user_id']; ?>" data-lapse="<?php echo $invoices['head']['Gen Num']; ?>" onclick="seeInvoice(this);">Mostrar Recibo Propio</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" align="center">
+               <button type="button" name="button" class="btn btn-success btn-lg" data-number="{{ number }}" onclick="saveInvoices('invoices');">Guardar</button>
+               <button type="button" name="button"class="btn btn-danger btn-lg" data-number="{{ number }}" href="{{ discard }}">Deshacer</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+
+            </div>
+            <div class="col-md-6" id="result" style="margin-top:20px;text-align:center;align:center;">
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+{% endblock %}

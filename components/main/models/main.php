@@ -5,16 +5,18 @@
 
 defined('_EXE') or die('Acceso restringido');
 
-$db = include ROOTDIR.'/models/db.php';
+include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/modelresponse.php';
 
 function getBalance(/*int*/ $napt){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt = $db->prepare(
         "SELECT bui_name, bui_apt, bui_balance
-        FROM buildings
+        FROM {$prx}buildings
         WHERE bui_id = :napt"
     );
     $stmt->bindValue('napt', $napt, PDO::PARAM_INT);

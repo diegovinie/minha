@@ -7,22 +7,25 @@
 
 defined('_EXE') or die('Acceso restringido');
 
-$db = include ROOTDIR.'/models/db.php';
+include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/tables.php';
 include ROOTDIR.'/models/modelresponse.php';
 
 
 function getUsers(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $stmt = $db->query(
         "SELECT user_id AS 'id', udata_name AS 'Nombre',
         udata_surname AS 'Apellido', udata_ci AS 'C.I.',
         bui_apt AS 'Apartamento', user_user AS 'Correo',
         CASE user_type
+        WHEN 0 THEN 'Jugador'
         WHEN 1 THEN 'Administrador'
         WHEN 2 THEN 'Usuario'
         ELSE 'Indeterminado' END AS 'Tipo de Usuario'
-        FROM users, userdata, buildings
+        FROM {$prx}users, {$prx}userdata, {$prx}buildings
         WHERE udata_user_fk = user_id AND udata_number_fk = bui_id
         AND user_active = 1 AND bui_name = '$bui'"
     );
@@ -40,11 +43,14 @@ function getUsers(/*string*/ $bui){
         'status' => $status,
         'table' => $table
     );
+
     return json_encode($response);
 }
 
 function getPendingUsers(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $stmt = $db->query(
         "SELECT user_id AS 'id', udata_name AS 'Nombre', udata_surname AS 'Apellido',
         udata_ci AS 'C.I.',  bui_apt AS 'Apartamento',
@@ -53,7 +59,7 @@ function getPendingUsers(/*string*/ $bui){
         WHEN 1 THEN 'Administrador'
         WHEN 2 THEN 'Usuario'
         ELSE 'Indeterminado' END AS 'Tipo de Usuario'
-        FROM users, userdata, buildings
+        FROM {$prx}users, {$prx}userdata, {$prx}buildings
         WHERE udata_user_fk = user_id AND udata_number_fk = bui_id
         AND user_active = 0 AND bui_name = '$bui'"
     );
@@ -75,11 +81,14 @@ function getPendingUsers(/*string*/ $bui){
 }
 
 function setUserActive(/*int*/ $id){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt = $db->prepare(
-        "UPDATE users SET user_active = 1
+        "UPDATE {$prx}users
+        SET user_active = 1
         WHERE user_id = :id"
     );
     $stmt->bindValue('id', $id, PDO::PARAM_INT);
@@ -96,10 +105,11 @@ function setUserActive(/*int*/ $id){
 }
 
 function deleteUser(/*int*/ $id){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
 
     $stmt1 = $db->prepare(
-        "DELETE FROM userdata
+        "DELETE FROM {$prx}userdata
         WHERE udata_user_fk = :id"
     );
     $stmt1->bindValue('id', $id, PDO::PARAM_INT);
@@ -112,7 +122,7 @@ function deleteUser(/*int*/ $id){
     else{
         // Borrar de la tabla users
         $stmt2 = $db->prepare(
-            "DELETE FROM users
+            "DELETE FROM {$prx}users
             WHERE user_id = :id"
         );
         $stmt2->bindValue('id', $id, PDO::PARAM_INT);
@@ -134,7 +144,9 @@ function deleteUser(/*int*/ $id){
 
 // Repetida de security/models/createuser.php
 function createUser(/*array*/ $array){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     explode($array);
 
     $active = PRUEBA == true? 1 : 0;
@@ -142,7 +154,8 @@ function createUser(/*array*/ $array){
 
     // Verifica que no exista el usuario
     $stmt1 = $db->query(
-        "SELECT user_id FROM users
+        "SELECT user_id
+        FROM {$prx}users
         WHERE user_user = '$email'"
     );
 
@@ -154,7 +167,7 @@ function createUser(/*array*/ $array){
         //Registra en users usuario y clave como inactivo
         $pwd = md5($pwd);
         $ex1 = $db->exec(
-            "INSERT INTO users
+            "INSERT INTO {$prx}users
             VALUES (NULL, '$email', '$pwd', '', '', $type, $active,
             'register:$email', NULL)"
         );
@@ -166,7 +179,8 @@ function createUser(/*array*/ $array){
         else{
             // Solicitando claves foráneas
             $stmt2 = $db->query(
-                "SELECT bui_id, user_id FROM users, buildings
+                "SELECT bui_id, user_id
+                FROM {$prx}users, {$prx}buildings
                 WHERE user_user = '$email' AND bui_name = '$edf'
                 AND bui_apt = '$apt'"
             );
@@ -182,7 +196,7 @@ function createUser(/*array*/ $array){
                 }
 
                 $ex3 = $db->exec(
-                    "INSERT INTO userdata
+                    "INSERT INTO {$prx}userdata
                     VALUES (NULL, '$name', '$surname', '$ci',
                     NULL, $cond, 'M', $fk[0], $fk[1])"
                 );

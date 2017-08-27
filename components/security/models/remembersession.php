@@ -6,15 +6,17 @@
  */
 defined('_EXE') or die('Acceso restringido');
 
-$db = include ROOTDIR.'/models/db.php';
+include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/modelresponse.php';
 
 function checkRemember(/*string*/ $remember){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt = $db->prepare(
-        "SELECT coo_info FROM cookies
+        "SELECT coo_info FROM {$prx}cookies
         WHERE coo_val = :remember"
     );
     $stmt->bindValue('remember', $remember);
@@ -41,9 +43,11 @@ function checkRemember(/*string*/ $remember){
 }
 
 function delRemember(/*string*/ $remember){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+    
     $e = $db->exec(
-        "DELETE FROM cookies
+        "DELETE FROM {$prx}cookies
         WHERE coo_val = '$remember'"
     );
     $status = $e? true : false;

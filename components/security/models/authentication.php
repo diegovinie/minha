@@ -6,48 +6,95 @@
  */
 defined('_EXE') or die('Acceso restringido');
 
-$db = include ROOTDIR.'/models/db.php';
+include ROOTDIR.'/models/db.php';
 include ROOTDIR.'/models/modelresponse.php';
+include ROOTDIR.'/models/hashpassword.php';
 
 function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
     $cookie = false;
 
-    if($pwd != DEF_PWD) $pwd = md5($pwd);
+    if($pwd != DEF_PWD) $pwd = hashPassword($pwd);
     $stmt = $db->prepare(
-        "SELECT user_id, user_user, user_pwd, user_type, user_active, udata_name, udata_surname, udata_number_fk, bui_name, bui_apt
-        FROM users, userdata, buildings
+        "SELECT user_id, user_user, user_pwd,
+        user_type, user_active, udata_name,
+        udata_surname, udata_number_fk,
+        bui_name, bui_apt
+        FROM {$prx}users, {$prx}userdata, {$prx}buildings
         WHERE user_user = :user AND
             user_pwd = :pwd AND
             udata_user_fk = user_id AND
             udata_number_fk = bui_id"
     );
 
-    $stmt->execute(array(
+    $res = $stmt->execute(array(
         'user' => $user,
         'pwd'  => $pwd
     ));
-
+    //var_dump($stmt->fetch(PDO::FETCH_ASSOC)); die;
     // Si es igual a 1 puede entrar
     if($stmt->rowCount() != 1){
+        // Si no está en la tabla principal lo intentará encontrar en el juego.
+        $prefix = getPrefix($user);
 
-        $msg = "Clave inválida";
+        if(!$prefix){
+            $msg = "Clave inválida";
+        }
+        else{
+            // Cambio de prefijo.
+            $prx = $prefix;
 
-    }else{
+            $game2 = $db->prepare(
+                "SELECT user_id, user_user, user_pwd,
+                user_type, user_active, udata_name,
+                udata_surname, udata_number_fk,
+                bui_name, bui_apt
+                FROM {$prx}users, {$prx}userdata, {$prx}buildings
+                WHERE user_user = :user AND
+                    user_pwd = :pwd AND
+                    udata_user_fk = user_id AND
+                    udata_number_fk = bui_id"
+            );
+            $rg2 = $game2->execute(array(
+                'user' => $user,
+                'pwd'  => $pwd
+            ));
+
+            if(!$rg2){
+                // Si no logra autenticar al usuario.
+                $msg = "Problema con el juego.";
+                //$msg = $game2->errorInfo()[2];
+            }
+            else{
+                $mark = 1;
+                $values = $game2->fetch(PDO::FETCH_ASSOC);
+            }
+        }
+    }
+    else{
+        $mark = 1;
         $values = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Continua.
+    if($mark){
 
         // Si es igual a "0" no está activado
         if($values['user_active'] == 0){
 
-            $msg = "Aún no está activo. Contacte al administrador: ".EMAIL;
+            //$msg = "Aún no está activo. Contacte al administrador: ".EMAIL;
 
-        }else{
+        }
+        else{
             $status = true;
             $msg = "Sesión iniciada";
 
             //Se establecen los parámetros de sesión
             if(!isset($_SESSION)) session_start();
+
             $_SESSION['user_id'] = $values['user_id'];
             $_SESSION['user'] = $user;
             $_SESSION['status'] = 'active';
@@ -68,6 +115,11 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
                     $_SESSION['type'] = 2;
                     //echo "ir a usuario";
                     break;
+                case 0:
+                    $_SESSION['type'] = 1;
+                    $_SESSION['prefix'] = getPrefix($user);
+                    break;
+
                 default:
                     die("Ha ocurrido un error al definir el tipo de sesión.");
                     break;
@@ -75,9 +127,9 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
 
             // Se Fija la cookie
             if($remember === 1){
-                $token = md5(time().rand(0,100));
+                $token = hashPassword(time().rand(0,100));
                 $info = json_encode($_SESSION);
-                $qc = "INSERT INTO cookies VALUES(null, 'remember', '$token', '$info', null)";
+                $qc = "INSERT INTO {$prx}cookies VALUES(null, 'remember', '$token', '$info', null)";
 
                 try{
                     $db->exec($qc);
@@ -90,6 +142,7 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
             }
         }
     }
+
     $response = array(
         'status'    => $status,
         'msg'       => $msg,
@@ -99,11 +152,14 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
 }
 
 function getQuestion(/*string*/ $email){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt = $db->prepare(
-        "SELECT user_question FROM users
+        "SELECT user_question
+        FROM {$prx}users
         WHERE user_user = :email"
     );
     $stmt->bindValue('email', $email);
@@ -125,12 +181,14 @@ function getQuestion(/*string*/ $email){
 }
 
 function setQuestionResponse($id, /*string*/ $question, /*string*/ $response){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
-    $response = md5($response);
+    $response = hashPassword($response);
 
     $stmt = $db->prepare(
-        "UPDATE users
+        "UPDATE {$prx}users
         SET user_question = :question, user_response = :response
         WHERE user_id = :id"
     );
@@ -152,12 +210,14 @@ function setQuestionResponse($id, /*string*/ $question, /*string*/ $response){
 }
 
 function checkResponse(/*string*/ $question, /*string*/ $response, /*string*/ $email){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
-    $response = md5($response);
+    $response = hashPassword($response);
     $stmt = $db->prepare(
-        "SELECT user_response FROM users
+        "SELECT user_response FROM {$prx}users
         WHERE user_user = :email
         AND user_question = :question"
     );
@@ -179,22 +239,24 @@ function checkResponse(/*string*/ $question, /*string*/ $response, /*string*/ $e
 }
 
 function setPassword(/*string*/ $email, /*string*/ $response, /*string*/ $pwd){
-    global $db;
-    $pwd = md5($pwd);
-    $response = md5($response);
+    $db = connectDb();
+    $prx = $db->getPrx();
+
+    $password = hashPassword($pwd);
+    $response = hashPassword($response);
 
     $stmt = $db->prepare(
-        "UPDATE users SET user_pwd = :pwd
+        "UPDATE {$prx}users SET user_pwd = :password
         WHERE user_user = :email AND user_response = :response"
     );
     $stmt->execute(array(
-        'pwd' => $pwd,
+        'password' => $password,
         'email' => $email,
         'response' => $response
     ));
 
     $stmt2 = $db->prepare(
-        "SELECT user_pwd FROM users
+        "SELECT user_pwd FROM {$prx}users
         WHERE user_user = :email"
     );
     $stmt2->bindValue('email', $email);
@@ -202,7 +264,7 @@ function setPassword(/*string*/ $email, /*string*/ $response, /*string*/ $pwd){
 
     $verif = $stmt2->fetchColumn();
 
-    if($pwd === $verif){
+    if($password === $verif){
         $status = true;
         $msg = "Clave guardada con éxito";
     }else{
@@ -214,14 +276,16 @@ function setPassword(/*string*/ $email, /*string*/ $response, /*string*/ $pwd){
 }
 
 function setPasswordFromOld(/*int*/ $id, /*string*/ $old, /*string*/ $new){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
-    if($old != DEF_PWD) $old = md5($old);
-    $new = md5($new);
+    if($old != DEF_PWD) $old = hashPassword($old);
+    $new = hashPassword($new);
 
     $stmt1 = $db->prepare(
-        "SELECT user_pwd FROM users
+        "SELECT user_pwd FROM {$prx}users
         WHERE user_id = :id"
     );
     $stmt1->bindValue('id', $id, PDO::PARAM_INT);
@@ -238,7 +302,7 @@ function setPasswordFromOld(/*int*/ $id, /*string*/ $old, /*string*/ $new){
         }
         else{
             $stmt2 = $db->prepare(
-                "UPDATE users SET user_pwd = :new
+                "UPDATE {$prx}users SET user_pwd = :new
                 WHERE user_id = :id"
             );
             $stmt2->bindValue('new', $new);
@@ -259,11 +323,13 @@ function setPasswordFromOld(/*int*/ $id, /*string*/ $old, /*string*/ $new){
 }
 
 function checkEmail(/*string*/ $email){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt = $db->prepare(
-        "SELECT user_id FROM users
+        "SELECT user_id FROM {$prx}users
         WHERE user_user = :email"
     );
     $stmt->bindValue('email', $email);
@@ -285,11 +351,13 @@ function checkEmail(/*string*/ $email){
 }
 
 function checkOldPassword(/*int*/ $id){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt = $db->prepare(
-        "SELECT user_pwd FROM users
+        "SELECT user_pwd FROM {$prx}users
         WHERE user_id = :id"
     );
     $stmt->bindValue('id', $id, PDO::PARAM_INT);

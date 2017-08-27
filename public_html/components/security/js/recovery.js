@@ -83,7 +83,7 @@ function setPwd(args){
     params = {
         email: args.email,
         response: args.response,
-        pwd: $('#pwd').val()
+        pwd: $('#pwd_new').val()
 
     };
     $.ajax({
