@@ -7,18 +7,21 @@
 
 defined('_EXE') or die('Acceso restringido');
 
-$db = include ROOTDIR.'/models/db.php';
-include ROOTDIR.'/models/tables.php';
-include ROOTDIR.'/models/modelresponse.php';
+include_once ROOTDIR.'/models/db.php';
+include_once ROOTDIR.'/models/tables.php';
+include_once ROOTDIR.'/models/modelresponse.php';
 
 function getCurrentMonth(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $stmt = $db->query(
         "SELECT CASE pay_check
         WHEN 1 THEN 'Aprobados'
         WHEN 2 THEN 'Rechazados'
-        WHEN 0 THEN 'Pendientes' END AS 'Condición', COUNT(pay_id) AS 'Cantidad', SUM(pay_amount) AS 'Monto'
-        FROM payments
+        WHEN 0 THEN 'Pendientes' END AS 'Condición',
+        COUNT(pay_id) AS 'Cantidad', SUM(pay_amount) AS 'Monto'
+        FROM {$prx}payments
         WHERE MONTH(pay_date) = MONTH(NOW()) AND pay_bui = '$bui' GROUP BY pay_check"
     );
 
@@ -37,13 +40,16 @@ function getCurrentMonth(/*string*/ $bui){
 }
 
 function getLastMonth(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $stmt = $db->query(
         "SELECT CASE pay_check
         WHEN 1 THEN 'Aprobados'
         WHEN 2 THEN 'Rechazados'
-        WHEN 0 THEN 'Pendientes' END AS 'Condición', COUNT(pay_id) AS 'Cantidad', SUM(pay_amount) AS 'Monto'
-        FROM payments
+        WHEN 0 THEN 'Pendientes' END AS 'Condición',
+        COUNT(pay_id) AS 'Cantidad', SUM(pay_amount) AS 'Monto'
+        FROM {$prx}payments
         WHERE MONTH(pay_date) = MONTH(NOW())-1 AND pay_bui = '$bui' GROUP BY pay_check"
     );
 
@@ -61,11 +67,14 @@ function getLastMonth(/*string*/ $bui){
 }
 
 function getLastThreeMonths(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $stmt = $db->query(
         "SELECT lap_name AS 'Mes', SUM(pay_amount)
-        AS 'Monto' FROM payments
-        INNER JOIN lapses ON MONTH(pay_date) = lap_id
+        AS 'Monto'
+        FROM {$prx}payments
+        INNER JOIN blo_lapses ON MONTH(pay_date) = lap_id
         WHERE pay_check = 0 AND pay_bui = '$bui'
         GROUP BY lap_name LIMIT 3"
     );
@@ -84,7 +93,9 @@ function getLastThreeMonths(/*string*/ $bui){
 }
 
 function approvedPayments(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $stmt = $db->query(
         "SELECT pay_id AS 'id', pay_date AS 'Fecha', bui_apt
         AS 'Apartamento', pay_amount AS 'Monto',
@@ -92,9 +103,10 @@ function approvedPayments(/*string*/ $bui){
         WHEN 1 THEN 'Transferencia'
         WHEN 2 THEN 'Depósito'
         ELSE 'otro' END AS 'Forma de Pago',
-        bank_name AS 'Banco', pay_op AS 'Num. Op.' FROM payments
-        INNER JOIN buildings ON pay_fk_number = bui_id
-        INNER JOIN banks ON pay_fk_bank = bank_id
+        bank_name AS 'Banco', pay_op AS 'Num. Op.'
+        FROM {$prx}payments
+        INNER JOIN {$prx}buildings ON pay_fk_number = bui_id
+        INNER JOIN glo_banks ON pay_fk_bank = bank_id
         WHERE pay_check = 1  AND pay_bui = '$bui'
         LIMIT 0, 10"
     );
@@ -113,7 +125,9 @@ function approvedPayments(/*string*/ $bui){
 }
 
 function refusedPayments(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $stmt = $db->query(
         "SELECT pay_id AS 'id', pay_date AS 'Fecha', bui_apt
         AS 'Apartamento', pay_amount AS 'Monto',
@@ -121,9 +135,10 @@ function refusedPayments(/*string*/ $bui){
         WHEN 1 THEN 'Transferencia'
         WHEN 2 THEN 'Depósito'
         ELSE 'otro' END AS 'Forma de Pago',
-        bank_name AS 'Banco', pay_op AS 'Num. Op.' FROM payments
-        INNER JOIN buildings ON pay_fk_number = bui_id
-        INNER JOIN banks ON pay_fk_bank = bank_id
+        bank_name AS 'Banco', pay_op AS 'Num. Op.'
+        FROM {$prx}payments
+        INNER JOIN {$prx}buildings ON pay_fk_number = bui_id
+        INNER JOIN glo_banks ON pay_fk_bank = bank_id
         WHERE pay_check = 2  AND pay_bui = '$bui'
         LIMIT 0, 10"
     );
@@ -142,7 +157,9 @@ function refusedPayments(/*string*/ $bui){
 }
 
 function pendingPayments(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $stmt = $db->query(
         "SELECT pay_id AS 'id', pay_date AS 'Fecha', bui_apt
         AS 'Apartamento', pay_amount AS 'Monto',
@@ -150,9 +167,10 @@ function pendingPayments(/*string*/ $bui){
         WHEN 1 THEN 'Transferencia'
         WHEN 2 THEN 'Depósito'
         ELSE 'otro' END AS 'Forma de Pago',
-        bank_name AS 'Banco', pay_op AS 'Num. Op.' FROM payments
-        INNER JOIN buildings ON pay_fk_number = bui_id
-        INNER JOIN banks ON pay_fk_bank = bank_id
+        bank_name AS 'Banco', pay_op AS 'Num. Op.'
+        FROM {$prx}payments
+        INNER JOIN {$prx}buildings ON pay_fk_number = bui_id
+        INNER JOIN glo_banks ON pay_fk_bank = bank_id
         WHERE pay_check = 0  AND pay_bui = '$bui'
         LIMIT 0, 10"
     );

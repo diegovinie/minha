@@ -7,9 +7,9 @@
 
 defined('_EXE') or die('Acceso restringido');
 
-include ROOTDIR.'/models/db.php';
-include ROOTDIR.'/models/tables.php';
-include ROOTDIR.'/models/modelresponse.php';
+include_once ROOTDIR.'/models/db.php';
+include_once ROOTDIR.'/models/tables.php';
+include_once ROOTDIR.'/models/modelresponse.php';
 
 
 function getUsers(/*string*/ $bui){

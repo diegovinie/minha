@@ -6,9 +6,9 @@
  */
 defined('_EXE') or die('Acceso restringido');
 
-include ROOTDIR.'/models/db.php';
-include ROOTDIR.'/models/modelresponse.php';
-include ROOTDIR.'/models/hashpassword.php';
+include_once ROOTDIR.'/models/db.php';
+include_once ROOTDIR.'/models/modelresponse.php';
+include_once ROOTDIR.'/models/hashpassword.php';
 
 function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
     $db = connectDb();
@@ -129,7 +129,8 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
             if($remember === 1){
                 $token = hashPassword(time().rand(0,100));
                 $info = json_encode($_SESSION);
-                $qc = "INSERT INTO {$prx}cookies VALUES(null, 'remember', '$token', '$info', null)";
+                $qc = "INSERT INTO glo_cookies
+                    VALUES(null, 'remember', '$token', '$info', null)";
 
                 try{
                     $db->exec($qc);
@@ -246,8 +247,10 @@ function setPassword(/*string*/ $email, /*string*/ $response, /*string*/ $pwd){
     $response = hashPassword($response);
 
     $stmt = $db->prepare(
-        "UPDATE {$prx}users SET user_pwd = :password
-        WHERE user_user = :email AND user_response = :response"
+        "UPDATE {$prx}users
+        SET user_pwd = :password
+        WHERE user_user = :email
+        AND user_response = :response"
     );
     $stmt->execute(array(
         'password' => $password,
@@ -256,7 +259,8 @@ function setPassword(/*string*/ $email, /*string*/ $response, /*string*/ $pwd){
     ));
 
     $stmt2 = $db->prepare(
-        "SELECT user_pwd FROM {$prx}users
+        "SELECT user_pwd
+        FROM {$prx}users
         WHERE user_user = :email"
     );
     $stmt2->bindValue('email', $email);
@@ -285,7 +289,8 @@ function setPasswordFromOld(/*int*/ $id, /*string*/ $old, /*string*/ $new){
     $new = hashPassword($new);
 
     $stmt1 = $db->prepare(
-        "SELECT user_pwd FROM {$prx}users
+        "SELECT user_pwd
+        FROM {$prx}users
         WHERE user_id = :id"
     );
     $stmt1->bindValue('id', $id, PDO::PARAM_INT);
@@ -302,7 +307,8 @@ function setPasswordFromOld(/*int*/ $id, /*string*/ $old, /*string*/ $new){
         }
         else{
             $stmt2 = $db->prepare(
-                "UPDATE {$prx}users SET user_pwd = :new
+                "UPDATE {$prx}users
+                SET user_pwd = :new
                 WHERE user_id = :id"
             );
             $stmt2->bindValue('new', $new);
@@ -329,7 +335,8 @@ function checkEmail(/*string*/ $email){
     $status = false;
 
     $stmt = $db->prepare(
-        "SELECT user_id FROM {$prx}users
+        "SELECT user_id
+        FROM {$prx}users
         WHERE user_user = :email"
     );
     $stmt->bindValue('email', $email);
@@ -357,7 +364,8 @@ function checkOldPassword(/*int*/ $id){
     $status = false;
 
     $stmt = $db->prepare(
-        "SELECT user_pwd FROM {$prx}users
+        "SELECT user_pwd
+        FROM {$prx}users
         WHERE user_id = :id"
     );
     $stmt->bindValue('id', $id, PDO::PARAM_INT);
@@ -378,8 +386,4 @@ function checkOldPassword(/*int*/ $id){
     }
 
     return jsonResponse($status, $msg);
-}
-
-function updatePassword(/*int*/ $id, /*string*/ $old, /*string*/ $new){
-    setPasswordFromOld($id, $old, $new);
 }

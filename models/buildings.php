@@ -2,13 +2,15 @@
 
 defined('_EXE') or die('Acceso restringido');
 
-function getFractionA17(/*string*/ $bui){
+include_once ROOTDIR.'/models/db.php';
 
-    global $db;
+function getFractionA17(/*string*/ $bui){
+    $db = connectDb();
+    $prx = $db->getPrx();
 
     $stmt = $db->prepare(
         "SELECT bui_id AS 'id', bui_apt AS 'name'
-        FROM buildings
+        FROM {$prx}buildings
         WHERE bui_assigned = 1 AND bui_name = :bui"
     );
     $stmt->bindValue('bui', $bui);
@@ -46,11 +48,12 @@ function getFractionA17(/*string*/ $bui){
 }
 
 function getFractionCountry_Park(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
 
     $stmt = $db->prepare(
         "SELECT COUNT(bui_id)
-        FROM buildings
+        FROM {$prx}buildings
         WHERE bui_assigned = 1 AND bui_name = :bui"
     );
     $stmt->bindValue('bui', $bui);

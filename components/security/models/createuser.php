@@ -4,8 +4,8 @@
  */
 defined('_EXE') or die('Acceso restringido');
 
-include ROOTDIR.'/models/db.php';
-include ROOTDIR.'/models/modelresponse.php';
+include_once ROOTDIR.'/models/db.php';
+include_once ROOTDIR.'/models/modelresponse.php';
 
 // Repetida en users/models/users.php
 function createUser(    /*string*/ $name,
@@ -28,7 +28,8 @@ function createUser(    /*string*/ $name,
 
     // Verifica que no exista el usuario
     $stmt1 = $db->prepare(
-        "SELECT user_id FROM {$prx}users
+        "SELECT user_id
+        FROM {$prx}users
         WHERE user_user = :email"
     );
     $stmt1->bindValue('email', $email);
@@ -41,7 +42,7 @@ function createUser(    /*string*/ $name,
         //Registra en users usuario y clave como inactivo
         $pwd = md5($pwd);
         $stmt2 = $db->prepare(
-            "INSERT INTO users
+            "INSERT INTO {$prx}users
             VALUES (
                 NULL,
                 :email,

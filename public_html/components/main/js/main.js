@@ -8,7 +8,7 @@ window.onload = function(){
         }
     })
     .then(function(json){
-        console.log(json);
+
         if(json.status == true){
             $.ajax({
                 url: '/index.php/main/notices',
@@ -23,7 +23,7 @@ window.onload = function(){
             });
 
             $.ajax({
-                url: '/index.php/views/modals/changepwd.html',
+                url: '/index.php/get/modals/changepwd.html',
                 type: 'get',
                 dataType: 'html',
                 error: function(err){
@@ -31,6 +31,7 @@ window.onload = function(){
                 }
             })
             .then(function(html){
+
                 return new Promise(function(resolve){
                     $('body').append($.parseHTML(html));
 
@@ -44,49 +45,53 @@ window.onload = function(){
                         resolve();
                     }, 1000);
                 });
-            })
-
-
+            });
         }
-    })
+    });
 
     $.ajax({
         type: 'GET',
         url: '/index.php/main/balance',
         dataType: 'json',
-        success: function(res){
-            var cont = document.getElementById('balance');
-            cont.innerHTML = 'Edificio: '+ res.data.bui_name + '<br/>Apartamento: ' +res.data.bui_apt + '<br/>Bs. ' + toBs(res.data.bui_balance);
+        error: function(err){
+            console.log('Error al pedir balance: ', err);
         }
+    })
+    .then(function(res){
+        var cont = document.getElementById('balance');
+
+        cont.innerHTML = 'Edificio: '+ res.data.bui_name
+                        + '<br/>Apartamento: ' + res.data.bui_apt
+                        + '<br/>Bs. ' + toBs(res.data.bui_balance);
     });
 }
 
 function updatePassword(){
     var param = {
-            user: $("#user").val(),
             old: $("#pwd_old").val(),
             new: $("#pwd").val()
         };
+
     $.ajax({
         url: '/index.php/login/updatepassword',
         type: 'post',
         data: param,
         dataType: 'json',
-        success: function(data){
-            $('#resp').html(data.msg);
-            if(data.status ==true){
-                setTimeout(function(){
-                    $('#resp').html('');
-                    $('#chpwd').modal('hide');
-                }, 2000);
-            }else{
-                setTimeout(function(){
-                    $('#resp').html('');
-                }, 2000);
-            }
-        },
         error: function(err){
             console.log('Error updatepassword: ', err);
+        }
+    })
+    .then(function(data){
+
+        if(data.status ==true){
+
+            flashText('success', data.msg);
+            
+            setTimeout(function(){
+                $('#chpwd').modal('hide');
+            }, 2000);
+        }else{
+            flashText('danger', data.msg);
         }
     });
 }

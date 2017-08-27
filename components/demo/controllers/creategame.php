@@ -20,22 +20,37 @@ if(!$prx) die('Error al seleccionar prefijo.');
 include $basedir.'models/createuser.php';
 include $basedir.'models/createbuilding.php';
 
-$apts = call_user_func("genTemplate{$edf}");
-if(!$apts) die('Error al crear plantilla de edificio.');
+//$apts = call_user_func("genTemplate{$edf}");
+//if(!$apts) die('Error al crear plantilla de edificio.');
 
-$bui = createBuilding($apts, $userapt);
-if(!$bui) die('Error al crear edificio.');
+//$bui = createBuilding($apts, $userapt);
+//if(!$bui) die('Error al crear edificio.');
 
-include ROOTDIR.'/init/database/createbuildingstable.php';
-include ROOTDIR.'/init/database/createuserstable.php';
-include ROOTDIR.'/init/database/createuserdatatable.php';
+$tableNames = array(
+    'buildings',
+    'users',
+    'userdata',
+    'accounts',
+    'payments',
+    'funds',
+    'bills'
+);
+
+foreach ($tableNames as $name) {
+    include_once(ROOTDIR."/init/database/create{$name}table.php");
+
+    echo "$name : ";
+    $results[] = call_user_func("create{$name}Table", $prx);
+    echo "\n";
+}
+
+print_r($results); die;
 
 include $basedir.'models/preparedb.php';
 
+//createBuildingsTable($prx);
 
-createBuildingsTable($prx);
-
-createUsersTable($prx);
+//createUsersTable($prx);
 
 createUserdataTable($prx);
 

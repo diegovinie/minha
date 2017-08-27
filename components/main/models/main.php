@@ -5,8 +5,8 @@
 
 defined('_EXE') or die('Acceso restringido');
 
-include ROOTDIR.'/models/db.php';
-include ROOTDIR.'/models/modelresponse.php';
+include_once ROOTDIR.'/models/db.php';
+include_once ROOTDIR.'/models/modelresponse.php';
 
 function getBalance(/*int*/ $napt){
     $db = connectDb();

@@ -2,7 +2,7 @@
 /*
  *
  */
- 
+
 include_once ROOTDIR.'/models/db.php';
 
 function setBuildingsData($prx, $bui){
@@ -40,7 +40,7 @@ function setBuildingsData($prx, $bui){
         }
     }
 
-    return $exe;
+    return true;
 }
 
 function setUsersData($prx, $bui){

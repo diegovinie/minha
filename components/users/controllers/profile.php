@@ -8,6 +8,7 @@ defined('_EXE') or die('Acceso restringido');
 
 $id = (integer)$_SESSION['user_id'];
 $buiid = (integer)$_SESSION['number_id'];
+$edf = (string)$_SESSION['bui'];
 
 include $basedir .'models/profile.php';
 
@@ -60,15 +61,8 @@ $css = array(
     'dpicker'   => '/css/dpicker.css'
 );
 
-switch ($_SESSION['bui']) {
-    case 'A17':
-        $extra = 'components/users/views/profile/A17.html.twig';
-        break;
-
-    default:
-        $extra = '';
-        break;
-}
+// Formulario de notas particular para cada edificio
+$extra = "components/users/views/profile/{$edf}.html.twig";
 
 $twig = new LoadTwigWithGlobals($_globals['view']);
 

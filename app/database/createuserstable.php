@@ -26,11 +26,12 @@ function createUsersTable(/*string*/ $prefix=null){
           `user_active` int(1) DEFAULT NULL,
           `user_creator` varchar(64) DEFAULT NULL,
           `user_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          
           PRIMARY KEY (`user_id`),
           KEY `user_user` (`user_user`),
           KEY `user_type` (`user_type`),
           KEY `user_id` (`user_id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=249 DEFAULT CHARSET=utf8 COMMENT='Tabla de usuarios para el acceso'"
+        ) ENGINE=InnoDB COLLATE=utf8_spanish_ci DEFAULT CHARSET=utf8 COMMENT='Tabla de usuarios para el acceso'"
     );
 
     if(!$exe){

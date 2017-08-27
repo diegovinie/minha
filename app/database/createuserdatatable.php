@@ -24,14 +24,15 @@ function createUserdataTable(/*string*/ $prefix=null){
           `udata_cel` varchar(13) DEFAULT NULL,
           `udata_cond` int(1) NOT NULL DEFAULT '1',
           `udata_gender` varchar(1) DEFAULT NULL COMMENT 'M o F',
-          `udata_number_fk` int(8) unsigned NOT NULL COMMENT 'numero de apartamento',
+          `udata_bui_fk` int(8) unsigned NOT NULL COMMENT 'numero de apartamento',
           `udata_user_fk` int(8) unsigned NOT NULL,
+          
           PRIMARY KEY (`udata_id`),
           KEY `{$prx}udata_user` (`udata_user_fk`),
-          KEY `{$prx}udata_bui` (`udata_number_fk`),
-          CONSTRAINT `{$prx}link_users` FOREIGN KEY (`udata_user_fk`) REFERENCES `{$prx}users` (`user_id`),
-          CONSTRAINT `{$prx}link_buildings` FOREIGN KEY (`udata_number_fk`) REFERENCES `{$prx}buildings` (`bui_id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=219 DEFAULT CHARSET=utf8"
+          KEY `{$prx}udata_bui` (`udata_bui_fk`),
+          CONSTRAINT `{$prx}link_udata_user` FOREIGN KEY (`udata_user_fk`) REFERENCES `{$prx}users` (`user_id`),
+          CONSTRAINT `{$prx}link_udata_bui` FOREIGN KEY (`udata_bui_fk`) REFERENCES `{$prx}buildings` (`bui_id`)
+        ) ENGINE=InnoDB COLLATE=utf8_spanish_ci DEFAULT CHARSET=utf8"
     );
 
     if(!$exe){

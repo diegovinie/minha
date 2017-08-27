@@ -1,0 +1,56 @@
+[
+    {
+        "name":     "Banco Bicentenario, C.A.",
+        "rif":      "G200091487",
+        "op":       null,
+        "prefix":   "0175"
+    },
+    {
+        "name":     "Banco de Venezuela, S.A.",
+        "rif":      "J000029482",
+        "op":       null,
+        "prefix":   "0102"
+    },
+    {
+        "name":     "Banco del Tesoro, C.A.",
+        "rif":      "G200051876",
+        "op":       null,
+        "prefix":   "0163"
+    },
+    {
+        "name":     "Banco Provincial, S.A.",
+        "rif":      "J000029679",
+        "op":       null,
+        "prefix":   "0108"
+    },
+    {
+        "name":     "Banesco Banco Universal, C.A",
+        "rif":      null,
+        "op":       null,
+        "prefix":   ""
+    },
+    {
+        "name":     "Banco Nacional de Crédito, C.A.",
+        "rif":      "J309841327",
+        "op":       null,
+        "prefix":   "0191"
+    },
+    {
+        "name":     "Banco Occidental de Descuento C.A.",
+        "rif":      "",
+        "op":       null,
+        "prefix":   ""
+    },
+    {
+        "name":     "Banco Mercantil C.A.",
+        "rif":      "J000029610",
+        "op":       null,
+        "prefix":   "0105"
+    },
+    {
+        "name":     "BFC BancoFondoComún C.A.",
+        "rif":      "J000723060",
+        "op":       null,
+        "prefix":   "0151"
+    }
+]

@@ -37,7 +37,7 @@ function getPrefix(/*string*/ $email){
 
     $stmt = $db->prepare(
         "SELECT gam_id AS 'id'
-        FROM pri_game
+        FROM glo_game
         WHERE gam_user = :email"
     );
     $stmt->bindValue('email', $email);

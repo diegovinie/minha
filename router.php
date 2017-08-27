@@ -38,7 +38,12 @@ switch ($route[1]) {
         include COMDIR .'demo/router.php';
         break;
 
-    // asinc Vistas estandar /views/{tipo}
+    // Contenido dinámico
+    case 'get':
+        include 'controllers/rendertwig.php';
+        break;
+
+    // asinc Vistas estáticas /views/{tipo}
     case 'views':
         ob_start();
         include ROOTDIR .'/' .$route[1] .'/' .$route[2] .'/' .$route[3];

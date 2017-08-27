@@ -89,7 +89,7 @@ function addGameTable($user){
     $db = connectDb();
 
     $stmt = $db->prepare(
-        "INSERT INTO pri_game
+        "INSERT INTO glo_game
         (gam_id, gam_user, gam_ts)
         VALUES (NULL, :user, NULL)"
     );

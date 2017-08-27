@@ -7,17 +7,19 @@
 
 defined('_EXE') or die('Acceso restringido');
 
-$db = include ROOTDIR.'/models/db.php';
-include ROOTDIR.'/models/tables.php';
-include ROOTDIR.'/models/modelresponse.php';
+include_once ROOTDIR.'/models/db.php';
+include_once ROOTDIR.'/models/tables.php';
+include_once ROOTDIR.'/models/modelresponse.php';
 
 function getLapses(){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt = $db->query(
         "SELECT lap_id AS 'id', lap_name AS 'name'
-        FROM lapses
+        FROM glo_lapses
         ORDER BY lap_id DESC"
     );
 
@@ -33,14 +35,16 @@ function getLapses(){
 }
 
 function getBills(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt = $db->prepare(
         "SELECT bil_id AS 'id', bil_date AS 'Fecha',
         bil_class AS 'Clase', bil_desc AS 'Desc',
         bil_total AS 'Monto'
-        FROM bills
+        FROM {$prx}bills
         WHERE bil_bui = :bui AND bil_lapse_fk = 0
         ORDER BY bil_date DESC"
     );
@@ -65,14 +69,16 @@ function getBills(/*string*/ $bui){
 }
 
 function getFunds(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     $stmt = $db->prepare(
         "SELECT fun_id AS 'id', fun_name AS 'name',
         fun_balance AS 'balance', fun_type AS type,
         CONVERT(fun_default, SIGNED) AS 'amount'
-        FROM funds
+        FROM {$prx}funds
         WHERE fun_bui = :bui"
     );
     $stmt->bindValue('bui', $bui);

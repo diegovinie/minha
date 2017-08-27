@@ -7,13 +7,14 @@
 
 defined('_EXE') or die('Acceso restringido');
 
-$db = include ROOTDIR.'/models/db.php';
-include ROOTDIR.'/models/tables.php';
-include ROOTDIR.'/models/modelresponse.php';
+include_once ROOTDIR.'/models/db.php';
+include_once ROOTDIR.'/models/tables.php';
+include_once ROOTDIR.'/models/modelresponse.php';
 
 function getPayments(/*string*/ $bui, /*int*/ $napt){
+    $db = connectDb();
+    $prx = $db->getPrx();
 
-    global $db;
     $status = false;
     $header = array();
     $body = array();
@@ -23,9 +24,13 @@ function getPayments(/*string*/ $bui, /*int*/ $napt){
         CASE pay_type
         WHEN 1 THEN 'Depósito'
         WHEN 2 THEN 'Transferencia' END AS 'Tipo',
-        pay_op AS 'Num. Operación', bank_name AS 'Banco', pay_amount AS 'Monto'
-        FROM `payments` INNER JOIN buildings ON pay_fk_number = bui_id INNER JOIN banks ON pay_fk_bank = bank_id
-        WHERE bui_id = $napt AND pay_bui = '$bui' AND pay_check = 1"
+        pay_op AS 'Num. Operación', bank_name AS 'Banco',
+        pay_amount AS 'Monto'
+        FROM {$prx}payments
+        INNER JOIN {$prx}buildings ON pay_fk_number = bui_id
+        INNER JOIN glo_banks ON pay_fk_bank = bank_id
+        WHERE bui_id = $napt AND pay_bui = '$bui'
+        AND pay_check = 1"
     );
 
     if($stmt){
@@ -45,16 +50,21 @@ function getPayments(/*string*/ $bui, /*int*/ $napt){
 }
 
 function getPendingPayments(/*string*/ $bui, /*int*/ $napt){
+    $db = connectDb();
+    $prx = $db->getPrx();
 
-    global $db;
     $stmt = $db->query(
         "SELECT `pay_id` AS 'id', `pay_date` AS 'Fecha',
         CASE pay_type
         WHEN 1 THEN 'Depósito'
         WHEN 2 THEN 'Transferencia' END AS 'Tipo',
-        pay_op AS 'Num. Operación', bank_name AS 'Banco', pay_amount AS 'Monto'
-        FROM `payments` INNER JOIN buildings ON pay_fk_number = bui_id INNER JOIN banks ON pay_fk_bank = bank_id
-        WHERE bui_id = $napt AND pay_bui = '$bui' AND pay_check = 0"
+        pay_op AS 'Num. Operación', bank_name AS 'Banco',
+        pay_amount AS 'Monto'
+        FROM {$prx}payments
+        INNER JOIN {$prx}buildings ON pay_fk_number = bui_id
+        INNER JOIN glo_banks ON pay_fk_bank = bank_id
+        WHERE bui_id = $napt AND pay_bui = '$bui'
+        AND pay_check = 0"
     );
 
     if($stmt){
@@ -73,16 +83,21 @@ function getPendingPayments(/*string*/ $bui, /*int*/ $napt){
 }
 
 function getReturnedPayments(/*string*/ $bui, /*int*/ $napt){
-    // id3 = "devueltos"
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $stmt = $db->query(
         "SELECT `pay_id` AS 'id', `pay_date` AS 'Fecha',
         CASE pay_type
         WHEN 1 THEN 'Depósito'
         WHEN 2 THEN 'Transferencia' END AS 'Tipo',
-        pay_op AS 'Num. Operación', bank_name AS 'Banco', pay_amount AS 'Monto'
-        FROM `payments` INNER JOIN buildings ON pay_fk_number = bui_id INNER JOIN banks ON pay_fk_bank = bank_id
-        WHERE bui_id = $napt AND pay_bui = '$bui' AND pay_check = 2"
+        pay_op AS 'Num. Operación', bank_name AS 'Banco',
+        pay_amount AS 'Monto'
+        FROM {$prx}payments
+        INNER JOIN {$prx}buildings ON pay_fk_number = bui_id
+        INNER JOIN glo_banks ON pay_fk_bank = bank_id
+        WHERE bui_id = $napt AND pay_bui = '$bui'
+        AND pay_check = 2"
     );
 
     if($stmt){
@@ -101,10 +116,12 @@ function getReturnedPayments(/*string*/ $bui, /*int*/ $napt){
 }
 
 function getBanks(){
-    // 'core/async_user_payments.php?fun=&arg=banks'
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $stmt = $db->query(
-        "SELECT bank_id AS 'id', bank_name AS 'name' FROM banks"
+        "SELECT bank_id AS 'id', bank_name AS 'name'
+        FROM glo_banks"
     );
     if($stmt){
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $ind => $row) {
@@ -117,14 +134,19 @@ function getBanks(){
 }
 
 function editPayment(/*int*/ $id){
+    $db = connectDb();
+    $prx = $db->getPrx();
 
-    global $db;
     $status = false;
     $data = array();
 
     $stmt = $db->query(
-        "SELECT pay_id AS 'id', pay_date AS 'Fecha', pay_amount AS 'Monto', pay_op AS 'n_op', pay_fk_bank AS 'bankid', pay_type AS 'type', pay_obs AS 'notes'
-        FROM payments WHERE pay_id = $id"
+        "SELECT pay_id AS 'id', pay_date AS 'Fecha',
+        pay_amount AS 'Monto', pay_op AS 'n_op',
+        pay_fk_bank AS 'bankid', pay_type AS 'type',
+        pay_obs AS 'notes'
+        FROM {$prx}payments
+        WHERE pay_id = $id"
     );
 
     if($stmt){
@@ -141,10 +163,13 @@ function editPayment(/*int*/ $id){
 }
 
 function removePayment(/*int*/ $id){
+    $db = connectDb();
+    $prx = $db->getPrx();
 
-    global $db;
     $ex = $db->exec(
-        "UPDATE payments SET pay_check = 3 WHERE pay_id = $id"
+        "UPDATE {$prx}payments
+        SET pay_check = 3
+        WHERE pay_id = $id"
     );
     $status = $ex? true : false;
     $msg = $ex? 'Pago descartado' : 'No se pudo realizar la operación';
@@ -153,12 +178,13 @@ function removePayment(/*int*/ $id){
 }
 
 function sendPayment(/*array*/ $collection){
+    $db = connectDb();
+    $prx = $db->getPrx();
 
-    global $db;
     extract($collection);
 
     $exe = $db->exec(
-        "INSERT INTO payments VALUES
+        "INSERT INTO {$prx}payments VALUES
         (NULL,
             '$date',
             '$bui',

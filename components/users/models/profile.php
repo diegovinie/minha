@@ -7,8 +7,8 @@
 
 defined('_EXE') or die('Acceso restringido');
 
-include ROOTDIR.'/models/db.php';
-include ROOTDIR.'/models/modelresponse.php';
+include_once ROOTDIR.'/models/db.php';
+include_once ROOTDIR.'/models/modelresponse.php';
 
 function getFromBuildings(/*int*/ $id){
     $db = connectDb();
@@ -17,7 +17,8 @@ function getFromBuildings(/*int*/ $id){
     $status = false;
 
     $stmt1 = $db->prepare(
-        "SELECT bui_id AS 'id', bui_name AS 'name', bui_apt AS 'apt'
+        "SELECT bui_id AS 'id', bui_name AS 'name',
+        bui_apt AS 'apt'
         FROM {$prx}buildings
         WHERE bui_id = :id"
     );
@@ -70,7 +71,8 @@ function getFromUsers(/*int*/ $id){
 
     $stmt1 = $db->query(
         "SELECT user_user AS 'email', user_type AS 'rol'
-        FROM {$prx}users WHERE user_id = $id"
+        FROM {$prx}users
+        WHERE user_id = $id"
     );
 
     if(!$stmt1){
@@ -122,10 +124,10 @@ function updateUserdata(/*int*/     $id,
     $stmt1 = $db->prepare(
         "UPDATE {$prx}userdata
         SET udata_name = :name,
-        udata_surname = :surname,
-        udata_ci = :ci,
-        udata_cel = :cel,
-        udata_gender = :gender
+            udata_surname = :surname,
+            udata_ci = :ci,
+            udata_cel = :cel,
+            udata_gender = :gender
         WHERE udata_user_fk = :id"
     );
     $res1 = $stmt1->execute(array(

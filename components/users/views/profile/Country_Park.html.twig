@@ -1,4 +1,4 @@
-{# components/users/views/profile/A17.html.twig #}
+{# components/users/views/profile/Country_Park.html.twig #}
 
 <form class="panel panel-default" id="profile_A17">
 
@@ -7,14 +7,7 @@
         Datos de la Vivienda
     </div>
     <div class="panel-body">
-        <div class="form-group">
-            <div class="checkbox">
-                <label for="multi"><input type="checkbox" id="multi" name="multi" value="1"> Documento Multifamiliar</label>
-            </div>
-            <div class="checkbox">
-                <label for=""><input type="checkbox" name="uni" id="uni" value="1"> Documento Unifamiliar</label>
-            </div>
-        </div>
+
         <div class="form-group">
             <label>Servicio de gas:</label>
             <div class="">
@@ -39,20 +32,19 @@
                 <label  class="radio-inline"><input type="radio" name="abacantv" id="noabacantv" value="3">No instalado</label>
             </div>
         </div>
-        <div class="form-group">
-            <label>TV Satelital CANTV:</label>
-            <div class="">
-                <label  class="radio-inline"><input type="radio" name="tvcantv" id="optvcantv" value="1">Operativo</label>
-                <label  class="radio-inline"><input type="radio" name="tvcantv" id="detvcantv" value="2">Defectuoso</label>
-                <label  class="radio-inline"><input type="radio" name="tvcantv" id="notvcantv" value="3">No instalado</label>
-            </div>
-        </div>
+
         <div class="form-group">
             <label>DirecTV:</label>
             <div class="">
-                <label  class="radio-inline"><input type="radio" name="directv" id="opdirectv" value="1">Operativo</label>
-                <label  class="radio-inline"><input type="radio" name="directv" id="dedirectv" value="2">Defectuoso</label>
+                <label  class="radio-inline"><input type="radio" name="directv" id="opdirectv" value="1">Individual</label>
+                <label  class="radio-inline"><input type="radio" name="directv" id="dedirectv" value="2">Comunitario</label>
                 <label  class="radio-inline"><input type="radio" name="directv" id="nodirectv" value="3">No instalado</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-6 col-md-offset-6">
+                <label>Número de mascotas</label>
+                <input type="number" class="form-control" name="pets" id="pets">
             </div>
         </div>
         <div class="form-group">

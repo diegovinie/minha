@@ -7,24 +7,25 @@
 
 defined('_EXE') or die('Acceso restringido');
 
-$db = include ROOTDIR.'/models/db.php';
-include ROOTDIR.'/models/modelresponse.php';
-include ROOTDIR.'/models/errors.php';
-include ROOTDIR.'/models/buildings.php';
+include_once ROOTDIR.'/models/db.php';
+include_once ROOTDIR.'/models/modelresponse.php';
+include_once ROOTDIR.'/models/errors.php';
+include_once ROOTDIR.'/models/buildings.php';
 
 /**
  *
  * @return Array|false Registra el error.
  */
 function getUserInfo(/*int*/ $id){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
 
     $stmt = $db->prepare(
         "SELECT udata_name AS 'name',
         udata_surname AS 'surname',
         user_user AS 'email'
-        FROM userdata INNER JOIN users
-        ON user_id = udata_user_fk
+        FROM {$prx}userdata
+        INNER JOIN {$prx}users ON user_id = udata_user_fk
         WHERE user_id = :id"
     );
     $stmt->bindValue('id', $id, PDO::PARAM_INT);
@@ -46,12 +47,13 @@ function getUserInfo(/*int*/ $id){
  * @return Array|false Registra el error.
  */
 function getLapseInfo(/*int*/ $lapse){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
 
     $stmt = $db->prepare(
         "SELECT lap_id AS 'id', lap_name AS 'name',
         lap_month AS 'm', lap_year AS 'y'
-        FROM lapses
+        FROM glo_lapses
         WHERE lap_id = :lapse"
     );
     $stmt->bindValue('lapse', $lapse, PDO::PARAM_INT);
@@ -73,14 +75,15 @@ function getLapseInfo(/*int*/ $lapse){
  * @return array[][]|false Registra el error.
  */
 function getBillsInfo(/*array*/ $listid){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
 
     if(empty($listid) || !$listid) return false;
 
     $stmt = $db->prepare(
         "SELECT bil_total AS 'total', bil_class AS 'class',
         bil_desc AS 'desc'
-        FROM bills
+        FROM {$prx}bills
         WHERE bil_id = :id"
     );
     $stmt->bindParam('id', $id, PDO::PARAM_INT);
@@ -107,14 +110,15 @@ function getBillsInfo(/*array*/ $listid){
  * @return array[][]|false Registra el error.
  */
 function getFundsInfo(/*array*/ $listid){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
 
     if(empty($listid) || !$listid) return false;
 
     $stmt = $db->prepare(
         "SELECT fun_name AS 'name',
         fun_type AS 'type'
-        FROM funds
+        FROM {$prx}funds
         WHERE fun_id = :id"
     );
     $stmt->bindParam('id', $id, PDO::PARAM_INT);
@@ -143,10 +147,11 @@ function getFundsInfo(/*array*/ $listid){
  * @return bool / Registra el error.
  */
 function setBillsQueue(/*array*/ $listid){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
 
     $stmt = $db->prepare(
-        "UPDATE bills
+        "UPDATE {$prx}bills
         SET bil_lapse_fk = 99
         WHERE bil_id = :id"
     );
@@ -170,12 +175,14 @@ function setBillsQueue(/*array*/ $listid){
  * @return bool / Registra el error.
  */
 function unsetBillsQueue(){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
 
     // Desmarcar los gastos en la base de datos.
     $res = $db->exec(
-        "UPDATE bills
+        "UPDATE {$prx}bills
         SET bil_lapse_fk = 0
         WHERE bil_lapse_fk = 99"
     );
@@ -195,12 +202,13 @@ function unsetBillsQueue(){
  * @return array[][]|false Registra el error.
  */
 function getAssignedApts(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
 
     $stmt = $db->prepare(
         "SELECT bui_apt AS 'name', bui_weight AS 'w',
         bui_balance AS 'balance'
-        FROM buildings
+        FROM {$prx}buildings
         WHERE bui_assigned = 1
         AND bui_name = :bui"
     );
@@ -223,11 +231,12 @@ function getAssignedApts(/*string*/ $bui){
  * @return integer|false Registra el error.
  */
 function getNumberApts(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
 
     $stmt = $db->prepare(
         "SELECT COUNT(bui_id) AS `asignados`
-        FROM buildings
+        FROM {$prx}buildings
         WHERE bui_assigned = 1
         AND bui_name = :bui"
     );
@@ -251,11 +260,12 @@ function getNumberApts(/*string*/ $bui){
  * @return float | false Registra el error.
  */
 function getBalanceFromBuildings(/*string*/ $bui){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
 
     $stmt = $db->prepare(
         "SELECT SUM(bui_balance) AS 'balance'
-        FROM buildings
+        FROM {$prx}buildings
         WHERE bui_name = :bui"
     );
     $stmt->bindValue('bui', $bui);
@@ -347,7 +357,7 @@ function generateInvoicesBatch(  /*int*/  $userid,
 
                 //Generar el campo del total a pagar por apartamento
                 $sumPer = 0;
-                $sumTotal = 0; 
+                $sumTotal = 0;
 
                 foreach ($content[$apt['name']]['Comunes'] as $val) {
 
@@ -522,7 +532,9 @@ function discardInvoicesBatch(/*string*/ $bui, /*int*/ $number){
  * @return jsonResponse()
  */
 function saveInvoicesBatch(/*string*/ $bui, /*int*/ $number){
-    global $db;
+    $db = connectDb();
+    $prx = $db->getPrx();
+
     $status = false;
     $error = false;
 
@@ -536,7 +548,7 @@ function saveInvoicesBatch(/*string*/ $bui, /*int*/ $number){
 
     $stmt1 = $db->prepare(
         "SELECT lap_id AS 'id'
-        FROM lapses
+        FROM glo_lapses
         WHERE lap_name = :lapse"
     );
     $stmt1->bindValue('lapse', $lapse);
@@ -550,7 +562,7 @@ function saveInvoicesBatch(/*string*/ $bui, /*int*/ $number){
         $lapid = (int)$stmt1->fetchColumn();
 
         $exe2 = $db->exec(
-            "UPDATE bills
+            "UPDATE {$prx}bills
             SET bil_lapse_fk = $lapid
             WHERE bil_lapse_fk = 99"
         );
@@ -561,7 +573,7 @@ function saveInvoicesBatch(/*string*/ $bui, /*int*/ $number){
         else{
             // Actualizar la tabla funds.
             $stmt3 = $db->prepare(
-                "UPDATE funds
+                "UPDATE {$prx}funds
                 SET fun_balance = fun_balance + :amount
                 WHERE fun_name = :name"
             );
@@ -589,7 +601,7 @@ function saveInvoicesBatch(/*string*/ $bui, /*int*/ $number){
             }
 
             $stmt4 = $db->prepare(
-                "UPDATE buildings
+                "UPDATE {$prx}buildings
                 SET bui_balance = bui_balance - :total
                 WHERE bui_apt = :apt
                 AND bui_name = :bui"
