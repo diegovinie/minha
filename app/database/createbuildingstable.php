@@ -5,29 +5,30 @@
 
 include_once ROOTDIR.'/models/db.php';
 
-function createBuildingsTable(/*string*/ $prefix=null){
-    $db = connectDb($prefix);
-    $prx = $db->getPrx();
+function createBuildingsTable(){
+    $db = connectDb();
 
     $ex = $db->exec(
         "SET FOREIGN_KEY_CHECKS=0;
-        DROP TABLE IF EXISTS {$prx}buildings CASCADE;
+        DROP TABLE IF EXISTS glo_buildings CASCADE;
         SET FOREIGN_KEY_CHECKS=1;"
     );
-    //if(!$ex) print_r($db->errorInfo()); die;
+
     $exe = $db->exec(
-        "CREATE TABLE {$prx}buildings (
+        "CREATE TABLE glo_buildings (
           `bui_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-          `bui_name` varchar(30) NOT NULL COMMENT 'Nombre del edificio',
-          `bui_apt` varchar(10) NOT NULL COMMENT 'Nombre del apartamento',
-          `bui_balance` decimal(10,2) NOT NULL DEFAULT '0.00',
-          `bui_weight` varchar(10) NOT NULL DEFAULT '0.00' COMMENT 'Porcentaje ponderado',
-          `bui_assigned` tinyint(1) NOT NULL DEFAULT '1',
-          `bui_occupied` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Si esta habitado',
-          `bui_notes` varchar(1024) DEFAULT NULL,
-          
+          `bui_name` varchar(64) NOT NULL,
+          `bui_edf` varchar(30) NOT NULL COMMENT 'Nombre corto',
+          `bui_num` int(4) NOT NULL COMMENT 'Numero de apartamentos',
+          `bui_levels` int(4) NOT NULL COMMENT 'Numero de pisos',
+          `bui_parking` int(4) NOT NULL,
+          `bui_cons` int(1) NOT NULL COMMENT 'Si tiene conserjeria',
+          `bui_ofi` int(4) NOT NULL  COMMENT 'Si tiene oficinas',
+          `bui_gardens` int(4) NOT NULL COMMENT 'm2 de jardines',
+          `bui_notes` varchar(512) DEFAULT NULL,
+
           PRIMARY KEY (`bui_id`)
-        ) ENGINE=InnoDB COLLATE=utf8_spanish_ci DEFAULT CHARSET=utf8"
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci"
     );
 
     if(!$exe){

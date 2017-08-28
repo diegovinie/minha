@@ -20,7 +20,7 @@ function createPaymentsTable(/*string*/ $prefix=null){
           `pay_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
           `pay_date` date NOT NULL COMMENT 'Fecha de la operacion',
           `pay_edf` varchar(30) NOT NULL COMMENT 'Nombre del edificio',
-          `pay_bui_fk` int(8) unsigned NOT NULL COMMENT 'Id Apartamento',
+          `pay_apt_fk` int(8) unsigned NOT NULL COMMENT 'Id Apartamento',
           `pay_type` int(1) NOT NULL COMMENT 'Tipo de operacion',
           `pay_op` varchar(16) NOT NULL COMMENT 'Numero de operacion',
           `pay_bank_fk` int(8) unsigned NOT NULL COMMENT 'Banco',
@@ -29,10 +29,10 @@ function createPaymentsTable(/*string*/ $prefix=null){
           `pay_obs` varchar(256) DEFAULT NULL COMMENT 'Observaciones',
           `pay_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
           `pay_user_fk` int(8) unsigned NOT NULL,
-          
+
           PRIMARY KEY (`pay_id`),
-          KEY `index_pay` (`pay_user_fk`,`pay_type`,`pay_bank_fk`,`pay_bui_fk`),
-          CONSTRAINT `{$prx}link_pay_bui` FOREIGN KEY (`pay_bui_fk`) REFERENCES `{$prx}buildings` (`bui_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+          KEY `index_pay` (`pay_user_fk`,`pay_type`,`pay_bank_fk`,`pay_apt_fk`),
+          CONSTRAINT `{$prx}link_pay_apt` FOREIGN KEY (`pay_apt_fk`) REFERENCES `{$prx}apartments` (`apt_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
           CONSTRAINT `{$prx}link_pay_bank` FOREIGN KEY (`pay_bank_fk`) REFERENCES `glo_banks` (`bank_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
         ) ENGINE=InnoDB COLLATE=utf8_spanish_ci DEFAULT CHARSET=utf8"
     );

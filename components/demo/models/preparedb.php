@@ -5,15 +5,24 @@
 
 include_once ROOTDIR.'/models/db.php';
 
-function setBuildingsData($prx, $bui){
+function setApartmentsData($prx, $apts){
     $db = connectDb();
 
+    $st = $db->prepare(
+        "SELECT bui_id
+        FROM glo_buildings
+        WHERE bui_edf = :edf"
+    );
+    $st->bindParam('edf', $edf);
+
+
     $stmt = $db->prepare(
-        "INSERT INTO {$prx}buildings
+        "INSERT INTO {$prx}apartments
         VALUES (
             NULL,
             :name,
-            :apt,
+            :buiid,
+            :edf,
             0,
             :w,
             :assigned,
@@ -22,15 +31,20 @@ function setBuildingsData($prx, $bui){
         )"
     );
 
-    foreach ($bui as $id => $aptarr) {
+    foreach ($apts as $id => $apt) {
         $stmt->bindParam('name', $name);
-        $stmt->bindParam('apt', $apt);
+        $stmt->bindParam('buiid', $buiid);
+        $stmt->bindParam('edf', $edf);
         $stmt->bindParam('w', $weight);
         $stmt->bindParam('assigned', $assigned, PDO::PARAM_INT);
         $stmt->bindParam('occupied', $occupied, PDO::PARAM_INT);
         $stmt->bindParam('notes', $notes);
 
-        extract($aptarr);
+        extract($apt);
+
+        $qry = $st->execute();
+
+        $buiid = $st->fetchColumn();
 
         $exe = $stmt->execute();
 
@@ -43,7 +57,7 @@ function setBuildingsData($prx, $bui){
     return true;
 }
 
-function setUsersData($prx, $bui){
+function setUsersData($prx, $apts){
     $db = connectDb();
 
     $stmt = $db->prepare(
@@ -68,13 +82,15 @@ function setUsersData($prx, $bui){
     $stmt->bindParam('active', $active);
 
     $stmt2 = $db->prepare(
-        "SELECT user_id AS 'userid', bui_id AS 'buiid'
-        FROM {$prx}users, {$prx}buildings
+        "SELECT user_id AS 'userid', apt_id AS 'aptid'
+        FROM {$prx}users, {$prx}apartments
         WHERE user_user = :email
-        AND bui_apt = :aptname"
+        AND apt_edf = :edf
+        AND apt_name = :name"
     );
     $stmt2->bindParam('email', $email);
-    $stmt2->bindParam('aptname', $aptname);
+    $stmt2->bindParam('name', $aptname);
+    $stmt2->bindParam('edf', $aptedf);
 
     $stmt3 = $db->prepare(
         "INSERT INTO `{$prx}userdata`
@@ -86,7 +102,8 @@ function setUsersData($prx, $bui){
             :cel,
             :cond,
             :gender,
-            :buiid,
+            :nac,
+            :aptid,
             :userid)"
     );
     $stmt3->bindParam('name', $name);
@@ -95,10 +112,11 @@ function setUsersData($prx, $bui){
     $stmt3->bindParam('cel', $cel);
     $stmt3->bindParam('cond', $cond);
     $stmt3->bindParam('gender', $gender);
-    $stmt3->bindParam('buiid', $buiid);
+    $stmt3->bindParam('nac', $nac);
+    $stmt3->bindParam('aptid', $aptid);
     $stmt3->bindParam('userid', $userid);
 
-    foreach ($bui as $apt) {
+    foreach ($apts as $apt) {
 
         if(isset($apt['users'])){
 
@@ -115,7 +133,9 @@ function setUsersData($prx, $bui){
                     return false;
                 }
                 else{
-                    $aptname = $apt['apt'];
+                    $aptname = $apt['name'];
+                    $aptedf = $apt['edf'];
+
 
                     $exe2 = $stmt2->execute();
 
@@ -125,7 +145,7 @@ function setUsersData($prx, $bui){
                     }
                     else{
                         $res2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-                        //print_r($res2); die;
+
                         extract($res2);
 
                         $exe3 = $stmt3->execute();

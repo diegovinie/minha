@@ -1,5 +1,5 @@
 <?php
-/* components/demo/models/createbuilding.php
+/* components/demo/models/createcommunity.php
  *
  */
 
@@ -26,10 +26,10 @@ function genTemplateA17(){
 
         foreach ($specs as $letter => $w) {
             $apt = array();
-            $apt['apt'] = $level.$letter;
+            $apt['name'] = $level.$letter;
             $apt['assigned'] = mt_rand() % 25? 1 : 0;
             $apt['weight'] = round($w/$t, 6);
-            $apt['name'] = 'A17';
+            $apt['edf'] = 'A17';
             $apt['occupied'] = 0;
             $apt['notes'] = '';
             $apts[] = $apt;
@@ -63,10 +63,10 @@ function genTemplateCountry_Park(){
 
     foreach ($list as $ind => $name) {
         $apt = array();
-        $apt['apt'] = $name;
+        $apt['name'] = $name;
         $apt['assigned'] = 1;
         $apt['weight'] = $per[$ind];
-        $apt['name'] = 'Country_Park';
+        $apt['edf'] = 'Country_Park';
         $apt['occupied'] = 0;
         $apt['notes'] = '';
         $apts[] = $apt;
@@ -85,14 +85,14 @@ function genNotes(){
 /**
  * @return array[][][]
  */
-function createBuilding(/*array*/ $apts, /*string*/ $userapt=null){
+function createCommunity(/*array*/ $apts, /*string*/ $userapt=null){
 
     // Se generan los usuarios para cada apartamento.
     $id = 1;
     foreach ($apts as $apt) {
 
         // Si está asignado se crean usuarios.
-        if($apt['assigned'] == 1 && $apt['apt'] != $userapt){
+        if($apt['assigned'] == 1 && $apt['name'] != $userapt){
             // Se crean usuarios hasta que salga el titular.
             $principal = 0;
             while(!$principal){
@@ -105,23 +105,23 @@ function createBuilding(/*array*/ $apts, /*string*/ $userapt=null){
             $apt['notes'] = genNotes();
         }
         // Se agrega el apartamento al edificio
-        $bui[] = $apt;
+        $cmty[] = $apt;
     }
-    return $bui;
+    return $cmty;
 }
 
 /**
- * Ejecuta y graba el eco de createBuilding()
+ * Ejecuta y graba el eco de createCommunity()
  * @return bool
  */
-function saveBuilding(/*string*/ $edif, /*string*/ $filename=null){
+function saveCommunity(/*string*/ $edif, /*string*/ $filename=null){
 
     $apts = call_user_func("genTemplate{$edif}");
 
-    $bui = createBuilding($apts);
+    $cmty = createCommunity($apts);
 
     ob_start();
-    print_r($bui);
+    print_r($cmty);
     $res = ob_get_clean();
 
     $file = $filename? $filename : 'prueba.txt';

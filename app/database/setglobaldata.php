@@ -5,6 +5,17 @@
 
 include_once ROOTDIR.'/models/db.php';
 
+function setDataAllTable(){
+
+    $re[] = setDataBanksTable();
+    $re[] = setDataLapsesTable();
+    $re[] = setDataTypesTable();
+    $re[] = setDataBuildingsTable();
+
+    return array_sum($re) == count($re)? true : print_r($re);
+
+}
+
 function setDataBanksTable(){
     $db = connectDb();
 
@@ -102,7 +113,7 @@ function setDataTypesTable(){
         'banks',
         'cookies',
         'game',
-        'buildings',
+        'apartments',
         'subjects',
         'users',
         'providers',
@@ -123,6 +134,52 @@ function setDataTypesTable(){
     $stmt->bindParam('type', $type);
 
     foreach($types as $type){
+
+        $exe = $stmt->execute();
+
+        if(!$exe){
+            echo $stmt->errorInfo()[2];
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function setDataBuildingsTable(){
+    $db = connectDb();
+
+    $json = file_get_contents(APPDIR."database/datafixtures/buildings.json");
+    $buis = json_decode($json, true);
+
+    $stmt = $db->prepare(
+        "INSERT INTO glo_buildings
+        VALUES (
+            NULL,
+            :name,
+            :edf,
+            :num,
+            :levels,
+            :parking,
+            :cons,
+            :ofi,
+            :gardens,
+            :notes)"
+    );
+    $stmt->bindParam('name', $name);
+    $stmt->bindParam('edf', $alias);
+    $stmt->bindParam('num', $num);
+    $stmt->bindParam('levels', $levels);
+    $stmt->bindParam('parking', $parking);
+    $stmt->bindParam('cons', $cons);
+    $stmt->bindParam('ofi', $ofi);
+    $stmt->bindParam('gardens', $gardens);
+    $stmt->bindParam('notes', $notes);
+
+    foreach($buis as $bui){
+        extract($bui);
+
+        $notes = json_encode($bui['notes']);
 
         $exe = $stmt->execute();
 

@@ -9,7 +9,7 @@ defined('_EXE') or die('Acceso restringido');
 
 include_once ROOTDIR.'/models/pdoe.php';
 
-function connectDb($prefix=null){
+function connectDb(/*string*/ $prefix=null){
 
     if(!$prefix){
         if(isset($_SESSION['prefix'])) $prefix = $_SESSION['prefix'];
@@ -53,5 +53,94 @@ function getPrefix(/*string*/ $email){
         $id = $stmt->fetchColumn();
 
         return "u{$id}_";
+    }
+}
+
+function getTypeId(/*string*/ $name){
+    $db = connectDb();
+
+    $stmt = $db->prepare(
+        "SELECT type_id AS 'id'
+        FROM glo_types
+        WHERE type_name = :name"
+    );
+    $stmt->bindValue('name', $name);
+    $res = $stmt->execute();
+
+    if(!$res){
+        echo $stmt->errorInfo()[2];
+        return false;
+    }
+    else{
+
+        return = $stmt->fetchColumn();
+    }
+}
+
+function setAiId(/*string*/ $name, /*string*/ $prefix=null){
+    $db = connectDb($prefix);
+
+    $id = getTypeId($name);
+
+    $res = $db->query(
+        "INSERT INTO {$prx}subjects
+        VALUES(
+            NULL,
+            $id,
+            0,
+            1,
+            NULL
+        )"
+    );
+
+    if(!$res){
+        echo $stmt->errorInfo()[2];
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+function setHumanId(/*string*/ $name, /*string*/ $prefix=null){
+    $db = connectDb($prefix);
+
+    $id = getTypeId($name);
+
+    $res = $db->query(
+        "INSERT INTO {$prx}subjects
+        VALUES(
+            NULL,
+            $id,
+            1,
+            1,
+            NULL
+        )"
+    );
+
+    if(!$res){
+        echo $stmt->errorInfo()[2];
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+function getLastId(/*string*/ $prefix=null){
+    $db = connectDb($prefix);
+
+    $res = $db->query(
+        "SELECT sub_id
+        FROM {$prx}subjects
+        ORDER BY DESC
+        LIMIT 1"
+    );
+
+    if(!$res){
+        return false;
+    }
+    else{
+        return $res->fetchColumn();
     }
 }

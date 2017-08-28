@@ -34,15 +34,17 @@ function addCurrentUser($prx, $email, $pwd, $name, $surname, $edf, $apt){
     }
     else{
         $stmt2 = $db->prepare(
-            "SELECT user_id, bui_id
-            FROM {$prx}users, {$prx}buildings
+            "SELECT user_id, apt_id
+            FROM {$prx}users, {$prx}apartments
             WHERE user_user = :email
-            AND bui_apt = :apt"
+            AND apt_name = :apt
+            AND apt_edf = :edf"
         );
 
         $exe2 = $stmt2->execute(array(
             'email' => $email,
-            'apt'   => $apt
+            'apt'   => $apt,
+            'edf'   => $edf
         ));
 
         if(!$exe2){
@@ -52,6 +54,8 @@ function addCurrentUser($prx, $email, $pwd, $name, $surname, $edf, $apt){
         else{
             $data = $stmt2->fetch(PDO::FETCH_ASSOC);
             extract($data);
+
+            
 
             $stmt3 = $db->prepare(
                 "INSERT INTO {$prx}userdata
@@ -63,14 +67,15 @@ function addCurrentUser($prx, $email, $pwd, $name, $surname, $edf, $apt){
                     NULL,
                     1,
                     NULL,
-                    :bui_id,
+                    NULL,
+                    :apt_id,
                     :user_id
                 )"
             );
             $exe3 = $stmt3->execute(array(
                 'name' => $name,
                 'surname' => $surname,
-                'bui_id' => $bui_id,
+                'apt_id' => $apt_id,
                 'user_id' => $user_id
             ));
 

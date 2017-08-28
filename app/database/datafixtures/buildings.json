@@ -1,0 +1,36 @@
+[
+    {
+        "name": "Ciudad Tiuna, A17",
+        "alias": "A17",
+        "num": "120",
+        "levels": "15",
+        "parking": "0",
+        "cons": "0",
+        "ofi": "2",
+        "gardens": "10",
+        "notes": {
+            "rif": null,
+            "agua": {
+                "bombas": "Sistema central",
+                "tanques": "No tiene"
+                }
+        }
+    },
+    {
+        "name": "Residencias Country Park",
+        "alias": "Country_Park",
+        "num": "15",
+        "levels": "8",
+        "parking": "13",
+        "cons": "1",
+        "ofi": "2",
+        "gardens": "30",
+        "notes": {
+            "rif": "J000000000",
+            "agua": {
+                "bombas": "2 bombas de 3HP",
+                "tanques": "10.000 lts y 5.000 lts"
+                }
+        }
+    }
+]

@@ -21,13 +21,13 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
     $stmt = $db->prepare(
         "SELECT user_id, user_user, user_pwd,
         user_type, user_active, udata_name,
-        udata_surname, udata_number_fk,
-        bui_name, bui_apt
-        FROM {$prx}users, {$prx}userdata, {$prx}buildings
+        udata_surname, udata_apt_fk,
+        apt_edf, apt_name
+        FROM {$prx}users, {$prx}userdata, {$prx}apartments
         WHERE user_user = :user AND
             user_pwd = :pwd AND
             udata_user_fk = user_id AND
-            udata_number_fk = bui_id"
+            udata_apt_fk = apt_id"
     );
 
     $res = $stmt->execute(array(
@@ -50,13 +50,13 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
             $game2 = $db->prepare(
                 "SELECT user_id, user_user, user_pwd,
                 user_type, user_active, udata_name,
-                udata_surname, udata_number_fk,
-                bui_name, bui_apt
-                FROM {$prx}users, {$prx}userdata, {$prx}buildings
+                udata_surname, udata_apt_fk,
+                apt_edf, apt_name
+                FROM {$prx}users, {$prx}userdata, {$prx}apartments
                 WHERE user_user = :user AND
                     user_pwd = :pwd AND
                     udata_user_fk = user_id AND
-                    udata_number_fk = bui_id"
+                    udata_apt_fk = apt_id"
             );
             $rg2 = $game2->execute(array(
                 'user' => $user,
@@ -101,9 +101,9 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
             $_SESSION['name'] = $values['udata_name'];
             $_SESSION['surname'] = $values['udata_surname'];
             $_SESSION['val'] = $values['user_active'];
-            $_SESSION['number_id'] = $values['udata_number_fk'];
-            $_SESSION['apt'] = $values['bui_apt'];
-            $_SESSION['bui'] = $values['bui_name'];
+            $_SESSION['apt_id'] = $values['udata_apt_fk'];
+            $_SESSION['apt'] = $values['apt_name'];
+            $_SESSION['edf'] = $values['apt_edf'];
 
             //Se define que tipo de usuario es
             switch ($values['user_type']) {

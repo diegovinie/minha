@@ -20,7 +20,7 @@ function createCommitmentsTable(/*string*/ $prefix=null){
           `com_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
           `com_prov_fk` int(8) unsigned NOT NULL COMMENT 'Enlace al proveedor',
           `com_user_fk` int(8) unsigned NOT NULL COMMENT 'Enlace al usuario contratante',
-          `com_bui` varchar(30) NOT NULL COMMENT 'El edificio del contratante',
+          `com_edf` varchar(30) NOT NULL COMMENT 'El edificio del contratante',
           `com_name` varchar(64) NOT NULL,
           `com_ini` DATE NOT NULL COMMENT 'Fecha de inicio',
           `com_end` DATE NULL NOT NULL COMMENT 'Fecha de culminacion',

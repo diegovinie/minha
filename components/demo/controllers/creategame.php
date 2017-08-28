@@ -18,16 +18,16 @@ $prx = getPrefix($email);
 if(!$prx) die('Error al seleccionar prefijo.');
 
 include $basedir.'models/createuser.php';
-include $basedir.'models/createbuilding.php';
+include $basedir.'models/createcommunity.php';
 
-//$apts = call_user_func("genTemplate{$edf}");
-//if(!$apts) die('Error al crear plantilla de edificio.');
+$apts = call_user_func("genTemplate{$edf}");
+if(!$apts) die('Error al crear plantilla de edificio.');
 
-//$bui = createBuilding($apts, $userapt);
-//if(!$bui) die('Error al crear edificio.');
+$cmty = createCommunity($apts, $userapt);
+if(!$cmty) die('Error al crear edificio.');
 
 $tableNames = array(
-    'buildings',
+    'apartments',
     'subjects',
     'users',
     'providers',
@@ -36,31 +36,27 @@ $tableNames = array(
     'bills',
     'charges',
     'payments',
-    'commitments'
+    'commitments',
+    'userdata'
 );
 
-foreach ($tableNames as $name) {
-    include_once(ROOTDIR."/init/database/create{$name}table.php");
+foreach ($tableNames as $nameTable) {
+    include_once(ROOTDIR."/app/database/create{$nameTable}table.php");
 
-    echo "$name : ";
-    $results[] = call_user_func("create{$name}Table", $prx);
-    echo "\n";
+    echo "\n$name : ";
+    $re[] = call_user_func("create{$nameTable}Table", $prx);
 }
-
-print_r($results); die;
+//include ROOTDIR.'/app/database/setglobaldata.php';
 
 include $basedir.'models/preparedb.php';
 
-//createBuildingsTable($prx);
+$re[] = setApartmentsData($prx, $apts);
+$re[] = addCurrentUser($prx, $email, $pwd, $name, $surname, $edf, $userapt);
+$re[] = setUsersData($prx, $cmty);
 
-//createUsersTable($prx);
-
-createUserdataTable($prx);
-
-setBuildingsData($prx, $bui);
-
-setUsersData($prx, $bui);
-
-addCurrentUser($prx, $email, $pwd, $name, $surname, $edf, $userapt);
+if(array_sum($re) == count($re)){
+    print_r($re);
+    die("Algunos errores fueron encontrados.");
+}
 
 header("Location: /index.php");

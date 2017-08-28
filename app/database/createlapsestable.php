@@ -17,7 +17,7 @@ function createLapsesTable(){
     $exe = $db->exec(
         "CREATE TABLE glo_lapses (
           `lap_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-          `lap_name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
+          `lap_name` varchar(20) NOT NULL,
           `lap_month` int(2) NOT NULL,
           `lap_year` int(4) NOT NULL,
 
