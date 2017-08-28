@@ -19,7 +19,7 @@ function createProvidersTable(/*string*/ $prefix=null){
         "CREATE TABLE {$prx}providers (
           `prov_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
           `prov_name` varchar(64) NOT NULL,
-          `prov_alias` varchar(24) NOT NULLCOMMENT 'cedula o rif',
+          `prov_alias` varchar(24) NOT NULL COMMENT 'nombre corto',
           `prov_rif` varchar(11) DEFAULT NULL COMMENT 'cedula o rif',
           `prov_cel` varchar(13) DEFAULT NULL,
           `prov_email` varchar(64) DEFAULT NULL,

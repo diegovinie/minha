@@ -27,7 +27,7 @@
         "name":     "Banesco Banco Universal, C.A",
         "rif":      null,
         "op":       null,
-        "prefix":   ""
+        "prefix":   "0134"
     },
     {
         "name":     "Banco Nacional de Crédito, C.A.",
@@ -37,9 +37,9 @@
     },
     {
         "name":     "Banco Occidental de Descuento C.A.",
-        "rif":      "",
+        "rif":      null,
         "op":       null,
-        "prefix":   ""
+        "prefix":   "0116"
     },
     {
         "name":     "Banco Mercantil C.A.",

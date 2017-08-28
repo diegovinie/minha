@@ -24,7 +24,7 @@ function createBillsTable(/*string*/ $prefix=null){
           `bil_desc` varchar(40) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'N/D' COMMENT 'Nombre o Razon Social',
           `bil_name` varchar(100) COLLATE utf8_spanish_ci NOT NULL COMMENT 'Nombre o razon social',
           `bil_rif` varchar(10) COLLATE utf8_spanish_ci DEFAULT NULL COMMENT 'Rif o CI',
-          `bil_acc_fk` tinyint(3) unsigned NOT NULL COMMENT 'Cuenta principal, Caja chica',
+          `bil_acc_fk` int(8) unsigned NOT NULL COMMENT 'Cuenta principal, Caja chica',
           `bil_method` varchar(30) COLLATE utf8_spanish_ci NOT NULL COMMENT 'TDC, TDD, Transferencia o con caja chica',
           `bil_log` varchar(30) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'N/D' COMMENT 'Factura, recibo de pago',
           `bil_lapse` int(3) unsigned DEFAULT '0' COMMENT 'Periodo de facturacion',
@@ -34,9 +34,10 @@ function createBillsTable(/*string*/ $prefix=null){
           `bil_op` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Opciones especiales como fracciones por apartamento',
           `bil_user_fk` int(8) unsigned NOT NULL,
           `bil_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-          
+
           PRIMARY KEY (`bil_id`),
-          KEY `bil_fk_method` (`bil_acc_fk`),
+          KEY `bil_acc_fk` (`bil_acc_fk`),
+          KEY `bil_user_fk` (`bil_user_fk`),
           CONSTRAINT `{$prx}link_bil_acc` FOREIGN KEY (`bil_acc_fk`) REFERENCES `{$prx}accounts` (`acc_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
           CONSTRAINT `{$prx}link_bil_user` FOREIGN KEY (`bil_user_fk`) REFERENCES `{$prx}users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Facturas de gastos realizados'"

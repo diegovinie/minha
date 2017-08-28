@@ -28,12 +28,15 @@ include $basedir.'models/createbuilding.php';
 
 $tableNames = array(
     'buildings',
+    'subjects',
     'users',
-    'userdata',
-    'accounts',
-    'payments',
+    'providers',
     'funds',
-    'bills'
+    'accounts',
+    'bills',
+    'charges',
+    'payments',
+    'commitments'
 );
 
 foreach ($tableNames as $name) {

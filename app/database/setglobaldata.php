@@ -8,7 +8,7 @@ include_once ROOTDIR.'/models/db.php';
 function setDataBanksTable(){
     $db = connectDb();
 
-    $json = file_get_contents("datafixtures/banks.json");
+    $json = file_get_contents(APPDIR."database/datafixtures/banks.json");
     $banks = json_decode($json, true);
 
     $stmt = $db->prepare(
@@ -64,7 +64,7 @@ function setDataLapsesTable(){
             $lapses[] = $row;
 
             if($y == $curYear
-                && $n + 1 = $curMonth) break;
+                && $n + 1 == $curMonth) break;
         }
     }
 
@@ -120,7 +120,7 @@ function setDataTypesTable(){
             NULL,
             :type)"
     );
-    $stmt->bindParam('type', $types);
+    $stmt->bindParam('type', $type);
 
     foreach($types as $type){
 

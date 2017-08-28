@@ -6,7 +6,7 @@
 include_once ROOTDIR.'/models/db.php';
 
 function createLapsesTable(){
-    $prx = $db->getPrx();
+    $db = connectDb();
 
     $ex = $db->exec(
         "SET FOREIGN_KEY_CHECKS=0;
@@ -20,7 +20,7 @@ function createLapsesTable(){
           `lap_name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
           `lap_month` int(2) NOT NULL,
           `lap_year` int(4) NOT NULL,
-          
+
           PRIMARY KEY (`lap_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci"
     );

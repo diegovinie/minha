@@ -21,8 +21,11 @@ function connectDb($prefix=null){
 
     try{
         $db = new PDOe(
-            "mysql:host=localhost;dbname=bd_minha",
-            "root", "altura", $options, $prefix
+            "mysql:host=".DB_HOST.";dbname=".DB_NAME,
+            DB_USER,
+            DB_PWD,
+            $options,
+            $prefix
         );
         return $db;
 

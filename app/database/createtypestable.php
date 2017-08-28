@@ -18,8 +18,8 @@ function createTypesTable(){
         "CREATE TABLE glo_types (
           `type_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
           `type_name` varchar(24) NOT NULL,
-          
-          PRIMARY KEY (`sub_id`)
+
+          PRIMARY KEY (`type_id`)
         ) ENGINE=InnoDB COLLATE=utf8_spanish_ci DEFAULT CHARSET=utf8"
     );
 

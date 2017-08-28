@@ -3,18 +3,13 @@
 include __DIR__.'/../settings.php';
 
 define('_EXE', 1);
-define('INITDIR', __DIR__.'/');
+define('APPDIR', __DIR__.'/');
 
-switch ($argv[1]) {
-    case 'database':
-        include INITDIR.'/database/exec.php';
-        break;
+//set_error_handler(function($er){
+//    echo "Comando no reconocido\n";
+//});
 
-    default:
-        # code...
-        break;
-}
+if(isset($argv[3])) $param1 = $argv[3];
+if(isset($argv[4])) $param2 = $argv[4];
 
-// app/console db create
-// app/console db init
-// app/console db set:defaults
+include APPDIR.$argv[1].'/execute'.$argv[2].'.php';

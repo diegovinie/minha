@@ -21,11 +21,11 @@ function createCommitmentsTable(/*string*/ $prefix=null){
           `com_prov_fk` int(8) unsigned NOT NULL COMMENT 'Enlace al proveedor',
           `com_user_fk` int(8) unsigned NOT NULL COMMENT 'Enlace al usuario contratante',
           `com_bui` varchar(30) NOT NULL COMMENT 'El edificio del contratante',
-          `com_name` varchar(64) NOT NULL
+          `com_name` varchar(64) NOT NULL,
           `com_ini` DATE NOT NULL COMMENT 'Fecha de inicio',
           `com_end` DATE NULL NOT NULL COMMENT 'Fecha de culminacion',
           `com_notes` varchar(512) NULL NOT NULL COMMENT 'De preferencia en json',
-          
+
           PRIMARY KEY (`com_id`),
           KEY `com_prov_fk` (`com_prov_fk`),
           KEY `com_user_fk` (`com_user_fk`),
