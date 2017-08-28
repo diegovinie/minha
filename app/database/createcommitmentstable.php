@@ -19,7 +19,7 @@ function createCommitmentsTable(/*string*/ $prefix=null){
         "CREATE TABLE {$prx}commitments (
           `com_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
           `com_prov_fk` int(8) unsigned NOT NULL COMMENT 'Enlace al proveedor',
-          `com_user_fk` int(8) unsigned NOT NULL COMMENT 'Enlace al usuario contratante',
+          `com_hab_fk` int(8) unsigned NOT NULL COMMENT 'Enlace al usuario contratante',
           `com_edf` varchar(30) NOT NULL COMMENT 'El edificio del contratante',
           `com_name` varchar(64) NOT NULL,
           `com_ini` DATE NOT NULL COMMENT 'Fecha de inicio',
@@ -28,9 +28,9 @@ function createCommitmentsTable(/*string*/ $prefix=null){
 
           PRIMARY KEY (`com_id`),
           KEY `com_prov_fk` (`com_prov_fk`),
-          KEY `com_user_fk` (`com_user_fk`),
+          KEY `com_hab_fk` (`com_hab_fk`),
           CONSTRAINT `{$prx}link_com_prov` FOREIGN KEY (`com_prov_fk`) REFERENCES `{$prx}providers` (`prov_id`),
-          CONSTRAINT `{$prx}link_com_user` FOREIGN KEY (`com_user_fk`) REFERENCES `{$prx}users` (`user_id`)
+          CONSTRAINT `{$prx}link_com_hab` FOREIGN KEY (`com_hab_fk`) REFERENCES `{$prx}habitants` (`hab_id`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Contratos'"
     );
 

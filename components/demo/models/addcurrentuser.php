@@ -9,16 +9,15 @@ function addCurrentUser($prx, $email, $pwd, $name, $surname, $edf, $apt){
     $password = hashPassword($pwd);
 
     $stmt = $db->prepare(
-        "INSERT INTO {$prx}users
+        "INSERT INTO glo_users
         VALUES (
             NULL,
             :email,
             :password,
             NULL,
             NULL,
-            0,
             1,
-            NULL,
+            'system',
             NULL
         )"
     );
@@ -35,7 +34,7 @@ function addCurrentUser($prx, $email, $pwd, $name, $surname, $edf, $apt){
     else{
         $stmt2 = $db->prepare(
             "SELECT user_id, apt_id
-            FROM {$prx}users, {$prx}apartments
+            FROM glo_users, {$prx}apartments
             WHERE user_user = :email
             AND apt_name = :apt
             AND apt_edf = :edf"
@@ -55,16 +54,18 @@ function addCurrentUser($prx, $email, $pwd, $name, $surname, $edf, $apt){
             $data = $stmt2->fetch(PDO::FETCH_ASSOC);
             extract($data);
 
-            
+
 
             $stmt3 = $db->prepare(
-                "INSERT INTO {$prx}userdata
+                "INSERT INTO {$prx}habitants
                 VALUES(
                     NULL,
                     :name,
                     :surname,
                     NULL,
                     NULL,
+                    1,
+                    0,
                     1,
                     NULL,
                     NULL,
@@ -94,8 +95,8 @@ function addGameTable($user){
     $db = connectDb();
 
     $stmt = $db->prepare(
-        "INSERT INTO glo_game
-        (gam_id, gam_user, gam_ts)
+        "INSERT INTO glo_simulator
+        (sim_id, sim_user, sim_ts)
         VALUES (NULL, :user, NULL)"
     );
     $stmt->bindValue('user', $user);

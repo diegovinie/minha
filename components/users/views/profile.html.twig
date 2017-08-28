@@ -26,11 +26,11 @@
                         <div class="form-group">
                             <div class="col-md-8">
                                 <label for="building">Edificio:</label>
-                                <input type="text" id="building" name="building" class="form-control" value="{{ bui.name }}" readonly>
+                                <input type="text" id="building" name="building" class="form-control" value="{{ apt.edf }}" readonly>
                             </div>
                             <div class="col-md-4">
                                 <label for="apt">Apartamento:</label>
-                                <input type="text" id="apt" name="apt" class="form-control" value="{{ bui.apt }}" readonly>
+                                <input type="text" id="apt" name="apt" class="form-control" value="{{ apt.name }}" readonly>
                             </div>
                         </div>
                         <div class="form-group">
@@ -40,11 +40,11 @@
 
                             <div class="col-md-6" id="cond">
 
-                                <input id="titular" type="radio" name="cond" value="" disabled {% if udata.cond == 1 %}checked{% endif %}>
+                                <input id="titular" type="radio" name="cond" value="" disabled {% if hab.cond == 1 %}checked{% endif %}>
                                 <label for="tit">Titular</label>
                             </div>
                             <div class="col-md-6">
-                                <input type="radio" name="cond" value="" id="familiar" disabled {% if udata.cond == 2 %}checked{% endif %} >
+                                <input type="radio" name="cond" value="" id="familiar" disabled {% if hab.cond == 2 %}checked{% endif %} >
                                 <label for="cond">Familiar
                                 </label>
                             </div>
@@ -64,23 +64,23 @@
                     <div class="panel-body">
                         <div class="form-group">
                             <label for="name">Nombres:</label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{ udata.name }}" readonly>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ hab.name }}" readonly>
                             <a onclick="edit(this);">Editar</a>
                         </div>
                         <div class="form-group">
                             <label for="surname">Apellidos:</label>
-                            <input type="text" id="surname" name="surname" class="form-control" value="{{ udata.surname }}" readonly>
+                            <input type="text" id="surname" name="surname" class="form-control" value="{{ hab.surname }}" readonly>
                             <a onclick="edit(this);">Editar</a>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6" >
                                 <label for="ci">Cédula de Identidad:</label>
-                                <input type="text" id="ci" name="ci" class="form-control" value="{{ udata.ci }}" readonly>
+                                <input type="text" id="ci" name="ci" class="form-control" value="{{ hab.ci }}" readonly>
                                 <a onclick="edit(this);">Editar</a>
                             </div>
                             <div class="col-md-6">
                                 <label for="nac">Fecha Nacimiento:</label>
-                                <input type="date" min="1910-01-01" format="YYYY-MM-DD" name="nac" id="nac" class="form-control"  readonly>
+                                <input type="date" min="1910-01-01" format="YYYY-MM-DD" name="nac" id="nac" class="form-control" value="{{ hab.nac }}" readonly>
                                 <a onclick="edit(this);">Editar</a>
                             </div>
                             <div class="col-md-12">
@@ -90,13 +90,13 @@
                         <div class="from-group">
                             <div class="col-md-6">
                                 <label for="cel">Número Celular:</label>
-                                <input type="text" id="cel" name="cel" class="form-control" value="{{ udata.cel }}" readonly>
-                                <a data-target="#cambioCel" data-toggle="modal">Editar</a>
+                                <input type="text" id="cel" name="cel" class="form-control" value="{{ hab.cel }}" readonly>
+                                <a onclick="edit(this);">Editar</a>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="gen">Género:</label>
-                                <input type="text" class="form-control" name="gender" id="gender" value="{{ udata.gender }}" readonly>
+                                <input type="text" class="form-control" name="gender" id="gender" value="{{ hab.gender }}" readonly>
                                 <a onclick="edit(this);">Editar</a>
                             </div>
                         </div>

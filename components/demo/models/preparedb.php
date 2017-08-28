@@ -5,6 +5,54 @@
 
 include_once ROOTDIR.'/models/db.php';
 
+function addGetUserId($simEmail){
+    $db = connectDb();
+
+    ///// Preparación de consultas
+
+    // Inserta el simulador en users
+    $stmt = $db->prepare(
+        "INSERT INTO `glo_users`
+        VALUES(
+            NULL,
+            :user,
+            :pwd,
+            NULL,
+            NULL,
+            1,
+            'system',
+            NULL)"
+    );
+    $stmt->bindValue('user', $simEmail);
+    $stmt->bindValue('pwd', DEF_PWD);
+
+    // Selecciona el id del simulador en users
+    $stmt1 = $db->prepare(
+        "SELECT user_id
+        FROM glo_users
+        ORDER BY user_id DESC
+        LIMIT 1"
+    );
+
+    ///// Inicio de la ejecución
+
+    $res = $stmt->execute();
+
+    if(!$res){
+        print_r($stmt->errorInfo());
+        return false;
+    }
+
+    $res1 = $stmt1->execute();
+
+    if(!$res1){
+        print_r($stmt1->errorInfo());
+        return false;
+    }
+
+    return $userid = $stmt1->fetchColumn();
+}
+
 function setApartmentsData($prx, $apts){
     $db = connectDb();
 
@@ -57,43 +105,24 @@ function setApartmentsData($prx, $apts){
     return true;
 }
 
-function setUsersData($prx, $apts){
+function setHabitantsData($prx, $cmty, $email){
     $db = connectDb();
 
-    $stmt = $db->prepare(
-        "INSERT INTO `{$prx}users`
-        VALUES(
-            NULL,
-            :user,
-            :pwd,
-            :question,
-            :response,
-            :type,
-            :active,
-            'demo',
-            NULL)"
-    );
+    ///// Preparación de consultas
 
-    $stmt->bindParam('user', $email);
-    $stmt->bindParam('pwd', $pwd);
-    $stmt->bindParam('question', $question);
-    $stmt->bindParam('response', $resHashed);
-    $stmt->bindParam('type', $type);
-    $stmt->bindParam('active', $active);
-
+    // Selecciona el id del apartamento
     $stmt2 = $db->prepare(
-        "SELECT user_id AS 'userid', apt_id AS 'aptid'
-        FROM {$prx}users, {$prx}apartments
-        WHERE user_user = :email
-        AND apt_edf = :edf
-        AND apt_name = :name"
+        "SELECT apt_id AS 'aptid'
+        FROM {$prx}apartments
+        WHERE apt_edf = :edf
+        AND apt_name = :apt"
     );
-    $stmt2->bindParam('email', $email);
-    $stmt2->bindParam('name', $aptname);
+    $stmt2->bindParam('apt', $aptname);
     $stmt2->bindParam('edf', $aptedf);
 
+    // Inserta datos en habitants
     $stmt3 = $db->prepare(
-        "INSERT INTO `{$prx}userdata`
+        "INSERT INTO `{$prx}habitants`
         VALUES (
             NULL,
             :name,
@@ -101,6 +130,8 @@ function setUsersData($prx, $apts){
             :ci,
             :cel,
             :cond,
+            :role,
+            :accepted,
             :gender,
             :nac,
             :aptid,
@@ -111,54 +142,48 @@ function setUsersData($prx, $apts){
     $stmt3->bindParam('ci', $ci);
     $stmt3->bindParam('cel', $cel);
     $stmt3->bindParam('cond', $cond);
+    $stmt3->bindParam('role', $role);
+    $stmt3->bindParam('accepted', $accepted);
     $stmt3->bindParam('gender', $gender);
     $stmt3->bindParam('nac', $nac);
     $stmt3->bindParam('aptid', $aptid);
     $stmt3->bindParam('userid', $userid);
 
-    foreach ($apts as $apt) {
+    ////// Inicio de la ejecución
 
-        if(isset($apt['users'])){
+    $userid = addGetUserId($email);
 
-            foreach ($apt['users'] as $user) {
+    foreach ($cmty as $apt) {
 
-                extract($user);
-                $resHashed = md5($response);
-                //$quest = $question? $question : '';
+        if(isset($apt['habs'])){
 
-                $exe1 = $stmt->execute();
+            foreach ($apt['habs'] as $hab) {
 
-                if(!$exe1){
-                    print_r($stmt->errorInfo());
+                extract($hab);
+
+                $aptname = $apt['name'];
+                $aptedf = $apt['edf'];
+
+                $exe2 = $stmt2->execute();
+
+                if(!$exe2){
+                    echo $stmt2->errorInfo()[2];
                     return false;
                 }
-                else{
-                    $aptname = $apt['name'];
-                    $aptedf = $apt['edf'];
 
+                $res2 = $stmt2->fetch(PDO::FETCH_ASSOC);
 
-                    $exe2 = $stmt2->execute();
+                extract($res2);
 
-                    if(!$exe2){
-                        print_r($stmt2->errorInfo());
-                        return false;
-                    }
-                    else{
-                        $res2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+                $exe3 = $stmt3->execute();
 
-                        extract($res2);
-
-                        $exe3 = $stmt3->execute();
-
-                        if(!$exe3){
-                            echo $stmt3->errorInfo()[2];
-                            print_r($user);
-                            return false;
-                        }
-                    }
+                if(!$exe3){
+                    echo $stmt3->errorInfo()[2];
+                    return false;
                 }
             }
         }
     }
+
     return true;
 }

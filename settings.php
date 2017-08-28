@@ -26,6 +26,7 @@ define('DB_HOST', $parameters->database->hostname);
 define('DB_USER', $parameters->database->user);
 define('DB_PWD', $parameters->database->password);
 define('DB_NAME', $parameters->database->db_name);
+define('DB_SMTP', $parameters->database->db_smtp);
 
 // Datos servidor de correo
 define('EMAIL', $parameters->principal->adminemail);

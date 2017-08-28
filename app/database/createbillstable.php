@@ -32,14 +32,14 @@ function createBillsTable(/*string*/ $prefix=null){
           `bil_iva` decimal(10,2) NOT NULL DEFAULT '0.00',
           `bil_total` decimal(10,2) NOT NULL,
           `bil_op` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Opciones especiales como fracciones por apartamento',
-          `bil_user_fk` int(8) unsigned NOT NULL,
+          `bil_hab_fk` int(8) unsigned NOT NULL,
           `bil_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
           PRIMARY KEY (`bil_id`),
           KEY `bil_acc_fk` (`bil_acc_fk`),
-          KEY `bil_user_fk` (`bil_user_fk`),
+          KEY `bil_hab_fk` (`bil_hab_fk`),
           CONSTRAINT `{$prx}link_bil_acc` FOREIGN KEY (`bil_acc_fk`) REFERENCES `{$prx}accounts` (`acc_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-          CONSTRAINT `{$prx}link_bil_user` FOREIGN KEY (`bil_user_fk`) REFERENCES `{$prx}users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+          CONSTRAINT `{$prx}link_bil_hab` FOREIGN KEY (`bil_hab_fk`) REFERENCES `{$prx}habitants` (`hab_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Facturas de gastos realizados'"
     );
 

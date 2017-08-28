@@ -1,9 +1,9 @@
 <?php
 
 
-$buiid = $_SESSION['number_id'];
+$aptid = $_SESSION['apt_id'];
 
-if($_SESSION['bui'] == 'A17'){
+if($_SESSION['edf'] == 'A17'){
 
     // Solo válido para el A17 -acomodar-
     $notes = Array( 'multi' => isset($_POST['multi'])? true : false,
@@ -22,4 +22,4 @@ else{
 }
 
 include $basedir .'models/profile.php';
-echo updateNotes($buiid, json_encode($notes));
+echo updateNotes($aptid, json_encode($notes));

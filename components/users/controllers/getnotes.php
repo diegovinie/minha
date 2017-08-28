@@ -8,6 +8,6 @@ defined('_EXE') or die('Acceso restringido');
 
 include $basedir .'models/profile.php';
 
-$buiid = (integer)$_SESSION['number_id'];
+$aptid = (integer)$_SESSION['apt_id'];
 
-echo getNotesFromBuildings($buiid);
+echo getNotesFromApartments($aptid);

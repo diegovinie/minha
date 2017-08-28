@@ -76,7 +76,7 @@ switch ($route[1]) {
         // Área de administradores
         case 'admin':
             // Si el tipo de sesión no es administrador termina
-            if($_SESSION['type'] !== 1) die('No tiene autorización.');
+            if($_SESSION['role'] == 2) die('No tiene autorización.');
             switch ($route[2]) {
                 case 'pagos':
                     include COMDIR .'payments/router.php';

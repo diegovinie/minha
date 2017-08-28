@@ -7,24 +7,25 @@
 defined('_EXE') or die('Acceso restringido');
 
 $id = (integer)$_SESSION['user_id'];
-$buiid = (integer)$_SESSION['number_id'];
-$edf = (string)$_SESSION['bui'];
+$aptid = (integer)$_SESSION['apt_id'];
+$habid = (integer)$_SESSION['hab_id'];
+$edf = (string)$_SESSION['edf'];
 
 include $basedir .'models/profile.php';
-
-$res1 = json_decode(getFromBuildings($buiid));
-
+//die($aptid);
+$res1 = json_decode(getFromApartments($aptid));
+//print_r($res1); die;
 if($res1->status == true){
-    $bui = $res1->msg;
+    $apt = $res1->msg;
 }
 else{
     print_r($res1); die;
 }
 
-$res2 = json_decode(getFromUserdata($id));
+$res2 = json_decode(getFromHabitants($aptid));
 
 if($res2->status == true){
-    $udata = $res2->msg;
+    $hab = $res2->msg;
 }
 else{
     print_r($res2); die;
@@ -71,8 +72,8 @@ echo $twig->render(
     array('form' => $form,
     'js' => $js,
     'css' => $css,
-    'bui' => $bui,
-    'udata' => $udata,
+    'apt' => $apt,
+    'hab' => $hab,
     'user' => $user,
     'extra' => $extra,
     )

@@ -6,6 +6,7 @@
         <user>root</user>
         <password>altura</password>
         <db_name>minha</db_name>
+        <db_smtp>localhost.email</db_smtp>
     </database>
     <principal>
         <name>TuAdministradora.com</name>

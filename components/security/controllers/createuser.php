@@ -19,8 +19,8 @@ $pwd = (string)validatePassword($_POST['pwd']);
 $edf = (string)$_POST['edf'];
 $apt = (string)$_POST['apt'];
 $cond = (int)$_POST['cond'];
-$type = 2;
-$active = 0;
+$role = 2;
+$accepted = 0;
 
 include $basedir.'models/createuser.php';
 
@@ -31,7 +31,7 @@ echo createUser(
     $edf,
     $apt,
     $cond,
-    $type,
-    $active,
+    $role,
+    $accepted,
     $pwd
 );

@@ -12,86 +12,101 @@ include_once ROOTDIR.'/models/tables.php';
 include_once ROOTDIR.'/models/modelresponse.php';
 
 
-function getUsers(/*string*/ $bui){
-    $db = connectDb();
-    $prx = $db->getPrx();
-
-    $stmt = $db->query(
-        "SELECT user_id AS 'id', udata_name AS 'Nombre',
-        udata_surname AS 'Apellido', udata_ci AS 'C.I.',
-        bui_apt AS 'Apartamento', user_user AS 'Correo',
-        CASE user_type
-        WHEN 0 THEN 'Jugador'
-        WHEN 1 THEN 'Administrador'
-        WHEN 2 THEN 'Usuario'
-        ELSE 'Indeterminado' END AS 'Tipo de Usuario'
-        FROM {$prx}users, {$prx}userdata, {$prx}buildings
-        WHERE udata_user_fk = user_id AND udata_number_fk = bui_id
-        AND user_active = 1 AND bui_name = '$bui'"
-    );
-
-    if($stmt){
-        $table = setTheadTbodyFromPDO($stmt);
-        $status = true;
-
-    }else{
-        $status = false;
-
-    }
-
-    $response = array(
-        'status' => $status,
-        'table' => $table
-    );
-
-    return json_encode($response);
-}
-
-function getPendingUsers(/*string*/ $bui){
-    $db = connectDb();
-    $prx = $db->getPrx();
-
-    $stmt = $db->query(
-        "SELECT user_id AS 'id', udata_name AS 'Nombre', udata_surname AS 'Apellido',
-        udata_ci AS 'C.I.',  bui_apt AS 'Apartamento',
-        user_user AS 'Correo',
-        CASE user_type
-        WHEN 1 THEN 'Administrador'
-        WHEN 2 THEN 'Usuario'
-        ELSE 'Indeterminado' END AS 'Tipo de Usuario'
-        FROM {$prx}users, {$prx}userdata, {$prx}buildings
-        WHERE udata_user_fk = user_id AND udata_number_fk = bui_id
-        AND user_active = 0 AND bui_name = '$bui'"
-    );
-
-    if($stmt){
-        $table = setTheadTbodyFromPDO($stmt);
-        $status = true;
-
-    }else{
-        $status = false;
-
-    }
-
-    $response = array(
-        'status' => $status,
-        'table' => $table
-    );
-    return json_encode($response);
-}
-
-function setUserActive(/*int*/ $id){
+function getHabitants(/*string*/ $edf){
     $db = connectDb();
     $prx = $db->getPrx();
 
     $status = false;
 
     $stmt = $db->prepare(
-        "UPDATE {$prx}users
-        SET user_active = 1
-        WHERE user_id = :id"
+        "SELECT hab_id AS 'id',
+            hab_name AS 'Nombre',
+            hab_surname AS 'Apellido',
+            hab_ci AS 'C.I.',
+            apt_name AS 'Apartamento',
+            user_user AS 'Correo',
+        CASE hab_role
+            WHEN 0 THEN 'Jugador'
+            WHEN 1 THEN 'Administrador'
+            WHEN 2 THEN 'Usuario'
+            ELSE 'Indeterminado' END AS 'Tipo de Usuario'
+        FROM glo_users,
+            {$prx}habitants,
+            {$prx}apartments
+        WHERE hab_user_fk = user_id
+            AND hab_apt_fk = apt_id
+            AND hab_accepted = 1
+            AND apt_edf = :edf"
     );
-    $stmt->bindValue('id', $id, PDO::PARAM_INT);
+    $stmt->bindValue('edf', $edf);
+    $res = $stmt->execute();
+
+    if(!$res){
+        $msg = $stmt->errorInfo()[2];
+        die($msg);
+
+    }else{
+        $msg = setTheadTbodyFromPDO($stmt);
+        $status = true;
+    }
+
+    return jsonTableResponse($status, $msg);
+}
+
+function getPendingUsers(/*string*/ $edf){
+
+    $db = connectDb();
+    $prx = $db->getPrx();
+
+    $status = false;
+
+    $stmt = $db->prepare(
+        "SELECT hab_id AS 'id',
+            hab_name AS 'Nombre',
+            hab_surname AS 'Apellido',
+            hab_ci AS 'C.I.',
+            apt_name AS 'Apartamento',
+            user_user AS 'Correo',
+        CASE hab_role
+            WHEN 0 THEN 'Jugador'
+            WHEN 1 THEN 'Administrador'
+            WHEN 2 THEN 'Usuario'
+            ELSE 'Indeterminado' END AS 'Tipo de Usuario'
+        FROM glo_users,
+            {$prx}habitants,
+            {$prx}apartments
+        WHERE hab_user_fk = user_id
+            AND hab_apt_fk = apt_id
+            AND hab_accepted = 0
+            AND apt_edf = :edf"
+    );
+    $stmt->bindValue('edf', $edf);
+    $res = $stmt->execute();
+
+    if(!$res){
+        $msg = $stmt->errorInfo()[2];
+        die($msg);
+
+    }else{
+        $msg = setTheadTbodyFromPDO($stmt);
+        $status = true;
+    }
+
+    return jsonTableResponse($status, $msg);
+}
+
+function acceptHabitant(/*int*/ $habid){
+    $db = connectDb();
+    $prx = $db->getPrx();
+
+    $status = false;
+
+    $stmt = $db->prepare(
+        "UPDATE {$prx}habitants
+        SET hab_accepted = 1
+        WHERE hab_id = :habid"
+    );
+    $stmt->bindValue('habid', $habid, PDO::PARAM_INT);
     $res = $stmt->execute();
 
     if($res){
@@ -104,15 +119,16 @@ function setUserActive(/*int*/ $id){
     return jsonResponse($status, $msg);
 }
 
-function deleteUser(/*int*/ $id){
+// REVISAR
+function deleteHabitant(/*int*/ $habid){
     $db = connectDb();
     $prx = $db->getPrx();
 
     $stmt1 = $db->prepare(
-        "DELETE FROM {$prx}userdata
-        WHERE udata_user_fk = :id"
+        "DELETE FROM {$prx}habitants
+        WHERE hab_id = :habid"
     );
-    $stmt1->bindValue('id', $id, PDO::PARAM_INT);
+    $stmt1->bindValue('habid', $habid, PDO::PARAM_INT);
     $res1 = $stmt1->execute();
 
     if(!$res1){
@@ -121,22 +137,22 @@ function deleteUser(/*int*/ $id){
     }
     else{
         // Borrar de la tabla users
-        $stmt2 = $db->prepare(
-            "DELETE FROM {$prx}users
-            WHERE user_id = :id"
-        );
-        $stmt2->bindValue('id', $id, PDO::PARAM_INT);
-        $res2 = $stmt2->execute();
+        //$stmt2 = $db->prepare(
+            //"DELETE FROM glo_users
+            //WHERE user_id = :id"
+        //);
+        //$stmt2->bindValue('id', $id, PDO::PARAM_INT);
+        //$res2 = $stmt2->execute();
 
-        if(!$res2){
-            $status = false;
-            $msg = 'Error al borrar el usuario';
-        }
-        else{
-            // Finalización exitosa
+        //if(!$res2){
+        //    $status = false;
+        //    $msg = 'Error al borrar el usuario';
+        //}
+        //else{
+        //    // Finalización exitosa
             $status = true;
             $msg = 'Operación realizada con éxito';
-        }
+        //}
     }
 
     return jsonResponse($status, $msg);

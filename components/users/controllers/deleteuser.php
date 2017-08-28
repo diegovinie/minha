@@ -6,12 +6,12 @@
  */
 defined('_EXE') or die('Acceso restringido');
 
-$id = (integer)$_POST['id'];
+$habid = (integer)$_POST['hab_id'];
 
 include $basedir .'models/users.php';
 
-if($_SESSION['type'] == 1){
-    echo deleteUser($id);
+if($_SESSION['role'] == 1){
+    echo deleteHabitant($habid);
 }
 else{
     echo '{"status": false, "msg": "No tiene autorización para hacer esta acción."}';

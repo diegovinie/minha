@@ -39,21 +39,21 @@ function getPrefix(/*string*/ $email){
     $db = connectDb();
 
     $stmt = $db->prepare(
-        "SELECT gam_id AS 'id'
-        FROM glo_game
-        WHERE gam_user = :email"
+        "SELECT sim_id AS 'id'
+        FROM glo_simulator
+        WHERE sim_user = :email"
     );
     $stmt->bindValue('email', $email);
     $res = $stmt->execute();
 
     if(!$res){
+        echo $stmt->errorInfo()[2];
         return false;
     }
-    else{
-        $id = $stmt->fetchColumn();
 
-        return "u{$id}_";
-    }
+    $id = $stmt->fetchColumn();
+
+    return "u{$id}_";
 }
 
 function getTypeId(/*string*/ $name){
@@ -73,12 +73,13 @@ function getTypeId(/*string*/ $name){
     }
     else{
 
-        return = $stmt->fetchColumn();
+        return $stmt->fetchColumn();
     }
 }
 
-function setAiId(/*string*/ $name, /*string*/ $prefix=null){
+function addGetAiId(/*string*/ $name, /*string*/ $prefix=null){
     $db = connectDb($prefix);
+    $prx = $db->getPrx();
 
     $id = getTypeId($name);
 
@@ -97,13 +98,13 @@ function setAiId(/*string*/ $name, /*string*/ $prefix=null){
         echo $stmt->errorInfo()[2];
         return false;
     }
-    else{
-        return true;
-    }
+
+    return getlastId($prefix);
 }
 
-function setHumanId(/*string*/ $name, /*string*/ $prefix=null){
+function addGetHumanId(/*string*/ $name, /*string*/ $prefix=null){
     $db = connectDb($prefix);
+    $prx = $db->getPrx();
 
     $id = getTypeId($name);
 
@@ -122,13 +123,13 @@ function setHumanId(/*string*/ $name, /*string*/ $prefix=null){
         echo $stmt->errorInfo()[2];
         return false;
     }
-    else{
-        return true;
-    }
+
+    return getlastId($prefix);
 }
 
 function getLastId(/*string*/ $prefix=null){
     $db = connectDb($prefix);
+    $prx = $db->getPrx();
 
     $res = $db->query(
         "SELECT sub_id

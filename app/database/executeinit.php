@@ -10,8 +10,9 @@ $globalTablesNames = array(
     'lapses',
     'banks',
     'cookies',
-    'game',
-    'buildings'
+    'simulator',
+    'buildings',
+    'users'
 );
 
 echo "\nCreando tablas:\n\n";
@@ -27,7 +28,7 @@ foreach ($globalTablesNames as $name) {
 $priTablesNames = array(
     'apartments',
     'subjects',
-    'users',
+    'habitants',
     'providers',
     'funds',
     'accounts',

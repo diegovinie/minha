@@ -11,5 +11,6 @@ define('APPDIR', __DIR__.'/');
 
 if(isset($argv[3])) $param1 = $argv[3];
 if(isset($argv[4])) $param2 = $argv[4];
+if(isset($argv[5])) $param3 = $argv[5];
 
 include APPDIR.$argv[1].'/execute'.$argv[2].'.php';

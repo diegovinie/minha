@@ -12,133 +12,109 @@ include_once ROOTDIR.'/models/hashpassword.php';
 
 function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
     $db = connectDb();
-    $prx = $db->getPrx();
+
+    $prefix = getPrefix($user);
+
+    $prx = $prefix? $prefix : 'pri_';
 
     $status = false;
     $cookie = false;
 
     if($pwd != DEF_PWD) $pwd = hashPassword($pwd);
     $stmt = $db->prepare(
-        "SELECT user_id, user_user, user_pwd,
-        user_type, user_active, udata_name,
-        udata_surname, udata_apt_fk,
-        apt_edf, apt_name
-        FROM {$prx}users, {$prx}userdata, {$prx}apartments
-        WHERE user_user = :user AND
-            user_pwd = :pwd AND
-            udata_user_fk = user_id AND
-            udata_apt_fk = apt_id"
+        "SELECT user_id, user_user,
+            user_pwd,   user_active,
+            hab_role,   hab_accepted,
+            hab_name,   hab_id,
+            hab_apt_fk, hab_surname,
+            apt_edf,    apt_name,
+            apt_id
+        FROM glo_users,
+            {$prx}habitants,
+            {$prx}apartments
+        WHERE user_user = :user
+            AND user_pwd = :pwd
+            AND hab_user_fk = user_id
+            AND hab_apt_fk = apt_id"
     );
 
     $res = $stmt->execute(array(
         'user' => $user,
         'pwd'  => $pwd
     ));
+
     //var_dump($stmt->fetch(PDO::FETCH_ASSOC)); die;
     // Si es igual a 1 puede entrar
     if($stmt->rowCount() != 1){
-        // Si no está en la tabla principal lo intentará encontrar en el juego.
-        $prefix = getPrefix($user);
-
-        if(!$prefix){
-            $msg = "Clave inválida";
-        }
-        else{
-            // Cambio de prefijo.
-            $prx = $prefix;
-
-            $game2 = $db->prepare(
-                "SELECT user_id, user_user, user_pwd,
-                user_type, user_active, udata_name,
-                udata_surname, udata_apt_fk,
-                apt_edf, apt_name
-                FROM {$prx}users, {$prx}userdata, {$prx}apartments
-                WHERE user_user = :user AND
-                    user_pwd = :pwd AND
-                    udata_user_fk = user_id AND
-                    udata_apt_fk = apt_id"
-            );
-            $rg2 = $game2->execute(array(
-                'user' => $user,
-                'pwd'  => $pwd
-            ));
-
-            if(!$rg2){
-                // Si no logra autenticar al usuario.
-                $msg = "Problema con el juego.";
-                //$msg = $game2->errorInfo()[2];
-            }
-            else{
-                $mark = 1;
-                $values = $game2->fetch(PDO::FETCH_ASSOC);
-            }
-        }
+        $msg = "Usuario o clave incorrecto.";
     }
     else{
-        $mark = 1;
         $values = $stmt->fetch(PDO::FETCH_ASSOC);
-    }
 
-    // Continua.
-    if($mark){
+        // Si el usuario está activo
+        if(!$values['user_active']){
 
-        // Si es igual a "0" no está activado
-        if($values['user_active'] == 0){
-
-            //$msg = "Aún no está activo. Contacte al administrador: ".EMAIL;
-
+            $msg = "Contacte al administrador.";
         }
         else{
-            $status = true;
-            $msg = "Sesión iniciada";
+            // Si el habitante ha sido aceptado
+            if(!$values['hab_accepted']){
 
-            //Se establecen los parámetros de sesión
-            if(!isset($_SESSION)) session_start();
-
-            $_SESSION['user_id'] = $values['user_id'];
-            $_SESSION['user'] = $user;
-            $_SESSION['status'] = 'active';
-            $_SESSION['name'] = $values['udata_name'];
-            $_SESSION['surname'] = $values['udata_surname'];
-            $_SESSION['val'] = $values['user_active'];
-            $_SESSION['apt_id'] = $values['udata_apt_fk'];
-            $_SESSION['apt'] = $values['apt_name'];
-            $_SESSION['edf'] = $values['apt_edf'];
-
-            //Se define que tipo de usuario es
-            switch ($values['user_type']) {
-                case 1:
-                    $_SESSION['type'] = 1;
-                    //echo "ir a administrador";
-                    break;
-                case 2:
-                    $_SESSION['type'] = 2;
-                    //echo "ir a usuario";
-                    break;
-                case 0:
-                    $_SESSION['type'] = 1;
-                    $_SESSION['prefix'] = getPrefix($user);
-                    break;
-
-                default:
-                    die("Ha ocurrido un error al definir el tipo de sesión.");
-                    break;
+                $msg = "Su cuenta en breve será activada.";
             }
+            else{
+                $status = true;
+                $msg = "Sesión iniciada";
 
-            // Se Fija la cookie
-            if($remember === 1){
-                $token = hashPassword(time().rand(0,100));
-                $info = json_encode($_SESSION);
-                $qc = "INSERT INTO glo_cookies
-                    VALUES(null, 'remember', '$token', '$info', null)";
+                //Se establecen los parámetros de sesión
+                if(!isset($_SESSION)) session_start();
 
-                try{
-                    $db->exec($qc);
-                    setcookie('remember', $token, time()+60*60*24, '/');
-                    $cookie = $token;
-                }catch(PDOStatement $err){
-                    echo 'Problemas al guardar cookie: '.$err;
-                    $cookie = false;
+                $_SESSION['user_id'] = $values['user_id'];
+                $_SESSION['user'] = $user;
+                $_SESSION['status'] = 'active';
+                $_SESSION['name'] = $values['hab_name'];
+                $_SESSION['surname'] = $values['hab_surname'];
+                //$_SESSION['val'] = $values['user_active'];
+                $_SESSION['apt_id'] = $values['apt_id'];
+                $_SESSION['hab_id'] = $values['hab_id'];
+                $_SESSION['apt'] = $values['apt_name'];
+                $_SESSION['edf'] = $values['apt_edf'];
+
+                //Se define que tipo de usuario es
+                switch ($values['hab_role']) {
+                    case 1:
+                        $_SESSION['role'] = 1;
+                        //echo "ir a administrador";
+                        break;
+                    case 2:
+                        $_SESSION['role'] = 2;
+                        //echo "ir a usuario";
+                        break;
+                    case 0:
+                        $_SESSION['role'] = 1;
+                        $_SESSION['prefix'] = getPrefix($user);
+                        break;
+
+                    default:
+                        die("Ha ocurrido un error al definir el tipo de sesión.");
+                        break;
+                }
+
+                // Se Fija la cookie
+                if($remember === 1){
+                    $token = hashPassword(time().rand(0,100));
+                    $info = json_encode($_SESSION);
+                    $qc = "INSERT INTO glo_cookies
+                        VALUES(null, 'remember', '$token', '$info', null)";
+
+                    try{
+                        $db->exec($qc);
+                        setcookie('remember', $token, time()+60*60*24, '/');
+                        $cookie = $token;
+                    }catch(PDOStatement $err){
+                        echo 'Problemas al guardar cookie: '.$err;
+                        $cookie = false;
+                    }
                 }
             }
         }
@@ -147,8 +123,8 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
     $response = array(
         'status'    => $status,
         'msg'       => $msg,
-        'session'   => $cookie
-    );
+        'session'   => $cookie);
+
     return json_encode($response);
 }
 
@@ -160,24 +136,23 @@ function getQuestion(/*string*/ $email){
 
     $stmt = $db->prepare(
         "SELECT user_question
-        FROM {$prx}users
+        FROM glo_users
         WHERE user_user = :email"
     );
     $stmt->bindValue('email', $email);
-    $stmt->execute();
+    $res = $stmt->execute();
 
-    $question = $stmt->fetchColumn();
-
-    if(!$question){
+    if(!$res){
         $msg = "No se recuperó pregunta.";
     }
     else{
         $status = true;
+        $msg = $stmt->fetchColumn();
     }
 
     return json_encode(array(
         'status' => $status,
-        'question' => $question)
+        'question' => $msg)
     );
 }
 
@@ -189,7 +164,7 @@ function setQuestionResponse($id, /*string*/ $question, /*string*/ $response){
     $response = hashPassword($response);
 
     $stmt = $db->prepare(
-        "UPDATE {$prx}users
+        "UPDATE glo_users
         SET user_question = :question, user_response = :response
         WHERE user_id = :id"
     );
@@ -218,9 +193,10 @@ function checkResponse(/*string*/ $question, /*string*/ $response, /*string*/ $e
 
     $response = hashPassword($response);
     $stmt = $db->prepare(
-        "SELECT user_response FROM {$prx}users
+        "SELECT user_response
+        FROM glo_users
         WHERE user_user = :email
-        AND user_question = :question"
+            AND user_question = :question"
     );
     $stmt->execute(array(
         'email'=> $email,
@@ -247,10 +223,10 @@ function setPassword(/*string*/ $email, /*string*/ $response, /*string*/ $pwd){
     $response = hashPassword($response);
 
     $stmt = $db->prepare(
-        "UPDATE {$prx}users
+        "UPDATE glo_users
         SET user_pwd = :password
         WHERE user_user = :email
-        AND user_response = :response"
+            AND user_response = :response"
     );
     $stmt->execute(array(
         'password' => $password,
@@ -260,7 +236,7 @@ function setPassword(/*string*/ $email, /*string*/ $response, /*string*/ $pwd){
 
     $stmt2 = $db->prepare(
         "SELECT user_pwd
-        FROM {$prx}users
+        FROM glo_users
         WHERE user_user = :email"
     );
     $stmt2->bindValue('email', $email);
@@ -290,7 +266,7 @@ function setPasswordFromOld(/*int*/ $id, /*string*/ $old, /*string*/ $new){
 
     $stmt1 = $db->prepare(
         "SELECT user_pwd
-        FROM {$prx}users
+        FROM glo_users
         WHERE user_id = :id"
     );
     $stmt1->bindValue('id', $id, PDO::PARAM_INT);
@@ -307,7 +283,7 @@ function setPasswordFromOld(/*int*/ $id, /*string*/ $old, /*string*/ $new){
         }
         else{
             $stmt2 = $db->prepare(
-                "UPDATE {$prx}users
+                "UPDATE glo_users
                 SET user_pwd = :new
                 WHERE user_id = :id"
             );
@@ -336,7 +312,7 @@ function checkEmail(/*string*/ $email){
 
     $stmt = $db->prepare(
         "SELECT user_id
-        FROM {$prx}users
+        FROM glo_users
         WHERE user_user = :email"
     );
     $stmt->bindValue('email', $email);
@@ -365,7 +341,7 @@ function checkOldPassword(/*int*/ $id){
 
     $stmt = $db->prepare(
         "SELECT user_pwd
-        FROM {$prx}users
+        FROM glo_users
         WHERE user_id = :id"
     );
     $stmt->bindValue('id', $id, PDO::PARAM_INT);

@@ -27,7 +27,7 @@ function genTemplateA17(){
         foreach ($specs as $letter => $w) {
             $apt = array();
             $apt['name'] = $level.$letter;
-            $apt['assigned'] = mt_rand() % 25? 1 : 0;
+            $apt['assigned'] = mt_rand() % 23? 1 : 0; // 4,34 no asignados
             $apt['weight'] = round($w/$t, 6);
             $apt['edf'] = 'A17';
             $apt['occupied'] = 0;
@@ -96,9 +96,9 @@ function createCommunity(/*array*/ $apts, /*string*/ $userapt=null){
             // Se crean usuarios hasta que salga el titular.
             $principal = 0;
             while(!$principal){
-                $user = createUser($id++);
-                $apt['users'][] = $user;
-                $principal = $user['cond'];
+                $hab = createHabitant($id++);
+                $apt['habs'][] = $hab;
+                $principal = $hab['cond'];
             }
             // Se generan las notas.
             $apt['occupied'] = mt_rand() % 12? 1 : 0;

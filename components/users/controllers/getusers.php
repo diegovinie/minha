@@ -6,11 +6,11 @@
  */
 defined('_EXE') or die('Acceso restringido');
 
-$bui = (string)$_SESSION['bui'];
+$edf = (string)$_SESSION['edf'];
 
 include $basedir .'/models/users.php';
 
-$res = json_decode(getUsers($bui), true);
+$res = json_decode(getHabitants($edf), true);
 
 if($res['table'] != false){
 

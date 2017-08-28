@@ -14,17 +14,14 @@ function createUser(    /*string*/ $name,
                         /*string*/ $edf,
                         /*string*/ $apt,
                         /*int*/ $cond,
-                        /*int*/ $type,
-                        /*int*/ $active,
+                        /*int*/ $role,
+                        /*int*/ $accepted,
                         /*string*/ $pwd){
 
     $db = connectDb();
     $prx = $db->getPrx();
 
     $status = false;
-
-    $active = isset($active)? $active : PRUEBA == true? 1 : 0;
-    $type = isset($type)? $type : PRUEBA == true? 1 : 2;
 
     // Verifica que no exista el usuario
     $stmt1 = $db->prepare(
@@ -42,22 +39,20 @@ function createUser(    /*string*/ $name,
         //Registra en users usuario y clave como inactivo
         $pwd = md5($pwd);
         $stmt2 = $db->prepare(
-            "INSERT INTO {$prx}users
+            "INSERT INTO glo_users
             VALUES (
                 NULL,
                 :email,
                 :pwd,
-                '',
-                '',
-                :type,
+                NULL,
+                NULL,
                 :active,
-                'register: auto',
+                'system',
                 NULL)"
         );
         $res2 = $stmt2->execute(array(
             'email' => $email,
             'pwd' => $pwd,
-            'type' => $type,
             'active' => $active
         ));
 
@@ -68,10 +63,10 @@ function createUser(    /*string*/ $name,
             // Solicitando claves foráneas
             $stmt3 = $db->prepare(
                 "SELECT bui_id, user_id
-                FROM {$prx}users, {$prx}buildings
+                FROM glo_users, {$prx}apartments
                 WHERE user_user = :email
-                AND bui_name = :edf
-                AND bui_apt = :apt"
+                    AND apt_name = :apt
+                    AND apt_edf = :edf"
             );
             $stmt3->execute(array(
                 'email' => $email,
@@ -89,24 +84,28 @@ function createUser(    /*string*/ $name,
                 }
 
                 $stmt4 = $db->prepare(
-                    "INSERT INTO {$prx}userdata
+                    "INSERT INTO {$prx}habitants
                     VALUES (
                         NULL,
                         :name,
                         :surname,
-                        :ci,
+                        NULL,
                         NULL,
                         :cond,
-                        'M',
-                        :buiid,
+                        :role,
+                        :accepted,
+                        NULL,
+                        NULL,
+                        :aptid,
                         :userid)"
                 );
                 $res4 = $stmt4->execute(array(
                     'name'  => $name,
                     'surname' => $surname,
-                    'ci'    => isset($ci)? $ci : '',
                     'cond'  => $cond,
-                    'buiid' => $fk[0],
+                    'accepted' => $accepted,
+                    'role'    => $role,
+                    'aptid' => $fk[0],
                     'userid' => $fk[1]
                 ));
 

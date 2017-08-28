@@ -109,13 +109,8 @@ function setDataTypesTable(){
     $db = connectDb();
 
     $types = array(
-        'lapses',
-        'banks',
-        'cookies',
-        'game',
         'apartments',
-        'subjects',
-        'users',
+        'habitants',
         'providers',
         'funds',
         'accounts',

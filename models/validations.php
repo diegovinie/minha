@@ -12,6 +12,8 @@ function validateInput($val, $exp, $message){
     $status = false;
     $msg = '';
 
+    if(!$val) return null;
+
     $res = preg_match($exp, $val);
 
     if(!$res){

@@ -9,7 +9,7 @@ $_globals = array(
         'menu'         => array(
             'name'          => NAME,
             'version'       => VERSION,
-            'session'       => isset($_SESSION['type'])? $_SESSION['type'] : false,
+            'session'       => isset($_SESSION['role'])? $_SESSION['role'] : false,
             'user'          => array(
                 'name'          => isset($_SESSION['name'])? $_SESSION['name'] : false,
             ),

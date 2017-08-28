@@ -6,11 +6,11 @@
  */
 defined('_EXE') or die('Acceso restringido');
 
-$bui = (string)$_SESSION['bui'];
+$edf = (string)$_SESSION['edf'];
 
 include $basedir .'/models/users.php';
 
-$res = json_decode(getPendingUsers($bui));
+$res = json_decode(getPendingUsers($edf));
 
 if($res->table != false){
 
