@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "name": "Servicios Públicos",
+    "op": null
+  },
+  {
+    "id": "2",
+    "name": "Materiales",
+    "op": null
+  },
+  {
+    "id": "3",
+    "name": "Mantenimiento",
+    "op": null
+  },
+  {
+    "id": "4",
+    "name": "Construcción",
+    "op": null
+  },
+  {
+    "id": "5",
+    "name": "Seguridad",
+    "op": null
+  },
+  {
+    "id": "6",
+    "name": "Servicios Profesionales",
+    "op": null
+  }
+]

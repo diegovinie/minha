@@ -31,7 +31,19 @@ if(!$apts) die('Error al crear los apartamentos.');
 $cmty = createCommunity($apts, $userapt);
 if(!$cmty) die('Error al crear la comunidad.');
 
-$tableNames = array(
+$simTableNames = array(
+  'actypes',
+  'activities'
+);
+
+foreach ($simTableNames as $nameTable) {
+    include_once(ROOTDIR."/app/database/create{$nameTable}table.php");
+
+    echo "\n$nameTable : ";
+    $re[] = call_user_func("create{$nameTable}Table", $prx);
+}
+
+$userTableNames = array(
     'apartments',
     'subjects',
     'providers',
@@ -41,10 +53,10 @@ $tableNames = array(
     'bills',
     'charges',
     'payments',
-    'commitments'    
+    'commitments'
 );
 
-foreach ($tableNames as $nameTable) {
+foreach ($userTableNames as $nameTable) {
     include_once(ROOTDIR."/app/database/create{$nameTable}table.php");
 
     echo "\n$nameTable : ";

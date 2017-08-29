@@ -3,21 +3,21 @@
 <parameters>
     <database>
         <hostname>localhost</hostname>
-        <user>root</user>
-        <password>altura</password>
-        <db_name>minha</db_name>
-        <db_smtp>localhost.email</db_smtp>
+        <user></user>
+        <password></password>
+        <db_name></db_name>
+        <db_smtp></db_smtp>
     </database>
     <principal>
-        <name>TuAdministradora.com</name>
-        <version>0.8-a1</version>
-        <defpwd>1234</defpwd>
-        <adminemail>diego.viniegra@gmail.com</adminemail>
-        <alias>minha</alias>
+        <name></name>
+        <version>2.0-a1</version>
+        <defpwd></defpwd>
+        <adminemail></adminemail>
+        <alias></alias>
         <template>startbootstrap-sb-admin-2-gh-pages</template>
         <components>components/</components>
         <security_control>components/security/controllers/accesscontrol.php</security_control>
         <vardir>var/</vardir>
-        <secret>meridian</secret>
+        <secret></secret>
     </principal>
 </parameters>
