@@ -3,7 +3,6 @@
 include __DIR__.'/../settings.php';
 
 define('_EXE', 1);
-define('APPDIR', __DIR__.'/');
 
 //set_error_handler(function($er){
 //    echo "Comando no reconocido\n";

@@ -13,7 +13,7 @@ function createActivitiesTable(){
           `act_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
           `act_name` varchar(32) NOT NULL,
           `act_aty_fk` int(8) unsigned NOT NULL COMMENT 'Tipo de actividad',
-          `act_affinity` int(2) unsigned NOT NULL COMMENT 'Afinidad entre actividades',
+          `act_affinity` int(2) unsigned DEFAULT NULL COMMENT 'Afinidad entre actividades',
 
           PRIMARY KEY (`act_id`),
           KEY `act_aty_fk` (`act_aty_fk`),

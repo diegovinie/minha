@@ -64,15 +64,24 @@ foreach ($userTableNames as $nameTable) {
 }
 //include ROOTDIR.'/app/database/setglobaldata.php';
 
+include $basedir.'models/preparesimtables.php';
+
+echo "Preparando Actividades:\n\n";
+$re[] = setDataActypesTable();
+$re[] = setDataActivitiesTable();
+
 include $basedir.'models/preparedb.php';
 
+echo "Creando la comunidad\n\n";
 $re[] = setApartmentsData($prx, $apts);
 $re[] = addCurrentUser($prx, $email, $pwd, $userName, $surname, $edf, $userapt);
 $re[] = setHabitantsData($prx, $cmty, $simEmail);
 
 if(array_sum($re) == count($re)){
     print_r($re);
-    die("Algunos errores fueron encontrados.");
+    die("Algunos errores fueron encontrados.\n\n");
 }
+
+echo "Finalizado con éxito.\n\n";
 
 //header("Location: /index.php");

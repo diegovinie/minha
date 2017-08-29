@@ -2,121 +2,121 @@
   {
     "name": "Plomería",
     "type": "3",
-    "affinity": "11",
+    "affinity": "11"
   },
   {
     "name": "Electricidad",
     "type": "3",
-    "affinity": "12",
+    "affinity": "12"
   },
   {
     "name": "Limpieza",
     "type": "3",
-    "affinity": "11",
+    "affinity": "11"
   },
   {
     "name": "Jardnería",
     "type": "3",
-    "affinity": "14",
+    "affinity": "14"
   },
   {
     "name": "Pintura",
     "type": "3",
-    "affinity": "15",
+    "affinity": "15"
   },
   {
     "name": "Herrería",
     "type": "3",
-    "affinity": "15",
+    "affinity": "15"
   },
   {
     "name": "Albañilería",
     "type": "3",
-    "affinity": "16",
+    "affinity": "16"
   },
   {
     "name": "Vigilancia",
     "type": "5",
-    "affinity": null,
+    "affinity": null
   },
   {
     "name": "Materiales de construcción",
     "type": "2",
-    "affinity": "21",
+    "affinity": "21"
   },
   {
     "name": "Ferretería",
     "type": "2",
-    "affinity": "21",
+    "affinity": "21"
   },
   {
     "name": "Materiales de Limpieza",
     "type": "2",
-    "affinity": "21",
+    "affinity": "21"
   },
   {
     "name": "Equipos electrónicos",
     "type": "2",
-    "affinity": "22",
+    "affinity": "22"
   },
   {
     "name": "Legales",
     "type": "6",
-    "affinity": null,
+    "affinity": null
   },
   {
     "name": "Electrónica",
     "type": "6",
-    "affinity": "31",
+    "affinity": "31"
   },
   {
     "name": "Ascensores",
     "type": "2",
-    "affinity": "32",
+    "affinity": "32"
   },
   {
     "name": "Ascensores",
     "type": "4",
-    "affinity": "32",
+    "affinity": "32"
   },
   {
     "name": "Suministro Electricidad",
     "type": "1",
-    "affinity": null,
+    "affinity": null
   },
   {
     "name": "Suministro de Agua",
     "type": "1",
-    "affinity": null,
+    "affinity": null
   },
   {
     "name": "Suministro de Telefonía",
     "type": "1",
-    "affinity": "50",
+    "affinity": "50"
   },
   {
     "name": "Suministro de Internet",
     "type": "1",
-    "affinity": "50",
+    "affinity": "50"
   },
   {
     "name": "Suministro de Gas",
     "type": "1",
-    "affinity": null,
+    "affinity": null
   },
   {
     "name": "Suministro de Aseo",
     "type": "1",
-    "affinity": null,
+    "affinity": null
   },
   {
     "name": "Policía",
     "type": "1",
-    "affinity": null,
+    "affinity": null
   },
   {
     "name": "Bomberos",
     "type": "1",
-    "affinity": null,
+    "affinity": null
   }
 ]

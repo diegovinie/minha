@@ -6,13 +6,16 @@ $time_ini = microtime(true);
 define('ROOTDIR', dirname(__FILE__));
 
 // Carga los parámetros
-$parameters = simplexml_load_file(ROOTDIR.'/parameters.xml');
+$parameters = simplexml_load_file(ROOTDIR.'/parameters.xml~');
 
 // Directorio de componentes
 define('COMDIR', ROOTDIR.'/'.$parameters->principal->components);
 
 // Directorio de varios
 define('VARDIR', ROOTDIR.'/'.$parameters->principal->vardir);
+
+// Directorio de la consola
+define('APPDIR',ROOTDIR.'/app/');
 
 // Nombre del proyecto
 define('NAME', $parameters->principal->name);

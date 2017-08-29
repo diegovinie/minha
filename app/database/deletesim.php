@@ -40,7 +40,7 @@ function deleteSim(/*string*/ $prefix){
 
     $id = (int)preg_replace("/[^0-9]+/", "", $prefix);
 
-    echo "Eliminando usuario $id";
+    echo "Eliminando usuario $id\n\n";
 
     $stmt2 = $db->prepare(
       "DELETE FROM glo_simulator
@@ -53,6 +53,24 @@ function deleteSim(/*string*/ $prefix){
         echo $stmt2->errorInfo()[2];
         return false;
     }
+
+    $email = "sim_$id@".DB_SMTP;
+
+    $stmt3 = $db->prepare(
+      "UPDATE glo_users
+      SET user_active = 0
+      WHERE user_user = :email"
+    );
+    $stmt3->bindValue('email', $email);
+
+    $exe3 = $stmt3->execute();
+
+    if(!$exe3){
+        echo $stmt3->errorInfo()[2];
+        return false;
+    }
+
     $db->exec("SET FOREIGN_KEY_CHECKS=1");
+
     return true;
 }
