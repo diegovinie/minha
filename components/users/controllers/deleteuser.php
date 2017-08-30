@@ -10,7 +10,7 @@ $habid = (integer)$_POST['hab_id'];
 
 include $basedir .'models/users.php';
 
-if($_SESSION['role'] == 1){
+if($_SESSION['role'] < 2){
     echo deleteHabitant($habid);
 }
 else{

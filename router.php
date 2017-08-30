@@ -34,8 +34,8 @@ switch ($route[1]) {
         include COMDIR .'security/router.php';
         break;
 
-    case 'demo':
-        include COMDIR .'demo/router.php';
+    case 'sim':
+        include COMDIR .'sim/router.php';
         break;
 
     // Contenido dinámico

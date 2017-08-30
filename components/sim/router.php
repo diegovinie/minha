@@ -1,5 +1,5 @@
 <?php
-/* components/demo/router.php
+/* components/sim/router.php
  *
  * Enrutador secundario
  * Se incluye en el enrutador principal
@@ -15,7 +15,7 @@ $basedir = dirname(__FILE__).'/';
 $route[2] = isset($route[2])? $route[2] : '';
 
 // Enrutador de /login/{opcion}
-if($route[1] == 'demo'){
+if($route[1] == 'sim'){
     switch ($route[2]) {
         // Página de registro
         case '':
@@ -26,6 +26,10 @@ if($route[1] == 'demo'){
         // Crear entorno
         case 'crear':
             $controller = $basedir .'controllers/creategame.php';
+            break;
+
+        case 'entrar':
+            $controller = $basedir .'controllers/enter.php';
             break;
 
         // Ruta no identificada

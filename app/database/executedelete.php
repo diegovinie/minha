@@ -1,7 +1,7 @@
 <?php
 
 echo "\n";
-include __DIR__."/deletesim.php";
+include __DIR__."/delete/deletesim.php";
 
 echo "Borrando la simulación $param1\n\n";
 

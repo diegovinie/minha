@@ -1,5 +1,5 @@
 <?php
-/* components/demo/controllers/register.php
+/* components/sim/controllers/register.php
  *
  * Controlador
  * Genera la Vista register
@@ -14,14 +14,14 @@ $href = array(
 
 include ROOTDIR.'/models/tokenator.php';
 $form = array(
-    "action" => '/index.php/demo/crear',
+    "action" => '/index.php/sim/crear',
     "method" => 'post',
     "token"  => createFormToken()
 );
 
 // javascript a incluir
 $js = array(
-    "register"     => "/components/demo/js/register.js",
+    "register"     => "/components/sim/js/register.js",
     "forms"     => "/js/forms.js",
     "functions" => "/js/functions.js"
 );
@@ -30,7 +30,7 @@ $loader = new Twig_Loader_Filesystem(ROOTDIR.'/');
 $twig = new Twig_Environment($loader);
 
 echo $twig->render(
-    'components/security/views/register.html.twig',
+    'components/sim/views/register.html.twig',
     array(
         'titulo'    => $titulo,
         'form'      => $form,

@@ -1,7 +1,7 @@
 <?php
 
 echo "\n";
-include __DIR__."/set{$param1}data.php";
+include __DIR__."/set/set{$param1}data.php";
 
 echo "Cargando datos para $param2:\n\n";
 

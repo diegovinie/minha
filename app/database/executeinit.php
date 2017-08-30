@@ -15,16 +15,6 @@ $globalTablesNames = array(
     'users'
 );
 
-echo "\nCreando tablas:\n\n";
-
-foreach ($globalTablesNames as $name) {
-    include_once(__DIR__."/create{$name}table.php");
-
-    echo "$name       ";
-    $results[$name] = call_user_func("create{$name}Table");
-    echo "\n";
-}
-
 $priTablesNames = array(
     'apartments',
     'subjects',
@@ -38,13 +28,21 @@ $priTablesNames = array(
     'commitments'
 );
 
-foreach ($priTablesNames as $name) {
-    include_once(__DIR__."/create{$name}table.php");
+function createSingleTable(/*string*/ $name, /*string*/  $prefix=null){
 
-    echo "$name       ";
-    $results[$name] = call_user_func("create{$name}Table", 'pri_');
-    echo "\n";
+        include_once(__DIR__."/create/create{$name}table.php");
+
+        echo "\n$name       ";
+        return call_user_func("create{$name}Table", $prefix);
+
 }
+
+echo "\nCreando tablas:\n\n";
+
+$res[] = array_map('createSingleTable', $globalTablesNames);
+
+$res[] = array_map('createSingleTable', $priTablesNames, 'pri_');
+
 
 echo "\n\nErrores:\n\n";
 

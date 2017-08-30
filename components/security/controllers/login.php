@@ -31,10 +31,13 @@ $js = array(
     "functions" => "/js/functions.js"
 );
 
-$loader = new Twig_Loader_Filesystem(ROOTDIR.'/');
-$twig = new Twig_Environment($loader);
+$twig = new LoadTwigWithGlobals($_globals['view']);
 
 echo $twig->render(
     'components/security/views/login.html.twig',
-    array('form' => $form, 'a' => $href, 'js' => $js)
+    array(
+        'form' => $form,
+        'a' => $href,
+        'js' => $js
+    )
 );

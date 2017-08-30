@@ -1,7 +1,7 @@
 <?php
 
 echo "\n";
-include __DIR__."/emptytable.php";
+include __DIR__."/empty/emptytable.php";
 
 switch ($param1) {
 
@@ -27,6 +27,7 @@ switch ($param1) {
             'payments',
             'commitments'
         );
+        
         $prefix = isset($param2)? $param2.'_' : null;
 
         foreach ($tables as $tableName) {

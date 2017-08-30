@@ -10,7 +10,7 @@ include_once ROOTDIR.'/models/db.php';
 include_once ROOTDIR.'/models/modelresponse.php';
 include_once ROOTDIR.'/models/hashpassword.php';
 
-function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
+function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember=null){
     $db = connectDb();
 
     $prefix = getPrefix($user);
@@ -91,7 +91,7 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember){
                         //echo "ir a usuario";
                         break;
                     case 0:
-                        $_SESSION['role'] = 1;
+                        $_SESSION['role'] = 0;
                         $_SESSION['prefix'] = getPrefix($user);
                         break;
 

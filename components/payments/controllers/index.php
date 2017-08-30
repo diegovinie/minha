@@ -31,8 +31,9 @@ $twig = new LoadTwigWithGlobals($_globals['view']);
 
 echo $twig->render(
     'components/payments/views/index.html.twig',
-    array('form' => $form,
-    'a' => $href,
-    'js' => $js,
+    array(
+        'form' => $form,
+        'a' => $href,
+        'js' => $js,
     )
 );

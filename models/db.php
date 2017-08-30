@@ -145,3 +145,35 @@ function getLastId(/*string*/ $prefix=null){
         return $res->fetchColumn();
     }
 }
+
+function createDatabase(/*string*/ $name=null){
+
+    $dbName = $name? $name : DB_NAME;
+
+    $options = array(
+        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+    );
+
+    try{
+        $db = new PDOe(
+            "mysql:host=".DB_HOST,
+            DB_USER,
+            DB_PWD,
+            $options
+        );
+
+    }catch(PDOException $err){
+        echo 'Problema al conectar a la base de datos: '.$err->getMessage();
+        return false;
+    }
+
+    $exe = $db->exec("CREATE DATABASE IF NOT EXISTS $dbName");
+
+    if(!$exe){
+        echo $db->errorInfo()[2];
+        return false;
+    }
+    else{
+        return true;
+    }
+}
