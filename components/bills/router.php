@@ -25,6 +25,14 @@ if($route[1] == 'admin' && $route[2] == 'gastos'){
             $controller = $basedir .'controllers/index.php';
             break;
 
+        case 'nuevo':
+            $controller = $basedir .'controllers/billdialog.php';
+            break;
+
+        case 'agregar':
+            $controller = $basedir .'controllers/addbill.php';
+            break;
+
         default:
             die('sin ruta');
             break;

@@ -43,6 +43,7 @@ $userTableNames = array(
     'apartments',
     'subjects',
     'providers',
+    'skills',
     'funds',
     'habitants',
     'accounts',

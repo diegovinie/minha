@@ -4,27 +4,65 @@
         "alias": "ELECTRICIDAD",
         "rif": "G200100141",
         "cel": "",
-        "email": ""
+        "email": "",
+        "skills": [
+                {
+                "name": "Suministro Electricidad",
+                "id": 17,
+                "quality": 60,
+                "cost": "100.00"
+                }
+            ]
     },
     {
         "name": "Hidrológica de la Regio Capital, C.A. (HIDROCAPITAL)",
         "alias": "HIDROCAPITAL",
         "rif": "G200121076",
         "cel": "",
-        "email": ""
+        "email": "",
+        "skills": [
+            {
+            "name": "Suministro de Agua",
+            "id": 18,
+            "quality": 55,
+            "cost": "80.00"
+            }
+        ]
     },
     {
       "name": "José Armando Gutiérrez",
       "alias": "JARDINERIA",
       "rif": "V13002303",
       "cel": "04124449393",
-      "email": ""
+      "email": "",
+      "skills": [
+          {
+          "name": "Jardnería",
+          "id": 4,
+          "quality": 86,
+          "cost": "240.00"
+          }
+      ]
     },
     {
       "name": "Arturo Vidal",
       "alias": "LIMPIEZA",
       "rif": "V10323434",
       "cel": "04160134348",
-      "email": ""
+      "email": "",
+      "skills": [
+          {
+          "name": "Limpieza",
+          "id": 3,
+          "quality": 75,
+          "cost": "180.00"
+          },
+          {
+          "name": "Electricidad",
+          "id": 2,
+          "quality": 45,
+          "cost": "70.00"
+          }
+      ]
     }
 ]

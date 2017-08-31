@@ -2,6 +2,14 @@
 
 include_once ROOTDIR.'/models/db.php';
 
+function setDataAllTable(){
+    
+    $r1 = setDataActypesTable();
+    $r2 = setDataActivitiesTable();
+
+    return $r1 * $r2? true : false;
+}
+
 function setDataActypesTable(){
     $db = connectDb();
     $db->exec("SET FOREIGN_KEY_CHECKS=0");
