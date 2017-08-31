@@ -20,7 +20,7 @@ $href = array(
 
 // javascript a incluir
 $js = array(
-    "manage"  => "/components/users/js/manage.js",
+    "manage"  => "/index.php/static/users/js/manage.js",
     "functions" => "/js/functions.js",
 );
 

@@ -61,8 +61,8 @@ window.onload = function(){
         var cont = document.getElementById('balance');
 
         cont.innerHTML = 'Edificio: '+ res.data.bui_name
-                        + '<br/>Apartamento: ' + res.data.bui_apt
-                        + '<br/>Bs. ' + toBs(res.data.bui_balance);
+                        + '<br/>Apartamento: ' + res.data.apt_name
+                        + '<br/>Bs. ' + toBs(res.data.apt_balance);
     });
 }
 
@@ -86,7 +86,7 @@ function updatePassword(){
         if(data.status ==true){
 
             flashText('success', data.msg);
-            
+
             setTimeout(function(){
                 $('#chpwd').modal('hide');
             }, 2000);

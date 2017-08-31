@@ -28,14 +28,16 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember=null){
             hab_name,   hab_id,
             hab_apt_fk, hab_surname,
             apt_edf,    apt_name,
-            apt_id
+            apt_id, bui_id
         FROM glo_users,
+            glo_buildings,
             {$prx}habitants,
             {$prx}apartments
         WHERE user_user = :user
             AND user_pwd = :pwd
             AND hab_user_fk = user_id
-            AND hab_apt_fk = apt_id"
+            AND hab_apt_fk = apt_id
+            AND apt_bui_fk = bui_id"
     );
 
     $res = $stmt->execute(array(
@@ -78,6 +80,7 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember=null){
                 $_SESSION['apt_id'] = $values['apt_id'];
                 $_SESSION['hab_id'] = $values['hab_id'];
                 $_SESSION['apt'] = $values['apt_name'];
+                $_SESSION['bui_id'] = $values['bui_id'];
                 $_SESSION['edf'] = $values['apt_edf'];
 
                 //Se define que tipo de usuario es

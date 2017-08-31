@@ -40,6 +40,10 @@ $_globals = array(
                 'sim'           => array(
                     'register'      => '/index.php/sim',
                     'crear'         =>'/index.php/sim/crear'
+                ),
+
+                'bills'         => array(
+                    'index'         => '/index.php/admin/gastos'
                 )
             )
         ),

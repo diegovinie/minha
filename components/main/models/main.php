@@ -15,9 +15,13 @@ function getBalance(/*int*/ $napt){
     $status = false;
 
     $stmt = $db->prepare(
-        "SELECT bui_name, bui_apt, bui_balance
-        FROM {$prx}buildings
-        WHERE bui_id = :napt"
+        "SELECT bui_name,
+            apt_name,
+            apt_balance
+        FROM glo_buildings,
+            {$prx}apartments
+        WHERE  apt_bui_fk = bui_id
+            AND apt_id = :napt"
     );
     $stmt->bindValue('napt', $napt, PDO::PARAM_INT);
     $stmt->execute();

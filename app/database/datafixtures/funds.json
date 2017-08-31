@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Fondo de Trabajo",
+    "balance": "45000",
+    "default": "10",
+    "type": 1,
+    "bui": 2,
+    "creator": "sysadmin"
+  }
+]

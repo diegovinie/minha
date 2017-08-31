@@ -6,7 +6,7 @@
  */
 //defined('_EXE') or die('Acceso restringido');
 
-$napt = (int)$_SESSION['number_id'];
+$napt = (int)$_SESSION['apt_id'];
 
 include $basedir .'models/main.php';
 echo getBalance($napt);

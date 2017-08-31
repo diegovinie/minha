@@ -28,25 +28,29 @@ $priTablesNames = array(
     'commitments'
 );
 
-function createSingleTable(/*string*/ $name, /*string*/  $prefix=null){
-
-        include_once(__DIR__."/create/create{$name}table.php");
-
-        echo "\n$name       ";
-        return call_user_func("create{$name}Table", $prefix);
-
-}
 
 echo "\nCreando tablas:\n\n";
 
-$res[] = array_map('createSingleTable', $globalTablesNames);
+foreach ($globalTablesNames as $nameTable) {
 
-$res[] = array_map('createSingleTable', $priTablesNames, 'pri_');
+  include_once(__DIR__."/create/create{$nameTable}table.php");
 
+  echo "\n$nameTable       ";
+  $res[] = call_user_func("create{$nameTable}Table", 'glo_');
+}
+
+
+foreach ($priTablesNames as $nameTable) {
+
+  include_once(__DIR__."/create/create{$nameTable}table.php");
+
+  echo "\n$nameTable       ";
+  $res[] = call_user_func("create{$nameTable}Table", 'pri_');
+}
 
 echo "\n\nErrores:\n\n";
 
-foreach ($results as $table => $status) {
+foreach ($res as $table => $status) {
 
     echo "$table: $status\n";
 }

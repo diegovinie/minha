@@ -51,7 +51,7 @@ $form = array(
 
 // javascript a incluir
 $js = array(
-    "payments"  => "/components/users/js/profile.js",
+    "payments"  => "/index.php/static/users/js/profile.js",
     "functions" => "/js/functions.js",
     "form"      => "/js/forms.js",
     "moment"    => "/vendor/moment/moment.min.js",

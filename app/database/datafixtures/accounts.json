@@ -1,0 +1,11 @@
+[
+  {
+    "name": "BANCO DE VENEZUELA 0102-0433-99-0044556677",
+    "balance": "20000",
+    "type": 1,
+    "hab": 8,
+    "max": 0,
+    "bui": 2,
+    "creator": "sysadmin"
+  }
+]

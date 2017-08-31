@@ -43,6 +43,11 @@ switch ($route[1]) {
         include 'controllers/rendertwig.php';
         break;
 
+    case 'static':
+        include ROOTDIR ."/components/{$route[2]}/static/{$route[3]}/{$route[4]}";
+        break;
+
+
     // asinc Vistas estáticas /views/{tipo}
     case 'views':
         ob_start();
@@ -73,6 +78,8 @@ switch ($route[1]) {
             include COMDIR .'payments/router.php';
         break;
 
+
+
         // Área de administradores
         case 'admin':
             // Si el tipo de sesión no es administrador termina
@@ -93,6 +100,11 @@ switch ($route[1]) {
                 case 'usuarios':
                     include COMDIR .'users/router.php';
                     break;
+
+                // Componente Payments
+                case 'gastos':
+                    include COMDIR .'bills/router.php';
+                break;
 
                 default:
                     print_r($route);
