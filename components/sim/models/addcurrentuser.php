@@ -68,22 +68,20 @@ function addUserUsers($email, $pwd){
     return $userid;
 }
 
-function addUserHabitants($prx, $email, $name, $surname, $edf, $apt){
+function addUserHabitants($prx, $userid, $simid, $email, $name, $surname, $edf, $apt){
     $db = connectDb();
 
     $userid = getLastUserId($email);
 
     $stmt1 = $db->prepare(
-        "SELECT user_id, apt_id
-        FROM glo_users,
-            {$prx}apartments
-        WHERE user_user = :email
-            AND apt_name = :apt
-            AND apt_edf = :edf"
+        "SELECT apt_id
+        FROM glo_buildings
+            INNER JOIN {$prx}apartments ON apt_bui_fk = bui_id
+        WHERE bui_edf = :edf
+            AND apt_name = :apt"
     );
 
     $res1 = $stmt1->execute(array(
-        'email' => $email,
         'apt'   => $apt,
         'edf'   => $edf
     ));
@@ -93,24 +91,25 @@ function addUserHabitants($prx, $email, $name, $surname, $edf, $apt){
         return false;
     }
 
-    $res1 = $stmt1->fetch(PDO::FETCH_ASSOC);
-
-    extract($res1);
+    $aptid = $stmt1->fetchColumn();
 
     $stmt2 = $db->prepare(
         "INSERT INTO {$prx}habitants
         (hab_name,      hab_surname,    hab_cond,     hab_role,
-         hab_accepted,  hab_apt_fk,     hab_user_fk,  hab_email)
+         hab_accepted,  hab_apt_fk,     hab_sim_fk,   hab_email,
+         hab_user_fk)
         VALUES(
-            :name,      :surname,        1,           0,
-            1,          :aptid,          :userid,     :email)"
+         :name,         :surname,       1,            1,
+         1,             :aptid,         :simid,       :email,
+         :userid)"
     );
 
     $exe2 = $stmt2->execute(array(
         'name' => $name,
         'surname' => $surname,
-        'aptid' => $apt_id,
-        'userid' => $user_id,
+        'aptid' => $aptid,
+        'simid' => $simid,
+        'userid' => $userid,
         'email'  => $email
     ));
 

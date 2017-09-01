@@ -60,8 +60,8 @@ ajaxProgressResponse(10, "Preparando Datos...");
 sleep(1);
 
 include $basedir.'models/addcurrentuser.php';
-$re[] = $userid = addUserUsers($email, $pwd);
-if(!$userid) ajaxErrorResponse('Error registrar usuario.');
+$re[] = $userId = addUserUsers($email, $pwd);
+if(!$userId) ajaxErrorResponse('Error registrar usuario.');
 
 $re[] = addUserSimulator($email);
 $re[] = $simId = getLastUserSimId($email);
@@ -70,7 +70,6 @@ if(!$simId) ajaxErrorResponse('Error al recuperar sim id.');
 $prx = "u{$simId}_";
 if(!$prx) ajaxErrorResponse('Error al seleccionar prefijo.');
 
-//$simEmail = "sim_".$simId."@".DB_SMTP;
 
 include $basedir.'models/createhabitant.php';
 include $basedir.'models/createcommunity.php';
@@ -126,9 +125,9 @@ $re[] = setApartmentsData($prx, $apts);
 ajaxProgressResponse(80, "Creando la comunidad...");
 
 
-$re[] = setHabitantsData($prx, $cmty, $userid);
+$re[] = setHabitantsData($prx, $cmty, $simId);
 
-$re[] = addUserHabitants($prx, $email, $userName, $surname, $useredf, $userapt);
+$re[] = addUserHabitants($prx, $userId, $simId, $email, $userName, $surname, $useredf, $userapt);
 
 /*** Revisando errores ***/
 if(array_sum($re) == count($re)){

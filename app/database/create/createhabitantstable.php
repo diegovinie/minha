@@ -29,11 +29,14 @@ function createHabitantsTable(/*string*/ $prefix=null){
           `hab_nac` DATE DEFAULT NULL COMMENT 'Fecha de nacimiento',
           `hab_email` varchar(64) DEFAULT NULL COMMENT 'Correo electronico',
           `hab_apt_fk` int(8) unsigned NOT NULL COMMENT 'numero de apartamento',
-          `hab_user_fk` int(8) unsigned NOT NULL,
+          `hab_user_fk` int(8) unsigned DEFAULT NULL,
+          `hab_sim_fk` int(8) unsigned NOT NULL,
 
           PRIMARY KEY (`hab_id`),
-          KEY `{$prx}hab_user` (`hab_user_fk`),
-          KEY `{$prx}hab_apt` (`hab_apt_fk`),
+          KEY `hab_sim_fk` (`hab_sim_fk`),
+          KEY `hab_apt_fk` (`hab_apt_fk`),
+          KEY `hab_user_fk` (`hab_user_fk`),
+          CONSTRAINT `{$prx}link_hab_sim` FOREIGN KEY (`hab_sim_fk`) REFERENCES `glo_simulator` (`sim_id`),
           CONSTRAINT `{$prx}link_hab_user` FOREIGN KEY (`hab_user_fk`) REFERENCES `glo_users` (`user_id`),
           CONSTRAINT `{$prx}link_hab_apt` FOREIGN KEY (`hab_apt_fk`) REFERENCES `{$prx}apartments` (`apt_id`)
         ) ENGINE=InnoDB COLLATE=utf8_spanish_ci DEFAULT CHARSET=utf8"

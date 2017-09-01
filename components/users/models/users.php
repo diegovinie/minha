@@ -24,14 +24,13 @@ function getHabitants(/*string*/ $edf){
             hab_surname AS 'Apellido',
             hab_ci AS 'C.I.',
             apt_name AS 'Apartamento',
-            user_user AS 'Correo',
+            hab_email AS 'Correo',
         CASE hab_role
             WHEN 0 THEN 'Jugador'
             WHEN 1 THEN 'Administrador'
             WHEN 2 THEN 'Usuario'
             ELSE 'Indeterminado' END AS 'Tipo de Usuario'
-        FROM glo_users
-            INNER JOIN {$prx}habitants ON hab_user_fk = user_id
+        FROM {$prx}habitants
             INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
         WHERE apt_edf = :edf
             AND hab_accepted = 1"
@@ -42,10 +41,10 @@ function getHabitants(/*string*/ $edf){
 
     if(!$res){
         $msg = $stmt->errorInfo()[2];
-        die($msg);
 
     }else{
         $msg = setTheadTbodyFromPDO($stmt);
+
         $status = true;
     }
 
@@ -65,19 +64,18 @@ function getPendingUsers(/*string*/ $edf){
             hab_surname AS 'Apellido',
             hab_ci AS 'C.I.',
             apt_name AS 'Apartamento',
-            user_user AS 'Correo',
+            hab_email AS 'Correo',
         CASE hab_role
             WHEN 0 THEN 'Jugador'
             WHEN 1 THEN 'Administrador'
             WHEN 2 THEN 'Usuario'
             ELSE 'Indeterminado' END AS 'Tipo de Usuario'
-            FROM glo_users
-                INNER JOIN {$prx}habitants ON hab_user_fk = user_id
-                INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
-            WHERE apt_edf = :edf
-                AND hab_accepted = 0"
+        FROM {$prx}habitants
+            INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
+        WHERE apt_edf = :edf
+            AND hab_accepted = 0"
     );
-    
+
     $stmt->bindValue('edf', $edf);
     $res = $stmt->execute();
 

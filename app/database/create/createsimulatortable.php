@@ -35,6 +35,6 @@ function createSimulatorTable(){
         return false;
     }
     else{
-        return true;
+        return $exe;
     }
 }

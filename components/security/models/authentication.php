@@ -10,6 +10,148 @@ include_once ROOTDIR.'/models/db.php';
 include_once ROOTDIR.'/models/modelresponse.php';
 include_once ROOTDIR.'/models/hashpassword.php';
 
+
+function checkUserPassword(/*string*/ $email, /*string*/ $pwd, /*int*/ $remember=null){
+    $db = connectDb();
+
+    $password = ($pwd != DEF_PWD)? hashPassword($pwd) : $pwd;
+
+    $stmt = $db->prepare(
+        "SELECT user_id,
+                user_active
+        FROM glo_users
+        WHERE   user_user = :email
+            AND user_pwd = :password"
+    );
+
+    $res = $stmt->execute(array(
+        'email'=> $email,
+        'password' => $password));
+
+    if($stmt->rowCount() != 1){
+        return false;
+    }
+
+    list($userid, $active) = $stmt->fetch(PDO::FETCH_NUM);
+
+    return $userid;
+}
+
+function getSimulations($userid){
+    $db = connectDb();
+    $status = true;
+
+    $stmt = $db->prepare(
+        "SELECT sim_id
+        FROM glo_simulator
+        WHERE sim_user_fk = :userid"
+    );
+
+    $stmt->bindValue('userid', $userid);
+
+    $res = $stmt->execute();
+
+    if(!$res){
+        echo $stmt->errorInfo()[2];
+        return false;
+    }
+
+    $count = $stmt->rowCount();
+
+    if($count == 1){
+
+        return (int)$stmt->fetchColumn();
+    }
+    else{
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
+
+function setSession($userid, $simid=1){
+    $db = connectDb();
+    $prx = ($simid == 1)? 'pri_' : "u{$simid}_";
+
+    $stmt = $db->prepare(
+        "SELECT hab_name,     hab_surname,   hab_role,
+                hab_accepted, hab_id,        apt_bui_fk,
+                hab_email,    apt_id,        apt_name,
+                apt_edf
+        FROM {$prx}habitants
+            INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
+        WHERE hab_sim_fk = :simid
+            AND hab_user_fk = :userid"
+    );
+
+    $stmt->bindValue('simid', $simid, PDO::PARAM_INT);
+    $stmt->bindValue('userid', $userid, PDO::PARAM_INT);
+
+    $res = $stmt->execute();
+
+    if(!$res){
+        echo $stmt->errorInfo()[2];
+        return false;
+    }
+    else{
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        extract($data);
+
+        //Se establecen los parámetros de sesión
+        if(!isset($_SESSION)) session_start();
+
+        $_SESSION['user_id'] = $userid;
+        $_SESSION['apt_id'] = $apt_id;
+        $_SESSION['hab_id'] = $hab_id;
+        $_SESSION['bui_id'] = $apt_bui_fk;
+
+        $_SESSION['user'] = $hab_email;
+        $_SESSION['apt'] = $apt_name;
+        $_SESSION['name'] = $hab_name;
+        $_SESSION['surname'] = $hab_surname;
+        $_SESSION['edf'] = $apt_edf;
+
+        $_SESSION['status'] = 'active';
+        $_SESSION['accepted'] = $hab_accepted;
+        $_SESSION['prefix'] = $prx;
+
+        //Se define que tipo de usuario es
+        switch ($hab_role) {
+            case 1:
+                $_SESSION['role'] = 1;
+                //echo "ir a administrador";
+                break;
+            case 2:
+                $_SESSION['role'] = 2;
+                //echo "ir a usuario";
+                break;
+
+            default:
+                die("Ha ocurrido un error al definir el rol de sesión.");
+                break;
+        }
+    }
+
+    return true;
+}
+
+function displaySimList($userid){
+    $db = connectDb();
+
+    $stmt = $db->prepare(
+    "SELECT sim_id AS 'id',
+        sim_date AS 'date'
+    FROM glo_simulator
+        WHERE sim_user_fk = :userid"
+    );
+    $stmt->bindValue('userid', $userid, PDO::PARAM_INT);
+
+    $stmt->execute();
+
+    $arr = $stmt->fetchAll();
+
+    return $arr;
+}
+
 function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember=null){
     $db = connectDb();
 

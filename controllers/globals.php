@@ -38,7 +38,8 @@ $_globals = array(
                 ),
                 // Sim - Enlaces:
                 'sim'           => array(
-                    'register'      => '/index.php/sim',
+                    'login'         => '/index.php/sim',
+                    'register'      => '/index.php/sim/registrarse',
                     'crear'         =>'/index.php/sim/crear'
                 ),
 

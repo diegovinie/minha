@@ -95,7 +95,7 @@ function setApartmentsData($prx, $apts){
     return true;
 }
 
-function setHabitantsData($prx, $cmty, $userid){
+function setHabitantsData($prx, $cmty, $simid){
     $db = connectDb();
 
     ///// Preparación de consultas
@@ -115,11 +115,11 @@ function setHabitantsData($prx, $cmty, $userid){
         "INSERT INTO `{$prx}habitants`
         (hab_name, hab_surname, hab_ci,         hab_cel,
          hab_cond, hab_role,    hab_accepted,   hab_gender,
-         hab_nac,  hab_apt_fk,  hab_user_fk,    hab_email)
+         hab_nac,  hab_apt_fk,  hab_sim_fk,    hab_email)
         VALUES
         (:name,    :surname,    :ci,            :cel,
          :cond,    :role,       :accepted,      :gender,
-         :nac,     :apt_id,     :user_id,       :email)"
+         :nac,     :apt_id,     :simid,       :email)"
     );
     $stmt3->bindParam('name', $name);
     $stmt3->bindParam('surname', $surname);
@@ -131,7 +131,7 @@ function setHabitantsData($prx, $cmty, $userid){
     $stmt3->bindParam('gender', $gender);
     $stmt3->bindParam('nac', $nac);
     $stmt3->bindParam('apt_id', $apt_id);
-    $stmt3->bindParam('user_id', $userid);
+    $stmt3->bindParam('simid', $simid);
     $stmt3->bindParam('email', $email);
 
     ////// Inicio de la ejecución

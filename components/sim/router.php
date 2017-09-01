@@ -18,18 +18,21 @@ $route[2] = isset($route[2])? $route[2] : '';
 if($route[1] == 'sim'){
     switch ($route[2]) {
         // Página de registro
-        case '':
+        case 'registrarse':
             $controller = $basedir
                 .'controllers/register.php';
             break;
 
+        case '':
+            $controller = $basedir.'controllers/login.php';
+            break;
+
+        case 'simcheck':
+            $controller = ROOTDIR.'/components/security/controllers/simcheck.php';
+            break;
         // Crear entorno
         case 'crear':
             $controller = $basedir .'controllers/creategame.php';
-            break;
-
-        case 'entrar':
-            $controller = $basedir .'controllers/enter.php';
             break;
 
         // Ruta no identificada
