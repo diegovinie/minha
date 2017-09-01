@@ -18,3 +18,7 @@ $op     = $_POST[''];
 
 $name = $_POST['name'];
 $rif = $_POST['rif'];
+
+if(!$provid){
+    addProvider();
+}

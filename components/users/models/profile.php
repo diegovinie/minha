@@ -17,8 +17,9 @@ function getFromApartments(/*int*/ $aptid){
     $status = false;
 
     $stmt1 = $db->prepare(
-        "SELECT apt_id AS 'id', apt_edf AS 'edf',
-        apt_name AS 'name'
+        "SELECT apt_id AS 'id',
+            apt_edf AS 'edf',
+            apt_name AS 'name'
         FROM {$prx}apartments
         WHERE apt_id = :aptid"
     );

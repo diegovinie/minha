@@ -27,6 +27,7 @@ function createHabitantsTable(/*string*/ $prefix=null){
           `hab_accepted` int(1) NOT NULL DEFAULT '1' COMMENT 'Si ya fue aceptado',
           `hab_gender` varchar(1) DEFAULT NULL COMMENT 'M o F',
           `hab_nac` DATE DEFAULT NULL COMMENT 'Fecha de nacimiento',
+          `hab_email` varchar(64) DEFAULT NULL COMMENT 'Correo electronico',
           `hab_apt_fk` int(8) unsigned NOT NULL COMMENT 'numero de apartamento',
           `hab_user_fk` int(8) unsigned NOT NULL,
 

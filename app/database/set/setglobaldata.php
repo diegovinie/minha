@@ -11,6 +11,7 @@ function setDataAllTable(){
     $re[] = setDataLapsesTable();
     $re[] = setDataTypesTable();
     $re[] = setDataBuildingsTable();
+    $re[] = setDataSimulatorTable();
 
     return array_sum($re) == count($re)? true : print_r($re);
 
@@ -182,6 +183,24 @@ function setDataBuildingsTable(){
             echo $stmt->errorInfo()[2];
             return false;
         }
+    }
+
+    return true;
+}
+
+function setDataSimulatorTable(){
+    $db = connectDb();
+
+    $exe = $db->exec(
+        "INSERT INTO glo_simulator
+        (sim_id,    sim_user,    sim_user_fk)
+        VALUES
+        (1,         'PRINCIPAL', NULL)"
+    );
+
+    if(!$exe){
+        echo $db->errorInfo()[2];
+        return false;
     }
 
     return true;

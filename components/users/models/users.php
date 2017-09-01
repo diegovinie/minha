@@ -30,14 +30,13 @@ function getHabitants(/*string*/ $edf){
             WHEN 1 THEN 'Administrador'
             WHEN 2 THEN 'Usuario'
             ELSE 'Indeterminado' END AS 'Tipo de Usuario'
-        FROM glo_users,
-            {$prx}habitants,
-            {$prx}apartments
-        WHERE hab_user_fk = user_id
-            AND hab_apt_fk = apt_id
-            AND hab_accepted = 1
-            AND apt_edf = :edf"
+        FROM glo_users
+            INNER JOIN {$prx}habitants ON hab_user_fk = user_id
+            INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
+        WHERE apt_edf = :edf
+            AND hab_accepted = 1"
     );
+
     $stmt->bindValue('edf', $edf);
     $res = $stmt->execute();
 
@@ -72,14 +71,13 @@ function getPendingUsers(/*string*/ $edf){
             WHEN 1 THEN 'Administrador'
             WHEN 2 THEN 'Usuario'
             ELSE 'Indeterminado' END AS 'Tipo de Usuario'
-        FROM glo_users,
-            {$prx}habitants,
-            {$prx}apartments
-        WHERE hab_user_fk = user_id
-            AND hab_apt_fk = apt_id
-            AND hab_accepted = 0
-            AND apt_edf = :edf"
+            FROM glo_users
+                INNER JOIN {$prx}habitants ON hab_user_fk = user_id
+                INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
+            WHERE apt_edf = :edf
+                AND hab_accepted = 0"
     );
+    
     $stmt->bindValue('edf', $edf);
     $res = $stmt->execute();
 

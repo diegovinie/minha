@@ -24,15 +24,13 @@ function getAccountsForTables(/*int*/ $buiid){
             CONCAT(hab_name, ' ', hab_surname) AS 'Custodio',
             apt_name AS 'Apartamento',
             acc_balance AS 'Monto'
-        FROM {$prx}accounts,
-            {$prx}habitants,
-            {$prx}apartments,
-            glo_buildings
-        WHERE acc_hab_fk = hab_id
-            AND apt_bui_fk = bui_id
-            AND bui_id = :buiid
-            AND hab_apt_fk = apt_id"
+        FROM {$prx}accounts
+            INNER JOIN {$prx}habitants ON acc_hab_fk = hab_id
+            INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
+            INNER JOIN glo_buildings ON acc_bui_fk = bui_id
+        WHERE bui_id = :buiid"
     );
+
     $stmt1->bindValue('buiid', $buiid, PDO::PARAM_INT);
     $res1 = $stmt1->execute();
     //echo $stmt1->errorInfo()[2]; die;
@@ -43,15 +41,13 @@ function getAccountsForTables(/*int*/ $buiid){
             '' AS 'c',
             '' AS 'd',
             SUM(acc_balance) AS 'total'
-        FROM {$prx}accounts,
-            {$prx}habitants,
-            {$prx}apartments,
-            glo_buildings
-            WHERE acc_hab_fk = hab_id
-                AND apt_bui_fk = bui_id
-                AND bui_id = :buiid
-                AND hab_apt_fk = apt_id"
+        FROM {$prx}accounts
+            INNER JOIN {$prx}habitants ON acc_hab_fk = hab_id
+            INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
+            INNER JOIN glo_buildings ON acc_bui_fk = bui_id
+        WHERE bui_id = :buiid"
     );
+    
     $stmt2->bindValue('buiid', $buiid, PDO::PARAM_INT);
     $res2 = $stmt2->execute();
 
@@ -88,11 +84,11 @@ function getFundsForTables(/*int*/ $buiid){
               WHEN 2 THEN 'Monto' END AS 'Tipo',
             fun_default AS 'Cuota',
             fun_balance AS 'Monto'
-        FROM {$prx}funds,
-            glo_buildings
-        WHERE fun_bui_fk = :buiid
-            AND bui_id = :buiid"
+        FROM {$prx}funds
+            INNER JOIN glo_buildings ON fun_bui_fk = bui_id
+        WHERE bui_id = :buiid"
     );
+
     $stmt1->bindValue('buiid', $buiid, PDO::PARAM_INT);
     $res1 = $stmt1->execute();
 
@@ -102,11 +98,11 @@ function getFundsForTables(/*int*/ $buiid){
               '' AS 'c',
               '' AS 'd',
               SUM(fun_balance) AS 'total'
-        FROM {$prx}funds,
-            glo_buildings
-        WHERE fun_bui_fk = :buiid
-            AND bui_id = :buiid"
+        FROM {$prx}funds
+            INNER JOIN glo_buildings ON fun_bui_fk = bui_id
+        WHERE  bui_id = :buiid"
     );
+
     $stmt2->bindValue('buiid', $buiid, PDO::PARAM_INT);
     $res2 = $stmt2->execute();
 
@@ -152,12 +148,12 @@ function getAptBalancesForTables(/*int*/ $buiid){
             apt_name AS 'Apartamento',
             COUNT(hab_apt_fk) AS 'Usuarios',
             apt_balance AS 'Deuda'
-        FROM {$prx}apartments,
-            {$prx}habitants
-        WHERE hab_apt_fk = apt_id
-            AND apt_bui_fk = :buiid
+        FROM {$prx}apartments
+            INNER JOIN {$prx}habitants ON hab_apt_fk = apt_id
+        WHERE apt_bui_fk = :buiid
         GROUP BY hab_apt_fk"
     );
+
     $stmt1->bindValue('buiid', $buiid, PDO::PARAM_INT);
     $res1 = $stmt1->execute();
     //echo $stmt1->errorInfo()[2], die,
@@ -213,6 +209,7 @@ function getCurrentBalance(/*int*/ $buiid){
         FROM {$prx}apartments
         WHERE apt_bui_fk = :buiid"
     );
+
     $stmt->bindValue('buiid', $buiid, PDO::PARAM_INT);
     $res = $stmt->execute();
 

@@ -1,11 +1,38 @@
 [
-  {
-    "name": "BANCO DE VENEZUELA 0102-0433-99-0044556677",
-    "balance": "20000",
-    "type": 1,
-    "hab": 8,
-    "max": 0,
-    "bui": 2,
-    "creator": "sysadmin"
-  }
+    {
+        "name": "BANCO DE VENEZUELA 0102-0433-99-0044556677",
+        "balance": "120000",
+        "type": 1,
+        "hab": 8,
+        "max": 0,
+        "bui": 1,
+        "creator": "sysadmin"
+    },
+    {
+        "name": "BANCO DEL TESORO 0161-0476-11-0044565437",
+        "balance": "86000",
+        "type": 1,
+        "hab": 2,
+        "max": 0,
+        "bui": 2,
+        "creator": "sysadmin"
+    },
+    {
+        "name": "CAJA CHICA N 1",
+        "balance": "12500",
+        "type": 2,
+        "hab": 3,
+        "max": "25000.00",
+        "bui": 1,
+        "creator": "sysadmin"
+    },
+    {
+        "name": "BANCO DE VENEZUELA 0102-0433-99-0044556677",
+        "balance": "20000",
+        "type": 2,
+        "hab": 5,
+        "max": "30000.00",
+        "bui": 2,
+        "creator": "sysadmin"
+    }
 ]

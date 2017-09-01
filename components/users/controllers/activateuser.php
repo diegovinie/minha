@@ -6,7 +6,7 @@
  */
 defined('_EXE') or die('Acceso restringido');
 
-$habid = (integer)$_POST['hab_id'];
+$habid = (integer)$_POST['id'];
 
 include $basedir .'models/users.php';
 

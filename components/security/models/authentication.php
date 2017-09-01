@@ -29,15 +29,12 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember=null){
             hab_apt_fk, hab_surname,
             apt_edf,    apt_name,
             apt_id, bui_id
-        FROM glo_users,
-            glo_buildings,
-            {$prx}habitants,
-            {$prx}apartments
+        FROM glo_users
+            INNER JOIN {$prx}habitants ON hab_user_fk = user_id
+            INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
+            INNER JOIN glo_buildings ON apt_bui_fk = bui_id
         WHERE user_user = :user
-            AND user_pwd = :pwd
-            AND hab_user_fk = user_id
-            AND hab_apt_fk = apt_id
-            AND apt_bui_fk = bui_id"
+            AND user_pwd = :pwd"
     );
 
     $res = $stmt->execute(array(
@@ -108,12 +105,20 @@ function checkUser(/*string*/ $user, /*string*/ $pwd, /*int*/ $remember=null){
                     $token = hashPassword(time().rand(0,100));
                     $info = json_encode($_SESSION);
                     $qc = "INSERT INTO glo_cookies
-                        VALUES(null, 'remember', '$token', '$info', null)";
+                        VALUES(
+                            null,
+                            'remember',
+                            '$token',
+                            '$info',
+                            null)";
 
                     try{
                         $db->exec($qc);
+
                         setcookie('remember', $token, time()+60*60*24, '/');
+
                         $cookie = $token;
+
                     }catch(PDOStatement $err){
                         echo 'Problemas al guardar cookie: '.$err;
                         $cookie = false;
@@ -168,7 +173,8 @@ function setQuestionResponse($id, /*string*/ $question, /*string*/ $response){
 
     $stmt = $db->prepare(
         "UPDATE glo_users
-        SET user_question = :question, user_response = :response
+        SET user_question = :question,
+            user_response = :response
         WHERE user_id = :id"
     );
     $stmt->execute(array(

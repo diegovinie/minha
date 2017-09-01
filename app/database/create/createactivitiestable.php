@@ -17,7 +17,7 @@ function createActivitiesTable(){
 
           PRIMARY KEY (`act_id`),
           KEY `act_aty_fk` (`act_aty_fk`),
-          CONSTRAINT `sim_link_act_aty` FOREIGN KEY (`act_aty_fk`) REFERENCES `sim_actypes` (`aty_id`)
+          CONSTRAINT `sim_link_act_aty` FOREIGN KEY (`act_aty_fk`) REFERENCES `sim_actypes` (`aty_id`)  ON DELETE RESTRICT ON UPDATE NO ACTION
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Actividades de los Proveedores'"
     );
 

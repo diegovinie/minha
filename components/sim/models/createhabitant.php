@@ -1,6 +1,7 @@
 <?php
 
 include_once __DIR__.'/human.php';
+include_once __DIR__.'/createuser.php';
 
 /**
  * @return array
@@ -30,6 +31,8 @@ function createHabitant(/*int*/ $id=null){
 
     // El 66% son titulares, el resto familiares.
     $hab['cond'] = mt_rand(0, 99) < 66? 1 : 0;
+
+    $hab['email'] = genEmail($name, $id);
 
     // Entre los titulares el 5% son administradores.
     $hab['role'] = $hab['cond'] == 1

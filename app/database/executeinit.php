@@ -10,9 +10,9 @@ $globalTablesNames = array(
     'lapses',
     'banks',
     'cookies',
+    'users',
     'simulator',
-    'buildings',
-    'users'
+    'buildings'
 );
 
 $priTablesNames = array(

@@ -5,7 +5,7 @@
 
 include_once ROOTDIR.'/models/db.php';
 
-function addGetUserId($simEmail){
+function getUserId($simEmail){
     $db = connectDb();
 
     ///// Preparación de consultas
@@ -13,15 +13,9 @@ function addGetUserId($simEmail){
     // Inserta el simulador en users
     $stmt = $db->prepare(
         "INSERT INTO `glo_users`
-        VALUES(
-            NULL,
-            :user,
-            :pwd,
-            NULL,
-            NULL,
-            1,
-            'system',
-            NULL)"
+        (user_user, user_pwd, user_active, user_creator)
+        VALUES
+        (:user,     :pwd,     1,           'system')"
     );
     $stmt->bindValue('user', $simEmail);
     $stmt->bindValue('pwd', DEF_PWD);
@@ -30,9 +24,11 @@ function addGetUserId($simEmail){
     $stmt1 = $db->prepare(
         "SELECT user_id
         FROM glo_users
+        WHERE user_user = :user
         ORDER BY user_id DESC
         LIMIT 1"
     );
+    $stmt1->bindValue('user', $simEmail);
 
     ///// Inicio de la ejecución
 
@@ -66,17 +62,11 @@ function setApartmentsData($prx, $apts){
 
     $stmt = $db->prepare(
         "INSERT INTO {$prx}apartments
-        VALUES (
-            NULL,
-            :name,
-            :buiid,
-            :edf,
-            0,
-            :w,
-            :assigned,
-            :occupied,
-            :notes
-        )"
+        (apt_name,   apt_bui_fk,    apt_edf,      apt_balance,
+         apt_weight, apt_assigned,  apt_occupied, apt_notes)
+        VALUES
+        (:name,      :buiid,        :edf,         0,
+         :w,         :assigned,     :occupied,    :notes)"
     );
 
     foreach ($apts as $id => $apt) {
@@ -105,14 +95,14 @@ function setApartmentsData($prx, $apts){
     return true;
 }
 
-function setHabitantsData($prx, $cmty, $email){
+function setHabitantsData($prx, $cmty, $userid){
     $db = connectDb();
 
     ///// Preparación de consultas
 
     // Selecciona el id del apartamento
     $stmt2 = $db->prepare(
-        "SELECT apt_id AS 'aptid'
+        "SELECT apt_id
         FROM {$prx}apartments
         WHERE apt_edf = :edf
         AND apt_name = :apt"
@@ -123,19 +113,13 @@ function setHabitantsData($prx, $cmty, $email){
     // Inserta datos en habitants
     $stmt3 = $db->prepare(
         "INSERT INTO `{$prx}habitants`
-        VALUES (
-            NULL,
-            :name,
-            :surname,
-            :ci,
-            :cel,
-            :cond,
-            :role,
-            :accepted,
-            :gender,
-            :nac,
-            :aptid,
-            :userid)"
+        (hab_name, hab_surname, hab_ci,         hab_cel,
+         hab_cond, hab_role,    hab_accepted,   hab_gender,
+         hab_nac,  hab_apt_fk,  hab_user_fk,    hab_email)
+        VALUES
+        (:name,    :surname,    :ci,            :cel,
+         :cond,    :role,       :accepted,      :gender,
+         :nac,     :apt_id,     :user_id,       :email)"
     );
     $stmt3->bindParam('name', $name);
     $stmt3->bindParam('surname', $surname);
@@ -146,19 +130,18 @@ function setHabitantsData($prx, $cmty, $email){
     $stmt3->bindParam('accepted', $accepted);
     $stmt3->bindParam('gender', $gender);
     $stmt3->bindParam('nac', $nac);
-    $stmt3->bindParam('aptid', $aptid);
-    $stmt3->bindParam('userid', $userid);
+    $stmt3->bindParam('apt_id', $apt_id);
+    $stmt3->bindParam('user_id', $userid);
+    $stmt3->bindParam('email', $email);
 
     ////// Inicio de la ejecución
-
-    $userid = addGetUserId($email);
 
     foreach ($cmty as $apt) {
 
         if(isset($apt['habs'])){
 
             foreach ($apt['habs'] as $hab) {
-
+                //var_dump($hab);
                 extract($hab);
 
                 $aptname = $apt['name'];
@@ -172,7 +155,7 @@ function setHabitantsData($prx, $cmty, $email){
                 }
 
                 $res2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-
+                //var_dump($res2); die;
                 extract($res2);
 
                 $exe3 = $stmt3->execute();

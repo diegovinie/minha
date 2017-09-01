@@ -31,6 +31,8 @@ $js = array(
     "functions" => "/js/functions.js"
 );
 
+$sim = 'components/security/views/login/simbutton.html.twig';
+
 $twig = new LoadTwigWithGlobals($_globals['view']);
 
 echo $twig->render(
@@ -38,6 +40,7 @@ echo $twig->render(
     array(
         'form' => $form,
         'a' => $href,
-        'js' => $js
+        'js' => $js,
+        'sim' => $sim
     )
 );

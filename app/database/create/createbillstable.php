@@ -26,13 +26,13 @@ function createBillsTable(/*string*/ $prefix=null){
           `bil_acc_fk` int(8) unsigned NOT NULL COMMENT 'Cuenta principal, Caja chica',
 
           `bil_class` varchar(50) NOT NULL DEFAULT 'N/D' COMMENT 'Materiales, Sueldos, Proveedores Registrados',
-          `bil_method` varchar(30) NOT NULL COMMENT 'TDC, TDD, Transferencia o con caja chica',
+          `bil_method` varchar(30) NOT NULL COMMENT 'cuenta princial o con caja chica',
           `bil_log` varchar(30) NOT NULL DEFAULT 'N/D' COMMENT 'Factura, recibo de pago',
           `bil_lapse` int(3) unsigned DEFAULT '0' COMMENT 'Periodo de facturacion',
           `bil_amount` decimal(10,2) NOT NULL,
           `bil_iva` decimal(10,2) NOT NULL DEFAULT '0.00',
           `bil_total` decimal(10,2) NOT NULL,
-          `bil_op` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Opciones especiales como fracciones por apartamento',
+          `bil_op` int(1) unsigned DEFAULT NULL COMMENT 'Opciones especiales como fracciones por apartamento',
           `bil_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
           PRIMARY KEY (`bil_id`),

@@ -26,8 +26,7 @@ function createUsersTable(){
           `user_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
           PRIMARY KEY (`user_id`),
-          UNIQUE `user_user` (`user_user`),
-          KEY `user_id` (`user_id`)
+          UNIQUE `user_user` (`user_user`)
         ) ENGINE=InnoDB COLLATE=utf8_spanish_ci DEFAULT CHARSET=utf8 COMMENT='Tabla de usuarios para el acceso'"
     );
 
