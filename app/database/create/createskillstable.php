@@ -14,7 +14,7 @@ function createSkillsTable(/*string*/ $prefix=null){
         DROP TABLE IF EXISTS {$prx}skills CASCADE;
         SET FOREIGN_KEY_CHECKS=1;"
     );
-    
+
     $exe = $db->exec(
         "CREATE TABLE {$prx}skills (
           `ski_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
@@ -26,8 +26,8 @@ function createSkillsTable(/*string*/ $prefix=null){
           PRIMARY KEY (`ski_id`),
           KEY `ski_prov_fk` (`ski_prov_fk`),
           KEY `ski_act_fk` (`ski_act_fk`),
-          CONSTRAINT `{$prx}link_ski_prov` FOREIGN KEY (`ski_prov_fk`) REFERENCES `{$prx}providers` (`prov_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-          CONSTRAINT `{$prx}link_ski_act` FOREIGN KEY (`ski_act_fk`) REFERENCES `sim_activities` (`act_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+          CONSTRAINT `{$prx}link_ski_prov` FOREIGN KEY (`ski_prov_fk`) REFERENCES `{$prx}providers` (`prov_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+          CONSTRAINT `{$prx}link_ski_act` FOREIGN KEY (`ski_act_fk`) REFERENCES `glo_activities` (`act_id`) ON DELETE CASCADE ON UPDATE CASCADE
         ) ENGINE=InnoDB COLLATE=utf8_spanish_ci DEFAULT CHARSET=utf8"
     );
 

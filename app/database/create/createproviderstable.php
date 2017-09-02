@@ -23,8 +23,11 @@ function createProvidersTable(/*string*/ $prefix=null){
           `prov_rif` varchar(11) DEFAULT NULL COMMENT 'cedula o rif',
           `prov_cel` varchar(13) DEFAULT NULL,
           `prov_email` varchar(64) DEFAULT NULL,
+          `prov_sim_fk` int(8) unsigned NOT NULL,
 
-          PRIMARY KEY (`prov_id`)
+          PRIMARY KEY (`prov_id`),
+          KEY `prov_sim_fk` (`prov_sim_fk`),
+          CONSTRAINT `{$prx}link_prov_sim` FOREIGN KEY (`prov_sim_fk`) REFERENCES `glo_simulator` (`sim_id`)  ON DELETE CASCADE ON UPDATE CASCADE
         ) ENGINE=InnoDB COLLATE=utf8_spanish_ci DEFAULT CHARSET=utf8"
     );
 

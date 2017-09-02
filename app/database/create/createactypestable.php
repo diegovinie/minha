@@ -9,7 +9,7 @@ function createActypesTable(){
     $db = connectDb();
 
     $exe = $db->exec(
-        "CREATE TABLE IF NOT EXISTS sim_actypes (
+        "CREATE TABLE IF NOT EXISTS glo_actypes (
           `aty_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
           `aty_name` varchar(32) NOT NULL,
           `aty_op` int(1) unsigned DEFAULT NULL COMMENT 'Opciones',

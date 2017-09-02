@@ -26,9 +26,12 @@ function createApartmentsTable(/*string*/ $prefix=null){
           `apt_assigned` tinyint(1) NOT NULL DEFAULT '1',
           `apt_occupied` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Si esta habitado',
           `apt_notes` varchar(1024) DEFAULT NULL,
+          `apt_sim_fk` int(8) unsigned NOT NULL,
 
           PRIMARY KEY (`apt_id`),
           KEY `apt_bui_fk` (`apt_bui_fk`),
+          KEY `apt_sim_fk` (`apt_sim_fk`),
+          CONSTRAINT `{$prx}link_apt_sim` FOREIGN KEY (`apt_sim_fk`) REFERENCES `glo_simulator` (`sim_id`)  ON DELETE CASCADE ON UPDATE CASCADE,
           CONSTRAINT `{$prx}link_apt_bui` FOREIGN KEY (`apt_bui_fk`) REFERENCES `glo_buildings` (`bui_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
         ) ENGINE=InnoDB COLLATE=utf8_spanish_ci DEFAULT CHARSET=utf8"
     );

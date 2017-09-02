@@ -22,13 +22,16 @@ function createFundsTable(/*string*/ $prefix=null){
           `fun_balance` decimal(10,2) NOT NULL DEFAULT '0.00',
           `fun_default` varchar(20) NOT NULL DEFAULT '0' COMMENT 'Monto a cobrar mensualmente',
           `fun_type` int(1) NOT NULL DEFAULT '1' COMMENT 'Fondo de trabajo, cuota especial',
-          `fun_bui_fk` int(8) unsigned NOT NULL COMMENT 'Enlace a buildings',
+          `fun_bui_fk` int(8) unsigned DEFAULT NULL COMMENT 'Enlace a buildings',
+          `fun_sim_fk` int(8) unsigned NOT NULL,
           `fun_creator` varchar(30) NOT NULL DEFAULT 'sysadmin',
           `fun_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
           PRIMARY KEY (`fun_id`),
           KEY `fun_bui_fk` (fun_bui_fk),
-          CONSTRAINT `{$prx}link_fun_bui` FOREIGN KEY (`fun_bui_fk`) REFERENCES `glo_buildings` (`bui_id`)
+          KEY `fun_sim_fk` (`fun_sim_fk`),
+          CONSTRAINT `{$prx}link_fun_sim` FOREIGN KEY (`fun_sim_fk`) REFERENCES `glo_simulator` (`sim_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+          CONSTRAINT `{$prx}link_fun_bui` FOREIGN KEY (`fun_bui_fk`) REFERENCES `glo_buildings` (`bui_id`) ON DELETE SET NULL ON UPDATE SET NULL
         ) ENGINE=InnoDB COLLATE=utf8_spanish_ci DEFAULT CHARSET=utf8 COMMENT='Fondos y Cuotas especiales'"
     );
 

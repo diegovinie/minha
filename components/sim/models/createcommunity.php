@@ -3,6 +3,8 @@
  *
  */
 
+include_once __DIR__.'/createhabitant.php';
+
 /**
  * @return array[][]
  */
@@ -77,7 +79,7 @@ function genTemplateCountry_Park(){
 /**
  * @return json
  */
-function genNotes(){
+ function genNotes(){
 
     return '{"todo": true}';
 }

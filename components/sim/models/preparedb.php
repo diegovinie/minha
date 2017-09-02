@@ -49,7 +49,7 @@ function getUserId($simEmail){
     return $userid = $stmt1->fetchColumn();
 }
 
-function setApartmentsData($prx, $apts){
+function setApartmentsData($prx, $apts, $simId){
     $db = connectDb();
 
     $st = $db->prepare(
@@ -63,10 +63,12 @@ function setApartmentsData($prx, $apts){
     $stmt = $db->prepare(
         "INSERT INTO {$prx}apartments
         (apt_name,   apt_bui_fk,    apt_edf,      apt_balance,
-         apt_weight, apt_assigned,  apt_occupied, apt_notes)
+         apt_weight, apt_assigned,  apt_occupied, apt_notes,
+         apt_sim_fk)
         VALUES
         (:name,      :buiid,        :edf,         0,
-         :w,         :assigned,     :occupied,    :notes)"
+         :w,         :assigned,     :occupied,    :notes,
+         :simid)"
     );
 
     foreach ($apts as $id => $apt) {
@@ -77,6 +79,7 @@ function setApartmentsData($prx, $apts){
         $stmt->bindParam('assigned', $assigned, PDO::PARAM_INT);
         $stmt->bindParam('occupied', $occupied, PDO::PARAM_INT);
         $stmt->bindParam('notes', $notes);
+        $stmt->bindParam('simid', $simId);
 
         extract($apt);
 
@@ -95,7 +98,7 @@ function setApartmentsData($prx, $apts){
     return true;
 }
 
-function setHabitantsData($prx, $cmty, $simid){
+function setHabitantsData($prx, $cmty, $simId){
     $db = connectDb();
 
     ///// Preparación de consultas
@@ -105,21 +108,23 @@ function setHabitantsData($prx, $cmty, $simid){
         "SELECT apt_id
         FROM {$prx}apartments
         WHERE apt_edf = :edf
-        AND apt_name = :apt"
+        AND apt_name = :apt
+        AND apt_sim_fk = :simid"
     );
     $stmt2->bindParam('apt', $aptname);
     $stmt2->bindParam('edf', $aptedf);
+    $stmt2->bindValue('simid', $simId);
 
     // Inserta datos en habitants
     $stmt3 = $db->prepare(
         "INSERT INTO `{$prx}habitants`
         (hab_name, hab_surname, hab_ci,         hab_cel,
          hab_cond, hab_role,    hab_accepted,   hab_gender,
-         hab_nac,  hab_apt_fk,  hab_sim_fk,    hab_email)
+         hab_nac,  hab_apt_fk,  hab_email)
         VALUES
         (:name,    :surname,    :ci,            :cel,
          :cond,    :role,       :accepted,      :gender,
-         :nac,     :apt_id,     :simid,       :email)"
+         :nac,     :apt_id,     :email)"
     );
     $stmt3->bindParam('name', $name);
     $stmt3->bindParam('surname', $surname);
@@ -131,7 +136,6 @@ function setHabitantsData($prx, $cmty, $simid){
     $stmt3->bindParam('gender', $gender);
     $stmt3->bindParam('nac', $nac);
     $stmt3->bindParam('apt_id', $apt_id);
-    $stmt3->bindParam('simid', $simid);
     $stmt3->bindParam('email', $email);
 
     ////// Inicio de la ejecución

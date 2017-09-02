@@ -78,12 +78,14 @@ function addUserHabitants($prx, $userid, $simid, $email, $name, $surname, $edf, 
         FROM glo_buildings
             INNER JOIN {$prx}apartments ON apt_bui_fk = bui_id
         WHERE bui_edf = :edf
-            AND apt_name = :apt"
+            AND apt_name = :apt
+            AND apt_bui_fk = :simid"
     );
 
     $res1 = $stmt1->execute(array(
         'apt'   => $apt,
-        'edf'   => $edf
+        'edf'   => $edf,
+        'simid' => $simid
     ));
 
     if(!$res1){
@@ -96,19 +98,16 @@ function addUserHabitants($prx, $userid, $simid, $email, $name, $surname, $edf, 
     $stmt2 = $db->prepare(
         "INSERT INTO {$prx}habitants
         (hab_name,      hab_surname,    hab_cond,     hab_role,
-         hab_accepted,  hab_apt_fk,     hab_sim_fk,   hab_email,
-         hab_user_fk)
+         hab_accepted,  hab_apt_fk,     hab_email,    hab_user_fk)
         VALUES(
          :name,         :surname,       1,            1,
-         1,             :aptid,         :simid,       :email,
-         :userid)"
+         1,             :aptid,         :email,       :userid)"
     );
 
     $exe2 = $stmt2->execute(array(
         'name' => $name,
         'surname' => $surname,
         'aptid' => $aptid,
-        'simid' => $simid,
         'userid' => $userid,
         'email'  => $email
     ));

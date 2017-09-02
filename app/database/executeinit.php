@@ -12,7 +12,9 @@ $globalTablesNames = array(
     'cookies',
     'users',
     'simulator',
-    'buildings'
+    'buildings',
+    'actypes',
+    'activities'
 );
 
 $priTablesNames = array(
@@ -28,8 +30,21 @@ $priTablesNames = array(
     'commitments'
 );
 
+$s1TablesNames = array(
+    'apartments',
+    'subjects',
+    'providers',
+    'skills',
+    'funds',
+    'habitants',
+    'accounts',
+    'bills',
+    'charges',
+    'payments',
+    'commitments'
+);
 
-echo "\nCreando tablas:\n\n";
+echo "\n\nCreando tablas globales:\n";
 
 foreach ($globalTablesNames as $nameTable) {
 
@@ -39,6 +54,7 @@ foreach ($globalTablesNames as $nameTable) {
   $res[] = call_user_func("create{$nameTable}Table", 'glo_');
 }
 
+echo "\n\nCreando tablas principales:\n";
 
 foreach ($priTablesNames as $nameTable) {
 
@@ -46,6 +62,16 @@ foreach ($priTablesNames as $nameTable) {
 
   echo "\n$nameTable       ";
   $res[] = call_user_func("create{$nameTable}Table", 'pri_');
+}
+
+echo "\n\nCreando tablas de simulador:\n";
+
+foreach ($s1TablesNames as $nameTable) {
+
+  include_once(__DIR__."/create/create{$nameTable}table.php");
+
+  echo "\n$nameTable       ";
+  $res[] = call_user_func("create{$nameTable}Table", 's1_');
 }
 
 echo "\n\nErrores:\n\n";

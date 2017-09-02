@@ -1,5 +1,5 @@
 <?php
-/* components/sim/controllers/creategame.php
+/* components/sim/controllers/createplayer.php
  *
  */
 
@@ -18,41 +18,12 @@ $pwd = (string)$_POST['pwd'];
 $userName = (string)$_POST['name'];
 $surname = (string)$_POST['surname'];
 
-
+// El prefijo de las tablas
+//$prx = "u2_";
 
 /*** INICIO ***/
 
 if(key_exists('SERVER_PROTOCOL', $_SERVER)) ob_end_clean();
-/*sleep(1);
-ajaxProgressResponse(10, "Preparando 1...");
-sleep(1);
-ajaxProgressResponse(40, "Preparando 1...");
-sleep(1);
-ajaxProgressResponse(60, "Preparando 1...");
-sleep(1);
-ajaxFinalResponse(true, count($_POST), "Listo");
-
-die;*/
-
-$simTableNames = array(
-  'actypes',
-  'activities'
-);
-
-$userTableNames = array(
-    'apartments',
-    'subjects',
-    'providers',
-    'skills',
-    'funds',
-    'habitants',
-    'accounts',
-    'bills',
-    'charges',
-    'payments',
-    'commitments'
-);
-
 
 /*** Preparando Datos ***/
 
@@ -69,9 +40,6 @@ $re[] = addUserSimulator($email);
 $re[] = $simId = getLastUserSimId($email);
 if(!$simId) ajaxErrorResponse('Error al recuperar sim id.');
 
-// El prefijo de las tablas
-$prx = "u{$simId}_";
-if(!$prx) ajaxErrorResponse('Error al seleccionar prefijo.');
 
 
 include_once $basedir.'models/createcommunity.php';
@@ -85,34 +53,13 @@ $cmty = createCommunity($apts, $userapt);
 if(!$cmty) ajaxErrorResponse('Error al crear la comunidad.');
 
 
-/*** Creando las tablas ***/
-
-ajaxProgressResponse(20, "Creando Entorno...");
-
-foreach ($simTableNames as $nameTable) {
-    include_once(ROOTDIR."/app/database/create/create{$nameTable}table.php");
-
-    $re[] = call_user_func("create{$nameTable}Table", $prx);
-}
-
-
-foreach ($userTableNames as $nameTable) {
-    include_once(ROOTDIR."/app/database/create/create{$nameTable}table.php");
-
-    $re[] = call_user_func("create{$nameTable}Table", $prx);
-}
-
-
-
 /*** Preparando Actividades ***/
 
 ajaxProgressResponse(30, "Preparando Actividades...");
 
 include $basedir.'models/preparesimtables.php';
 
-// Inserta los datos por defecto para las actividades en BD
-$re[] = setDataActypesTable();
-$re[] = setDataActivitiesTable();
+
 
 include $basedir.'models/preparedb.php';
 
@@ -123,7 +70,7 @@ ajaxProgressResponse(60, "Creando viviendas...");
 
 /*** Creando Apartamentos ***/
 // Inserta los apartamentos en la BD
-$re[] = setApartmentsData($prx, $apts);
+$re[] = setApartmentsData($prx, $apts, $simId);
 
 
 
