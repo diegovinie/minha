@@ -1,24 +1,30 @@
 <?php
 
-include $basedir.'models/bills.php';
+
+include_once ROOTDIR.'/models/locale.php';
+include_once ROOTDIR.'/models/validations.php';
 
 $desc   = $_POST['desc'];
-$date   = $_POST['date'];
-$buiid  = (int)$_POST['buiid'];
-$habid  = (int)$_POST['habid'];
-$provid = (int)$_POST['provid'];
-$accid  = (int)$_POST['accid'];
-$class  = $_POST['class'];
-$method = $_POST['method'];
-$log    = $_POST['log'];
-$amount = (float)$_POST['amount'];
-$iva    = (float)$_POST[''];
-$total  = (float)$_POST[''];
-$op     = $_POST[''];
+$date   = validateNotNull(validateDate($_POST['date']));
+$buiid = (int)$_SESSION['bui_id'];
+$habid = (int)$_SESSION['hab_id'];
+$provid = (int)$_POST['prov'];
+$accid  = (int)$_POST['acc'];
+$class  = (string)$_POST['class'];
+$log    = (string)$_POST['log'];
+$amount = numToEng($_POST['amount']);
+$iva    = numToEng($_POST['iva']);
+$total  = numToEng($_POST['total']);
+$op     = (int)$_POST['op'];
 
-$name = $_POST['name'];
+$name = validateNotNull($_POST['name']);
 $rif = $_POST['rif'];
 
+include_once $basedir.'models/bills.php';
+
 if(!$provid){
-    addProvider();
+    $provid = addProvider($name, $rif);
 }
+
+echo addbill($desc, $date, $buiid, $habid, $provid, $accid,
+        $class, $log, $amount, $iva, $total, $op);

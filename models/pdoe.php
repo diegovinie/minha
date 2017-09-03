@@ -17,6 +17,8 @@ class PDOe extends PDO
 
         $this->demo = $prefix? true : false;
 
+        $this->simId = isset($_SESSION['sim_id'])? $_SESSION['sim_id'] : null;
+
         parent::__construct($db, $user, $pwd, $options);
     }
 
@@ -28,5 +30,10 @@ class PDOe extends PDO
     public function isDemo()
     {
         return $this->demo? true : false;
+    }
+
+    public function getSimId()
+    {
+        return $this->simId;
     }
 }

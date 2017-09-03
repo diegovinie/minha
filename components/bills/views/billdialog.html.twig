@@ -16,34 +16,35 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-info">
                     <div class="panel-body">
-                        <form class="" action="admin/add_bill.php" method="post">
+                        <form id="addbill" action="{{ form.action }}" method="{{ form.method }}">
                             <div class="form-group col-md-8">
                                 <label for="">Proveedor:</label>
-                                <select class="form-control" name="prov" id="prov" onchange="select_prov(this)">
+                                <select class="form-control" name="prov" id="prov" onchange="selectProvider(this)">
+                                    <option>Seleccione proveedor</option>
                                     {% for prov in providers %}
                                         <option value="{{ prov.id }}"
                                         data-name="{{ prov.name }}"
                                         data-alias="{{ prov.alias }}"
                                         data-rif="{{ prov.rif }}">{{ prov.name }}</option>
                                     {% endfor %}
-                                    <option value="0" default>Otro</option>
+                                    <option value="0" default>Otro proveedor</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="">Fecha:</label>
-                                <input placeholder="aaaa-mm-dd" class="form-control" type="date" name="date" id="date" value="" format="YYYY-MM-DD" onblur="">
-                                <div class="">
+                                <input placeholder="aaaa-mm-dd" class="form-control" type="date" name="date" id="date" value="" format="YYYY-MM-DD" required>
+                                <div>
 
                                 </div>
                             </div>
 
                             <div class="form-group col-md-8">
                                 <label for="">Nombre o Razón Social:</label>
-                                <input class="form-control" type="text" name="name" id="name" value="" onblur="capitalize(this)">
+                                <input class="form-control" type="text" name="name" id="name" onblur="capitalize(this)" required>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="">Forma de Pago:</label>
-                                <select class="form-control" name="method" id="method">
+                                <select class="form-control" name="acc" id="method">
                                     {% for acc in accounts %}
                                         <option value="{{ acc.id }}">{{ acc.name }}, Saldo Bs. {{ acc.balance }}</option>
                                     {% endfor %}
@@ -51,7 +52,7 @@
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="">Descipción:</label>
-                                <input class="form-control" placeholder="40 caracteres máximo" maxlength="40" type="text" name="desc" id="desc" value="">
+                                <input class="form-control" placeholder="40 caracteres máximo" maxlength="40" type="text" name="desc" id="desc">
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="">RIF:</label>
@@ -60,7 +61,7 @@
                             <div class="form-group col-md-4">
                                 <label for="">Tipo de Gasto:</label>
                                 <!--<input class="form-control" type="text" name="class" id="spe_type" value="" onblur="check_type(this)">-->
-                                <select class="form-control" name="" id="spe_type">
+                                <select class="form-control" name="class" id="class">
                                     <option value="1" id="up_fk_type_1">PERSONAL</option>
                                     <option value="2" id="up_fk_type_2">MATERIALES</option>
                                     <option value="3" id="up_fk_type_3">SERVICIOS</option>
@@ -70,10 +71,10 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="">Forma de Cargo:</label>
-                                <select class="form-control" name="up_op" id="up_op">
+                                <select class="form-control" name="op" id="op" >
                                     <option value="">Seleccione:</option>
-                                    <option value="0" id="up_op_0">Equitativo</option>
-                                    <option value="1" id="up_op_1">Ponderado</option>
+                                    <option value="0">Equitativo</option>
+                                    <option value="1">Ponderado</option>
                                 </select>
                             </div>
                             <div class="from-group col-md-5">
@@ -111,9 +112,14 @@
                                         <option value="N/D" selected>Ninguno</option>
                                     </select>
                                 </div>
+
                             </div>
+                            <div class="form-group col-md-12">
+                                {% include 'views/widgets/flash.html.twig' %}
+                            </div>
+
                             <div class="col-md-12 button_box" align="center">
-                                <button type="submit" name="submit" class="btn btn-success">Enviar</button>
+                                <button type="submit" class="btn btn-success">Enviar</button>
                                  <button type="button" name="back" class="btn btn-warning" onclick="history.go(-1)">Regresar</button>
                             </div>
                         </form>
@@ -123,4 +129,8 @@
         </div>
     </div>
     {% endblock %}
+
+    {% for script in js %}
+        <script src="{{ script }}" charset="utf-8"></script>
+    {% endfor %}
 {% endblock %}

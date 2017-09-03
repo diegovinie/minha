@@ -1,5 +1,5 @@
 <?php
-/* components/sim/controllers/createplayer.php
+/* components/sim/controllers/createsim.php
  *
  */
 
@@ -12,19 +12,17 @@ include_once ROOTDIR.'/models/tokenator.php';
 /*** Validando datos ***/
 
 
-
 $useredf = (string)$_POST['edf'];
 $userapt = (string)$_POST['apt'];
 $email = (string)$_POST['email'];
-$pwd = (string)$_POST['pwd'];
 $userName = (string)$_POST['name'];
 $surname = (string)$_POST['surname'];
 
-include_once ROOTDIR.'/components/security/models/users.php';
-$chk = checkEmail($email);
-
-if($chk != false){
-    echo jsonResponse(false, "Usuario ya registrado.");
+if(isset($_SESSION['id'])){
+    $userId = (int)$_SESSION['id'];
+}
+else{
+    echo jsonResponse(false, "Sin registro del usuario.");
     exit;
 }
 
@@ -33,18 +31,13 @@ $prx = "s1_";
 
 /*** INICIO ***/
 
-if(key_exists('SERVER_PROTOCOL', $_SERVER)) ob_end_clean();
+//if(key_exists('SERVER_PROTOCOL', $_SERVER)) ob_end_clean();
 
 /*** Preparando Datos ***/
 
-sleep(1);
-
-// Chequea, añade al usuario en la tabla users y retorna el id
-include $basedir.'models/addcurrentuser.php';
-$re[] = $userId = addUserUsers($email, $pwd);
-if(!$userId) ajaxErrorResponse('Error registrar usuario.');
-
 // Crea una nueva entrada en tabla simulator y retorna el id
+include $basedir.'models/addcurrentuser.php';
+
 $re[] = addUserSimulator($email);
 $re[] = $simId = getLastUserSimId($email);
 if(!$simId) ajaxErrorResponse('Error al recuperar sim id.');
@@ -60,11 +53,13 @@ if(!$apts) ajaxErrorResponse('Error al crear los apartamentos.');
 $cmty = createCommunity($apts, $userapt);
 if(!$cmty) ajaxErrorResponse('Error al crear la comunidad.');
 
+
 /*** Preparando Actividades ***/
 
 include $basedir.'models/preparesimtables.php';
 
 include $basedir.'models/preparedb.php';
+
 
 /*** Creando Comunidad ***/
 
@@ -75,7 +70,6 @@ $re[] = setApartmentsData($prx, $apts, $simId);
 
 
 /*** Creando Habitantes ***/
-
 
 // Inserta los habitantes en la BD
 $re[] = setHabitantsData($prx, $cmty, $simId);

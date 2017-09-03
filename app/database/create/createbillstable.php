@@ -18,7 +18,7 @@ function createBillsTable(/*string*/ $prefix=null){
     $exe = $db->exec(
         "CREATE TABLE {$prx}bills (
           `bil_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-          `bil_desc` varchar(40) NOT NULL DEFAULT 'N/D' COMMENT 'Nombre o Razon Social',
+          `bil_desc` varchar(64) NOT NULL DEFAULT 'N/D' COMMENT 'Descripcion del gasto',
           `bil_date` date NOT NULL COMMENT 'Fecha de la factura',
           `bil_bui_fk` int(8) unsigned NOT NULL,
           `bil_hab_fk` int(8) unsigned NOT NULL,
@@ -26,9 +26,8 @@ function createBillsTable(/*string*/ $prefix=null){
           `bil_acc_fk` int(8) unsigned NOT NULL COMMENT 'Cuenta principal, Caja chica',
 
           `bil_class` varchar(50) NOT NULL DEFAULT 'N/D' COMMENT 'Materiales, Sueldos, Proveedores Registrados',
-          `bil_method` varchar(30) NOT NULL COMMENT 'cuenta princial o con caja chica',
           `bil_log` varchar(30) NOT NULL DEFAULT 'N/D' COMMENT 'Factura, recibo de pago',
-          `bil_lapse` int(3) unsigned DEFAULT '0' COMMENT 'Periodo de facturacion',
+          `bil_lapse` int(3) unsigned DEFAULT NULL COMMENT 'Periodo de facturacion',
           `bil_amount` decimal(10,2) NOT NULL,
           `bil_iva` decimal(10,2) NOT NULL DEFAULT '0.00',
           `bil_total` decimal(10,2) NOT NULL,

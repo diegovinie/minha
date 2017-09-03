@@ -37,7 +37,7 @@
                                     </label>
                                 </div>
                                 {% include 'views/widgets/flash.html.twig' %}
-                                <button type="submit" href="" name="" class="btn btn-lg btn-success btn-block" onclick="sendLogin()">Enviar</button>
+                                <button type="submit" href="" name="" class="btn btn-lg btn-info btn-block" onclick="sendLogin()">Enviar</button>
                             </fieldset>
                         </form>
                     </div>
@@ -45,10 +45,10 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="col-xs-6">
-                            <a href="{{ a.register }}">Registrarse</a>
+                            <a href="{{ a.recovery }}">Recuperar Clave</a>
                         </div>
                         <div class="col-xs-6">
-                            <a href="{{ a.recovery }}">Recuperar Clave</a>
+                            <a href="{{ a.register }}">Registrarse</a>
                         </div>
                     </div>
                 </div>

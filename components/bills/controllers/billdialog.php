@@ -29,7 +29,9 @@ $form = array(
 
 // javascript a incluir
 $js = array(
-    "functions" => "/js/functions.js"
+    "functions" => "/js/functions.js",
+    "addbill"   => "/index.php/static/bills/js/addbill.js",
+    "forms"     => '/js/forms.js'
 );
 
 $twig = new LoadTwigWithGlobals($_globals['view']);
@@ -40,8 +42,9 @@ $twig->getExtension('Twig_Extension_Core')
 echo $twig->render(
     'components/bills/views/billdialog.html.twig',
     array(
+        'form'    => $form,
+        'js'       => $js,
         'accounts' => $accounts,
-        'lapses'   => $lapses,
         'providers' => $providers
         //'bills' => $table_template['bills'],
     )

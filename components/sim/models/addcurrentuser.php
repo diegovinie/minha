@@ -79,7 +79,7 @@ function addUserHabitants($prx, $userid, $simid, $email, $name, $surname, $edf, 
             INNER JOIN {$prx}apartments ON apt_bui_fk = bui_id
         WHERE bui_edf = :edf
             AND apt_name = :apt
-            AND apt_bui_fk = :simid"
+            AND apt_sim_fk = :simid"
     );
 
     $res1 = $stmt1->execute(array(

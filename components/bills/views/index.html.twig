@@ -23,7 +23,7 @@
                       <!-- async data -->
                   </div>
                   <div class="panel-footer col-lg-12" style="text-align:right;">
-                      <button type="button" name="agregar_proveedor" class="btn btn-primary" onclick="window.location.href = 'add_bill.php';">Agregar Gasto</button>
+                      <a type="button" class="btn btn-primary" href="{{ menu.href.bills.new }}">Agregar Gasto</a>
   					<button type="button" name="pdf_agregar_proveedor" class="btn btn-info" data-type="pdf" onclick="window.open('../core/async_bills.php?fun=genpdf&arg=gastos')" >Imprimir</button>
                   </div>
 

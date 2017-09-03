@@ -69,7 +69,7 @@ function getSimulations($userid){
 
 function setSession($userid, $simid=1){
     $db = connectDb();
-    $prx = ($simid == 1)? 'pri_' : "u{$simid}_";
+    $prx = ($simid == 1)? 'pri_' : "s1_";
 
     $stmt = $db->prepare(
         "SELECT hab_name,     hab_surname,   hab_role,
@@ -78,7 +78,7 @@ function setSession($userid, $simid=1){
                 apt_edf
         FROM {$prx}habitants
             INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
-        WHERE hab_sim_fk = :simid
+        WHERE apt_sim_fk = :simid
             AND hab_user_fk = :userid"
     );
 
@@ -103,6 +103,7 @@ function setSession($userid, $simid=1){
         $_SESSION['apt_id'] = $apt_id;
         $_SESSION['hab_id'] = $hab_id;
         $_SESSION['bui_id'] = $apt_bui_fk;
+        $_SESSION['sim_id'] = $simid;
 
         $_SESSION['user'] = $hab_email;
         $_SESSION['apt'] = $apt_name;
@@ -455,34 +456,7 @@ function setPasswordFromOld(/*int*/ $id, /*string*/ $old, /*string*/ $new){
     return jsonResponse($status, $msg);
 }
 
-function checkEmail(/*string*/ $email){
-    $db = connectDb();
-    $prx = $db->getPrx();
 
-    $status = false;
-
-    $stmt = $db->prepare(
-        "SELECT user_id
-        FROM glo_users
-        WHERE user_user = :email"
-    );
-    $stmt->bindValue('email', $email);
-    $res = $stmt->execute();
-
-    if(!$res){
-        $msg = "Error al consultar la base de datos";
-    }
-    else{
-        if($stmt->rowCount() != 1){
-            $msg = "El usuario no existe.";
-        }
-        else{
-            $status = true;
-        }
-    }
-
-    return jsonResponse($status, $msg);
-}
 
 function checkOldPassword(/*int*/ $id){
     $db = connectDb();

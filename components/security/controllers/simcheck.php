@@ -15,37 +15,45 @@ include_once ROOTDIR.'/models/modelresponse.php';
 $user = (string)$_POST['user'];
 $pwd = (string)$_POST['pwd'];
 $rem = isset($_POST['remember']) ? 1 : 0;
+$simId = isset($_POST['sim'])? (int)$_POST['sim'] : null;
+
 sleep(1);
 checkFormToken($_POST['token']);
 
 $userid = checkUserPassword($user, $pwd, $rem);
+
 if(!$userid){
     echo jsonResponse(false, "Usuario o Clave inválidos.");
     exit;
 }
 else{
-    $simid = getSimulations($userid);
+    if($simId === null){
 
-    if(!$simid){
-        $msg = "No tiene simulaciones activas.";
-        echo jsonResponse(false, $msg);
-    }
-    elseif(is_integer($simid)){
-            echo $simid;
-        $res2 = setSession($userid, $simid);
+        $sims = displaySimList($userid);
 
-        if($res2) header("Location: /index.php/");
-    }
-    elseif(is_array($simid)){
+        $twig = new LoadTwigWithGlobals($_globals['view']);
 
-        $arr = displaySimList($userid);
+        $html = $twig->render(
+            'components/sim/views/login/selectsim.html.twig',
+            array(
+                'sims' => $sims
+            )
+        );
+        echo jsonResponse('sim', $html);
+    }
+    elseif(is_integer($simId)){
 
-        var_dump($arr); die;
-        
-        echo jsonResponse(true, "elija su escenario");
-        exit;
+        if($simId === 0){
+            if(isset($_SESSION)) session_start();
+            $_SESSION['id'] = $userid;
+
+            echo jsonResponse('new', 'Redireccionando.');
+        }
+        else{
+            $res2 = setSession($userid, $simId);
+
+            if($res2) echo jsonResponse(true, "Aprobado.");
+        }
     }
-    else{
-        echo 'fin';
-    }
+
 }

@@ -32,7 +32,15 @@ if($route[1] == 'sim'){
             break;
         // Crear entorno
         case 'crear':
-            $controller = $basedir .'controllers/creategame.php';
+            $controller = $basedir .'controllers/createplayer.php';
+            break;
+
+        case 'nuevo':
+            $controller = $basedir .'controllers/newsim.php';
+            break;
+
+        case 'crearsim':
+            $controller = $basedir .'controllers/createsim.php';
             break;
 
         // Ruta no identificada

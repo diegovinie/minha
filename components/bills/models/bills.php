@@ -140,67 +140,114 @@ function getProvidersList(){
     return jsonResponse($status, $msg);
 }
 
-function addProvider(/*array*/ $provider){
+function addProvider(/*string*/ $name, /*string*/ $rif){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
     $status = false;
 
-    extract($provider);
-
-    $stmt = $db->prepare(
+    $stmt1 = $db->prepare(
         "INSERT INTO {$prx}providers
-        VALUES(
-            NULL,
-            :name,
-            :alias,
-            :rif,
-            :cel,
-            :email)"
+        (prov_name,     prov_rif,   prov_sim_fk)
+        VALUES
+        (:name,         :rif,       :simid)"
     );
 
-    $res = $stmt->execute(array(
+    $res = $stmt1->execute(array(
         'name'  => $name,
-        'alias' => $alias? $alias : null,
         'rif'   => $rif? $rif : null,
-        'cel'   => $cel? $cel : null,
-        'email' => $email? $email : null
+        'simid' => $simid
     ));
+
+    if(!$res){
+        echo $stmt1->errorInfo()[2];
+        return false;
+    }
+    else{
+        $stmt2 = $db->prepare(
+            "SELECT prov_id
+            FROM {$prx}providers
+            WHERE prov_name = :name
+            ORDER BY prov_id
+            LIMIT 1"
+        );
+
+        $stmt2->bindValue('name', $name);
+
+        $res2 = $stmt2->execute();
+
+        if(!$res2){
+            echo $stmt2->errorInfo()[2];
+            return false;
+        }
+        else{
+            return $stmt2->fetchColumn();
+        }
+    }
 }
 
-function addBill(/*array*/ $bill){
+function addBill(/*string*/ $desc, /*string*/ $date, /*int*/ $buiid,
+                 /*int*/ $habid, /*int*/ $provid, /*int*/ $accid,
+                 /*revisar*/ $class, /*string*/ $log, /*float*/ $amount,
+                 /*float*/ $iva, /*float*/ $total, $op)
+{
+
     $db = connectDb();
     $prx = $db->getPrx();
     $status = false;
-
-    extract($bill);
-
 
     $stmt1 = $db->prepare(
         "INSERT INTO {$prx}bills
-        VALUES(
-            'NULL,
-            :desc,
-            :date,
-            :buiid,
-            :habid,
-            :prov,
-            :acc,
-            class,
-            :method,
-            :log,
-            0,
-            :amount,
-            :iva,
-            :total,
-            :op')"
+        (bil_desc,      bil_date,   bil_bui_fk, bil_hab_fk,
+         bil_prov_fk,   bil_acc_fk, bil_class,
+         bil_log,       bil_lapse,  bil_amount, bil_iva,
+         bil_total,     bil_op)
+        VALUES
+        (:desc,         :date,      :buiid,     :habid,
+         :provid,       :accid,     :class,
+         :log,          0,          :amount,    :iva,
+         :total,        :op)"
     );
 
-    $stmt2 = $db->prepare(
-        "UPDATE {$prx}accounts
-        SET acc_balance = acc_balance - :total
-        WHERE acc_id = :accid"
-    );
+    $stmt1->bindValue('desc', $desc);
+    $stmt1->bindValue('date', $date);
+    $stmt1->bindValue('buiid', $buiid, PDO::PARAM_INT);
+    $stmt1->bindValue('habid', $habid, PDO::PARAM_INT);
+    $stmt1->bindValue('provid', $provid, PDO::PARAM_INT);
+    $stmt1->bindValue('accid', $accid, PDO::PARAM_INT);
+    $stmt1->bindValue('class', $class);
 
-    $stmt2->bindValue('total', $total);
-    $stmt2->bindValue('accid', $accid);
+    $stmt1->bindValue('log', $log);
+    $stmt1->bindValue('amount', $amount);
+    $stmt1->bindValue('iva', $iva);
+    $stmt1->bindValue('total', $total);
+    $stmt1->bindValue('op', $op);
+
+    $res1 = $stmt1->execute();
+
+    if(!$res1){
+        $msg = $stmt1->errorInfo()[2];
+    }
+    else{
+        $stmt2 = $db->prepare(
+            "UPDATE {$prx}accounts
+            SET acc_balance = acc_balance - :total
+            WHERE acc_id = :accid"
+        );
+
+        $stmt2->bindValue('total', $total);
+        $stmt2->bindValue('accid', $accid, PDO::PARAM_INT);
+
+        $res2 = $stmt2->execute();
+
+        if(!$res2){
+            $msg = $stmt2->errorInfo()[2];
+        }
+        else{
+            $status = true;
+            $msg = "Gasto agregado con éxito.";
+        }
+    }
+
+    return jsonResponse($status, $msg);
 }

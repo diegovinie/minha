@@ -1,9 +1,43 @@
 window.onload = function(){
 
+    var form = document.getElementById('addbill');
+    $(form).on('submit', function(ev){
+        ev.preventDefault();
+
+        $.ajax({
+            url: '/index.php/admin/gastos/agregar',
+            type: 'post',
+            data: $(form).serialize(),
+            dataType: 'json',
+            beforeSend: loadingBarOn(),
+            error: function(err){
+                console.log('Error al enviar: ', err);
+            }
+        })
+        .always(loadingBarOff)
+        .then(function(data){
+            console.log(data);
+            if(data.status == true){
+                flashText('success', data.msg);
+                setTimeout(function(){
+                    window.location.reload();
+                }, 2000);
+            }
+            else{
+                flashText('danger', data.msg);
+            }
+        });
+    });
 }
 
 function selectProvider(select){
-    
+
+    var selected = select.options[select.selectedIndex];
+    var rif = selected.dataset.rif,
+        name = selected.dataset.name;
+
+    $('#rif').val(rif);
+    $('#name').val(name);
 }
 
 function select_prov(self){

@@ -44,7 +44,8 @@ $_globals = array(
                 ),
 
                 'bills'         => array(
-                    'index'         => '/index.php/admin/gastos'
+                    'index'         => '/index.php/admin/gastos',
+                    'new'           => '/index.php/admin/gastos/nuevo'
                 )
             )
         ),

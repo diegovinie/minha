@@ -64,5 +64,41 @@
           "cost": "70.00"
           }
       ]
+    },
+    {
+      "name": "Ferretería Nueva Era C.A.",
+      "alias": "FERRETERIA",
+      "rif": "J390291771",
+      "cel": "",
+      "email": "",
+      "skills": [
+          {
+          "name": "Ferretería",
+          "id": 10,
+          "quality": 90,
+          "cost": "90.00"
+        },
+        {
+          "name": "Materiales de construcción",
+          "id": 9,
+          "quality": 60,
+          "cost": "134.00"
+        }
+      ]
+    },
+    {
+      "name": "J.T.C. Ascensores",
+      "alias": "ASCENSORES",
+      "rif": "J400291961",
+      "cel": "",
+      "email": "",
+      "skills": [
+          {
+          "name": "Ascensores",
+          "id": 15,
+          "quality": 70,
+          "cost": "140.00"
+          }
+      ]
     }
 ]

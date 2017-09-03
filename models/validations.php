@@ -29,6 +29,21 @@ function validateInput($val, $exp, $message){
     die($response);
 }
 
+function validateNotNull($val){
+
+    if($val === null){
+        $msg = 'Existen datos incorrectos.';
+
+        $response = json_encode(array(
+            'status' => false, 'msg' => $msg));
+        die($response);
+
+    }
+    else{
+        return $val;
+    }
+}
+
 function validateCi($ci){
 
     $exp = "/^(V|E)\d{7,8}$/";

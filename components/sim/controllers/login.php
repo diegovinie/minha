@@ -21,7 +21,7 @@ $form = array(
 
 // javascript a incluir
 $js = array(
-
+    "login"     => "/index.php/static/sim/js/login.js",
     "forms"     => "/js/forms.js",
     "functions" => "/js/functions.js"
 );
@@ -32,6 +32,6 @@ echo $twig->render(
     'components/sim/views/login.html.twig',
     array(
         'form' => $form,
-
+        'js'   => $js
     )
 );

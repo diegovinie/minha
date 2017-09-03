@@ -1,0 +1,10 @@
+{# components/sim/views/login/selectsim.html.twig #}
+<div class="form-group">
+    <label for="sim">Seleccione Simulación</label>
+    <select class="form-control" name="sim">
+        {% for item in sims %}
+            <option value="{{ item.id }}">{{ item.date }}</option>
+        {% endfor %}
+            <option value="0">Nueva simulación</option>
+    </select>
+</div>
