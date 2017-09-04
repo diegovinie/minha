@@ -33,6 +33,14 @@ if($route[1] == 'admin' && $route[2] == 'gastos'){
             $controller = $basedir .'controllers/addbill.php';
             break;
 
+        case 'getactivities':
+            $controller = $basedir .'controllers/getactivities.php';
+            break;
+
+        case 'getproviders':
+            $controller = $basedir .'controllers/getproviders.php';
+            break;
+
         default:
             die('sin ruta');
             break;

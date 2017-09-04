@@ -20,8 +20,8 @@ function createSkillsTable(/*string*/ $prefix=null){
           `ski_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
           `ski_prov_fk` int(8) unsigned NOT NULL COMMENT 'Enlace con proveedores',
           `ski_act_fk` int(8) unsigned NOT NULL COMMENT 'Enlace con actividades',
-          `ski_quality` int(2) unsigned NOT NULL COMMENT 'Calidad del trabajo',
-          `ski_cost` decimal(10,2) NOT NULL  COMMENT 'Costo del trabajo',
+          `ski_quality` int(2) unsigned DEFAULT NULL COMMENT 'Calidad del trabajo',
+          `ski_cost` decimal(10,2) DEFAULT NULL  COMMENT 'Costo del trabajo',
 
           PRIMARY KEY (`ski_id`),
           KEY `ski_prov_fk` (`ski_prov_fk`),

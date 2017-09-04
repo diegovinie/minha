@@ -22,16 +22,15 @@ function getBillsByLapse($bui, $lapse){
         "SELECT bil_id AS 'id',
             bil_date AS 'Fecha',
             CONCAT(hab_name, ' ', hab_surname) AS 'Creador',
-            bil_class AS 'Clase',
+            act_name AS 'Actividad',
             bil_desc AS 'Desc.',
             bil_total AS 'Monto'
-            FROM {$prx}bills,
-                {$prx}habitants,
-                {$prx}apartments
-        WHERE hab_apt_fk = apt_id
-            AND bil_hab_fk = hab_id
+        FROM {$prx}bills
+            INNER JOIN glo_activities ON bil_act_fk = act_id
+            INNER JOIN {$prx}habitants ON bil_hab_fk = hab_id
+            INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
+        WHERE bil_lapse = :lapse
             AND apt_bui_fk = :bui
-            AND bil_lapse = :lapse
             AND bil_bui_fk = :bui
         ORDER BY bil_id DESC"
     );
@@ -116,31 +115,37 @@ function getLapsesList(){
     return jsonResponse($status, $msg);
 }
 
-function getProvidersList(){
+function getProvidersList($actid){
     $db = connectDb();
     $prx = $db->getPrx();
     $status = false;
 
-    $res = $db->query(
+    $stmt = $db->prepare(
         "SELECT prov_id AS 'id',
             prov_name AS 'name',
             prov_alias AS 'alias',
             prov_rif AS 'rif'
-        FROM {$prx}providers"
+        FROM {$prx}providers
+            INNER JOIN {$prx}skills ON ski_prov_fk = prov_id
+            INNER JOIN glo_activities ON ski_act_fk = act_id
+        WHERE act_id = :actid"
     );
+    $stmt->bindValue('actid', $actid, PDO::PARAM_INT);
+
+    $res= $stmt->execute();
 
     if(!$res){
-        $msg = $db->errorInfo()[2];
+        $msg = $stmt->errorInfo()[2];
     }
     else{
         $status = true;
-        $msg = $res->fetchAll(PDO::FETCH_ASSOC);
+        $msg = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     return jsonResponse($status, $msg);
 }
 
-function addProvider(/*string*/ $name, /*string*/ $rif){
+function addProviderSkill(/*string*/ $name, /*string*/ $rif, $actid){
     $db = connectDb();
     $prx = $db->getPrx();
     $simid = $db->getSimId();
@@ -181,14 +186,33 @@ function addProvider(/*string*/ $name, /*string*/ $rif){
             return false;
         }
         else{
-            return $stmt2->fetchColumn();
+            $provid = $stmt2->fetchColumn();
+
+            $stmt3 = $db->prepare(
+                "INSERT INTO {$prx}skills
+                (ski_prov_fk,   ski_act_fk)
+                VALUES
+                (:provid,       :actid)"
+            );
+            $stmt3->bindValue('provid', $provid, PDO::PARAM_INT);
+            $stmt3->bindValue('actid', $actid, PDO::PARAM_INT);
+
+            $res3 = $stmt3->execute();
+
+            if(!$res3){
+                echo $stmt3->errorInfo()[2];
+                return false;
+            }
+            else{
+                return $provid;
+            }
         }
     }
 }
 
 function addBill(/*string*/ $desc, /*string*/ $date, /*int*/ $buiid,
                  /*int*/ $habid, /*int*/ $provid, /*int*/ $accid,
-                 /*revisar*/ $class, /*string*/ $log, /*float*/ $amount,
+                 /*int*/ $actid, /*string*/ $log, /*float*/ $amount,
                  /*float*/ $iva, /*float*/ $total, $op)
 {
 
@@ -199,12 +223,12 @@ function addBill(/*string*/ $desc, /*string*/ $date, /*int*/ $buiid,
     $stmt1 = $db->prepare(
         "INSERT INTO {$prx}bills
         (bil_desc,      bil_date,   bil_bui_fk, bil_hab_fk,
-         bil_prov_fk,   bil_acc_fk, bil_class,
+         bil_prov_fk,   bil_acc_fk, bil_act_fk,
          bil_log,       bil_lapse,  bil_amount, bil_iva,
          bil_total,     bil_op)
         VALUES
         (:desc,         :date,      :buiid,     :habid,
-         :provid,       :accid,     :class,
+         :provid,       :accid,     :actid,
          :log,          0,          :amount,    :iva,
          :total,        :op)"
     );
@@ -215,7 +239,7 @@ function addBill(/*string*/ $desc, /*string*/ $date, /*int*/ $buiid,
     $stmt1->bindValue('habid', $habid, PDO::PARAM_INT);
     $stmt1->bindValue('provid', $provid, PDO::PARAM_INT);
     $stmt1->bindValue('accid', $accid, PDO::PARAM_INT);
-    $stmt1->bindValue('class', $class);
+    $stmt1->bindValue('actid', $actid, PDO::PARAM_INT);
 
     $stmt1->bindValue('log', $log);
     $stmt1->bindValue('amount', $amount);
@@ -247,6 +271,54 @@ function addBill(/*string*/ $desc, /*string*/ $date, /*int*/ $buiid,
             $status = true;
             $msg = "Gasto agregado con éxito.";
         }
+    }
+
+    return jsonResponse($status, $msg);
+}
+
+function getActypesList(){
+    $db = connectDb();
+    $status = false;
+
+    $stmt = $db->query(
+        "SELECT aty_id AS 'id',
+            aty_name AS 'name'
+        FROM glo_actypes"
+    );
+
+    if(!$stmt){
+        $msg = $db->errorInfo()[2];
+
+    }
+    else{
+        $msg = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $status = true;
+    }
+    return jsonResponse($status, $msg);
+}
+
+function getActivitiesList($atyid){
+    $db = connectDb();
+    $status = false;
+
+    $stmt = $db->prepare(
+        "SELECT act_id AS 'id',
+            act_name AS 'name'
+        FROM glo_activities
+            INNER JOIN glo_actypes ON act_aty_fk = aty_id
+        WHERE aty_id = :atyid"
+    );
+
+    $stmt->bindValue('atyid', $atyid, PDO::PARAM_INT);
+
+    $res = $stmt->execute();
+
+    if(!$res){
+        $msg = $stmt->errorInfo()[2];
+    }
+    else{
+        $msg = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $status = true;
     }
 
     return jsonResponse($status, $msg);

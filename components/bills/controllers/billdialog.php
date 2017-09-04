@@ -13,10 +13,8 @@ $buiid = (int)$_SESSION['bui_id'];
 include ROOTDIR.'/models/tokenator.php';
 include $basedir.'models/bills.php';
 
-
-$res1 = json_decode(getProvidersList(), true);
-$providers = $res1['msg'];
-//var_dump($providers); die;
+$res = json_decode(getActypesList(), true);
+$actypes = $res['msg'];
 
 $res2 = json_decode(getAccountsList($buiid), true);
 $accounts = $res2['msg'];
@@ -45,7 +43,7 @@ echo $twig->render(
         'form'    => $form,
         'js'       => $js,
         'accounts' => $accounts,
-        'providers' => $providers
+        'actypes'   => $actypes
         //'bills' => $table_template['bills'],
     )
 );

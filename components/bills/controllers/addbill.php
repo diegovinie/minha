@@ -10,7 +10,8 @@ $buiid = (int)$_SESSION['bui_id'];
 $habid = (int)$_SESSION['hab_id'];
 $provid = (int)$_POST['prov'];
 $accid  = (int)$_POST['acc'];
-$class  = (string)$_POST['class'];
+$actid  = (int)$_POST['act'];
+$typeid  = (int)$_POST['type'];
 $log    = (string)$_POST['log'];
 $amount = numToEng($_POST['amount']);
 $iva    = numToEng($_POST['iva']);
@@ -23,8 +24,8 @@ $rif = $_POST['rif'];
 include_once $basedir.'models/bills.php';
 
 if(!$provid){
-    $provid = addProvider($name, $rif);
+    $provid = addProviderSkill($name, $rif, $actid);
 }
 
 echo addbill($desc, $date, $buiid, $habid, $provid, $accid,
-        $class, $log, $amount, $iva, $total, $op);
+        $actid, $log, $amount, $iva, $total, $op);
