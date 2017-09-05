@@ -3,14 +3,14 @@
  *
  */
 
-defined('_EXE') or die('Acceso restringido');
+defined('_EXE') or die('Acceso reintido');
 
-$bui = (string)$_SESSION['bui'];
+$buiid = (int)$_SESSION['bui_id'];
 
 include $basedir .'/models/managepayments.php';
 //sleep(2);
 //echo getCurrentMonth($bui); die;
-$res = json_decode(getCurrentMonth($bui));
+$res = json_decode(getCurrentMonth($buiid));
 
 if($res->table != false){
 

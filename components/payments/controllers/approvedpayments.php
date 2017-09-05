@@ -5,12 +5,12 @@
 
 defined('_EXE') or die('Acceso restringido');
 
-$bui = (string)$_SESSION['bui'];
+$buiid = (int)$_SESSION['bui_id'];
 
 include $basedir .'/models/managepayments.php';
 
 //echo getCurrentMonth($bui); die;
-$res = json_decode(approvedPayments($bui));
+$res = json_decode(approvedPayments($buiid));
 
 if($res->table != false){
 

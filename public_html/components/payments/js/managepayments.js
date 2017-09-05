@@ -109,6 +109,7 @@ function getFromPayments(id){
             }
         })
         .then(function(res){
+            console.log(res);
             $('#'+id).html(res);
             $('#'+id+' td').each(function(p, td){
                 dataParser(td);
