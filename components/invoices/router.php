@@ -41,6 +41,10 @@ if($route[1] == 'admin' && $route[2] == 'recibos'){
             $controller = $basedir .'controllers/discardbatch.php';
             break;
 
+        case 'guardar':
+            $controller = $basedir .'controllers/savebatch.php';
+            break;
+
         default:
             die('sin ruta');
             break;

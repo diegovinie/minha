@@ -47,6 +47,10 @@ switch ($route[1]) {
         include ROOTDIR ."/components/{$route[2]}/static/{$route[3]}/{$route[4]}";
         break;
 
+    case 'assets':
+        include ROOTDIR ."/components/{$route[2]}/assets/{$route[3]}/{$route[4]}";
+        break;
+
 
     // asinc Vistas estáticas /views/{tipo}
     case 'views':

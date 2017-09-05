@@ -34,21 +34,25 @@ function getLapses(){
     return jsonResponse($status, $msg);
 }
 
-function getBills(/*string*/ $bui){
+function getBills(/*int*/ $buiid){
     $db = connectDb();
     $prx = $db->getPrx();
 
     $status = false;
 
     $stmt = $db->prepare(
-        "SELECT bil_id AS 'id', bil_date AS 'Fecha',
-        bil_class AS 'Clase', bil_desc AS 'Desc',
-        bil_total AS 'Monto'
+        "SELECT bil_id AS 'id',
+            bil_date AS 'Fecha',
+            act_name AS 'Actividad',
+            bil_desc AS 'Desc',
+            bil_total AS 'Monto'
         FROM {$prx}bills
-        WHERE bil_bui = :bui AND bil_lapse_fk = 0
+            INNER JOIN glo_activities ON bil_act_fk = act_id
+        WHERE bil_bui_fk = :buiid
+            AND bil_lapse = 0
         ORDER BY bil_date DESC"
     );
-    $stmt->bindValue('bui', $bui);
+    $stmt->bindValue('buiid', $buiid, PDO::PARAM_INT);
     $res = $stmt->execute();
 
     if(!$res){
@@ -68,20 +72,22 @@ function getBills(/*string*/ $bui){
     return jsonTableResponse($status, $msg);
 }
 
-function getFunds(/*string*/ $bui){
+function getFunds(/*int*/ $buiid){
     $db = connectDb();
     $prx = $db->getPrx();
 
     $status = false;
 
     $stmt = $db->prepare(
-        "SELECT fun_id AS 'id', fun_name AS 'name',
-        fun_balance AS 'balance', fun_type AS type,
-        CONVERT(fun_default, SIGNED) AS 'amount'
+        "SELECT fun_id AS 'id',
+            fun_name AS 'name',
+            fun_balance AS 'balance',
+            fun_type AS type,
+            CONVERT(fun_default, SIGNED) AS 'amount'
         FROM {$prx}funds
-        WHERE fun_bui = :bui"
+        WHERE fun_bui_fk = :buiid"
     );
-    $stmt->bindValue('bui', $bui);
+    $stmt->bindValue('buiid', $buiid, PDO::PARAM_INT);
     $res = $stmt->execute();
 
     if(!$res){

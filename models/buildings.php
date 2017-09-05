@@ -50,13 +50,17 @@ function getFractionA17(/*string*/ $bui){
 function getFractionCountry_Park(/*string*/ $bui){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
     $stmt = $db->prepare(
-        "SELECT COUNT(bui_id)
-        FROM {$prx}buildings
-        WHERE bui_assigned = 1 AND bui_name = :bui"
+        "SELECT COUNT(apt_id)
+        FROM {$prx}apartments
+        WHERE bui_assigned = 1
+            AND bui_name = :bui
+            AND apt_sim_fk = :simid"
     );
     $stmt->bindValue('bui', $bui);
+    $stmt->bindValue('simid', $simid, PDO::PARAM_INT);
     $res = $stmt->execute();
 
     if(!$res){

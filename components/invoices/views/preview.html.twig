@@ -60,20 +60,18 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12" align="center">
-               <button type="button" name="button" class="btn btn-success btn-lg" data-number="{{ number }}" onclick="saveInvoices('invoices');">Guardar</button>
-               <button type="button" name="button"class="btn btn-danger btn-lg" data-number="{{ number }}" href="{{ discard }}">Deshacer</button>
-            </div>
+        <div class="col-sm-12">
+            {% include 'views/widgets/flash.html.twig' %}
         </div>
         <div class="row">
-            <div class="col-md-3">
-
-            </div>
-            <div class="col-md-6" id="result" style="margin-top:20px;text-align:center;align:center;">
-
+            <div class="col-md-12" align="center">
+               <button type="button" name="button" class="btn btn-success btn-lg" data-number="{{ number }}" onclick="saveInvoicesBatch(this)">Guardar</button>
+               <button type="button" name="button"class="btn btn-danger btn-lg" data-number="{{ number }}" onclick="discardInvoicesBatch(this)">Deshacer</button>
             </div>
         </div>
     </div>
     {% endblock %}
+    {% for script in js %}
+        <script src="{{ script }}" charset="utf-8"></script>
+    {% endfor %}
 {% endblock %}

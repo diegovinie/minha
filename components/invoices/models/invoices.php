@@ -21,11 +21,11 @@ function getUserInfo(/*int*/ $id){
     $prx = $db->getPrx();
 
     $stmt = $db->prepare(
-        "SELECT udata_name AS 'name',
-        udata_surname AS 'surname',
-        user_user AS 'email'
-        FROM {$prx}userdata
-        INNER JOIN {$prx}users ON user_id = udata_user_fk
+        "SELECT hab_name AS 'name',
+            hab_surname AS 'surname',
+            user_user AS 'email'
+        FROM {$prx}habitants
+            INNER JOIN glo_users ON hab_user_fk = user_id
         WHERE user_id = :id"
     );
     $stmt->bindValue('id', $id, PDO::PARAM_INT);
@@ -51,8 +51,10 @@ function getLapseInfo(/*int*/ $lapse){
     $prx = $db->getPrx();
 
     $stmt = $db->prepare(
-        "SELECT lap_id AS 'id', lap_name AS 'name',
-        lap_month AS 'm', lap_year AS 'y'
+        "SELECT lap_id AS 'id',
+            lap_name AS 'name',
+            lap_month AS 'm',
+            lap_year AS 'y'
         FROM glo_lapses
         WHERE lap_id = :lapse"
     );
@@ -81,9 +83,13 @@ function getBillsInfo(/*array*/ $listid){
     if(empty($listid) || !$listid) return false;
 
     $stmt = $db->prepare(
-        "SELECT bil_total AS 'total', bil_class AS 'class',
-        bil_desc AS 'desc'
+        "SELECT bil_total AS 'total',
+            act_name AS 'actividad',
+            aty_name AS 'tipo',
+            bil_desc AS 'desc'
         FROM {$prx}bills
+            INNER JOIN glo_activities ON bil_act_fk = act_id
+            INNER JOIN glo_actypes ON act_aty_fk = aty_id
         WHERE bil_id = :id"
     );
     $stmt->bindParam('id', $id, PDO::PARAM_INT);
@@ -117,7 +123,7 @@ function getFundsInfo(/*array*/ $listid){
 
     $stmt = $db->prepare(
         "SELECT fun_name AS 'name',
-        fun_type AS 'type'
+            fun_type AS 'type'
         FROM {$prx}funds
         WHERE fun_id = :id"
     );
@@ -152,7 +158,7 @@ function setBillsQueue(/*array*/ $listid){
 
     $stmt = $db->prepare(
         "UPDATE {$prx}bills
-        SET bil_lapse_fk = 99
+        SET bil_lapse = NULL
         WHERE bil_id = :id"
     );
     $stmt->bindParam('id', $id, PDO::PARAM_INT);
@@ -183,8 +189,8 @@ function unsetBillsQueue(){
     // Desmarcar los gastos en la base de datos.
     $res = $db->exec(
         "UPDATE {$prx}bills
-        SET bil_lapse_fk = 0
-        WHERE bil_lapse_fk = 99"
+        SET bil_lapse = 0
+        WHERE bil_lapse IS NULL"
     );
 
     if(!$res){
@@ -206,11 +212,12 @@ function getAssignedApts(/*string*/ $bui){
     $prx = $db->getPrx();
 
     $stmt = $db->prepare(
-        "SELECT bui_apt AS 'name', bui_weight AS 'w',
-        bui_balance AS 'balance'
-        FROM {$prx}buildings
-        WHERE bui_assigned = 1
-        AND bui_name = :bui"
+        "SELECT apt_name AS 'name',
+            apt_weight AS 'w',
+            apt_balance AS 'balance'
+        FROM {$prx}apartments
+        WHERE apt_assigned = 1
+            AND apt_edf = :bui"
     );
     $stmt->bindValue('bui', $bui);
     $res = $stmt->execute();
@@ -235,10 +242,10 @@ function getNumberApts(/*string*/ $bui){
     $prx = $db->getPrx();
 
     $stmt = $db->prepare(
-        "SELECT COUNT(bui_id) AS `asignados`
-        FROM {$prx}buildings
-        WHERE bui_assigned = 1
-        AND bui_name = :bui"
+        "SELECT COUNT(apt_id) AS `asignados`
+        FROM {$prx}apartments
+        WHERE apt_assigned = 1
+            AND apt_edf = :bui"
     );
     $stmt->bindValue('bui', $bui);
     $res = $stmt->execute();
@@ -259,14 +266,14 @@ function getNumberApts(/*string*/ $bui){
  *
  * @return float | false Registra el error.
  */
-function getBalanceFromBuildings(/*string*/ $bui){
+function getBalanceFromApartments(/*string*/ $bui){
     $db = connectDb();
     $prx = $db->getPrx();
 
     $stmt = $db->prepare(
-        "SELECT SUM(bui_balance) AS 'balance'
-        FROM {$prx}buildings
-        WHERE bui_name = :bui"
+        "SELECT SUM(apt_balance) AS 'balance'
+        FROM {$prx}apartments
+        WHERE apt_edf = :bui"
     );
     $stmt->bindValue('bui', $bui);
     $res = $stmt->execute();
@@ -286,8 +293,32 @@ function getBalanceFromBuildings(/*string*/ $bui){
  * @return float | false
  */
 function getFractionBuilding(/*string*/ $bui){
+    $db = connectDb();
+    $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
-    return call_user_func('getFraction'.$bui, $bui);
+    $stmt = $db->prepare(
+        "SELECT COUNT(apt_id)
+        FROM {$prx}apartments
+        WHERE apt_sim_fk = :simid
+            AND apt_edf = :bui"
+    );
+    $stmt->bindValue('simid', $simid, PDO::PARAM_INT);
+    $stmt->bindValue('bui', $bui);
+
+    $res = $stmt->execute();
+
+    if(!$res){
+        echo $stmt->errorInfo()[2];
+
+    }
+    else{
+        $total = (int)$stmt->fetchColumn();
+
+        $assigned = getNumberApts($bui);
+
+        return (float)($assigned / $total);
+    }
 }
 
 /**
@@ -327,9 +358,9 @@ function generateInvoicesBatch(  /*int*/  $userid,
     $actives = getNumberApts($bui);
 
     //Selecciona el balance previo a la generación
-    $balance = getBalanceFromBuildings($bui);
+    $balance = getBalanceFromApartments($bui);
 
-    $frac =round(getFractionBuilding($bui), 4);
+    $frac = round(getFractionBuilding($bui), 4);
 
     //Se genera el contenido por apartamento
     foreach ($aApts as $index => $apt) {
@@ -337,32 +368,29 @@ function generateInvoicesBatch(  /*int*/  $userid,
         if($aBills){
             foreach ($aBills as $inB => $bill) {
 
-                $content[$apt['name']]
+                $content[$apt['name']]      // Cada apartamento
                         ['Comunes']
-                        [$inB]
-                        ['nombre'] = $bill['class']
-                                     .' - ' .$bill['desc'];
+                        [$bill['tipo']]     // Cada tipo de actividad
+                        [] = array(
+                            'actividad' => $bill['actividad'],
+                            'nombre'    => $bill['desc'],
+                            'porcentaje' => round($bill['total'] *
+                                                   $apt['w'] / 100 /
+                                                   $frac, 2),
+                            'total'     => round($bill['total'], 2)
+                        );
 
-                $content[$apt['name']]
-                        ['Comunes']
-                        [$inB]
-                        ['porcentaje'] = round($bill['total'] *
-                                               $apt['w'] *
-                                               $frac/100, 2);
-
-                $content[$apt['name']]
-                        ['Comunes']
-                        [$inB]
-                        ['total'] = round($bill['total'], 2);
 
                 //Generar el campo del total a pagar por apartamento
                 $sumPer = 0;
                 $sumTotal = 0;
 
-                foreach ($content[$apt['name']]['Comunes'] as $val) {
+                foreach ($content[$apt['name']]['Comunes'] as $type) {
 
-                    $sumPer += $val['porcentaje'];
-                    $sumTotal += $val['total'];
+                    foreach ($type as $val) {
+                        $sumPer += $val['porcentaje'];
+                        $sumTotal += $val['total'];
+                    }
                 }
 
                 $charges[$apt['name']]
@@ -382,39 +410,28 @@ function generateInvoicesBatch(  /*int*/  $userid,
 
                 $defNum = numToEng($fund['val']);
 
-                if($fund['type'] == 1){
+                if($fund['type'] == 1){         // Si es porcentual
 
-                    $content[$apt['name']]
-                            [$fund['name']]
-                            [$fund['name']]
-                            ['nombre'] = $fund['val'].' %';
+                    $content[$apt['name']]      // Cada apartamento
+                            ['Fondos']
+                            [$fund['name']]     // Cada fondo
+                            [] = array(
+                                'nombre' => $fund['val'].' %',
+                                'porcentaje' => round($sumPer * $defNum /100, 2),
+                                'total' => round($sumTotal * ($defNum / 100), 2)
+                            );
 
-                    $content[$apt['name']]
-                            [$fund['name']]
-                            [$fund['name']]
-                            ['porcentaje'] = round($sumPer * $defNum /100, 2);
-
-                    $content[$apt['name']]
-                            [$fund['name']]
-                            [$fund['name']]
-                            ['total'] = round($sumTotal * ($defNum / 100), 2);
                 }
-                elseif($fund['type'] == 2){
+                elseif($fund['type'] == 2){     // Si es monto fijo
 
                     $content[$apt['name']]
+                            ['Fondos']
                             [$fund['name']]
-                            [$fund['name']]
-                            ['nombre'] = 'Bs. '.$fund['val'];
-
-                    $content[$apt['name']]
-                            [$fund['name']]
-                            [$fund['name']]
-                            ['porcentaje'] = round($defNum / $actives, 2);
-
-                    $content[$apt['name']]
-                            [$fund['name']]
-                            [$fund['name']]
-                            ['total'] = $defNum;
+                            [] = array(
+                                'nombre'    => 'Bs. '.$fund['val'],
+                                'porcentaje' => round($defNum / $actives, 2),
+                                'total'     => $defNum
+                            );
                 }
             }
         }
@@ -423,20 +440,21 @@ function generateInvoicesBatch(  /*int*/  $userid,
         $lastApt = $content[$apt['name']];
     }
 
-    // Se genera el nuevo sumario
-    foreach ($lastApt as $cat => $dat) {
-
-        foreach($dat as $item){
-
-            $summary[$cat]
-                    [$item['nombre']] = $item['total'];
-        }
-    }
-
     $total = 0;
-    foreach ($summary as $categorie) {
-        foreach ($categorie as $value) {
-            $total += $value;
+    // Se genera el nuevo sumario
+    foreach ($lastApt as $cat => $combo) {
+
+        foreach($combo as $type => $group){
+
+            $summary[$cat][$type] = 0;
+
+            foreach ($group as $item) {     // Suma cada item de un mismo tipo
+
+                $summary[$cat]
+                        [$type] += $item['total'];
+
+                $total += $item['total'];   // Suma al gran total
+            }
         }
     }
 
@@ -475,7 +493,14 @@ function generateInvoicesBatch(  /*int*/  $userid,
     //Graba contenidos temporales de lo que se va a grabar en charges
     $tj = json_encode($invoices);
 
-    $hdr2 = fopen(ROOTDIR."/files/invoices/$bui/LOT-$fNum.json", 'w');
+    $db = connectDb();
+    $prx = $db->getPrx();
+
+    $dirPath = ROOTDIR."/files/{$prx}invoices/$bui";
+
+    if(!is_dir($dirPath)) mkdir($dirPath, 0777, true);
+
+    $hdr2 = fopen($dirPath."/LOT-$fNum.json", 'w');
 
     fwrite($hdr2, $tj);
     fclose($hdr2);
@@ -501,14 +526,20 @@ function generateInvoicesBatch(  /*int*/  $userid,
 function discardInvoicesBatch(/*string*/ $bui, /*int*/ $number){
     $status = false;
 
+
     $res = unsetBillsQueue();
 
     if(!$res){
         $msg = "Problemas para desmarcar los gastos.";
     }
     else{
+        $db = connectDb();
+        $prx = $db->getPrx();
+
+        $dirPath = ROOTDIR."/files/{$prx}invoices/$bui";
+
         // Recupera el archivo json con la información del lote.
-        $fileInvoices = ROOTDIR."/files/invoices/$bui/LOT-$number.json";
+        $fileInvoices = $dirPath."/LOT-$number.json";
 
         if(!is_file($fileInvoices)){
 
@@ -519,112 +550,6 @@ function discardInvoicesBatch(/*string*/ $bui, /*int*/ $number){
             unlink($fileInvoices);
             $status = true;
             $msg = "Lote LOT-$number borrado con éxito.";
-        }
-    }
-
-    return jsonResponse($status, $msg);
-}
-
-/**
- * Busca el archivo json del lote y actualiza
- * la base de datos.
- *
- * @return jsonResponse()
- */
-function saveInvoicesBatch(/*string*/ $bui, /*int*/ $number){
-    $db = connectDb();
-    $prx = $db->getPrx();
-
-    $status = false;
-    $error = false;
-
-    // Recupera el archivo json con la información del lote.
-    $fileInvoices = ROOTDIR."/files/invoices/$bui/LOT-$number.json";
-
-    // Decodifica el lote como un array de objetos.
-    $inv = json_decode(include($fileInvoices));
-
-    $lapse = $inv->{'head'}->{'Periodo'};
-
-    $stmt1 = $db->prepare(
-        "SELECT lap_id AS 'id'
-        FROM glo_lapses
-        WHERE lap_name = :lapse"
-    );
-    $stmt1->bindValue('lapse', $lapse);
-    $res1 = $stmt1->execute();
-
-    if(!$res1){
-        $msg = "Error al recuperar datos del periodo $lapse";
-    }
-    else{
-        // Agrega a los gastos en cuestión el periodo.
-        $lapid = (int)$stmt1->fetchColumn();
-
-        $exe2 = $db->exec(
-            "UPDATE {$prx}bills
-            SET bil_lapse_fk = $lapid
-            WHERE bil_lapse_fk = 99"
-        );
-
-        if(!$exe2){
-            $msg = "No se pudo fijar el periodo a los gastos.";
-        }
-        else{
-            // Actualizar la tabla funds.
-            $stmt3 = $db->prepare(
-                "UPDATE {$prx}funds
-                SET fun_balance = fun_balance + :amount
-                WHERE fun_name = :name"
-            );
-            // fund[0] es el monto, es un array[1]
-            $stmt3->bindParam('amount', $fund[0], PDO::PARAM_FLOAT);
-            $stmt3->bindParam('name', $name);
-
-            foreach ($inv->{'summary'} as $name => $fund) {
-                // Descarta los gastos comunes.
-                if($name != 'Comunes'){
-                    $exe3 = $stmt3->execute();
-
-                    if(!$exe3){
-                        $error = true;
-                        $msg = "Error al actualizar el fondo $name.";
-                        break;
-                    }
-                }
-            }
-
-            // Se actualiza el balance de cada apartamento
-            // restandole el total.
-            foreach ($inv->{'charges'} as $apt => $val) {
-                $chargues[$apt] = $val->{'total'} ;
-            }
-
-            $stmt4 = $db->prepare(
-                "UPDATE {$prx}buildings
-                SET bui_balance = bui_balance - :total
-                WHERE bui_apt = :apt
-                AND bui_name = :bui"
-            );
-            $stmt4->bindParam('total', $total, PDO::PARAM_FLOAT);
-            $stmt4->bindParam('apt', $apt);
-            $stmt4->bindValue('bui', $bui);
-
-            foreach ($charges as $apt => $total) {
-                $res4 = $stmt->execute();
-
-                if(!$res4){
-                    $error = true;
-                    $msg = "Error al actualizar apt. $apt.";
-                    break;
-                }
-            }
-
-            if(!$error){
-                // Si no hay ningún problema.
-                $status = true;
-                $msg = "Guardado con éxito.";
-            }
         }
     }
 

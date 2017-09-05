@@ -44,7 +44,7 @@ else{
     elseif(is_integer($simId)){
 
         if($simId === 0){
-            if(isset($_SESSION)) session_start();
+            if(!isset($_SESSION)) session_start();
             $_SESSION['id'] = $userid;
 
             echo jsonResponse('new', 'Redireccionando.');

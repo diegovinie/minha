@@ -1,18 +1,24 @@
 <?php
+/* components/invoices/controllers/manage.php
+ *
+ *
+ * Genera la vista
+ */
+defined('_EXE') or die('Acceso restringido');
 
 include $basedir.'models/manage.php';
 
-$bui = (string)$_SESSION['bui'];
+$buiid = (int)$_SESSION['bui_id'];
 
 // Los recibos para comparar
-$invoices = json_decode(getInvoicesId($bui), true);
+//$invoices = json_decode(getInvoicesId($buiid), true);
 
 // selección de periodos
 $lapses = json_decode(getLapses());
 
-$tables['bills'] = json_decode(getBills($bui));
+$tables['bills'] = json_decode(getBills($buiid));
 
-$funds = json_decode(getFunds($bui), true);
+$funds = json_decode(getFunds($buiid), true);
 //print_r($funds); die;
 
 // Creación del array $table_template
@@ -38,7 +44,7 @@ $form = array(
 
 // javascript a incluir
 $js = array(
-    "invoices"  => "/components/invoices/js/invoices.js",
+    "invoices"  => "/index.php/assets/invoices/js/invoices.js",
     "functions" => "/js/functions.js"
 );
 
@@ -48,7 +54,7 @@ $twig->addExtension(new Twig_Extension_StringLoader());
 echo $twig->render(
     'components/invoices/views/manage.html.twig',
     array(
-        'invoices' => $invoices['msg'],
+        //'invoices' => $invoices['msg'],
         'lapses' => $lapses->msg,
         'bills' => $table_template['bills'],
         'funds' => $funds['msg'],

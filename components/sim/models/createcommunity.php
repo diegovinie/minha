@@ -49,7 +49,7 @@ function genTemplateCountry_Park(){
     $i = 14;
     $sum = 0.0;
     while($i--){
-        $rnd = round(mt_rand(6300000, 6700000) / 1000000, 6);
+        $rnd = round(mt_rand(6300000, 6700000) / 100000000, 6);
         $per[] = $rnd;
         $sum += $rnd;
     }

@@ -1,9 +1,14 @@
 <?php
+/* components/invoices/controllers/discardbatch.php
+ *
+ *
+ * Respuesta asincrónica
+ */
+defined('_EXE') or die('Acceso restringido');
 
 include $basedir.'models/invoices.php';
 
-$j = discardInvoicesBatch('A17', 201707);
+$bui = $_SESSION['edf'];
+$number = (int)$_GET['number'];
 
-?><script type="text/javascript">
-    res = <?php echo $j ?>;
-</script>
+echo discardInvoicesBatch($bui, $number);
