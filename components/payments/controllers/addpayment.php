@@ -7,12 +7,11 @@
 defined('_EXE') or die('Acceso restringido');
 
 include $basedir .'models/payments.php';
-include ROOTDIR.'/components/security/controllers/tokenator.php';
+include ROOTDIR.'/models/tokenator.php';
 
 $banks = json_decode(getBanks());
 
-$bui = $_SESSION['bui'];
-
+$edf = $_SESSION['edf'];
 $apt = $_SESSION['apt'];
 
 $title = 'Agregar Pago';
@@ -36,7 +35,7 @@ echo $twig->render(
         'form' => $form,
         'css'  => $css,
         'banks' => $banks,
-        'bui' => $bui,
+        'edf' => $edf,
         'apt' => $apt,
         'title' => $title)
 );

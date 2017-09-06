@@ -374,8 +374,8 @@ function generateInvoicesBatch(  /*int*/  $userid,
                         [] = array(
                             'actividad' => $bill['actividad'],
                             'nombre'    => $bill['desc'],
-                            'porcentaje' => round($bill['total'] *
-                                                   $apt['w'] / 100 /
+                            'alic' => round($bill['total'] *
+                                                   $apt['w'] /
                                                    $frac, 2),
                             'total'     => round($bill['total'], 2)
                         );
@@ -388,7 +388,7 @@ function generateInvoicesBatch(  /*int*/  $userid,
                 foreach ($content[$apt['name']]['Comunes'] as $type) {
 
                     foreach ($type as $val) {
-                        $sumPer += $val['porcentaje'];
+                        $sumPer += $val['alic'];
                         $sumTotal += $val['total'];
                     }
                 }
@@ -417,7 +417,7 @@ function generateInvoicesBatch(  /*int*/  $userid,
                             [$fund['name']]     // Cada fondo
                             [] = array(
                                 'nombre' => $fund['val'].' %',
-                                'porcentaje' => round($sumPer * $defNum /100, 2),
+                                'alic' => round($sumPer * $defNum /100, 2),
                                 'total' => round($sumTotal * ($defNum / 100), 2)
                             );
 
@@ -429,7 +429,7 @@ function generateInvoicesBatch(  /*int*/  $userid,
                             [$fund['name']]
                             [] = array(
                                 'nombre'    => 'Bs. '.$fund['val'],
-                                'porcentaje' => round($defNum / $actives, 2),
+                                'alic' => round($defNum / $actives, 2),
                                 'total'     => $defNum
                             );
                 }

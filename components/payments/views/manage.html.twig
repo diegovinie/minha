@@ -52,8 +52,8 @@
                         Pagos Pendientes por Revisión
                     </div>
                     <form class="" action="<?php echo PROJECT_HOST;?>core/async_payments.php" method="post">
-                        <div class="panel-body" id="pendingpayments">
-                            {% include loading %}
+                        <div class="panel-body" id="pendingpayments" align="center">
+                            {{ include(template_from_string(pending)) }}
                         </div>
                         <div class="panel-footer button_box" align="center">
                             <button type="submit" name="submits" class="btn btn-primary">Aplicar</button>
@@ -71,7 +71,7 @@
                         Pagos Rechazados
                     </div>
                     <div class="panel-body" id="refusedpayments">
-                        {% include loading %}
+                        {{ include(template_from_string(refused)) }}
                     </div>
                     <div class="panel-footer button_box" align="center">
     					    <button type="button" data-fun="pagos_rechazados" class="btn btn-info"  onclick="genPdf(this)" >Imprimir</button>
@@ -87,7 +87,7 @@
                         Pagos Aprobados
                     </div>
                     <div class="panel-body" id="approvedpayments">
-                        {% include loading %}
+                        {{ include(template_from_string(approved)) }}
                     </div>
                     <div class="panel-footer button_box" align="center">
     					    <button type="button" data-fun="pagos_aprobados" class="btn btn-info"  onclick="genPdf(this)" >Imprimir</button>

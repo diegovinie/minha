@@ -100,5 +100,77 @@
           "cost": "140.00"
           }
       ]
+    },
+    {
+      "name": "Compañía Anónima Nacional de Teléfonos de Venezuela (CANTV)",
+      "alias": "CANTV",
+      "rif": "J001241345",
+      "cel": "",
+      "email": "",
+      "skills": [
+          {
+          "name": "Suministro de Telefonía",
+          "id": 19,
+          "quality": 80,
+          "cost": "70.00"
+          }
+      ]
+    },
+    {
+      "name": "Ferretotal",
+      "alias": "",
+      "rif": "J003257176",
+      "cel": "",
+      "email": "",
+      "skills": [
+          {
+          "name": "Materiales de Limpieza",
+          "id": 11,
+          "quality": 60,
+          "cost": "110.00"
+        },
+          {
+          "name": "Ferretería",
+          "id": 10,
+          "quality": 80,
+          "cost": "70.00"
+        },
+          {
+          "name": "Equipos electrónicos",
+          "id": 12,
+          "quality": 80,
+          "cost": "100.00"
+          }
+      ]
+  },
+  {
+    "name": "Motores y Engranajes TAR C.A.",
+    "alias": "",
+    "rif": "",
+    "cel": "",
+    "email": "",
+    "skills": [
+        {
+        "name": "Electromecánica",
+        "id": 25,
+        "quality": 50,
+        "cost": "90.00"
+        }
+    ]
+    },
+    {
+      "name": "Juan Pablo Angel",
+      "alias": "Bombas y Destapes",
+      "rif": "E80332021",
+      "cel": "",
+      "email": "",
+      "skills": [
+          {
+          "name": "Plomería",
+          "id": 1,
+          "quality": 90,
+          "cost": "130.00"
+          }
+      ]
     }
 ]

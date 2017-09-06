@@ -54,7 +54,7 @@ function genTemplateCountry_Park(){
         $sum += $rnd;
     }
 
-    $per[] = 100.0000 - $sum;
+    $per[] = 1.0000 - $sum;
 
     $list = array(
         "M1",        "M2",        "1",        "2",

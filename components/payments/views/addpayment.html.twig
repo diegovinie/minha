@@ -10,7 +10,7 @@
                 <input type="hidden" name="token" value="{{ form.token }}">
                 <div class="row">
                     <div class="form-group col-md-4">
-                        <label for="">Edificio:</label><input  class="form-control" type="text" name="edif" id="edif" value="{{ bui }}" readonly>
+                        <label for="">Edificio:</label><input  class="form-control" type="text" name="edif" id="edif" value="{{ edf }}" readonly>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="">Apartamento:</label><input  class="form-control" type="text" name="apt" id="apt" value="{{ apt }}" readonly>
@@ -45,15 +45,15 @@
 
                 <div class="form-group">
                     <label>Monto:</label><input class="form-control" placeholder="Formato : #.###.###,##" type="text" name="amount" id="amount" onblur="checkNumEsp(this)" onkeyup="alertNumberEs(this)" required>
-                    <!--<label>Monto:</label><input class="form-control" placeholder="Formato : #.###.###,##" type="text" name="amount" id="amount" onblur="checkNumEsp(this)" onkeyup="alertNumberEs(this)" required>-->
                     <div class="">
 
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Obsercaciones:</label>
-                    <textarea class="form-control" name="notes" id="notes" rows="3" cols="20"></textarea>
+                    <textarea class="form-control" name="obs" id="obs" rows="3" cols="20"></textarea>
                 </div>
+                {% include 'views/widgets/flash.html.twig' %}
                 <div class="button_box" align="center">
                     <button type="submit" id='btnSubmit' name="btnSubmit" class="btn btn-success btn-lg" >Enviar</button>
                     <button type="reset" name="btnReset" class="btn btn-info btn-lg">Limpiar</button>

@@ -8,19 +8,20 @@
 defined('_EXE') or die('Acceso restringido');
 
 include ROOTDIR.'/models/locale.php';
+include $basedir .'models/payments.php';
 
 $collection = array(
-    'bui'       =>  $_SESSION['bui'],
+    'edf'       =>  $_SESSION['edf'],
     'user'      => $_SESSION['user'],
-    'napt'      => (int)$_SESSION['number_id'],
-    'user_id'   => (int)$_SESSION['user_id'],
+    'aptid'      => getApartmentId((string)$_POST['apt']),
+    'habid'     => (int)$_SESSION['hab_id'],
     'amount'    => (float)numToEng($_POST['amount']),
     'date'      => $_POST['date'],
     'type'      => (int)$_POST['type'],
     'n_op'      => (string)$_POST['n_op'],
-    'bank'      => (int)$_POST['bank'],
-    'notes'     => (string)$_POST['notes']
+    'bankid'    => (int)$_POST['bank'],
+    'obs'     => (string)$_POST['obs']
 );
 
-include $basedir .'models/payments.php';
+
 echo $res = sendPayment($collection);

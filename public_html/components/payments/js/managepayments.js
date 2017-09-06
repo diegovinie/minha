@@ -3,10 +3,9 @@ window.onload = function(){
     var items = new Array(
         'getcurrentmonth',
         'getlastmonth',
-        'getlastthreemonths',
-        'approvedpayments',
-        'refusedpayments',
-        'pendingpayments'
+        'getlastthreemonths'
+
+
     );
 
     $(items).each(function(p, item){
@@ -105,7 +104,7 @@ function getFromPayments(id){
             type: 'get',
             dataType: 'html',
             error: function(err){
-                console.log('Error en getcurrentmonth: ', err);
+                console.log('Error en '+id+': ', err);
             }
         })
         .then(function(res){

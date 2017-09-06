@@ -20,16 +20,18 @@ function getPayments(/*string*/ $bui, /*int*/ $napt){
     $body = array();
 
     $stmt = $db->query(
-        "SELECT `pay_id` AS 'id', `pay_date` AS 'Fecha',
-        CASE pay_type
-        WHEN 1 THEN 'Depósito'
-        WHEN 2 THEN 'Transferencia' END AS 'Tipo',
-        pay_op AS 'Num. Operación', bank_name AS 'Banco',
-        pay_amount AS 'Monto'
+        "SELECT `pay_id` AS 'id',
+            `pay_date` AS 'Fecha',
+            CASE pay_type
+                WHEN 1 THEN 'Depósito'
+                WHEN 2 THEN 'Transferencia' END AS 'Tipo',
+            pay_op AS 'Num. Operación',
+            bank_name AS 'Banco',
+            pay_amount AS 'Monto'
         FROM {$prx}payments
-        INNER JOIN {$prx}buildings ON pay_fk_number = bui_id
-        INNER JOIN glo_banks ON pay_fk_bank = bank_id
-        WHERE bui_id = $napt AND pay_bui = '$bui'
+        INNER JOIN {$prx}apartments ON pay_apt_fk = apt_id
+        INNER JOIN glo_banks ON pay_bank_fk = bank_id
+        WHERE apt_id = $napt AND pay_edf = '$bui'
         AND pay_check = 1"
     );
 
@@ -54,16 +56,18 @@ function getPendingPayments(/*string*/ $bui, /*int*/ $napt){
     $prx = $db->getPrx();
 
     $stmt = $db->query(
-        "SELECT `pay_id` AS 'id', `pay_date` AS 'Fecha',
-        CASE pay_type
-        WHEN 1 THEN 'Depósito'
-        WHEN 2 THEN 'Transferencia' END AS 'Tipo',
-        pay_op AS 'Num. Operación', bank_name AS 'Banco',
-        pay_amount AS 'Monto'
+        "SELECT `pay_id` AS 'id',
+            `pay_date` AS 'Fecha',
+            CASE pay_type
+                WHEN 1 THEN 'Depósito'
+                WHEN 2 THEN 'Transferencia' END AS 'Tipo',
+            pay_op AS 'Num. Operación',
+            bank_name AS 'Banco',
+            pay_amount AS 'Monto'
         FROM {$prx}payments
-        INNER JOIN {$prx}buildings ON pay_fk_number = bui_id
-        INNER JOIN glo_banks ON pay_fk_bank = bank_id
-        WHERE bui_id = $napt AND pay_bui = '$bui'
+        INNER JOIN {$prx}apartments ON pay_apt_fk = apt_id
+        INNER JOIN glo_banks ON pay_bank_fk = bank_id
+        WHERE apt_id = $napt AND pay_edf = '$bui'
         AND pay_check = 0"
     );
 
@@ -87,16 +91,18 @@ function getReturnedPayments(/*string*/ $bui, /*int*/ $napt){
     $prx = $db->getPrx();
 
     $stmt = $db->query(
-        "SELECT `pay_id` AS 'id', `pay_date` AS 'Fecha',
-        CASE pay_type
-        WHEN 1 THEN 'Depósito'
-        WHEN 2 THEN 'Transferencia' END AS 'Tipo',
-        pay_op AS 'Num. Operación', bank_name AS 'Banco',
-        pay_amount AS 'Monto'
+        "SELECT `pay_id` AS 'id',
+        `pay_date` AS 'Fecha',
+            CASE pay_type
+                WHEN 1 THEN 'Depósito'
+                WHEN 2 THEN 'Transferencia' END AS 'Tipo',
+            pay_op AS 'Num. Operación',
+            bank_name AS 'Banco',
+            pay_amount AS 'Monto'
         FROM {$prx}payments
-        INNER JOIN {$prx}buildings ON pay_fk_number = bui_id
-        INNER JOIN glo_banks ON pay_fk_bank = bank_id
-        WHERE bui_id = $napt AND pay_bui = '$bui'
+        INNER JOIN {$prx}apartments ON pay_apt_fk = apt_id
+        INNER JOIN glo_banks ON pay_bank_fk = bank_id
+        WHERE apt_id = $napt AND pay_edf = '$bui'
         AND pay_check = 2"
     );
 
@@ -131,6 +137,31 @@ function getBanks(){
         }
     }
     return json_encode($banks);
+}
+
+function getApartmentId(/*string*/ $apt){
+    $db = connectDb();
+    $prx = $db->getPrx();
+    $simid = $db->getSimId();
+
+    $stmt = $db->prepare(
+        "SELECT apt_id
+        FROM {$prx}apartments
+        WHERE apt_name = :apt
+            AND apt_sim_fk = :simid"
+    );
+    $stmt->bindValue('apt', $apt);
+    $stmt->bindValue('simid', $simid, PDO::PARAM_INT);
+
+    $res = $stmt->execute();
+
+    if(!$res){
+        echo $stmt->errorInfo()[2];
+        return false;
+    }
+    else{
+        return $stmt->fetchColumn();
+    }
 }
 
 function editPayment(/*int*/ $id){
@@ -180,29 +211,44 @@ function removePayment(/*int*/ $id){
 function sendPayment(/*array*/ $collection){
     $db = connectDb();
     $prx = $db->getPrx();
+    $status = false;
 
     extract($collection);
 
-    $exe = $db->exec(
-        "INSERT INTO {$prx}payments VALUES
-        (NULL,
-            '$date',
-            '$bui',
-            $napt,
-            $type,
-            '$n_op',
-            $bank,
-            $amount,
-            0,
-            '$notes',
-            NULL,
-            '$user_id')"
+    $stmt = $db->prepare(
+        "INSERT INTO {$prx}payments
+        (pay_date,      pay_edf,        pay_apt_fk,
+         pay_hab_fk,    pay_type,       pay_op,
+         pay_bank_fk,   pay_amount,
+         pay_obs,     pay_check)
+        VALUES
+        (:date,         :edf,           :aptid,
+         :habid,        :type,          :n_op,
+         :bankid,       CAST(:amount AS DECIMAL(10,2)),
+         :obs,        0)"
     );
+    $stmt->bindValue('date', $date);
+    $stmt->bindValue('edf', $edf);
+    $stmt->bindValue('aptid', $aptid, PDO::PARAM_INT);
+    $stmt->bindValue('habid', $habid, PDO::PARAM_INT);
+    $stmt->bindValue('type', $type);
+    $stmt->bindValue('n_op', $n_op);
+    $stmt->bindValue('bankid', $bankid, PDO::PARAM_INT);
+    $stmt->bindValue('amount', $amount);
+    $stmt->bindValue('obs', $obs);
 
-    $status = $exe? true : false;
-    $msg = $exe? 'Pago guardado con éxito' : 'No se pudo guardar el pago';
+    $res = $stmt->execute();
 
-    return json_encode(array('status' => $status, 'msg' => $msg));
+    if(!$res){
+        //$msg = 'No se pudo guardar el pago';
+        $msg = $stmt->errorInfo()[2];
+    }
+    else{
+        $msg = 'Pago guardado con éxito';
+        $status = true;
+    }
+
+    return jsonResponse($status, $msg);
 }
 
 

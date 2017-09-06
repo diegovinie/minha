@@ -118,5 +118,10 @@
     "name": "Bomberos",
     "type": "1",
     "affinity": null
-  }
+    },
+    {
+      "name": "Electromecánica",
+      "type": "3",
+      "affinity": "33"
+    }
 ]

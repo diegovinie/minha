@@ -189,7 +189,6 @@ function refusedPayments(/*int*/ $buiid){
     $res = $stmt->execute();
 
     if($stmt->rowCount() == 0 || !$res){
-                echo "buu";
         $status = false;
         $data = 'No se encontraros registros';
 
@@ -231,7 +230,7 @@ function pendingPayments(/*int*/ $buiid){
 
     $res = $stmt->execute();
 
-    if($stmt->rowCount() == 0){
+    if($stmt->rowCount() == 0 || !$res){
         $status = false;
         $data = 'No se encontraros registros';
 

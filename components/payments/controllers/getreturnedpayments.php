@@ -5,15 +5,15 @@
 
 defined('_EXE') or die('Acceso restringido');
 
-$bui = (string)$_SESSION['bui'];
-$napt = (int)$_SESSION['number_id'];
+$edf = (string)$_SESSION['edf'];
+$aptid = (int)$_SESSION['apt_id'];
 
 include $basedir .'models/payments.php';
-$res = json_decode(getReturnedPayments($bui, $napt));
+$res = json_decode(getReturnedPayments($edf, $aptid));
 
 if($res->status == true){
     if($res->table != false){
-        
+
         $twig = new LoadTwigWithGlobals($_globals['view']);
 
         echo $twig->render(
