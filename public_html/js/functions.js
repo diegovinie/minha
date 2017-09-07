@@ -310,6 +310,65 @@ function pressEnterNext(list){
     }
 }
 
+function addChoiceButtons(tableid, promOpt1, promOpt2, icons){
+    var tr = $('#'+tableid + ' tbody tr');
+    tr.each(function(p, e){
+        var op1 = document.createElement('a'),
+            op2 = document.createElement('a');
+
+        $(op1).addClass(icons.option1).on('click', function(ev){
+            var typeId = $(ev.currentTarget).parents('tr').find('td[data-type="id"]')[0];
+            valueId = parseInt(typeId.dataset.value);
+
+            if(typeof valueId == "number"){
+                promOpt1(valueId)
+                .then(function(res){
+                    $(tr).addClass('alert').addClass('alert-'+res.alert);
+                    if(res.delete){
+                        setTimeout(function(){
+                            $(tr).remove();
+                        }, 1000);
+                    }
+                    if(res.callback) res.callback();
+                })
+                .catch(function(err){
+                    console.log('ocurrió un error: ', err);
+                });
+            }
+            else{
+                throw 'No hay Id';
+            }
+        });
+
+        $(op2).addClass(icons.option2).on('click', function(ev){
+            var typeId = $(ev.currentTarget).parents('tr').find('td[data-type="id"]')[0];
+            valueId = parseInt(typeId.dataset.value);
+
+            if(typeof valueId == "number"){
+                promOpt2(valueId)
+                .then(function(res){
+                    $(tr).addClass('alert').addClass('alert-'+res.alert);
+                    if(res.delete){
+                        setTimeout(function(){
+                            $(tr).remove();
+                        }, 1000);
+                    }
+                    if(res.callback) res.callback();
+                })
+                .catch(function(err){
+                    console.log('ocurrió un error: ', err);
+                });
+            }
+        });
+        [op1, op2].forEach(function(ele, pos){
+            var td = document.createElement('td');
+            $(td).css('textAlign', 'center');
+            $(td).append(ele);
+            $(e).append(td);
+        });
+    });
+}
+
 function addEditRemoveButtons(tableid, edit, remove){
     var tr = $('#'+tableid + ' tbody tr');
     tr.each(function(p, e){
@@ -340,6 +399,8 @@ function addEditRemoveButtons(tableid, edit, remove){
         })
     });
 }
+
+
 
 function setCheckboxRow(id){
 

@@ -85,6 +85,14 @@ if($route[1] == 'admin' && $route[2] == 'pagos'){
             $controller = $basedir .'controllers/pendingpayments.php';
             break;
 
+        case 'aprobar':
+            $controller = $basedir .'controllers/setapprovepayment.php';
+            break;
+
+        case 'rechazar':
+            $controller = $basedir .'controllers/setrefusepayment.php';
+            break;
+
         default:
             die('sin ruta');
             break;

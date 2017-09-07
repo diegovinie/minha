@@ -113,11 +113,11 @@ function setDataAccountsTable(/*int*/ $simId=1){
         "INSERT INTO {$prx}accounts
         (acc_name,      acc_balance,    acc_type,
          acc_hab_fk,    acc_max,        acc_bui_fk,
-         acc_creator)
+         acc_creator,   acc_sim_fk)
         VALUES
         (:name,         :balance,       :type,
          :hab,          :max,           :bui,
-         :creator)"
+         :creator,      :simid)"
     );
     $stmt->bindParam('name', $name);
     $stmt->bindParam('balance', $balance);
@@ -126,6 +126,7 @@ function setDataAccountsTable(/*int*/ $simId=1){
     $stmt->bindParam('max', $max);
     $stmt->bindParam('bui', $bui, PDO::PARAM_INT);
     $stmt->bindParam('creator', $creator);
+    $stmt->bindParam('simid', $simId, PDO::PARAM_INT);
 
     foreach($accs as $acc){
         extract($acc);

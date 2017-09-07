@@ -46,7 +46,7 @@ $href = array(
 
 // javascript a incluir
 $js = array(
-    "manage"  => "/components/payments/js/managepayments.js",
+    "manage"  => "/index.php/assets/payments/js/managepayments.js",
     "functions" => "/js/functions.js"
 );
 

@@ -11,6 +11,13 @@ window.onload = function(){
     $(items).each(function(p, item){
         getFromPayments(item);
     });
+
+    var tableid = 'pendingpayments',
+        icons = {option1: 'fa fa-edit',
+                 option2: 'fa fa-times'};
+
+    addChoiceButtons(tableid, setApproved, setRefused, icons);
+
 /*
     var host = "core/async_payments.php?fun=aQuery&arg=";
     var aQueryTablaPrin = "core/async_payments.php?fun=aQueryTablaPrin&arg=";
@@ -115,6 +122,70 @@ function getFromPayments(id){
             });
 
             resolve();
+        });
+    });
+}
+
+function setApproved(id){
+    return new Promise(function(resolve, reject){
+        $.ajax({
+            url: '/index.php/admin/pagos/aprobar?id='+id,
+            type: 'get',
+            dataType: 'json',
+            error: function(err){
+                console.log('Problemas al aprobar: ', err);
+            }
+        })
+        .then(function(data){
+
+            if(data.status == true){
+                ret = {
+                    alert: 'warning',
+                    delete: true,
+                    callback: function(){
+                        console.log('en callback');
+                        getFromPayments('approvedpayments');
+                    }
+                };
+
+                resolve(ret);
+            }
+            else{
+                console.log('Falló: ', data.msg);
+                reject(data.msg);
+            }
+        });
+    });
+}
+
+function setRefused(id){
+    return new Promise(function(resolve, reject){
+        $.ajax({
+            url: '/index.php/admin/pagos/rechazar?id='+id,
+            type: 'get',
+            dataType: 'json',
+            error: function(err){
+                console.log('Problemas al rechazar: ', err);
+            }
+        })
+        .then(function(data){
+
+            if(data.status == true){
+                ret = {
+                    alert: 'warning',
+                    delete: true,
+                    callback: function(){
+                        console.log('en callback');
+                        getFromPayments('refusedpayments');
+                    }
+                };
+
+                resolve(ret);
+            }
+            else{
+                console.log('Falló: ', data.msg);
+                reject(data.msg);
+            }
         });
     });
 }

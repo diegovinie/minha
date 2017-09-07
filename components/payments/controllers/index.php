@@ -20,7 +20,7 @@ $href = array(
 
 // javascript a incluir
 $js = array(
-    "payments"  => "/components/payments/js/payments.js",
+    "payments"  => "/index.php/assets/payments/js/payments.js",
     "functions" => "/js/functions.js",
     "moment"    => "/vendor/moment/moment.min.js",
     "dpicker"   => "/vendor/dpicker/dpicker.all.min.js"
