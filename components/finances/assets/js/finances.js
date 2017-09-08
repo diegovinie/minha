@@ -33,3 +33,21 @@ function showApt(self){
             function(pos, td){dataParser(td); })
         })
 }
+
+function openNewAccountDialog(){
+
+    $.ajax({
+        url: '/index.php/admin/finanzas/nuevacuenta',
+        type: 'get',
+        dataType: 'html',
+        error: function(err){
+            console.log('Error al obtener modal: ', err);
+        }
+    })
+    .then(function(html){
+        console.log(html);
+
+        $('body').append(html);
+        $('#account').modal();
+    });
+}

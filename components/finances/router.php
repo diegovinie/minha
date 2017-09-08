@@ -16,43 +16,7 @@ $route[2] = isset($route[2])? $route[2] : '';
 
 // Enrutador de /login/{opcion}
 /*
-if($route[1] == 'balance'){
-    switch ($route[2]) {
-        // Página de inicio
 
-        case '':
-            $controller = $basedir .'controllers/balance.php';
-            break;
-        // Abrir la ventana de agregar un pago
-        case 'add':
-            $controller = $basedir .'controllers/addpayment.php';
-            break;
-
-        case 'getpayments':
-            $controller = $basedir .'controllers/getpayments.php';
-            break;
-
-        case 'getpendingpayments':
-            $controller = $basedir .'controllers/getpendingpayments.php';
-            break;
-
-        case 'getreturnedpayments':
-            $controller = $basedir .'controllers/getreturnedpayments.php';
-            break;
-
-        case 'sendpayment':
-            $controller = $basedir .'controllers/sendpayment.php';
-            break;
-
-        case 'edit':
-            $controller = $basedir .'controllers/editpayment.php';
-            break;
-
-
-        // Ruta no identificada
-        default:
-            die('sin ruta');
-            break;
     }
 }*/
 
@@ -65,6 +29,10 @@ if($route[1] == 'admin' && $route[2] == 'finanzas'){
         case '':
             $controller = $basedir .'controllers/finances.php';
             break;
+
+        case 'nuevacuenta':
+            $controller = $basedir. 'controllers/addaccount.php';
+            break;    
         /*
         case 'getcurrentmonth':
             $controller = $basedir .'controllers/getcurrentmonth.php';

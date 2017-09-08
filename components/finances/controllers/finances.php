@@ -39,7 +39,7 @@ $href = array(
 
 // javascript a incluir
 $js = array(
-    "finances"  => "/index.php/static/finances/js/finances.js",
+    "finances"  => "/index.php/assets/finances/js/finances.js",
     "functions" => "/js/functions.js"
 );
 
