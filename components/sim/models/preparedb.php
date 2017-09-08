@@ -174,3 +174,122 @@ function setHabitantsData($prx, $cmty, $simId){
 
     return true;
 }
+
+function setAccountsData($habId, $simId){
+    $db = connectDb();
+    $prx = 's1_';
+
+    $stmt0 = $db->prepare(
+        "SELECT apt_bui_fk
+        FROM {$prx}apartments
+            INNER JOIN {$prx}habitants ON hab_apt_fk = apt_id
+        WHERE hab_id = :habId"
+    );
+    $stmt0->bindValue('habId', $habId);
+    $res = $stmt0->execute();
+
+    if(!$res){
+        echo "en select: ".$stmt0->errorInfo()[2];
+        return false;
+    }
+    else{
+        $buiid = $stmt0->fetchColumn();
+    }
+
+    $name = "BANCO DE VENEZUELA 0102-0433-99-0044556677";
+    $balance = 100000.00;
+    $type = 1;
+    $max = null;
+    $creator = 'system';
+
+    $stmt = $db->prepare(
+        "INSERT INTO {$prx}accounts
+        (acc_name,      acc_balance,    acc_type,
+         acc_hab_fk,    acc_max,        acc_bui_fk,
+         acc_creator,   acc_sim_fk)
+        VALUES
+        (:name,         :balance,       :type,
+         :habid,          :max,           :bui,
+         :creator,      :simid)"
+    );
+    $stmt->bindParam('name', $name);
+    $stmt->bindParam('balance', $balance);
+    $stmt->bindParam('type', $type);
+    $stmt->bindParam('habid', $habId, PDO::PARAM_INT);
+    $stmt->bindParam('max', $max);
+    $stmt->bindParam('bui', $buiid, PDO::PARAM_INT);
+    $stmt->bindParam('creator', $creator);
+    $stmt->bindParam('simid', $simId, PDO::PARAM_INT);
+
+    $exe = $stmt->execute();
+
+    if(!$exe){
+        echo "en insert: ". $stmt->errorInfo()[2];
+        return false;
+    }
+
+    return true;
+}
+
+function setFundsData($habId, $simId){
+    $db = connectDb();
+    $prx = 's1_';
+
+    $funds = array(
+        array(
+            'name' => "Fondo de Trabajo",
+            'default'  => "10",
+            'type'  => 1
+        ),
+        array(
+            'name' => "Fondo Especial",
+            'default'  => "50000",
+            'type'  => 2
+        )
+    );
+
+    $stmt = $db->prepare(
+        "SELECT apt_bui_fk
+        FROM {$prx}habitants
+            INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
+        WHERE hab_id = :habid"
+    );
+    $stmt->bindValue('habid', $habId, PDO::PARAM_INT);
+
+    $res = $stmt->execute();
+
+    if(!$res){
+        echo $stmt->errorInfo()[2];
+        return false;
+    }
+    else{
+        $buiid = $stmt->fetchColumn();
+    }
+
+    $stmt2 = $db->prepare(
+        "INSERT INTO {$prx}funds
+        (fun_name,      fun_balance,        fun_default,
+         fun_type,      fun_bui_fk,         fun_sim_fk,
+         fun_creator)
+        VALUES
+        (:name,         0.00,               :default,
+         :type,         :buiid,             :simid,
+         'system')"
+    );
+    $stmt2->bindParam('name', $name);
+    $stmt2->bindParam('default', $default);
+    $stmt2->bindParam('type', $type);
+    $stmt2->bindValue('buiid', $buiid, PDO::PARAM_INT);
+    $stmt2->bindValue('simid', $simId, PDO::PARAM_INT);
+
+    foreach ($funds as $fund) {
+        extract($fund);
+        $res2 = $stmt2->execute();
+
+        if(!$res2){
+            echo $stmt2->errorInfo()[2];
+            return false;
+        }
+    }
+    return true;
+}

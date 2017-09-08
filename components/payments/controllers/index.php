@@ -22,6 +22,7 @@ $href = array(
 $js = array(
     "payments"  => "/index.php/assets/payments/js/payments.js",
     "functions" => "/js/functions.js",
+    "forms"     => "/js/forms.js",
     "moment"    => "/vendor/moment/moment.min.js",
     "dpicker"   => "/vendor/dpicker/dpicker.all.min.js"
 );

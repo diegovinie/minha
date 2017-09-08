@@ -167,7 +167,7 @@ function refusedPayments(/*int*/ $buiid){
     $stmt = $db->prepare(
         "SELECT pay_id AS 'id',
             pay_date AS 'Fecha',
-            pat_name AS 'Apartamento',
+            apt_name AS 'Apartamento',
             pay_amount AS 'Monto',
             CASE pay_type
                 WHEN 1 THEN 'Transferencia'
@@ -190,13 +190,12 @@ function refusedPayments(/*int*/ $buiid){
 
     if($stmt->rowCount() == 0 || !$res){
         $status = false;
-        $data = 'No se encontraros registros';
+        $data = "No se encontraron registros";
 
     }else{
         $status = true;
         $data = setTheadTbodyFromPDO($stmt);
     }
-
 
     return jsonTableResponse($status, $data);
 }

@@ -20,7 +20,7 @@ window.onload = function(){
                     $('#'+id).find('tbody td').each(function(pos, ele){
                         dataParser(ele);
                     });
-                    
+
                     if(id === 'getreturnedpayments'){
                         addEditRemoveButtons(id, editPayment, removePayment);
                     }else{
@@ -119,28 +119,15 @@ function sendPayment(){
         }
     })
     .then(function(res){
-        console.log(res);
-        $.get('/index.php/views/modals/alert.html', function(html){
-            $('body').append($.parseHTML(html));
-            var modal = $('#alert'),
-                content = $('#alert_content'),
-                btn = $('#alert_btn');
-            modal.modal();
-            content.html(res.msg);
-            modal.on('hidden.bs.modal', function(){
-                window.location.reload();
+
+        if(res.status == true){
+            flashText('success', res.msg);
+            setTimeout(function(){
+                window.location.href = '/index.php/pagos';
             });
-            btn.on('click', function(){
-                    modal.modal('hide');
-            });
-            if(res.status == true){
-                content.addClass('alert-success');
-            }else{
-                content.addClass('alert-danger');
-            }
-        })
-        .fail(function(err){
-            console.log('Error en el modal: ', err);
-        });
+        }
+        else{
+            flashText('danger', res.msg);
+        }
     });
 }

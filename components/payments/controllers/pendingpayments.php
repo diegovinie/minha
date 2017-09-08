@@ -18,5 +18,6 @@ if($res->table != false){
     echo tableBuilder($res->table);
 
 }else{
+    echo 'nada';
     echo false;
 }

@@ -170,3 +170,17 @@ function getLastUserSimId($email){
 
     return $stmt->fetchColumn();
 }
+
+function getHabitantId($userId){
+    $db = connectDb();
+    $prx = 's1_';
+
+    $stmt = $db->query(
+        "SELECT hab_id
+        FROM {$prx}habitants
+        WHERE hab_user_fk
+        LIMIT 1"
+    );
+
+    return $stmt->fetchColumn();
+}

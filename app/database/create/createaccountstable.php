@@ -22,7 +22,7 @@ function createAccountsTable(/*string*/ $prefix=null){
           `acc_balance` decimal(10,2) NOT NULL DEFAULT '0.00',
           `acc_type` int(1) unsigned NOT NULL COMMENT 'Cuenta principal, caja chica',
           `acc_hab_fk` int(8) unsigned NOT NULL COMMENT 'Responsable de la cuenta',
-          `acc_max` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT 'Aplica si es caja chica',
+          `acc_max` decimal(10,2) DEFAULT NULL COMMENT 'Aplica si es caja chica',
           `acc_bui_fk` int(8) unsigned DEFAULT NULL,
           `acc_sim_fk` int(8) unsigned NOT NULL,
           `acc_creator` varchar(30) NOT NULL DEFAULT 'sysadmin' COMMENT 'El creador de la cuenta',

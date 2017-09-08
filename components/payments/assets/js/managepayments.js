@@ -16,7 +16,9 @@ window.onload = function(){
         icons = {option1: 'fa fa-edit',
                  option2: 'fa fa-times'};
 
-    addChoiceButtons(tableid, setApproved, setRefused, icons);
+    //addChoiceButtons(tableid, setApproved, setRefused, icons);
+    addActionIcon(tableid, setApproved, 'fa fa-edit');
+    addActionIcon(tableid, setRefused, 'fa fa-times');
 
 /*
     var host = "core/async_payments.php?fun=aQuery&arg=";
@@ -115,12 +117,10 @@ function getFromPayments(id){
             }
         })
         .then(function(res){
-            console.log(res);
             $('#'+id).html(res);
             $('#'+id+' td').each(function(p, td){
                 dataParser(td);
             });
-
             resolve();
         });
     });
@@ -140,14 +140,17 @@ function setApproved(id){
 
             if(data.status == true){
                 ret = {
-                    alert: 'warning',
-                    delete: true,
+                    class: 'alert alert-success',
+                    remove: true,
                     callback: function(){
-                        console.log('en callback');
-                        getFromPayments('approvedpayments');
+                        [
+                            'refusedpayments', 'approvedpayments'
+                        ].forEach(function(id){
+                            console.log(id);
+                            getFromPayments(id);
+                        });
                     }
                 };
-
                 resolve(ret);
             }
             else{
@@ -172,14 +175,18 @@ function setRefused(id){
 
             if(data.status == true){
                 ret = {
-                    alert: 'warning',
-                    delete: true,
+                    class: 'alert alert-warning',
+                    remove: true,
                     callback: function(){
-                        console.log('en callback');
-                        getFromPayments('refusedpayments');
+
+                        [
+                            'approvedpayments', 'refusedpayments'
+                        ].forEach(function(id){
+                            console.log(id);
+                            getFromPayments(id);
+                        });
                     }
                 };
-
                 resolve(ret);
             }
             else{

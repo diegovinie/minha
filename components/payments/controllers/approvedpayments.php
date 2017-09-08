@@ -12,11 +12,11 @@ include $basedir .'/models/managepayments.php';
 //echo getCurrentMonth($bui); die;
 $res = json_decode(approvedPayments($buiid));
 
-if($res->table != false){
+if($res->status != false){
 
     include ROOTDIR.'/controllers/tablebuilder.php';
     echo tableBuilder($res->table);
 
 }else{
-    echo false;
+    echo $res->table;
 }

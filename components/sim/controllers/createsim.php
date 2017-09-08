@@ -77,6 +77,12 @@ $re[] = setHabitantsData($prx, $cmty, $simId);
 // Inserta los datos del usuario en BD
 $re[] = addUserHabitants($prx, $userId, $simId, $email, $userName, $surname, $useredf, $userapt);
 
+$habId = getHabitantId($userId);
+
+$re[] = setAccountsData($habId, $simId);
+
+$re[] = setFundsData($habId, $simId);
+
 include_once ROOTDIR.'/components/security/models/authentication.php';
 $re[] = setSession($userId, $simId);
 

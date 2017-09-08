@@ -310,9 +310,50 @@ function pressEnterNext(list){
     }
 }
 
+function addActionIcon(tableid, promiseFunction, iconClass){
+    var rows = $('#'+tableid + ' tbody tr');
+
+    rows.each(function(p, row){
+        var button = document.createElement('a'),
+            td = document.createElement('td');
+
+        $(button).addClass(iconClass).on('click', function(ev){
+            var typeId = $(ev.currentTarget).closest('tr').find('td[data-type="id"]')[0];
+            var valueId = parseInt(typeId.dataset.value);
+            console.log(typeId);
+
+            if(typeof valueId == "number"){
+                promiseFunction(valueId)
+                .then(function(res){
+                    console.log(res);
+                    $(row).addClass(res.class);
+                    if(res.remove){
+                        setTimeout(function(){
+                            $(row).remove();
+                            if(res.callback) res.callback();
+                        }, 1000);
+                    }
+                })
+                .catch(function(err){
+                    console.log('ocurrió un error: ', err);
+                });
+            }
+            else{
+                throw 'No hay Id';
+            }
+        });
+
+        $(td).css('textAlign', 'center');
+        $(td).append(button);
+        $(row).append(td);
+    });
+}
+/*
+ * Se prefiere el uso de addActionIcon
+ */
 function addChoiceButtons(tableid, promOpt1, promOpt2, icons){
-    var tr = $('#'+tableid + ' tbody tr');
-    tr.each(function(p, e){
+    var rows = $('#'+tableid + ' tbody tr');
+    rows.each(function(p, e){
         var op1 = document.createElement('a'),
             op2 = document.createElement('a');
 
@@ -323,10 +364,10 @@ function addChoiceButtons(tableid, promOpt1, promOpt2, icons){
             if(typeof valueId == "number"){
                 promOpt1(valueId)
                 .then(function(res){
-                    $(tr).addClass('alert').addClass('alert-'+res.alert);
-                    if(res.delete){
+                    $(e).addClass(res.class);
+                    if(res.remove){
                         setTimeout(function(){
-                            $(tr).remove();
+                            $(e).remove();
                         }, 1000);
                     }
                     if(res.callback) res.callback();
@@ -347,10 +388,10 @@ function addChoiceButtons(tableid, promOpt1, promOpt2, icons){
             if(typeof valueId == "number"){
                 promOpt2(valueId)
                 .then(function(res){
-                    $(tr).addClass('alert').addClass('alert-'+res.alert);
-                    if(res.delete){
+                    $(e).addClass(res.class);
+                    if(res.remove){
                         setTimeout(function(){
-                            $(tr).remove();
+                            $(e).remove();
                         }, 1000);
                     }
                     if(res.callback) res.callback();
