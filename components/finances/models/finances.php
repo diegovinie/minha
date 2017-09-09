@@ -24,11 +24,15 @@ function getAccountsForTables(/*int*/ $buiid){
             CONCAT(hab_name, ' ', hab_surname) AS 'Custodio',
             apt_name AS 'Apartamento',
             acc_balance AS 'Monto'
-        FROM {$prx}accounts
-            INNER JOIN {$prx}habitants ON acc_hab_fk = hab_id
-            INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
-            INNER JOIN glo_buildings ON acc_bui_fk = bui_id
-        WHERE bui_id = :buiid"
+            FROM {$prx}accounts
+                INNER JOIN glo_types s ON acc_type_fk = s.type_id
+                INNER JOIN glo_types d ON s.type_ref = d.type_id
+                INNER JOIN {$prx}habitants ON acc_hab_fk = hab_id
+                INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
+                INNER JOIN glo_buildings ON acc_bui_fk = bui_id
+            WHERE bui_id = :buiid
+                AND d.type_name = 'acc_type'
+                AND s.type_name != 'fondo'"
     );
 
     $stmt1->bindValue('buiid', $buiid, PDO::PARAM_INT);
@@ -42,12 +46,16 @@ function getAccountsForTables(/*int*/ $buiid){
             '' AS 'd',
             SUM(acc_balance) AS 'total'
         FROM {$prx}accounts
+            INNER JOIN glo_types s ON acc_type_fk = s.type_id
+            INNER JOIN glo_types d ON s.type_ref = d.type_id
             INNER JOIN {$prx}habitants ON acc_hab_fk = hab_id
             INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
             INNER JOIN glo_buildings ON acc_bui_fk = bui_id
-        WHERE bui_id = :buiid"
+        WHERE bui_id = :buiid
+            AND d.type_name = 'acc_type'
+            AND s.type_name != 'fondo'"
     );
-    
+
     $stmt2->bindValue('buiid', $buiid, PDO::PARAM_INT);
     $res2 = $stmt2->execute();
 
@@ -77,16 +85,21 @@ function getFundsForTables(/*int*/ $buiid){
     $status = false;
 
     $stmt1 = $db->prepare(
-        "SELECT fun_id AS 'id',
-            fun_name AS 'Nombre',
-            CASE fun_type
-              WHEN 1 THEN 'Porcentaje'
-              WHEN 2 THEN 'Monto' END AS 'Tipo',
-            fun_default AS 'Cuota',
-            fun_balance AS 'Monto'
-        FROM {$prx}funds
-            INNER JOIN glo_buildings ON fun_bui_fk = bui_id
-        WHERE bui_id = :buiid"
+        "SELECT acc_id AS 'id',
+            acc_name AS 'Cuenta',
+            CASE acc_op
+                WHEN 1 THEN 'Porcentaje'
+                WHEN 2 THEN 'Monto'
+                ELSE 'n/d' END AS 'Tipo',
+            acc_default AS 'Predefinido',
+            acc_balance AS 'Monto'
+            FROM {$prx}accounts
+                INNER JOIN glo_types s ON acc_type_fk = s.type_id
+                INNER JOIN glo_types d ON s.type_ref = d.type_id
+                INNER JOIN glo_buildings ON acc_bui_fk = bui_id
+            WHERE bui_id = :buiid
+                AND d.type_name = 'acc_type'
+                AND s.type_name = 'fondo'"
     );
 
     $stmt1->bindValue('buiid', $buiid, PDO::PARAM_INT);
@@ -97,10 +110,14 @@ function getFundsForTables(/*int*/ $buiid){
             'Total en Fondos:' AS 'b',
               '' AS 'c',
               '' AS 'd',
-              SUM(fun_balance) AS 'total'
-        FROM {$prx}funds
-            INNER JOIN glo_buildings ON fun_bui_fk = bui_id
-        WHERE  bui_id = :buiid"
+              SUM(acc_balance) AS 'total'
+              FROM {$prx}accounts
+                  INNER JOIN glo_types s ON acc_type_fk = s.type_id
+                  INNER JOIN glo_types d ON s.type_ref = d.type_id
+                  INNER JOIN glo_buildings ON acc_bui_fk = bui_id
+              WHERE bui_id = :buiid
+                  AND d.type_name = 'acc_type'
+                  AND s.type_name = 'fondo'"
     );
 
     $stmt2->bindValue('buiid', $buiid, PDO::PARAM_INT);
@@ -230,9 +247,12 @@ function getTotalFunds(/*buiid*/ $buiid){
     $status = false;
 
     $stmt = $db->prepare(
-        "SELECT SUM(fun_balance)
-        FROM {$prx}funds
-        WHERE fun_bui_fk = :buiid"
+        "SELECT SUM(acc_balance)
+        FROM {$prx}accounts
+            INNER JOIN glo_types s ON acc_type_fk = s.type_id
+            INNER JOIN glo_types d ON s.type_ref = d.type_id
+        WHERE acc_bui_fk = :buiid
+            AND s.type_name = 'fondo'"
     );
     $stmt->bindValue('buiid', $buiid, PDO::PARAM_INT);
     $res = $stmt->execute();

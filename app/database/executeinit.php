@@ -7,7 +7,6 @@ include_once ROOTDIR.'/models/db.php';
 
 $globalTablesNames = array(
     'types',
-    'lapses',
     'banks',
     'cookies',
     'users',
@@ -18,12 +17,13 @@ $globalTablesNames = array(
 );
 
 $priTablesNames = array(
+    'lapses',
     'apartments',
     'subjects',
     'habitants',
     'providers',
-    'funds',
     'accounts',
+    'firms',
     'bills',
     'charges',
     'payments',
@@ -31,13 +31,14 @@ $priTablesNames = array(
 );
 
 $s1TablesNames = array(
+    'lapses',
     'apartments',
     'subjects',
     'providers',
     'skills',
-    'funds',
     'habitants',
     'accounts',
+    'firms',
     'bills',
     'charges',
     'payments',

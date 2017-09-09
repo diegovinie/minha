@@ -50,10 +50,12 @@ function saveInvoicesBatch(/*int*/ $buiid, /*int*/ $number){
 
         $stmt1 = $db->prepare(
             "SELECT lap_id AS 'id'
-            FROM glo_lapses
-            WHERE lap_name = :lapse"
+            FROM {$prx}lapses
+            WHERE lap_name = :lapse
+                AND lap_sim_fk = :simid"
         );
         $stmt1->bindValue('lapse', $lapse);
+        $stmt1->bindValue('simid', $simid);
         $res1 = $stmt1->execute();
 
         if(!$res1){
@@ -75,11 +77,11 @@ function saveInvoicesBatch(/*int*/ $buiid, /*int*/ $number){
             else{
                 // Actualizar la tabla funds.
                 $stmt3 = $db->prepare(
-                    "UPDATE {$prx}funds
-                    SET fun_balance = fun_balance + CAST(:amount AS DECIMAL(10,2))
-                    WHERE fun_name = :name
-                        AND fun_bui_fk = :buiid
-                        AND fun_sim_fk = :simid"
+                    "UPDATE {$prx}accounts
+                    SET acc_balance = acc_balance + CAST(:amount AS DECIMAL(10,2))
+                    WHERE acc_name = :name
+                        AND acc_bui_fk = :buiid
+                        AND acc_sim_fk = :simid"
                 );
 
                 $stmt3->bindParam('amount', $funVal);
@@ -158,14 +160,14 @@ function saveInvoicesBatch(/*int*/ $buiid, /*int*/ $number){
                     $res4 = $stmt4->execute();
 
                     if(!$res4){
-                        echo "res4: ".$stmt4->errorInfo()[2];
+                        echo "r4: ".$stmt4->errorInfo()[2];
                         return false;
                     }
 
                     $res5 = $stmt5->execute();
 
                     if(!$res5){
-                        echo "res5: ".$stmt5->errorInfo()[2];
+                        echo "r5: ".$stmt5->errorInfo()[2];
                         return false;
                     }
 
@@ -174,9 +176,21 @@ function saveInvoicesBatch(/*int*/ $buiid, /*int*/ $number){
                     $res6 = $stmt6->execute();
 
                     if(!$res6){
-                        echo "res6: ".$stmt6->errorInfo()[2];
+                        echo "r6: ".$stmt6->errorInfo()[2];
                         return false;
                     }
+
+                }
+
+                $res7 = $db->exec(
+                    "UPDATE {$prx}lapses
+                    SET lap_exec = 1
+                    WHERE lap_id = $lapid"
+                );
+
+                if(!$res7){
+                    echo "r7: ".$db->errorInfo()[2];
+                    return false;
                 }
 
                 if(!$error){

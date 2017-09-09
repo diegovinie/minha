@@ -87,7 +87,7 @@ $habId = getHabitantId($userId);
 //echo $habId; die;
 $re[] = setAccountsData($habId, $simId);
 
-$re[] = setFundsData($habId, $simId);
+//$re[] = setFundsData($habId, $simId);
 
 include_once ROOTDIR.'/components/security/models/authentication.php';
 $re[] = setSession($userId, $simId);

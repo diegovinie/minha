@@ -28,7 +28,7 @@ function createPaymentsTable(/*string*/ $prefix=null){
           `pay_amount` decimal(10,2) NOT NULL COMMENT 'Monto del pago',
           `pay_check` int(1) DEFAULT NULL COMMENT 'Si ya fue relacionado',
           `pay_obs` varchar(256) DEFAULT NULL COMMENT 'Observaciones',
-          `pay_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `pay_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
           PRIMARY KEY (`pay_id`),
           KEY `pay_apt_fk` (`pay_apt_fk`),

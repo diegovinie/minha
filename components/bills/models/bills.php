@@ -66,6 +66,7 @@ function getBillsByLapse($bui, $lapse){
 function getAccountsList(/*int*/ $buiid){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
     $status = false;
 
     $stmt = $db->prepare(
@@ -73,10 +74,12 @@ function getAccountsList(/*int*/ $buiid){
             acc_name AS 'name',
             acc_balance AS 'balance'
         FROM {$prx}accounts
-        WHERE acc_bui_fk = :buiid"
+        WHERE acc_bui_fk = :buiid
+            AND acc_sim_fk = :simid"
     );
 
     $stmt->bindValue('buiid', $buiid, PDO::PARAM_INT);
+    $stmt->bindValue('simid', $simid, PDO::PARAM_INT);
     $res = $stmt->execute();
 
     if(!$res){
@@ -94,12 +97,15 @@ function getAccountsList(/*int*/ $buiid){
 function getLapsesList(){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
     $status = false;
 
     $res = $db->query(
         "SELECT lap_id,
             lap_name
-        FROM glo_lapses
+        FROM {$prx}lapses
+        WHERE lap_exec = 0
+            AND lap_sim_fk = $simid
         ORDER BY lap_id DESC
         LIMIT 5"
     );

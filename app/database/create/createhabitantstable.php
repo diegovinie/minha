@@ -30,6 +30,7 @@ function createHabitantsTable(/*string*/ $prefix=null){
           `hab_email` varchar(64) DEFAULT NULL COMMENT 'Correo electronico',
           `hab_apt_fk` int(8) unsigned NOT NULL COMMENT 'numero de apartamento',
           `hab_user_fk` int(8) unsigned DEFAULT NULL,
+          `hab_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
           PRIMARY KEY (`hab_id`),
           KEY `hab_apt_fk` (`hab_apt_fk`),

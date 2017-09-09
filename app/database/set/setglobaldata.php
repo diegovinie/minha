@@ -8,7 +8,6 @@ include_once ROOTDIR.'/models/db.php';
 function setDataAllTable(){
 
     $re[] = setDataBanksTable();
-    $re[] = setDataLapsesTable();
     $re[] = setDataTypesTable();
     $re[] = setDataBuildingsTable();
     $re[] = setDataSimulatorTable();
@@ -54,50 +53,55 @@ function setDataBanksTable(){
     return true;
 }
 
-function setDataLapsesTable(){
+function setDataTypesTable(){
     $db = connectDb();
 
-    $months = array(
-        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    $exe0 = $db->exec(
+        "INSERT INTO glo_types
+        (type_id, type_name)
+        VALUES
+        (1, 'table'),
+        (2, 'acc_type')"
     );
 
-    $date = new DateTime;
-    $curMonth = $date->format('m');
-    $curYear = $date->format('Y');
-
-    $lapses = array();
-
-    for ($y=2017; $y < $curYear+1; $y++) {
-
-        foreach ($months as $n => $m) {
-            $row = array();
-
-            $row['name'] = "$m $y";
-            $row['month'] = $n + 1;
-            $row['year'] = $y;
-
-            $lapses[] = $row;
-
-            if($y == $curYear
-                && $n + 1 == $curMonth) break;
-        }
+    if(!$exe0){
+        echo $db->errorInfo()[2];
+        return false;
     }
 
-    $stmt = $db->prepare(
-        "INSERT INTO glo_lapses
-        VALUES (
-            NULL,
-            :name,
-            :month,
-            :year)"
+    $tableTypes = array(
+        'apartments',
+        'habitants',
+        'providers',
+        'accounts',
+        'lapses',
+        'firms',
+        'bills',
+        'charges',
+        'payments',
+        'commitments'
     );
-    $stmt->bindParam('name', $name);
-    $stmt->bindParam('month', $month);
-    $stmt->bindParam('year', $year);
 
-    foreach($lapses as $lapse){
-        extract($lapse);
+    $accountTypes = array(
+        'principal',
+        'cuenta',
+        'caja chica',
+        'fondo',
+    );
 
+
+    $stmt = $db->prepare(
+        "INSERT INTO glo_types
+        (type_name,     type_ref)
+        VALUES
+        (:type,         :ref)"
+    );
+    $stmt->bindParam('type', $type);
+    $stmt->bindParam('ref', $ref, PDO::PARAM_INT);
+
+    foreach($tableTypes as $type){
+
+        $ref = 1;
         $exe = $stmt->execute();
 
         if(!$exe){
@@ -106,34 +110,9 @@ function setDataLapsesTable(){
         }
     }
 
-    return true;
-}
+    foreach($accountTypes as $type){
 
-function setDataTypesTable(){
-    $db = connectDb();
-
-    $types = array(
-        'apartments',
-        'habitants',
-        'providers',
-        'funds',
-        'accounts',
-        'bills',
-        'charges',
-        'payments',
-        'commitments'
-    );
-
-    $stmt = $db->prepare(
-        "INSERT INTO glo_types
-        VALUES (
-            NULL,
-            :type)"
-    );
-    $stmt->bindParam('type', $type);
-
-    foreach($types as $type){
-
+        $ref = 2;
         $exe = $stmt->execute();
 
         if(!$exe){

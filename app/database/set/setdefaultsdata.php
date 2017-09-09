@@ -10,8 +10,67 @@ function setDataAllTable(/*int*/ $simId=1){
     $r1 = setDataProvidersTable($simId);
     $r2 = setDataAccountsTable($simId);
     $r3 = setDataFundsTable($simId);
+    $r4 = setDataLapsesTable($simId);
 
-    return $r1 * $r2 *$r3? true : false;
+    return $r1 *$r2 *$r3 *$r4? true : false;
+}
+
+function setDataLapsesTable(/*int*/ $simId=1){
+    $db = connectDb();
+
+    $prx = $simId == 1? 'pri_' : "s1_";
+
+    $months = array(
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    );
+
+    $date = new DateTime;
+    $curMonth = $date->format('m');
+    $curYear = $date->format('Y');
+
+    $lapses = array();
+
+    for ($y=2017; $y < $curYear+1; $y++) {
+
+        foreach ($months as $n => $m) {
+            $row = array();
+
+            $row['name'] = "$m $y";
+            $row['month'] = $n + 1;
+            $row['year'] = $y;
+
+            $lapses[] = $row;
+
+            if($y == $curYear
+                && $n + 1 == $curMonth) break;
+        }
+    }
+
+    $stmt = $db->prepare(
+        "INSERT INTO {$prx}lapses
+        (lap_name,      lap_month,
+         lap_year,      lap_sim_fk)
+        VALUES
+        (:name,         :month,
+         :year,         :simid)"
+    );
+    $stmt->bindParam('name', $name);
+    $stmt->bindParam('month', $month);
+    $stmt->bindParam('year', $year);
+    $stmt->bindValue('simid', $simId, PDO::PARAM_INT);
+
+    foreach($lapses as $lapse){
+        extract($lapse);
+
+        $exe = $stmt->execute();
+
+        if(!$exe){
+            echo $stmt->errorInfo()[2];
+            return false;
+        }
+    }
+
+    return true;
 }
 
 function setDataProvidersTable(/*int*/ $simId=1){

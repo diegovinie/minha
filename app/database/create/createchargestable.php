@@ -31,7 +31,7 @@ function createChargesTable(/*string*/ $prefix=null){
           KEY `cha_apt_fk` (`cha_apt_fk`),
           KEY `cha_lap_fk` (`cha_lap_fk`),
           CONSTRAINT `{$prx}link_cha_apt` FOREIGN KEY (`cha_apt_fk`) REFERENCES `{$prx}apartments` (`apt_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-          CONSTRAINT `{$prx}link_cha_lap` FOREIGN KEY (`cha_lap_fk`) REFERENCES `glo_lapses` (`lap_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+          CONSTRAINT `{$prx}link_cha_lap` FOREIGN KEY (`cha_lap_fk`) REFERENCES `{$prx}lapses` (`lap_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
         ) ENGINE=InnoDB COLLATE=utf8_spanish_ci DEFAULT CHARSET=utf8 COMMENT='Se lleva el balance de cobros'"
     );
 

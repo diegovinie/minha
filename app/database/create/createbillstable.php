@@ -32,7 +32,7 @@ function createBillsTable(/*string*/ $prefix=null){
           `bil_iva` decimal(10,2) NOT NULL DEFAULT '0.00',
           `bil_total` decimal(10,2) NOT NULL,
           `bil_op` int(1) unsigned DEFAULT NULL COMMENT 'Opciones especiales como fracciones por apartamento',
-          `bil_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `bil_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
           PRIMARY KEY (`bil_id`),
           KEY `bil_acc_fk` (`bil_acc_fk`),

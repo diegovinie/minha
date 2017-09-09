@@ -49,16 +49,19 @@ function getUserInfo(/*int*/ $id){
 function getLapseInfo(/*int*/ $lapse){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
     $stmt = $db->prepare(
         "SELECT lap_id AS 'id',
             lap_name AS 'name',
             lap_month AS 'm',
             lap_year AS 'y'
-        FROM glo_lapses
-        WHERE lap_id = :lapse"
+        FROM {$prx}lapses
+        WHERE lap_id = :lapse
+            AND lap_sim_fk = :simid"
     );
     $stmt->bindValue('lapse', $lapse, PDO::PARAM_INT);
+    $stmt->bindValue('simid', $simid, PDO::PARAM_INT);
     $res = $stmt->execute();
 
     if(!$res){
@@ -122,10 +125,13 @@ function getFundsInfo(/*array*/ $listid){
     if(empty($listid) || !$listid) return false;
 
     $stmt = $db->prepare(
-        "SELECT fun_name AS 'name',
-            fun_type AS 'type'
-        FROM {$prx}funds
-        WHERE fun_id = :id"
+        "SELECT acc_name AS 'name',
+            acc_op AS 'type'
+        FROM {$prx}accounts
+            INNER JOIN glo_types s ON acc_type_fk = s.type_id
+            INNER JOIN glo_types d ON s.type_ref = d.type_id
+        WHERE acc_id = :id
+            AND s.type_name = 'fondo'"
     );
     $stmt->bindParam('id', $id, PDO::PARAM_INT);
 
@@ -210,6 +216,7 @@ function unsetBillsQueue(){
 function getAssignedApts(/*string*/ $bui){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
     $stmt = $db->prepare(
         "SELECT apt_name AS 'name',
@@ -217,9 +224,11 @@ function getAssignedApts(/*string*/ $bui){
             apt_balance AS 'balance'
         FROM {$prx}apartments
         WHERE apt_assigned = 1
+            AND apt_sim_fk = :simid
             AND apt_edf = :bui"
     );
     $stmt->bindValue('bui', $bui);
+    $stmt->bindValue('simid', $simid, PDO::PARAM_INT);
     $res = $stmt->execute();
 
     if(!$res){
@@ -240,18 +249,21 @@ function getAssignedApts(/*string*/ $bui){
 function getNumberApts(/*string*/ $bui){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
     $stmt = $db->prepare(
         "SELECT COUNT(apt_id) AS `asignados`
         FROM {$prx}apartments
-        WHERE apt_assigned = 1
-            AND apt_edf = :bui"
+        WHERE apt_sim_fk = :simid
+            AND apt_edf = :bui
+            AND apt_assigned = 1"
     );
     $stmt->bindValue('bui', $bui);
+    $stmt->bindValue('simid', $simid, PDO::PARAM_INT);
     $res = $stmt->execute();
 
     if(!$res){
-        $msg = 'Error al seleccionar el total de apartamentos';
+        echo $msg = 'Error al seleccionar el total de apartamentos';
         errorRegister($msg);
 
         return false;
@@ -269,13 +281,16 @@ function getNumberApts(/*string*/ $bui){
 function getBalanceFromApartments(/*string*/ $bui){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
     $stmt = $db->prepare(
         "SELECT SUM(apt_balance) AS 'balance'
         FROM {$prx}apartments
-        WHERE apt_edf = :bui"
+        WHERE apt_edf = :bui
+        AND apt_sim_fk = :simid"
     );
     $stmt->bindValue('bui', $bui);
+    $stmt->bindValue('simid', $simid, PDO::PARAM_INT);
     $res = $stmt->execute();
 
     if(!$res){
@@ -298,11 +313,13 @@ function getFractionBuilding(/*string*/ $bui){
     $simid = $db->getSimId();
 
     $stmt = $db->prepare(
-        "SELECT COUNT(apt_id)
+        "SELECT SUM(apt_weight)
         FROM {$prx}apartments
         WHERE apt_sim_fk = :simid
-            AND apt_edf = :bui"
+            AND apt_edf = :bui
+            AND apt_assigned = 1"
     );
+
     $stmt->bindValue('simid', $simid, PDO::PARAM_INT);
     $stmt->bindValue('bui', $bui);
 
@@ -310,14 +327,13 @@ function getFractionBuilding(/*string*/ $bui){
 
     if(!$res){
         echo $stmt->errorInfo()[2];
+        die;
 
     }
     else{
-        $total = (int)$stmt->fetchColumn();
+        echo $total = (float)$stmt->fetchColumn();
 
-        $assigned = getNumberApts($bui);
-
-        return (float)($assigned / $total);
+        return $total;
     }
 }
 
@@ -374,9 +390,8 @@ function generateInvoicesBatch(  /*int*/  $userid,
                         [] = array(
                             'actividad' => $bill['actividad'],
                             'nombre'    => $bill['desc'],
-                            'alic' => round($bill['total'] *
-                                                   $apt['w'] /
-                                                   $frac, 2),
+                            'alic'      => round($bill['total']
+                                                *($apt['w']/$frac), 2),
                             'total'     => round($bill['total'], 2)
                         );
 

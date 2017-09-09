@@ -14,12 +14,15 @@ include_once ROOTDIR.'/models/modelresponse.php';
 function getLapses(){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
     $status = false;
 
     $stmt = $db->query(
         "SELECT lap_id AS 'id', lap_name AS 'name'
-        FROM glo_lapses
+        FROM {$prx}lapses
+        WHERE lap_exec = 0
+            AND lap_sim_fk = $simid
         ORDER BY lap_id DESC"
     );
 
@@ -79,13 +82,19 @@ function getFunds(/*int*/ $buiid){
     $status = false;
 
     $stmt = $db->prepare(
-        "SELECT fun_id AS 'id',
-            fun_name AS 'name',
-            fun_balance AS 'balance',
-            fun_type AS type,
-            CONVERT(fun_default, SIGNED) AS 'amount'
-        FROM {$prx}funds
-        WHERE fun_bui_fk = :buiid"
+        "SELECT acc_id AS 'id',
+            acc_name AS 'name',
+
+            CASE acc_op
+                WHEN 1 THEN 'Porcentaje'
+                WHEN 2 THEN 'Monto'
+                ELSE 'n/d' END AS type,
+            acc_balance AS 'balance',
+            CONVERT(acc_default, SIGNED) AS 'amount'
+        FROM {$prx}accounts
+            INNER JOIN glo_types ON acc_type_fk = type_id
+        WHERE acc_bui_fk = :buiid
+            AND type_name = 'fondo'"
     );
     $stmt->bindValue('buiid', $buiid, PDO::PARAM_INT);
     $res = $stmt->execute();

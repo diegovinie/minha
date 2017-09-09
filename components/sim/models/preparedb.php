@@ -179,53 +179,95 @@ function setAccountsData($habId, $simId){
     $db = connectDb();
     $prx = 's1_';
 
-    $stmt0 = $db->prepare(
+    $accounts = array(
+        array(
+            'name' => "BANCO DE VENEZUELA 0102-0433-99-0044556677",
+            'balance' => 100000.00,
+            'type' => 'principal',
+            'default' => null,
+            'op' => null
+        ),
+        array(
+            'name' => "Fondo de Trabajo",
+            'balance' => 0.00,
+            'default'  => "10",
+            'type'  => 'fondo',
+            'op' => 1
+        ),
+        array(
+            'name' => "Fondo Especial",
+            'balance' => 0.00,
+            'default'  => "50000",
+            'type'  => 'fondo',
+            'op' => 2
+        )
+    );
+
+    $creator = 'system';
+
+    $stmt1 = $db->prepare(
         "SELECT apt_bui_fk
         FROM {$prx}apartments
             INNER JOIN {$prx}habitants ON hab_apt_fk = apt_id
         WHERE hab_id = :habId"
     );
-    $stmt0->bindValue('habId', $habId);
-    $res = $stmt0->execute();
+    $stmt1->bindValue('habId', $habId);
+    $res1 = $stmt1->execute();
 
-    if(!$res){
-        echo "en select: ".$stmt0->errorInfo()[2];
+    if(!$res1){
+        echo "en 1: ". $stmt1->errorInfo()[2];
         return false;
     }
-    else{
-        $buiid = $stmt0->fetchColumn();
-    }
 
-    $name = "BANCO DE VENEZUELA 0102-0433-99-0044556677";
-    $balance = 100000.00;
-    $type = 1;
-    $max = null;
-    $creator = 'system';
+    $buiid = $stmt1->fetchColumn();
 
-    $stmt = $db->prepare(
+    $stmt3 = $db->prepare(
+        "SELECT s.type_id
+        FROM glo_types s
+            INNER JOIN glo_types d ON d.type_id = s.type_ref
+        WHERE d.type_name = 'acc_type'
+            AND s.type_name = :type"
+    );
+    $stmt3->bindParam('type', $type);
+
+    $stmt4 = $db->prepare(
         "INSERT INTO {$prx}accounts
-        (acc_name,      acc_balance,    acc_type,
-         acc_hab_fk,    acc_max,        acc_bui_fk,
-         acc_creator,   acc_sim_fk)
+        (acc_name,      acc_balance,    acc_type_fk,
+         acc_hab_fk,    acc_default,    acc_bui_fk,
+         acc_creator,   acc_sim_fk,     acc_op)
         VALUES
         (:name,         :balance,       :type,
-         :habid,          :max,           :bui,
-         :creator,      :simid)"
+         :habid,        :default,       :bui,
+         :creator,      :simid,         :op)"
     );
-    $stmt->bindParam('name', $name);
-    $stmt->bindParam('balance', $balance);
-    $stmt->bindParam('type', $type);
-    $stmt->bindParam('habid', $habId, PDO::PARAM_INT);
-    $stmt->bindParam('max', $max);
-    $stmt->bindParam('bui', $buiid, PDO::PARAM_INT);
-    $stmt->bindParam('creator', $creator);
-    $stmt->bindParam('simid', $simId, PDO::PARAM_INT);
+    $stmt4->bindParam('name', $name);
+    $stmt4->bindParam('balance', $balance);
+    $stmt4->bindParam('type', $typeid, PDO::PARAM_INT);
+    $stmt4->bindParam('habid', $habId, PDO::PARAM_INT);
+    $stmt4->bindParam('default', $default);
+    $stmt4->bindParam('bui', $buiid, PDO::PARAM_INT);
+    $stmt4->bindParam('creator', $creator);
+    $stmt4->bindParam('simid', $simId, PDO::PARAM_INT);
+    $stmt4->bindParam('op', $op,  PDO::PARAM_INT);
 
-    $exe = $stmt->execute();
+    foreach ($accounts as $acc) {
+        extract($acc);
 
-    if(!$exe){
-        echo "en insert: ". $stmt->errorInfo()[2];
-        return false;
+        $res3 = $stmt3->execute();
+
+        if(!$res3){
+            echo "en 3: ". $stmt3->errorInfo()[2];
+            return false;
+        }
+
+        $typeid = $stmt3->fetchColumn();
+
+        $exe4 = $stmt4->execute();
+
+        if(!$exe4){
+            echo "en 4: ". $stmt4->errorInfo()[2];
+            return false;
+        }
     }
 
     return true;
