@@ -1,17 +1,6 @@
 window.onload = function(){
-    var host = "../core/async_bills.php?fun=aQuery&arg=";
-    var lista_id = ["proveedores", "gastos"];
-    lista_id.forEach(function(id){
-        getDataAjax(host, id, function(res){
-            setTable(id, res, function(){
-                tablePager(id, function(){
-                    $('#'+id).find('tbody').children().each(function(){
-                        $(this).attr('onclick', 'showInfo(this)')
-                    })
-                })
-            })
-        })
-    })
+
+    $('table [data-type="id"]').css('display', 'none');
 }
 
 function showInfo(self){

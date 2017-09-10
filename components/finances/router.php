@@ -31,8 +31,12 @@ if($route[1] == 'admin' && $route[2] == 'finanzas'){
             break;
 
         case 'nuevacuenta':
-            $controller = $basedir. 'controllers/addaccount.php';
-            break;    
+            $controller = $basedir. 'controllers/addaccountdialog.php';
+            break;
+
+        case 'crearcuenta':
+        $controller = $basedir.'controllers/createaccount.php';
+        break;
         /*
         case 'getcurrentmonth':
             $controller = $basedir .'controllers/getcurrentmonth.php';

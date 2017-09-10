@@ -15,6 +15,7 @@ include_once ROOTDIR.'/models/modelresponse.php';
 function getAccountsForTables(/*int*/ $buiid){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
     $status = false;
 
@@ -29,13 +30,14 @@ function getAccountsForTables(/*int*/ $buiid){
                 INNER JOIN glo_types d ON s.type_ref = d.type_id
                 INNER JOIN {$prx}habitants ON acc_hab_fk = hab_id
                 INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
-                INNER JOIN glo_buildings ON acc_bui_fk = bui_id
-            WHERE bui_id = :buiid
+            WHERE acc_bui_fk = :buiid
                 AND d.type_name = 'acc_type'
-                AND s.type_name != 'fondo'"
+                AND s.type_name != 'fondo'
+                AND apt_sim_fk = :simid"
     );
 
     $stmt1->bindValue('buiid', $buiid, PDO::PARAM_INT);
+    $stmt1->bindValue('simid', $simid, PDO::PARAM_INT);
     $res1 = $stmt1->execute();
     //echo $stmt1->errorInfo()[2]; die;
 
@@ -50,13 +52,14 @@ function getAccountsForTables(/*int*/ $buiid){
             INNER JOIN glo_types d ON s.type_ref = d.type_id
             INNER JOIN {$prx}habitants ON acc_hab_fk = hab_id
             INNER JOIN {$prx}apartments ON hab_apt_fk = apt_id
-            INNER JOIN glo_buildings ON acc_bui_fk = bui_id
-        WHERE bui_id = :buiid
+        WHERE acc_bui_fk = :buiid
             AND d.type_name = 'acc_type'
-            AND s.type_name != 'fondo'"
+            AND s.type_name != 'fondo'
+            AND apt_sim_fk = :simid"
     );
 
     $stmt2->bindValue('buiid', $buiid, PDO::PARAM_INT);
+    $stmt2->bindValue('simid', $simid, PDO::PARAM_INT);
     $res2 = $stmt2->execute();
 
     if(!$res1 || !$res2){
@@ -81,6 +84,7 @@ function getAccountsForTables(/*int*/ $buiid){
 function getFundsForTables(/*int*/ $buiid){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
     $status = false;
 
@@ -96,13 +100,14 @@ function getFundsForTables(/*int*/ $buiid){
             FROM {$prx}accounts
                 INNER JOIN glo_types s ON acc_type_fk = s.type_id
                 INNER JOIN glo_types d ON s.type_ref = d.type_id
-                INNER JOIN glo_buildings ON acc_bui_fk = bui_id
-            WHERE bui_id = :buiid
+            WHERE acc_bui_fk = :buiid
                 AND d.type_name = 'acc_type'
-                AND s.type_name = 'fondo'"
+                AND s.type_name = 'fondo'
+                AND acc_sim_fk = :simid"
     );
 
     $stmt1->bindValue('buiid', $buiid, PDO::PARAM_INT);
+    $stmt1->bindValue('simid', $simid, PDO::PARAM_INT);
     $res1 = $stmt1->execute();
 
     $stmt2 = $db->prepare(
@@ -114,13 +119,14 @@ function getFundsForTables(/*int*/ $buiid){
               FROM {$prx}accounts
                   INNER JOIN glo_types s ON acc_type_fk = s.type_id
                   INNER JOIN glo_types d ON s.type_ref = d.type_id
-                  INNER JOIN glo_buildings ON acc_bui_fk = bui_id
-              WHERE bui_id = :buiid
+              WHERE acc_bui_fk = :buiid
                   AND d.type_name = 'acc_type'
-                  AND s.type_name = 'fondo'"
+                  AND s.type_name = 'fondo'
+                  AND acc_sim_fk = :simid"
     );
 
     $stmt2->bindValue('buiid', $buiid, PDO::PARAM_INT);
+    $stmt2->bindValue('simid', $simid, PDO::PARAM_INT);
     $res2 = $stmt2->execute();
 
     if(!$res1 || !$res2){
@@ -157,6 +163,7 @@ function getMovementsForTables(){
 function getAptBalancesForTables(/*int*/ $buiid){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
     $status = false;
 
@@ -168,10 +175,12 @@ function getAptBalancesForTables(/*int*/ $buiid){
         FROM {$prx}apartments
             INNER JOIN {$prx}habitants ON hab_apt_fk = apt_id
         WHERE apt_bui_fk = :buiid
+            AND apt_sim_fk = :simid
         GROUP BY hab_apt_fk"
     );
 
     $stmt1->bindValue('buiid', $buiid, PDO::PARAM_INT);
+    $stmt1->bindValue('simid', $simid, PDO::PARAM_INT);
     $res1 = $stmt1->execute();
     //echo $stmt1->errorInfo()[2], die,
     $stmt2 = $db->prepare(
@@ -179,9 +188,11 @@ function getAptBalancesForTables(/*int*/ $buiid){
             'Deuda Total:' AS 'b',
             SUM(apt_balance) AS 'total'
         FROM {$prx}apartments
-        WHERE apt_bui_fk = :buiid"
+        WHERE apt_bui_fk = :buiid
+            AND apt_sim_fk = :simid"
     );
     $stmt2->bindValue('buiid', $buiid, PDO::PARAM_INT);
+    $stmt2->bindValue('simid', $simid, PDO::PARAM_INT);
     $res2 = $stmt2->execute();
 
     if(!$res1 || !$res2){
@@ -218,16 +229,19 @@ function getDisponibility(){
 function getCurrentBalance(/*int*/ $buiid){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
     $status = false;
 
     $stmt = $db->prepare(
         "SELECT SUM(apt_balance)
         FROM {$prx}apartments
-        WHERE apt_bui_fk = :buiid"
+        WHERE apt_bui_fk = :buiid
+            AND apt_sim_fk = :simid"
     );
 
     $stmt->bindValue('buiid', $buiid, PDO::PARAM_INT);
+    $stmt->bindValue('simid', $simid, PDO::PARAM_INT);
     $res = $stmt->execute();
 
     if(!$res){
@@ -243,6 +257,7 @@ function getCurrentBalance(/*int*/ $buiid){
 function getTotalFunds(/*buiid*/ $buiid){
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
     $status = false;
 
@@ -252,9 +267,11 @@ function getTotalFunds(/*buiid*/ $buiid){
             INNER JOIN glo_types s ON acc_type_fk = s.type_id
             INNER JOIN glo_types d ON s.type_ref = d.type_id
         WHERE acc_bui_fk = :buiid
-            AND s.type_name = 'fondo'"
+            AND s.type_name = 'fondo'
+            AND acc_sim_fk = :simid"
     );
     $stmt->bindValue('buiid', $buiid, PDO::PARAM_INT);
+    $stmt->bindValue('simid', $simid, PDO::PARAM_INT);
     $res = $stmt->execute();
 
     if(!$res){

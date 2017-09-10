@@ -50,6 +50,9 @@
           </div>
       </div>
   </div>
+  {% for script in js %}
+      <script src="{{ script }}" charset="utf-8"></script>
+  {% endfor %}
   {% endblock %}
 
 {% endblock %}

@@ -36,7 +36,7 @@ $href = array(
 
 // javascript a incluir
 $js = array(
-    "finances"  => "/components/finances/js/finances.js",
+    "bills"  => "/index.php/static/bills/js/bills.js",
     "functions" => "/js/functions.js"
 );
 
@@ -50,6 +50,7 @@ $twig->getExtension('Twig_Extension_Core')
 echo $twig->render(
     'components/bills/views/index.html.twig',
     array(
+        'js' => $js,
         'bills' => $table_template['bills'],
     )
 );

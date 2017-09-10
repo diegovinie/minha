@@ -19,6 +19,8 @@ window.onload = function(){
     var disp = document.getElementById('disponibility');
     disp.dataset.value = parseFloat(accounts)+parseFloat(funds);
     dataParser(disp);
+
+    $('table [data-type="id"]').css('display', 'none');
 }
 
 function showApt(self){
@@ -45,9 +47,39 @@ function openNewAccountDialog(){
         }
     })
     .then(function(html){
-        console.log(html);
 
         $('body').append(html);
-        $('#account').modal();
+        var account = document.getElementById('account');
+        $(account).modal();
+        $(account).find('form').on('submit', function(ev){
+
+            ev.preventDefault();
+            addAccount(ev.currentTarget);
+        });
+        //$('#account').modal();
+    });
+}
+
+function addAccount(form){
+
+    $.ajax({
+        url: '/index.php/admin/finanzas/crearcuenta',
+        type: 'post',
+        data: $(form).serialize(),
+        dataType: 'json',
+        error: function(err){
+            console.log('Error al crear cuenta: ', err);
+        }
+    })
+    .then(function(data){
+        if(data.status == true){
+            flashText('success', data.msg);
+            setTimeout(function(){
+                $('#account').modal('hide').remove();
+            }, 2000);
+        }
+        else{
+            flashText('danger', data.msg);
+        }
     });
 }

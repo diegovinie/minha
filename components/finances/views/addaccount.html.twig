@@ -15,12 +15,18 @@
                     <label for="user">Custodio</label>
                     <select class="form-control" name="user">
                         <option value="">Seleccione</option>
+                        {% for hab in habs %}
+                            <option value="{{ hab.id }}">{{ hab.apt }} - {{ hab.name }} {{ hab.surname }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="form-group col-md-4">
                     <label for="type">Tipo:</label>
                     <select class="form-control" name="type">
                         <option value="">Seleccione</option>
+                        {% for type in types %}
+                            <option value="{{ type.id }}">{{ type.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="form-group col-md-4">
@@ -32,9 +38,10 @@
                 </div>
                 <div class="form-group col-md-12" align="center">
                     <button type="submit" class="btn btn-primary">Enviar</button>
-                    <button type="button" class="btn btn-default">Regresar</button>
+                    <button type="button" class="btn btn-default" onclick="modalRemove(this)">Regresar</button>
                 </div>
             </form>
+            <script src="/js/modal.js" charset="utf-8"></script>
         </div>
     </div>
 </div>
