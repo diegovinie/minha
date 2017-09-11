@@ -61,6 +61,10 @@ switch ($route[1]) {
         exit;
         break;
 
+    case 'prueba':
+        $controller = ROOTDIR.'/tests/p.php';
+        break;
+
     default:
 
     // Rutas protegidas
@@ -80,8 +84,11 @@ switch ($route[1]) {
         // Componente Payments
         case 'pagos':
             include COMDIR .'payments/router.php';
-        break;
+            break;
 
+        case 'recibos':
+            include COMDIR. 'invoices/router.php';
+            break;
 
 
         // Área de administradores

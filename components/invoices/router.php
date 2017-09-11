@@ -16,6 +16,14 @@ $route[2] = isset($route[2])? $route[2] : '';
 
 if($route[1] == 'recibos'){
     switch ($route[2]) {
+        case '':
+            $controller = $basedir.'controllers/invoices.php';
+            break;
+
+        case 'mostrar':
+            $controller = $basedir.'controllers/displayinvoice.php';
+            break;
+
         // Ruta no identificada
         default:
             die('sin ruta');

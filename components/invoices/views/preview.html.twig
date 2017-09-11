@@ -54,16 +54,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <button type="button" name="button" class="btn btn-primary btn-block btn-lg" data-id="<?php echo $_SESSION['user_id']; ?>" data-lapse="<?php echo $invoices['head']['Gen Num']; ?>" onclick="seeInvoice(this);">Mostrar Recibo Propio</button>
-                    </div>
+
                 </div>
             </div>
         </div>
-        <div class="col-sm-12">
-            {% include 'views/widgets/flash.html.twig' %}
+        <div class="col-md-8 col-offset-2">
+            <div hidden>
+                <iframe id="pdf" src=""  width="630" height="600"></iframe>
+            </div>
+            <div class="col-md-6 col-offset-3">
+            <button type="button" name="button" class="btn btn-primary btn-block btn-lg" data-number="{{ number }}" onclick="seeInvoice(this);">Mostrar Recibo Propio</button>
+            </div>
         </div>
+
         <div class="row">
+            <div class="col-sm-12">
+                {% include 'views/widgets/flash.html.twig' %}
+            </div>
             <div class="col-md-12" align="center">
                <button type="button" name="button" class="btn btn-success btn-lg" data-number="{{ number }}" onclick="saveInvoicesBatch(this)">Guardar</button>
                <button type="button" name="button"class="btn btn-danger btn-lg" data-number="{{ number }}" onclick="discardInvoicesBatch(this)">Deshacer</button>

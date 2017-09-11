@@ -44,6 +44,7 @@ function getFromUsers(id){
             });
 
             tablePager(id);
+            $('table [data-type="id"]').css('display', 'none');
 
             resolve();
         });
@@ -123,7 +124,7 @@ function acceptUser(icon){
             })
             .then(function(res){
                 console.log(res);
-                res.status == true? resolve(resData) : reject(); 
+                res.status == true? resolve(resData) : reject();
 
                 getFromUsers(updateUserTable);
             });

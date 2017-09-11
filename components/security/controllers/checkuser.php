@@ -9,6 +9,12 @@ include $basedir.'models/authentication.php';
 include ROOTDIR.'/models/tokenator.php';
 include ROOTDIR.'/models/validations.php';
 
+echo json_encode(array(
+    'status' =>false,
+    'msg' => "En construcción. Prueba el simulador."
+));
+die;
+
 //$user = (string)validateEmail($_POST['user']);
 $user = (string)$_POST['user'];
 $pwd = (string)$_POST['pwd'];

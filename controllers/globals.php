@@ -34,7 +34,8 @@ $_globals = array(
                 ),
                 //Invoices - Enlaces:
                 'invoices'      => array(
-                    'manage'        => '/index.php/admin/recibos/'
+                    'manage'        => '/index.php/admin/recibos/',
+                    'invoices'      => '/index.php/recibos'
                 ),
                 // Sim - Enlaces:
                 'sim'           => array(

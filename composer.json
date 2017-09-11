@@ -1,6 +1,7 @@
 {
     "name": "minha",
     "require":{
+        "setasign/fpdf": "~1.8",
         "spipu/html2pdf": "~5.0.0",
         "coldtrick/imagick": "~1.0",
         "mpdf/mpdf": "~6.1",

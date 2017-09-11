@@ -66,10 +66,11 @@
 		</li>
 		<!-- /.dropdown -->
 		<li class="dropdown">
-			<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">Bienvenido {{ menu.user.name }}
+			<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">Bienvenido, {{ menu.user.name }}
 				<i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
 			</a>
 			<ul class="dropdown-menu dropdown-user">
+				<li><a href="#"><i class="fa fa-gear fa-fw"></i> Ajustes</a></li>
 				<li><a href="{{ menu.href.users.profile }}"><i class="fa fa-user fa-fw"></i> Perfil Usuario</a>
 				</li>
 				<!--<li><a href="#"><i class="fa fa-gear fa-fw"></i> Ajustes</a>
@@ -112,7 +113,7 @@
 					<a href="">Pagos y Recibos<span class="fa arrow"></span></a>
 					<ul class="nav nav-second-level">
 						<li><a href="{{ menu.href.payments.index }}">Pagos</a></li>
-						<li><a href="">Recibos de Condominio</a></li>
+						<li><a href="{{ menu.href.invoices.invoices }}">Recibos de Condominio</a></li>
 					</ul>
 				</li>
 				<li>

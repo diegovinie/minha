@@ -33,7 +33,7 @@ function getAccountsForTables(/*int*/ $buiid){
             WHERE acc_bui_fk = :buiid
                 AND d.type_name = 'acc_type'
                 AND s.type_name != 'fondo'
-                AND apt_sim_fk = :simid"
+                AND acc_sim_fk = :simid"
     );
 
     $stmt1->bindValue('buiid', $buiid, PDO::PARAM_INT);
@@ -55,7 +55,7 @@ function getAccountsForTables(/*int*/ $buiid){
         WHERE acc_bui_fk = :buiid
             AND d.type_name = 'acc_type'
             AND s.type_name != 'fondo'
-            AND apt_sim_fk = :simid"
+            AND acc_sim_fk = :simid"
     );
 
     $stmt2->bindValue('buiid', $buiid, PDO::PARAM_INT);

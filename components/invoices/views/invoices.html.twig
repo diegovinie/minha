@@ -1,0 +1,59 @@
+{# components/invoices/views/invoices.html.twig #}
+{% extends 'views/base.html.twig' %}
+
+{% block body %}
+    {% include 'views/menu.html.twig' %}
+
+    {% block main %}
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="page-header">Mostrar Recibo</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Seleccione:</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form class="" action="core/pdf_invoice.php" method="get" target="_blank">
+                            <div class="form-group">
+                                <label for="number">Periodo: </label>
+                                <select class="form-control" name="number">
+                                    {% for batch in batchs %}
+                                        <option value="{{ batch.id }}">{{ batch.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="" align="center">
+                                <button class="btn btn-primary" type="submit" name="button">Mostrar</button>
+                                <button class="btn btn-default" type="button" name="button" onclick="history.go(-1)">Regresar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2" hidden>
+                <!--<embed id="pdf" src="" type="application/pdf" width="600" height="600">-->
+                <iframe id="pdf" src=""  width="630" height="600"></iframe>
+                <div class="col-sm-12" style="text-align:center;">
+                    <div class="col-sm-6">
+                        <button id="send" type="button" class="btn btn-success btn-block" name="send" onclick="sendMail()">Enviar por Correo</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button id="save" type="button" class="btn btn-info btn-block" name="save" onclick="downloadInvoice()">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% for script in js %}
+        <script src="{{ script }}" charset="utf-8"></script>
+    {% endfor %}
+{% endblock %}

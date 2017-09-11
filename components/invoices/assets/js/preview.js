@@ -43,3 +43,21 @@ function sendResults(url){
         }
     });
 }
+
+function seeInvoice(button){
+    var id = button.dataset.number;
+
+    $.ajax({
+        url: '/index.php/recibos/mostrar',
+        type: 'post',
+        data: {number: id},
+        dataType: 'html',
+        error: function(err){
+            console.log('Error al mostrar el pdf: ', err);
+        }
+    })
+    .then(function(pdf){
+        $('#pdf').attr('src','data:application/pdf;base64,'+ pdf);
+        $('#pdf').parent().removeAttr('hidden');
+    })
+}
