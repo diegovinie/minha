@@ -1,6 +1,7 @@
 <?php
 
 include_once ROOTDIR.'/models/db.php';
+include_once $basedir.'models/invoicepdf.php';
 
 function getTitularHabitant(/*int*/ $aptid){
     $db = connectDB();
@@ -96,4 +97,34 @@ function getAptFootInvoice(/*int*/ $aptid, /*int*/ $number){
     if(!$batch) return false;
 
     return $batch['charges'][$apt];
+}
+
+function makePdf(/*array*/ $header, /*array*/ $content, /*array*/ $footer){
+    //ob_start();
+    $inv = new InvoicePdf();
+
+    $inv->AddPage('P', [210/2, 220]);
+    $inv->addBanner();
+    $inv->addHeader($header);
+    $inv->addContent($content);
+    $inv->addFooter($footer);
+    //$inv->Output();
+
+    //$pdfclean = ob_get_clean();
+    //$pdf64 =  base64_encode($pdfclean);
+
+    //return $pdf64;
+    return $inv->Output('S');
+}
+
+function createInvoice(/*int*/ $aptid, /*int*/ $number){
+
+    $header = getInvoiceHeader($aptid, $number);
+    $content = getAptContentInvoice($aptid, $number);
+    $footer = getAptFootInvoice($aptid, $number);
+
+    $pdf = makePdf($header, $content, $footer);
+
+    //return $pdf64;
+    return base64_encode($pdf);
 }

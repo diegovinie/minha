@@ -53,6 +53,10 @@ if($route[1] == 'admin' && $route[2] == 'recibos'){
             $controller = $basedir .'controllers/savebatch.php';
             break;
 
+        case 'enviar':
+            $controller = $basedir .'controllers/sendinvoices.php';
+            break;
+
         default:
             die('sin ruta');
             break;

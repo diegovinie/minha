@@ -1,8 +1,10 @@
 <?php
 
-class InvoicePdf extends FPDF{
+include_once ROOTDIR.'/models/locale.php';
 
-    var $grid = false;
+class InvoicePdf extends FPDF
+{
+    public $grid = false;
 
     public function DrawGrid()
     {
@@ -52,9 +54,9 @@ class InvoicePdf extends FPDF{
         if($this->grid) $this->DrawGrid();
     }
 
-    function addBanner()
+    public function addBanner()
     {
-        $this->Image('../static/banner468x60.png', 2, 7, 90);
+        $this->Image(ROOTDIR.'/components/invoices/assets/images/banner468x60.png', 2, 7, 90);
     }
 
     public function addHeader($data)
@@ -87,7 +89,10 @@ class InvoicePdf extends FPDF{
         $this->Cell(
             32,
             5,
-            utf8_decode("{$data['titular']['name']} {$data['titular']['surname']}"),
+            utf8_decode(
+                nombreEinicial($data['titular']['name']).' '.
+                nombreEinicial($data['titular']['surname'])
+            ),
             0,
             0,
             'C',
@@ -97,7 +102,15 @@ class InvoicePdf extends FPDF{
         $this->SetXY(7, 35);
         $this->Cell(10, 5, 'C.I.:', 0, 0, 'L', false);
         $this->SetXY(12, 35);
-        $this->Cell(23, 5, $data['titular']['ci'], 0, 0, 'C', false);
+        $this->Cell(
+            23,
+            5,
+            beautifyCI($data['titular']['ci']), 
+            0,
+            0,
+            'C',
+            false
+        );
         // Apartamento
         $this->SetXY(36, 35);
         $this->Cell(10, 5, 'APTO:', 0, 0, 'L', false);
@@ -128,7 +141,7 @@ class InvoicePdf extends FPDF{
         $this->Cell(21, 5, $data['Fecha'], 0, 0, 'R', false);
     }
 
-    function addContent($data)
+    public function addContent($data)
     {
         $this->SetFont('Arial', '', 6);
         $this->SetFillColor(224, 235, 255);
@@ -233,7 +246,8 @@ class InvoicePdf extends FPDF{
         //$this->Cell(array_sum($w),0,'','T');
     }
 
-    function addFooter($data){
+    public function addFooter($data)
+    {
         $this->SetFont('Arial', '', 8);
         $this->SetFillColor(224, 235, 255);
 
