@@ -23,8 +23,8 @@
                             <div class="col-md-6" style="margin-bottom:10px;">
                                 <label for="">Elegir:</label>
                                 <select class="form-control" name="">
-                                    {% for k,v in invoices %}
-                                        <option value="{{ v }}">{{ k }}</option>
+                                    {% for batch in batchs %}
+                                        <option value="{{ batch.id }}">{{ batch.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>

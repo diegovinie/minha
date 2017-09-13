@@ -1,13 +1,19 @@
 bil_id,desc,date,buiid,habid,provid,accid,actid,log,bil_lapse,amount,iva,total
-1,Consumo mensual de electricidad,2017-08-28,2,4,1,1,17,JX0020,0,5990.00,718.80,6708.80
-2,Consumo mensual de agua,2017-08-25,2,4,2,1,18,10001,0,2504.00,300.48,2804.48
-3,Mantenimiento Ascensores,2017-08-23,2,4,6,1,15,C-40503,0,17400.00,2088.00,19488.00
-4,Mantenimiento Puerta Estacionamiento,2017-08-25,2,4,9,1,25,10204,0,8300.00,996.00,9296.00
-5,Limpieza Áreas Comunes,2017-08-30,2,5,4,2,3,FJG404,0,40000.00,0.00,40000.00
-6,Compra de bombillos,2017-08-12,2,5,5,2,10,GG3940,0,19306.00,2316.72,21622.72
-7,Compra de bolsas de basura,2017-08-17,2,5,8,2,11,40403,0,10000.00,1200.00,11200.00
-8,Limpieza de Tanque de agua,2017-08-18,2,5,10,2,1,23232,0,30000.00,3600.00,33600.00
-9,Teléfono Conserjería,2017-08-27,2,4,7,1,19,G22404,0,800.50,96.06,896.56
-10,Compra de artículos de limpieza,2017-08-04,2,5,8,2,11,T30553,0,23008.00,2760.96,25768.96
-11,Mantenimiento Jardines,2017-08-15,2,5,3,2,4,R604033,0,25000.00,0.00,25000.00
-12,Compra de batería lámpara emergencia,2017-08-10,2,5,8,2,12,F0404G,0,48000.00,5760.00,53760.00
+1,Consumo mensual de electricidad,2017-07-28,2,4,1,1,17,RECIBO,0,5990.00,718.80,6708.80
+2,Consumo mensual de agua,2017-07-25,2,4,2,1,18,RECIBO,0,2504.00,300.48,2804.48
+3,Mantenimiento Ascensores,2017-07-23,2,4,6,1,15,FACTURA,0,17400.00,2088.00,19488.00
+4,Mantenimiento Puerta Estacionamiento,2017-07-25,2,4,9,1,25,FACTURA,0,8300.00,996.00,9296.00
+5,Limpieza Áreas Comunes,2017-07-30,2,5,4,2,3,RECIBO,0,40000.00,0.00,40000.00
+6,Compra de bolsas de basura,2017-07-17,2,5,8,2,11,FACTURA,0,10000.00,1200.00,11200.00
+7,Limpieza de Tanque de agua,2017-07-18,2,5,10,2,1,FACTURA,0,30000.00,3600.00,33600.00
+8,Teléfono Conserjería,2017-07-26,2,4,7,1,19,RECIBO,0,800.50,96.06,896.56
+9,Compra de artículos de limpieza,2017-07-04,2,5,8,2,11,FACTURA,0,23008.00,2760.96,25768.96
+10,Mantenimiento Jardines,2017-07-15,2,5,3,2,4,RECIBO,0,25000.00,0.00,25000.00
+11,Consumo mensual de electricidad,2017-08-27,2,4,1,1,17,RECIBO,0,4870.00,584.40,5454.40
+12,Consumo mensual de agua,2017-08-25,2,4,2,1,18,RECIBO,0,2322.00,278.64,2600.64
+13,Mantenimiento Ascensores,2017-08-24,2,4,6,1,15,FACTURA,0,17400.00,2088.00,19488.00
+14,Limpieza Áreas Comunes,2017-08-30,2,5,4,2,3,RECIBO,0,40000.00,0.00,40000.00
+15,Compra de bombillos,2017-08-12,2,5,5,2,10,FACTURA,0,19306.00,2316.72,21622.72
+16,Teléfono Conserjería,2017-08-27,2,4,7,1,19,RECIBO,0,800.50,96.06,896.56
+17,Compra de batería lámpara emergencia,2017-08-10,2,5,8,2,12,FACTURA,0,48000.00,5760.00,53760.00
+18,Mantenimiento Jardines,2017-08-15,2,5,3,2,4,RECIBO,0,25000.00,0.00,25000.00

@@ -34,7 +34,7 @@ function saveInvoicesBatch(/*int*/ $buiid, /*int*/ $number){
     $bui = $stmt->fetchColumn();
 
     // Recupera el archivo json con la información del lote.
-    $fileInvoices = ROOTDIR."/files/{$prx}invoices/$bui/LOT-$number.json";
+    $fileInvoices = ROOTDIR."/files/{$prx}invoices/$bui/LOT_$simid-$number.json";
 
     if(!is_file($fileInvoices)){
         echo $fileInvoices;

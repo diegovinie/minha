@@ -105,7 +105,7 @@ class InvoicePdf extends FPDF
         $this->Cell(
             23,
             5,
-            beautifyCI($data['titular']['ci']), 
+            beautifyCI($data['titular']['ci']),
             0,
             0,
             'C',
@@ -168,6 +168,19 @@ class InvoicePdf extends FPDF
         $w = array(60, 17, 18);
         $fill = false;
 
+        $sum = array(
+            'alic' => 0.0,
+            'total' => 0.0
+        );
+        $this->SetFont('Arial','BU', 7);
+        $this->Cell($w[0], 5, utf8_decode("Descripción"), "", 0, "C", $fill);
+        $this->Cell($w[1], 5, "Alic.", "", 0, "C", $fill);
+        $this->Cell($w[2], 5, "Monto", "", 0, "C", $fill);
+        $this->SetFont('Arial','', 7);
+
+        $this->Ln();
+        $this->SetX(5);
+
         foreach($data as $cat => $act){
 
             $this->SetFont('Arial','BU', 7);
@@ -175,7 +188,7 @@ class InvoicePdf extends FPDF
                 $w[0],
                 5,
                 utf8_decode($cat),
-                'L',
+                '',
                 0,
                 'L',
                 $fill
@@ -191,7 +204,7 @@ class InvoicePdf extends FPDF
                     $w[0],
                     5,
                     utf8_decode($name),
-                    'L',
+                    '',
                     0,
                     'L',
                     $fill
@@ -206,7 +219,7 @@ class InvoicePdf extends FPDF
                         $w[0],
                         5,
                         utf8_decode("   " .$row['nombre']),
-                        'L',
+                        '',
                         0,
                         'L',
                         $fill
@@ -216,7 +229,7 @@ class InvoicePdf extends FPDF
                         $w[1],
                         5,
                         "    " .number_format($row['alic'], 2, ',', '.'),
-                        'L',
+                        '',
                         0,
                         'R',
                         $fill
@@ -226,7 +239,7 @@ class InvoicePdf extends FPDF
                         $w[2],
                         5,
                         "    " .number_format($row['total'], 2, ',', '.'),
-                        'R',
+                        '',
                         0,
                         'R',
                         $fill
@@ -236,13 +249,46 @@ class InvoicePdf extends FPDF
                     $this->Ln();
                     $this->SetX(5);
                     //$fill = !$fill;
+                    $sum['alic'] += $row['alic'];
+                    $sum['total'] += $row['total'];
                 }
             }
-
 
             $this->SetX(5);
         }
         // Closing line
+        $this->Ln();
+        $this->SetX(5);
+
+        $this->Cell(
+            $w[0],
+            5,
+            utf8_decode("Total:"),
+            '',
+            0,
+            'L',
+            $fill
+        );  // El Alias
+
+        $this->Cell(
+            $w[1],
+            5,
+            "    " .number_format($sum['alic'], 2, ',', '.'),
+            '',
+            0,
+            'R',
+            $fill
+        );   // porcentaje
+
+        $this->Cell(
+            $w[2],
+            5,
+            "    " .number_format($sum['total'], 2, ',', '.'),
+            '',
+            0,
+            'R',
+            $fill
+        ); //Total
         //$this->Cell(array_sum($w),0,'','T');
     }
 

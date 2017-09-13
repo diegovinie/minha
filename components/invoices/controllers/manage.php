@@ -6,9 +6,14 @@
  */
 defined('_EXE') or die('Acceso restringido');
 
-include $basedir.'models/manage.php';
+include_once $basedir.'models/manage.php';
+include_once $basedir.'models/userinvoices.php';
 
 $buiid = (int)$_SESSION['bui_id'];
+
+$edf = $_SESSION['edf'];
+
+$batchs = getBatchList($edf);
 
 // Los recibos para comparar
 //$invoices = json_decode(getInvoicesId($buiid), true);
@@ -59,6 +64,7 @@ echo $twig->render(
         'bills' => $table_template['bills'],
         'funds' => $funds['msg'],
         'js'    => $js,
-        'form'  => $form
+        'form'  => $form,
+        'batchs' => $batchs
     )
 );

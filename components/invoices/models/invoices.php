@@ -381,6 +381,9 @@ function generateInvoicesBatch(  /*int*/  $userid,
     //Se genera el contenido por apartamento
     foreach ($aApts as $index => $apt) {
         // Cada uno de los gastos
+        $sumPer2 = 0;
+        $sumTotal2 = 0;
+
         if($aBills){
             foreach ($aBills as $inB => $bill) {
 
@@ -395,6 +398,8 @@ function generateInvoicesBatch(  /*int*/  $userid,
                             'total'     => round($bill['total'], 2)
                         );
 
+                $sumPer2 += $bill['total'] *($apt['w']/$frac);
+                $sumTotal2 += $bill['total'];
 
                 //Generar el campo del total a pagar por apartamento
                 $sumPer = 0;
@@ -407,15 +412,6 @@ function generateInvoicesBatch(  /*int*/  $userid,
                         $sumTotal += $val['total'];
                     }
                 }
-
-                $charges[$apt['name']]
-                        ['previo'] = -$apt['balance'];
-
-                $charges[$apt['name']]
-                        ['actual'] = $sumPer;
-
-                $charges[$apt['name']]
-                        ['total'] = $sumPer -$apt['balance'];
             }
         }
 
@@ -435,6 +431,8 @@ function generateInvoicesBatch(  /*int*/  $userid,
                                 'alic' => round($sumPer * $defNum /100, 2),
                                 'total' => round($sumTotal * ($defNum / 100), 2)
                             );
+                    $sumPer2 += $sumPer * $defNum /100;
+                    $sumTotal2 += $sumTotal * ($defNum / 100);
 
                 }
                 elseif($fund['type'] == 2){     // Si es monto fijo
@@ -447,9 +445,21 @@ function generateInvoicesBatch(  /*int*/  $userid,
                                 'alic' => round($defNum / $actives, 2),
                                 'total'     => $defNum
                             );
+                    $sumPer2 += $defNum / $actives;
+                    $sumTotal2 += $defNum;
                 }
             }
         }
+
+        $charges[$apt['name']]
+                ['previo'] = -$apt['balance'];
+
+        $charges[$apt['name']]
+                ['actual'] = $sumPer2;
+
+        $charges[$apt['name']]
+                ['total'] = $sumPer2 -$apt['balance'];
+
 
         // El contenido del último apartamento para hacer el sumario
         $lastApt = $content[$apt['name']];
@@ -510,12 +520,13 @@ function generateInvoicesBatch(  /*int*/  $userid,
 
     $db = connectDb();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
     $dirPath = ROOTDIR."/files/{$prx}invoices/$bui";
 
     if(!is_dir($dirPath)) mkdir($dirPath, 0777, true);
 
-    $hdr2 = fopen($dirPath."/LOT-$fNum.json", 'w');
+    $hdr2 = fopen($dirPath."/LOT_$simid-$fNum.json", 'w');
 
     fwrite($hdr2, $tj);
     fclose($hdr2);
@@ -550,21 +561,22 @@ function discardInvoicesBatch(/*string*/ $bui, /*int*/ $number){
     else{
         $db = connectDb();
         $prx = $db->getPrx();
+        $simid = $db->getSimId();
 
         $dirPath = ROOTDIR."/files/{$prx}invoices/$bui";
 
         // Recupera el archivo json con la información del lote.
-        $fileInvoices = $dirPath."/LOT-$number.json";
+        $fileInvoices = $dirPath."/LOT_$simid-$number.json";
 
         if(!is_file($fileInvoices)){
 
-            $msg = "No se encontró el lote LOT-$number.";
+            $msg = "No se encontró el lote LOT_$simid-$number.";
         }
         else{
             // Borra el archivo del lote.
             unlink($fileInvoices);
             $status = true;
-            $msg = "Lote LOT-$number borrado con éxito.";
+            $msg = "Lote LOT_$simid-$number borrado con éxito.";
         }
     }
 

@@ -38,8 +38,9 @@ function getTitularHabitant(/*int*/ $aptid){
 function getBatch(/*string*/ $edf, /*int*/ $number){
     $db = connectDB();
     $prx = $db->getPrx();
+    $simid = $db->getSimId();
 
-    $batchFile = ROOTDIR."/files/{$prx}invoices/{$edf}/LOT-{$number}.json";
+    $batchFile = ROOTDIR."/files/{$prx}invoices/{$edf}/LOT_$simid-{$number}.json";
 
     if(!is_file($batchFile)) return false;
 

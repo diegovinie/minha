@@ -15,12 +15,18 @@ function cleanString(/*string*/ $string){
 }
 
 function nombreEinicial(/*string*/ $string){
+
+    if($string == '' || $string == null) return $string;
+
     $a = preg_split("/\s+/", $string);
     $s = $a[0] ." " .(isset($a[1])? substr($a[1], 0, 1) ."." : "");
     return $s;
 }
 
 function beautifyCI(/*string*/ $ci){
+
+    if($ci == '' || $ci == null) return $ci;
+
     $a = substr($ci, 0, 1);
     $n = substr($ci, 1);
     return $newCI = $a .'-'.number_format($n, 0, '', '.');

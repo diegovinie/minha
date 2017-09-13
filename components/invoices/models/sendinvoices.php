@@ -108,9 +108,9 @@ function sendEmailsToHabitants(/*int*/ $number, /*int*/ $buiid){
 function sendEmail(/*array*/ $hab, /*int*/ $number, /*base64*/ $invoice){
 
     $subject = NAME." - Recibo de cobro $number";
-    $invoice = base64_encode($invoice);
+    //$invoice = base64_encode($invoice);
     $invoice = chunk_split($invoice);
-    $invoice = '';
+    //$invoice = '';
     $name = NAME;
     $email = EMAIL;
     $BOUNDARY=md5(microtime());
@@ -138,7 +138,7 @@ $invoice
 --$BOUNDARY--
 END;
 
-    //return mail($hab['mail'], $subject, $body, $headers);
+    return mail($hab['email'], $subject, $body, $headers);
     //print("{$hab['email']}, $subject, $body, $headers"); echo "\n\n";
-    return true;
+    //return true;
 }
